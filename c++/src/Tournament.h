@@ -16,6 +16,7 @@ public:
 private:
 	vector<Round> allRounds;
 	int scores[2];
+	int checkForWinner();
 
 	const int POINTS_TO_WIN = 21;
 	const int TIE = 2;

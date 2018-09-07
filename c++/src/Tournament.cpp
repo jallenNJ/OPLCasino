@@ -22,31 +22,38 @@ void Tournament::RunTournament() {
 		//Sum Results here
 		scores[Round::HUMAN_PLAYER] += allRounds.back().getPlayerScore(Round::HUMAN_PLAYER);
 		scores[Round::COMPUTER_PLAYER] += allRounds.back().getPlayerScore(Round::COMPUTER_PLAYER);
-		int humanScore = scores[Round::HUMAN_PLAYER];
-		int compScore = scores[Round::COMPUTER_PLAYER];
-		if (humanScore > POINTS_TO_WIN) {
-			if (humanScore > compScore) {
-				winner = Round::HUMAN_PLAYER;
-				break;
-			}
-			else if (humanScore == compScore) {
-				winner = TIE; //Make sure it isn't either of the enums
-				break;
-			}
-			else {
-				winner = Round::COMPUTER_PLAYER;
-				break;
-			}
-		}
-		else if (compScore > POINTS_TO_WIN) {
-			winner = Round::COMPUTER_PLAYER;
-			break;
-		}
-
+		winner = checkForWinner();
 
 		//No winner, another round
 		allRounds.push_back(new Round(allRounds.back().getWinner()));
 		allRounds.back().playRound();
 
+	}
+
+	cout << winner << " has won" << endl;
+}
+
+int Tournament::checkForWinner() {
+	int humanScore = scores[Round::HUMAN_PLAYER];
+	int compScore = scores[Round::COMPUTER_PLAYER];
+	if (humanScore > POINTS_TO_WIN) {
+		if (humanScore > compScore) {
+			return Round::HUMAN_PLAYER;
+			
+		}
+		else if (humanScore == compScore) {
+			return TIE;
+		}
+		else {
+			return Round::COMPUTER_PLAYER;
+
+		}
+	}
+	else if (compScore > POINTS_TO_WIN) {
+		return Round::COMPUTER_PLAYER;
+		
+	}
+	else {
+		return -1;
 	}
 }

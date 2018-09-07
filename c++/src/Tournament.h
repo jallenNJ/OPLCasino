@@ -9,12 +9,16 @@ using namespace std;
 class Tournament {
 public:
 	Tournament();
-
+	~Tournament();
+	void RunTournament();
 
 
 private:
 	vector<Round> allRounds;
+	int scores[2];
 
+	const int POINTS_TO_WIN = 21;
+	const int TIE = 2;
 };
 
 

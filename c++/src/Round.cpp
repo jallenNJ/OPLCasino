@@ -22,7 +22,7 @@ Round::Round() {
 			currentPlayer = HUMAN_PLAYER;
 		}
 		else {
-			cout << "Tails! Computer goes first" << endl;
+			cout << "Heads! Computer goes first" << endl;
 			currentPlayer = COMPUTER_PLAYER;
 		}	
 	}

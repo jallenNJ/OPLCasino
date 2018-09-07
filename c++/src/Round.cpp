@@ -28,7 +28,7 @@ Round::Round() {
 	}
 	else { //Coin landed on tails
 		if (guessedHeads) {
-			cout << "Heads! Computer goes first" << endl;
+			cout << "Tails! Computer goes first" << endl;
 			currentPlayer = COMPUTER_PLAYER;
 		}
 		else {

@@ -13,10 +13,16 @@ Deck::Deck(){
 	specialChar[3] = 'Q';
 	specialChar[4] = 'K';
 
+
 	intializeCards();
+	shuffleCards();
+	topOfDeck = allCards.begin();
+	isEmpty = false;
+
 }
 
 void Deck::intializeCards() {
+	allCards.reserve(52);
 	for (int i = 0; i < 4; i++) {
 		allCards.push_back(Card(suitLetters[i], specialChar[0]));
 		for (char j = '2'; j <= '9'; j++) {

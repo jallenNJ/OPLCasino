@@ -3,6 +3,7 @@
 #include <iostream>
 #include <random>
 #include <ctime>
+#include "Deck.h"
 using namespace std;
 class Round {
 public:
@@ -20,7 +21,7 @@ public:
 
 	}
 
-	void playRound(); //Return scores
+	void playRound();
 
 	int getPlayerScore(int player) {
 		switch (player) {
@@ -47,7 +48,6 @@ private:
 
 	const int MAX_PLAYERS = 2;
 
-	//GET WUBBER
 	
 
 };

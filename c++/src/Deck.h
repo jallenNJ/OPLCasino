@@ -13,17 +13,21 @@ public:
 	Deck();
 
 	Card drawCard() {
-		if (isEmpty) {
+		if (empty) {
 			abort();
 		}
 
 		Card toReturn = *topOfDeck;
 		topOfDeck++;
 		if (topOfDeck == allCards.end()) {
-			isEmpty = true;
+			empty = true;
 		}
 		return toReturn;
 
+	}
+
+	bool isEmpty() {
+		return empty;
 	}
 
 private:
@@ -32,7 +36,7 @@ private:
 	vector<Card> allCards;
 
 	cardIterator topOfDeck;
-	bool isEmpty;
+	bool empty;
 
 	void intializeCards();
 	inline void shuffleCards() {

@@ -122,6 +122,7 @@
     <ClCompile Include="..\..\src\Human.cpp" />
     <ClCompile Include="..\..\src\Player.cpp" />
     <ClCompile Include="..\..\src\Round.cpp" />
+    <ClCompile Include="..\..\src\Table.cpp" />
     <ClCompile Include="..\..\src\Tournament.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -132,6 +133,7 @@
     <ClInclude Include="..\..\src\Human.h" />
     <ClInclude Include="..\..\src\Player.h" />
     <ClInclude Include="..\..\src\Round.h" />
+    <ClInclude Include="..\..\src\Table.h" />
     <ClInclude Include="..\..\src\Tournament.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

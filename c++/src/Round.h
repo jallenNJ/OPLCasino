@@ -3,7 +3,7 @@
 #include <iostream>
 #include <random>
 #include <ctime>
-#include "Deck.h"
+#include "Table.h"
 using namespace std;
 class Round {
 public:

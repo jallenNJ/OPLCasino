@@ -17,7 +17,7 @@ Deck::Deck(){
 	intializeCards();
 	shuffleCards();
 	topOfDeck = allCards.begin();
-	isEmpty = false;
+	empty = false;
 
 }
 

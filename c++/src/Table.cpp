@@ -52,5 +52,5 @@ bool Table::runCycle() {
 }
 
 void Table::doPlayerMove(int playerIndex) {
-	players[playerIndex]->doTurn(hands[playerIndex], looseCards);
+	Player::PlayerMove resultTuple =  players[playerIndex]->doTurn(hands[playerIndex], looseCards);
 }

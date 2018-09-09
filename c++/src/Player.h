@@ -6,10 +6,22 @@
 using namespace std;
 
  class Player {
+
+
 public:
 	enum Actions { Capture, Build, Trail };
+	struct PlayerMove {
+		Player::Actions actionTaken;
+		int handIndex;
+		int targetIndex;
+		PlayerMove(Actions aT, int hI, int tI) {
+			actionTaken = aT;
+			handIndex = hI;
+			targetIndex = tI;
+		}
+	};
 	Player();
-	virtual int doTurn(vector<Card>, vector<Card>) = 0 ;
+	virtual PlayerMove doTurn(vector<Card>, vector<Card>) = 0 ;
 	string getName() {
 		return name;
 	}
@@ -18,6 +30,7 @@ protected:
 
 	string name;
 	virtual void setName();
+	bool captureCard(Card, Card);
 	
 
 

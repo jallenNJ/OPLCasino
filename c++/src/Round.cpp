@@ -17,7 +17,7 @@ Round::Round() {
 		guessedHeads = true;
 	}
 
-	srand(time(NULL));
+	srand((unsigned int)time(NULL)); //Explict conversation to unsigned int to remove warning
 	int randNum = rand() % 100;
 	if (randNum % 2 == 0) { //Coin landed on heads
 		if (guessedHeads) {

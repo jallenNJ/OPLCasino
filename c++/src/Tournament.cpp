@@ -7,7 +7,7 @@ Tournament::Tournament() {
 }
 
 Tournament::~Tournament() {
-	for (int i = 0; i < allRounds.size();i++) {
+	for (unsigned int i = 0; i < allRounds.size();i++) {
 		//delete allRounds[i];
 	}
 }

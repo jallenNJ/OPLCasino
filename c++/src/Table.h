@@ -39,7 +39,7 @@ private:
 	}
 
 	void printHand(vector<Card>* cardVec) {
-		for (int i = 0; i < cardVec->size(); i++) {
+		for (unsigned int i = 0; i < cardVec->size(); i++) {
 			cout << "" + (*cardVec)[i].toString() << " ";
 		}
 	}

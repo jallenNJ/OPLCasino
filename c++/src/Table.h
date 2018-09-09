@@ -6,6 +6,7 @@
 #include <iostream>
 #include "Player.h"
 #include "Human.h"
+#include "Computer.h"
 #include <iomanip>
 
 using namespace std;
@@ -25,7 +26,7 @@ private:
 	vector<Card> playerPile;
 	vector<Card> computerPile;
 	Deck* deck; 
-	Player* humanPlayer;
+	Player** players;
 
 
 	void fillHand(vector<Card>* cardVec) {

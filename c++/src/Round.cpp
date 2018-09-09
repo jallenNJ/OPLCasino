@@ -65,5 +65,5 @@ void Round::playRound() {
 	playerScores[HUMAN_PLAYER] = 10;
 	//playerScores[COMPUTER_PLAYER] = 10;
 	playerThatWonRound = HUMAN_PLAYER;
-
+	table->printBoard();
 }

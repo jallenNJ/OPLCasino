@@ -4,12 +4,16 @@
 #include <vector>
 #include "Deck.h"
 #include <iostream>
+#include "Player.h"
+#include "Human.h"
+#include <iomanip>
+
 using namespace std;
 class Table {
 public:
 	Table();
 	~Table();
-
+	void printBoard();
 	
 private:
 
@@ -21,6 +25,8 @@ private:
 	vector<Card> playerPile;
 	vector<Card> computerPile;
 	Deck* deck; 
+	Player* humanPlayer;
+
 
 	void fillHand(vector<Card>* cardVec) {
 		for (int i = 0; i < 4; i++) {
@@ -31,7 +37,13 @@ private:
 		}
 	}
 
-	void printBoard();
+	void printHand(vector<Card>* cardVec) {
+		for (int i = 0; i < cardVec->size(); i++) {
+			cout << "" + (*cardVec)[i].toString() << " ";
+		}
+	}
+
+	
 };
 
 #endif // !TABLE_H

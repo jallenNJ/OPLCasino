@@ -13,17 +13,26 @@ Table::Table() {
 	fillHand(&computerHand);
 	fillHand(&looseCards);
 
+	humanPlayer = new Human();
 }
 
 
 void Table::printBoard() {
-	cout << "Player Hand: ";
-	for (int i = 0; i < playerHand.size(); i++) {
-		//cout << ""+playerHand[i].toString() << " ";
-	}
-
+	cout <<left<< setw(10)<< humanPlayer->getName()<<"'s Hand: ";
+	printHand(&playerHand);
+//	for (int i = 0; i < playerHand.size(); i++) {
+	//	cout << ""+playerHand[i].toString() << " ";
+//	}
+	cout << "\n";
+	cout << setw(10)<<"Table:\t";
+	printHand(&looseCards);
+	cout << "\n";
+	cout << "COMPUTER GOES HERE";
+	printHand(&computerHand);
+	cout << endl;
 }
 
 Table::~Table() {
 	delete deck;
+	delete humanPlayer;
 }

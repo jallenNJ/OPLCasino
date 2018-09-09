@@ -16,9 +16,16 @@ public:
 	char getSymbol() {
 		return symbol;
 	}
+
+	//Aces return 1
+	int getNumericValue() {
+		return numericValue;
+	}
 private:
 	char suit;
 	char symbol;
+	int numericValue;
+	void symbolToNumericValue();
 
 
 

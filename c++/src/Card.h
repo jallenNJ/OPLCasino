@@ -1,12 +1,14 @@
 #ifndef CARD_H
 #define CARD_H
-
+#include <string>
+using namespace std;
 class Card {
+	
 public:
 	Card(char, char);
 
 	string toString() {
-		return ""+suit + symbol;
+		return string(1, suit)+ string(1, symbol);
 	}
 private:
 	char suit;

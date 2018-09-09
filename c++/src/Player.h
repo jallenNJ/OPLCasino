@@ -4,10 +4,10 @@
 
 using namespace std;
 
-class Player {
+ class Player {
 public:
 	Player();
-	void doTurn();
+	virtual int doTurn(int) = 0 ;
 	string getName() {
 		return name;
 	}

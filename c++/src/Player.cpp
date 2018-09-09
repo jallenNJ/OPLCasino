@@ -9,7 +9,3 @@ Player::Player() {
  void Player::setName() {
 	 name = "Generic Player";
 }
-
- void Player::doTurn() {
-
- }

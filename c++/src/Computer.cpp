@@ -6,5 +6,5 @@ Computer::Computer() {
 }
 
 void Computer::setName() {
-	name = "Bleep Bloop";
+	name = "Bleep Bloop"; //Maybe Clever Mongoose?
 }

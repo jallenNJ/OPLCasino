@@ -35,7 +35,7 @@ public:
 		}
 	}
 
-	int getWinner() {
+	const int getWinner() {
 		return playerThatWonRound;
 	}
 private:

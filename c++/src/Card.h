@@ -11,14 +11,14 @@ public:
 		return string(1, suit)+ string(1, symbol);
 	}
 
-	bool checkCapture(Card);
+	const bool checkCapture(Card);
 
-	char getSymbol() {
+	const char getSymbol() {
 		return symbol;
 	}
 
 	//Aces return 1
-	int getNumericValue() {
+	const int getNumericValue() {
 		return numericValue;
 	}
 private:

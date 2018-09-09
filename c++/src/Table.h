@@ -14,7 +14,7 @@ class Table {
 public:
 	Table();
 	~Table();
-	void printBoard();
+	const void printBoard();
 	bool runCycle();
 	
 private:

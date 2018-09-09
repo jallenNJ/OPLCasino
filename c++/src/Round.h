@@ -23,7 +23,7 @@ public:
 
 	void playRound();
 
-	int getPlayerScore(int player) {
+	const int getPlayerScore(int player) {
 		switch (player) {
 		case HUMAN_PLAYER:
 			return playerScores[HUMAN_PLAYER];

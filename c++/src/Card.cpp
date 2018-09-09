@@ -7,7 +7,7 @@ Card::Card(char su, char sy) {
 	symbolToNumericValue();
 }	
 
-bool Card::checkCapture(Card other) {
+const bool Card::checkCapture(Card other) {
 	return getSymbol() == other.getSymbol();
 }
 

@@ -22,7 +22,7 @@ Table::Table() {
 }
 
 
-void Table::printBoard() {
+const void Table::printBoard() {
 	cout << "\n";
 	cout <<left<< setw(15)<< players[0]->getName()<<": ";
 	printHand(&hands[0]);

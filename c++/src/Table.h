@@ -15,13 +15,13 @@ public:
 	Table();
 	~Table();
 	void printBoard();
+	bool runCycle();
 	
 private:
 
 
 	static const int HAND_SIZE = 4;
-	vector<Card> playerHand;
-	vector<Card> computerHand;
+	vector<Card> hands[2]; 
 	vector<Card> looseCards;
 	vector<Card> playerPile;
 	vector<Card> computerPile;
@@ -44,6 +44,7 @@ private:
 		}
 	}
 
+	void doPlayerMove(int player);
 	
 };
 

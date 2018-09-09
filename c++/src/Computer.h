@@ -7,6 +7,7 @@ public:
 	Computer();
 protected:
 	virtual void setName() override;
+	virtual int doTurn(int) override { return -10; }
 private:
 
 };

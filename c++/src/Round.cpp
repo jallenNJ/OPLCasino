@@ -7,10 +7,13 @@ Round::Round() {
 		cout << "(H)eads or (T)ails?";
 		
 		cin >> input;
-	} while (input != 'H' && input!='h' && input != 'T' && input !='t');
+		cin.clear();
+		cin.ignore(cin.rdbuf()->in_avail(), '\n');//clears any extra in buffer
+		input = tolower(input);
+	} while (input!='h'  && input !='t');
 
 	bool guessedHeads = false;
-	if (input == 'H' || input == 'h') {
+	if (input == 'h') {
 		guessedHeads = true;
 	}
 
@@ -61,9 +64,9 @@ void Round::intializeRound() {
 
 void Round::playRound() {
 	Table* table = new Table();
-	//Deck* deck = new Deck();
-	playerScores[HUMAN_PLAYER] = 10;
-	//playerScores[COMPUTER_PLAYER] = 10;
-	playerThatWonRound = HUMAN_PLAYER;
-	table->printBoard();
+	//table->printBoard();
+	while (table->runCycle() == false);
+
+	delete table;
+
 }

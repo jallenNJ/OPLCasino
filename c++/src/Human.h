@@ -16,7 +16,7 @@ protected:
 	virtual void setName() override;
 private:
 	Actions promptForAction();
-	int promptForCardToUse(int, bool = false);
+	vector<int> promptForCardToUse(int, bool = false);
 
 };
 

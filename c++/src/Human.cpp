@@ -25,12 +25,17 @@ Player::PlayerMove Human::doTurn(vector<Card> hand, vector<Card>tableCards) {
 	
 	while (true) {
 		Actions actionToTake = promptForAction();
-		int cardInHand = promptForCardToUse (hand.size(), false);
-		int cardOnTable = promptForCardToUse(tableCards.size(), true);
+		vector<int> cardsInHand = promptForCardToUse (hand.size(), false);
+		vector<int> cardsOnTable = promptForCardToUse(tableCards.size(), true);
+		int cardInHand = cardsInHand[0];
 		bool successfulResult = false;
+		vector<Card> cardsToCheck;
+		for (int i = 0; i < cardsOnTable.size(); i++) {
+			cardsToCheck.push_back(tableCards[cardsOnTable[i]]);
+		}
 		switch (actionToTake) {
 			case Player::Capture:
-				successfulResult = captureCard(hand[cardInHand], tableCards[cardOnTable]);
+				successfulResult = captureCard(hand[cardInHand], cardsToCheck);
 				break;
 			case Player::Build:
 				break;
@@ -41,7 +46,8 @@ Player::PlayerMove Human::doTurn(vector<Card> hand, vector<Card>tableCards) {
 		}
 
 		if (successfulResult) {
-			return PlayerMove(actionToTake, cardInHand, cardOnTable);
+
+			return PlayerMove(actionToTake, cardInHand, cardsOnTable);
 		}
 		else {
 			cout << "Invalid action" << endl;
@@ -75,11 +81,12 @@ Player::Actions Human::promptForAction() {
 }
 
 
-int Human::promptForCardToUse(int size, bool selectingTable) {
-
+vector<int> Human::promptForCardToUse(int size, bool selectingTable) {
+	vector<int> values;
 	if (size == 1) {
 		cout << "Only available card automatically choosen" << endl;
-		return 0;
+		values.push_back(0);
+		return values;
 	}
 
 
@@ -91,12 +98,35 @@ int Human::promptForCardToUse(int size, bool selectingTable) {
 	}
 
 	int input = 0;
-	while (input < 1 || input > size) {
-		cout << "Which card would you like to "<< playOrSelect << " (1-" << size << ")" << endl;
-		cin >> input;
-		cin.clear();
-		cin.ignore(cin.rdbuf()->in_avail(), '\n');
+	while (true) {
+		while (input < 1 || input > size) {
+			cout << "Which card would you like to " << playOrSelect << " (1-" << size << ")" << endl;
+			cin >> input;
+			cin.clear();
+			cin.ignore(cin.rdbuf()->in_avail(), '\n');
+		}
+		input--;
+		values.push_back(input);
+		input = 0;
+		if (selectingTable) {
+			char moreValues = '0';
+			while (moreValues != 'y' && moreValues != 'n') {
+				cout << "Would you like to enter another card? (y/n)";
+				cin >> moreValues;
+				cin.clear();
+				cin.ignore(cin.rdbuf()->in_avail(), '\n');
+				moreValues = tolower(moreValues);
+			}
+			if (moreValues == 'n') {
+				break;
+			}
+
+		} else {
+			break;
+		}
+
 	}
-	input--;
-	return input;
+
+	
+	return values;
 }

@@ -1,5 +1,5 @@
 #include "Card.h"
-
+#include <vector>
 
 Card::Card(char su, char sy) {
 	suit = su;
@@ -9,6 +9,25 @@ Card::Card(char su, char sy) {
 
 const bool Card::checkCapture(Card other) {
 	return getSymbol() == other.getSymbol();
+}
+
+const bool Card::checkCapture(vector<Card> cardsToCheck) {
+	int sum = 0;
+	for (int i = 0; i < cardsToCheck.size(); i++) {
+		sum += cardsToCheck[i].getNumericValue();
+	}
+	if (sum > 14) {
+		return false; 
+	}
+	if (sum == getNumericValue()) {
+		return true;
+	}
+	if (sum == 14 && getSymbol() == 'A') {
+		return true;
+	}
+	return false;
+
+
 }
 
 void Card::symbolToNumericValue() {

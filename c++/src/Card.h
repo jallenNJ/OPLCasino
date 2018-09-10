@@ -1,6 +1,7 @@
 #ifndef CARD_H
 #define CARD_H
 #include <string>
+#include <vector>
 using namespace std;
 class Card {
 	
@@ -12,6 +13,7 @@ public:
 	}
 
 	const bool checkCapture(Card);
+	const bool checkCapture(vector<Card>);
 
 	const char getSymbol() {
 		return symbol;
@@ -28,7 +30,7 @@ private:
 	void symbolToNumericValue();
 
 
-
+	
 };
 
 

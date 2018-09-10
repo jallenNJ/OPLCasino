@@ -13,11 +13,14 @@ public:
 	struct PlayerMove {
 		Player::Actions actionTaken;
 		int handIndex;
-		int targetIndex;
-		PlayerMove(Actions aT, int hI, int tI) {
+		vector<int> targetIndex;
+		PlayerMove(Actions aT, int hI, vector<int> tI) {
 			actionTaken = aT;
 			handIndex = hI;
-			targetIndex = tI;
+			//targetIndex = tI;
+			for (int i = 0; i < tI.size(); i++) {
+				targetIndex.push_back(tI[i]);
+			}
 		}
 	};
 	Player();
@@ -31,6 +34,7 @@ protected:
 	string name;
 	virtual void setName();
 	bool captureCard(Card, Card);
+	bool captureCard(Card, vector<Card>);
 	
 
 

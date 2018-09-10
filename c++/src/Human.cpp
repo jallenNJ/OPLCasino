@@ -98,6 +98,7 @@ vector<int> Human::promptForCardToUse(int size, bool selectingTable) {
 	}
 
 	int input = 0;
+	vector<int> previousInputs;
 	while (true) {
 		while (input < 1 || input > size) {
 			cout << "Which card would you like to " << playOrSelect << " (1-" << size << ")" << endl;
@@ -105,9 +106,22 @@ vector<int> Human::promptForCardToUse(int size, bool selectingTable) {
 			cin.clear();
 			cin.ignore(cin.rdbuf()->in_avail(), '\n');
 		}
-		input--;
-		values.push_back(input);
+		bool valid = true;
+		for (unsigned int i = 0; i < previousInputs.size(); i++) {
+			if (input == previousInputs[i]) {
+				cout << "Cannot select the same card twice" << endl;
+				valid = false;
+				break;
+			}
+		}
+		if (valid) {
+			previousInputs.push_back(input);
+			input--;
+			values.push_back(input);
+	
+		}
 		input = 0;
+		
 		if (selectingTable) {
 			char moreValues = '0';
 			while (moreValues != 'y' && moreValues != 'n') {

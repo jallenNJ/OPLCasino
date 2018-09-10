@@ -18,7 +18,7 @@ public:
 			actionTaken = aT;
 			handIndex = hI;
 			//targetIndex = tI;
-			for (int i = 0; i < tI.size(); i++) {
+			for (unsigned int i = 0; i < tI.size(); i++) {
 				targetIndex.push_back(tI[i]);
 			}
 		}

@@ -30,7 +30,7 @@ Player::PlayerMove Human::doTurn(vector<Card> hand, vector<Card>tableCards) {
 		int cardInHand = cardsInHand[0];
 		bool successfulResult = false;
 		vector<Card> cardsToCheck;
-		for (int i = 0; i < cardsOnTable.size(); i++) {
+		for (unsigned int i = 0; i < cardsOnTable.size(); i++) {
 			cardsToCheck.push_back(tableCards[cardsOnTable[i]]);
 		}
 		switch (actionToTake) {

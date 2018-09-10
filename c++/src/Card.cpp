@@ -13,7 +13,7 @@ const bool Card::checkCapture(Card other) {
 
 const bool Card::checkCapture(vector<Card> cardsToCheck) {
 	int sum = 0;
-	for (int i = 0; i < cardsToCheck.size(); i++) {
+	for (unsigned int i = 0; i < cardsToCheck.size(); i++) {
 		sum += cardsToCheck[i].getNumericValue();
 	}
 	if (sum > 14) {

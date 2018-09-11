@@ -115,6 +115,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\Build.cpp" />
     <ClCompile Include="..\..\src\Card.cpp" />
     <ClCompile Include="..\..\src\Casino.cpp" />
     <ClCompile Include="..\..\src\Computer.cpp" />
@@ -126,6 +127,7 @@
     <ClCompile Include="..\..\src\Tournament.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\Build.h" />
     <ClInclude Include="..\..\src\Card.h" />
     <ClInclude Include="..\..\src\Casino.h" />
     <ClInclude Include="..\..\src\Computer.h" />

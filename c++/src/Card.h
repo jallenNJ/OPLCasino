@@ -8,19 +8,19 @@ class Card {
 public:
 	Card(char, char);
 
-	string toString() {
+	virtual const string toString() {
 		return string(1, suit)+ string(1, symbol);
 	}
 
 	const bool checkCapture(Card);
 	const bool checkCapture(vector<Card>);
 
-	const char getSymbol() {
+	const virtual char getSymbol() {
 		return symbol;
 	}
 
 	//Aces return 1
-	const int getNumericValue() {
+	const virtual int getNumericValue() {
 		return numericValue;
 	}
 private:

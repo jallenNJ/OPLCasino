@@ -3,8 +3,9 @@
 #include <string>
 #include <vector>
 #include "Card.h"
-using namespace std;
+#include "Hand.h"
 
+using namespace std;
  class Player {
 
 
@@ -29,10 +30,22 @@ public:
 		return name;
 	}
 
+	void addToHand(Card toAdd) {
+		playerHand.addCard(toAdd);
+	}
+
+	string toFormattedString() {
+		return playerHand.toFormattedString();
+	}
+
 protected:
 
 	string name;
 	virtual void setName() = 0;
+	Hand playerHand;
+	Hand playerPile;
+
+
 	bool captureCard(Card, Card);
 	bool captureCard(Card, vector<Card>);
 	bool createBuild(Card, vector<Card>, vector<Card>);

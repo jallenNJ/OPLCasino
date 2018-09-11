@@ -120,6 +120,7 @@
     <ClCompile Include="..\..\src\Casino.cpp" />
     <ClCompile Include="..\..\src\Computer.cpp" />
     <ClCompile Include="..\..\src\Deck.cpp" />
+    <ClCompile Include="..\..\src\Hand.cpp" />
     <ClCompile Include="..\..\src\Human.cpp" />
     <ClCompile Include="..\..\src\Player.cpp" />
     <ClCompile Include="..\..\src\Round.cpp" />
@@ -132,6 +133,7 @@
     <ClInclude Include="..\..\src\Casino.h" />
     <ClInclude Include="..\..\src\Computer.h" />
     <ClInclude Include="..\..\src\Deck.h" />
+    <ClInclude Include="..\..\src\Hand.h" />
     <ClInclude Include="..\..\src\Human.h" />
     <ClInclude Include="..\..\src\Player.h" />
     <ClInclude Include="..\..\src\Round.h" />

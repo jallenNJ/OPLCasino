@@ -2,16 +2,7 @@
 
 Table::Table() {
 
-	hands[0].reserve(4);
-	hands[1].reserve(4);
-	looseCards.reserve(4);
-	playerPile.reserve(35);
-	computerPile.reserve(35);
 
-	deck = new Deck();
-	fillHand(&hands[0]);
-	fillHand(&hands[1]);
-	fillHand(&looseCards);
 
 	Human* human = new Human();
 	Computer* computer = new Computer();
@@ -19,19 +10,25 @@ Table::Table() {
 	players[0] = human;
 	players[1] = computer;
 
+	deck = new Deck();
+	fillHand(0);
+	fillHand(1);
+	fillLooseCards();
+
 }
 
 
 const void Table::printBoard() {
 	cout << "\n";
 	cout <<left<< setw(15)<< players[0]->getName()<<": ";
-	printHand(&hands[0]);
+	//printHand(&hands[0]);
+	cout << players[0]->toFormattedString();
 	cout << "\n";
 	cout << setw(15)<<"Table"<<":";
-	printHand(&looseCards);
+	cout << " " << looseCards.toFormattedString();
 	cout << "\n";
 	cout << left << setw(15) << players[1]->getName() << ": ";
-	printHand(&hands[1]);
+	cout << players[1]->toFormattedString();
 	cout << "\n";
 	cout << endl;
 }
@@ -52,5 +49,5 @@ bool Table::runCycle() {
 }
 
 void Table::doPlayerMove(int playerIndex) {
-	Player::PlayerMove resultTuple =  players[playerIndex]->doTurn(hands[playerIndex], looseCards);
+	//Player::PlayerMove resultTuple =  players[playerIndex]->doTurn(hands[playerIndex], looseCards);
 }

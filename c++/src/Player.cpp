@@ -14,15 +14,13 @@ Player::Player() {
 	 return played.checkCapture(targets);
  }
 
- bool Player::createBuild(Card played, vector<Card> hand, vector<Card> selectedCards) {
+ bool Player::createBuild(Card played, vector<Card> selectedCards) {
 	 int sum = played.getNumericValue();
 	 for (unsigned int i = 0; i < selectedCards.size(); i++) {
 		 sum += selectedCards[i].getNumericValue();
 	 }
-	 for (unsigned int i = 0; i < hand.size(); i++) {
-		 if (sum == hand[i].getNumericValue()) {
-			 return true;
-		 }
+	 if (sum > 14) {
+		 return false;
 	 }
-	 return false;
+	 return playerHand.containsCardValue(sum);
  }

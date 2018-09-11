@@ -19,32 +19,32 @@ void Human::setName() {
 	
 }
 
-Player::PlayerMove Human::doTurn(vector<Card> hand, vector<Card>tableCards) {
+Player::PlayerMove Human::doTurn(Hand tableCards) {
 	
 	
 	
 	while (true) {
 		Actions actionToTake = promptForAction();
-		vector<int> cardsInHand = promptForCardToUse ((int)hand.size(), false);
+		vector<int> cardsInHand = promptForCardToUse (playerHand.handSize(), false);
 		vector<int> cardsOnTable;
 		if (actionToTake != Trail) {
-			cardsOnTable = promptForCardToUse((int)tableCards.size(), true);
+			cardsOnTable = promptForCardToUse(tableCards.handSize(), true);
 		}
 		
 		int cardInHand = cardsInHand[0];
 		bool successfulResult = false;
 		vector<Card> cardsToCheck;
 		for (unsigned int i = 0; i < cardsOnTable.size(); i++) {
-			cardsToCheck.push_back(tableCards[cardsOnTable[i]]);
+			cardsToCheck.push_back(tableCards.removeCard(cardsOnTable[i]));
 		}
 		switch (actionToTake) {
 			//TODO: Add check to prevent reserved card from being played
 			case Player::Capture:
-				successfulResult = captureCard(hand[cardInHand], cardsToCheck);
+				successfulResult = captureCard(playerHand.getCardCopy(cardInHand) , cardsToCheck);
 				break;
 			case Player::Build:
 				//TODO: Check if creating to adding to build
-				successfulResult = createBuild(hand[cardInHand], hand, cardsToCheck);
+				successfulResult = createBuild(playerHand.getCardCopy(cardInHand), cardsToCheck);
 				break;
 			case Player::Trail:
 				//CHECK IF OWN BUILD and replace later
@@ -55,8 +55,10 @@ Player::PlayerMove Human::doTurn(vector<Card> hand, vector<Card>tableCards) {
 		}
 
 		if (successfulResult) {
-
-			return PlayerMove(actionToTake, cardInHand, cardsOnTable);
+			sort(cardsOnTable.begin(), cardsOnTable.end());
+			reverse(cardsOnTable.begin(), cardsOnTable.end());
+			Card played = playerHand.removeCard(cardInHand);
+			return PlayerMove(actionToTake, played, cardsOnTable);
 		}
 		else {
 			cout << "Invalid action" << endl;

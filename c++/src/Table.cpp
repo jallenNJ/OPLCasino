@@ -46,23 +46,23 @@ bool Table::runCycle() {
 }
 
 void Table::doPlayerMove(int playerIndex) {
-	/*
-	Player::PlayerMove resultTuple =  players[playerIndex]->doTurn(hands[playerIndex], looseCards);
+	
+	Player::PlayerMove resultTuple =  players[playerIndex]->doTurn(looseCards);
 	switch (resultTuple.actionTaken) {
 	case Player::Actions::Capture:
-		piles[playerIndex].push_back(hands[playerIndex][resultTuple.handIndex]);
-		// Add table cards
-		hands[playerIndex].erase(hands[playerIndex].begin() + resultTuple.handIndex);
+		players[playerIndex]->addToPile(resultTuple.playedCard);
+		for (unsigned int i = 0; i < resultTuple.targetIndex.size(); i++) {
+			players[playerIndex]->addToPile(looseCards.removeCard(resultTuple.targetIndex[i]));
+		}
 		break;
 	case Player::Actions::Build:
 		break;
 	case Player::Actions::Trail:
-		looseCards.push_back(hands[playerIndex][resultTuple.handIndex]);
-		hands[playerIndex].erase(hands[playerIndex].begin() + resultTuple.handIndex);
+		looseCards.addCard(resultTuple.playedCard);
 		break;
 	default:
 		abort();
 		break;
 	}
-	*/
+	
 }

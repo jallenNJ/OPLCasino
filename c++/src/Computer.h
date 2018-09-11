@@ -7,7 +7,7 @@ public:
 	Computer();
 protected:
 	virtual void setName() override;
-	virtual PlayerMove doTurn(vector<Card>, vector<Card>) override { return PlayerMove(Trail,1,vector<int>(1)); }
+	virtual PlayerMove doTurn(Hand) override { return PlayerMove(Trail,Card(),vector<int>(1)); }
 private:
 
 };

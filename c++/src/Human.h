@@ -10,7 +10,7 @@ class Human : public Player {
 public:
 	Human();
 
-	virtual PlayerMove doTurn(vector<Card>, vector<Card>) override;
+	virtual PlayerMove doTurn(Hand) override;
 
 protected:
 	virtual void setName() override;

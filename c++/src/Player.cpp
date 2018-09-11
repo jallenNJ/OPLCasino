@@ -6,9 +6,6 @@ Player::Player() {
 
 }
 
- void Player::setName() {
-	 name = "Generic Player";
-}
 
 
  bool Player::captureCard(Card played, Card target) {

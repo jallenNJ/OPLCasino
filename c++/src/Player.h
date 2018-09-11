@@ -32,7 +32,7 @@ public:
 protected:
 
 	string name;
-	virtual void setName();
+	virtual void setName() = 0;
 	bool captureCard(Card, Card);
 	bool captureCard(Card, vector<Card>);
 	

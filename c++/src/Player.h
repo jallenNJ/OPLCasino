@@ -35,6 +35,7 @@ protected:
 	virtual void setName() = 0;
 	bool captureCard(Card, Card);
 	bool captureCard(Card, vector<Card>);
+	bool createBuild(Card, vector<Card>, vector<Card>);
 	
 
 

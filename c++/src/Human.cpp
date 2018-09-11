@@ -25,8 +25,12 @@ Player::PlayerMove Human::doTurn(vector<Card> hand, vector<Card>tableCards) {
 	
 	while (true) {
 		Actions actionToTake = promptForAction();
-		vector<int> cardsInHand = promptForCardToUse (hand.size(), false);
-		vector<int> cardsOnTable = promptForCardToUse(tableCards.size(), true);
+		vector<int> cardsInHand = promptForCardToUse ((int)hand.size(), false);
+		vector<int> cardsOnTable;
+		if (actionToTake != Trail) {
+			cardsOnTable = promptForCardToUse((int)tableCards.size(), true);
+		}
+		
 		int cardInHand = cardsInHand[0];
 		bool successfulResult = false;
 		vector<Card> cardsToCheck;
@@ -34,12 +38,17 @@ Player::PlayerMove Human::doTurn(vector<Card> hand, vector<Card>tableCards) {
 			cardsToCheck.push_back(tableCards[cardsOnTable[i]]);
 		}
 		switch (actionToTake) {
+			//TODO: Add check to prevent reserved card from being played
 			case Player::Capture:
 				successfulResult = captureCard(hand[cardInHand], cardsToCheck);
 				break;
 			case Player::Build:
+				//TODO: Check if creating to adding to build
+				successfulResult = createBuild(hand[cardInHand], hand, cardsToCheck);
 				break;
 			case Player::Trail:
+				//CHECK IF OWN BUILD and replace later
+				successfulResult = true;
 				break;
 			default:
 				break;

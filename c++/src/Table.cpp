@@ -5,8 +5,8 @@ Table::Table() {
 	hands[0].reserve(4);
 	hands[1].reserve(4);
 	looseCards.reserve(4);
-	playerPile.reserve(35);
-	computerPile.reserve(35);
+	piles[0].reserve(35);
+	piles[1].reserve(35);
 
 	deck = new Deck();
 	fillHand(&hands[0]);
@@ -48,9 +48,25 @@ bool Table::runCycle() {
 
 
 
-	return true;
+	return false;
 }
 
 void Table::doPlayerMove(int playerIndex) {
 	Player::PlayerMove resultTuple =  players[playerIndex]->doTurn(hands[playerIndex], looseCards);
+	switch (resultTuple.actionTaken) {
+	case Player::Actions::Capture:
+		piles[playerIndex].push_back(hands[playerIndex][resultTuple.handIndex]);
+		// Add table cards
+		hands[playerIndex].erase(hands[playerIndex].begin() + resultTuple.handIndex);
+		break;
+	case Player::Actions::Build:
+		break;
+	case Player::Actions::Trail:
+		looseCards.push_back(hands[playerIndex][resultTuple.handIndex]);
+		hands[playerIndex].erase(hands[playerIndex].begin() + resultTuple.handIndex);
+		break;
+	default:
+		abort();
+		break;
+	}
 }

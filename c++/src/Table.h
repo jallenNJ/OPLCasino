@@ -23,8 +23,8 @@ private:
 	static const int HAND_SIZE = 4;
 	vector<Card> hands[2]; 
 	vector<Card> looseCards;
-	vector<Card> playerPile;
-	vector<Card> computerPile;
+	vector<Card> piles[2];
+
 	Deck* deck; 
 	Player** players;
 

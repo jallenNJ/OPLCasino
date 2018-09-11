@@ -83,7 +83,7 @@ Player::Actions Human::promptForAction() {
 		if (input == 'b') {
 			return Build;
 		}
-		if (input == 'T') {
+		if (input == 't') {
 			return Trail;
 		}
 	}

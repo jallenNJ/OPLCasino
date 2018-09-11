@@ -8,7 +8,7 @@ class Card {
 public:
 	Card(char, char);
 
-	virtual const string toString() {
+	inline virtual const string toString() {
 		return string(1, suit)+ string(1, symbol);
 	}
 

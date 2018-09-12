@@ -44,9 +44,13 @@ public:
 		return sum;
 	}
 
-	inline void addCardToBuild(Card newCard) {
+	inline bool addCardToBuild(Card newCard) {
 		//TODO: Add check to make sure doesn't exceed 14 etc
+		if (newCard.getNumericValue() + getNumericValue() > 14) {
+			return false;
+		}
 		cardsInBuild.push_back(newCard);
+		return true;
 	}
 
 private:

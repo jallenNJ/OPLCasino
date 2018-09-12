@@ -10,12 +10,10 @@ public:
 		setInvalidCard();
 	}
 
-	Card(char, char);
-
-	inline virtual const string toString() {
+	virtual const string toString() {
 		return string(1, suit)+ string(1, symbol);
 	}
-
+	
 	const bool checkCapture(Card);
 	const bool checkCapture(vector<Card>);
 

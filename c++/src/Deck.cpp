@@ -24,12 +24,12 @@ Deck::Deck(){
 void Deck::intializeCards() {
 	allCards.reserve(52);
 	for (int i = 0; i < 4; i++) {
-		allCards.push_back(Card(suitLetters[i], specialChar[0]));
+		allCards.push_back(PlayingCard(suitLetters[i], specialChar[0]));
 		for (char j = '2'; j <= '9'; j++) {
-			allCards.push_back(Card(suitLetters[i], j));
+			allCards.push_back(PlayingCard(suitLetters[i], j));
 		}
 		for (int j = 1; j < 5; j++) {
-			allCards.push_back(Card(suitLetters[i], specialChar[j]));
+			allCards.push_back(PlayingCard(suitLetters[i], specialChar[j]));
 		}
 	}
 	

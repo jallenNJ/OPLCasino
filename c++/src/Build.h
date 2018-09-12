@@ -20,7 +20,7 @@ public:
 	virtual const string toString() override{
 		string convertted = "[ ";
 		for (unsigned int i = 0; i < cardsInBuild.size(); i++) {
-			convertted += cardsInBuild[i].toString();
+			convertted += cardsInBuild[i].toString() + " ";
 		}
 		convertted += " ]";
 		return convertted;

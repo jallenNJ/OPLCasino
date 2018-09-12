@@ -1,11 +1,5 @@
 #include "Card.h"
-#include <vector>
 
-Card::Card(char su, char sy) {
-	suit = su;
-	symbol = sy;
-	symbolToNumericValue();
-}	
 
 const bool Card::checkCapture(Card other) {
 	return getSymbol() == other.getSymbol();

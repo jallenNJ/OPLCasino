@@ -6,6 +6,10 @@ using namespace std;
 class Card {
 	
 public:
+	Card() {
+		setInvalidCard();
+	}
+
 	Card(char, char);
 
 	inline virtual const string toString() {
@@ -23,12 +27,19 @@ public:
 	const virtual int getNumericValue() {
 		return numericValue;
 	}
+
+	const bool isInvalid() {
+		return suit == 'N';
+	}
 private:
 	char suit;
 	char symbol;
 	int numericValue;
 	void symbolToNumericValue();
-
+	void setInvalidCard() {
+		suit = 'N';
+		symbol = '0';
+	}
 
 	
 };

@@ -5,46 +5,41 @@
 Human::Human() {
 	setName();
 }
-void Human::setName() {
-	string input = "";
-
-	while (input.length() == 0) {
-		cout << "Enter your name:  " << endl;
-		cin >> input;
-	}
+bool Human::setName() {
 	
-	name = input;
+	name = Client::getStringInput("Please enter your name: ");
 
-	cout << "Welcome " << name << "!" << endl;
+	Client::outputString("Welcome " + name + "!");
+	return true;
 	
 }
 
-Player::PlayerMove Human::doTurn(vector<Card> hand, vector<Card>tableCards) {
+Player::PlayerMove Human::doTurn(Hand tableCards) {
 	
 	
 	
 	while (true) {
 		Actions actionToTake = promptForAction();
-		vector<int> cardsInHand = promptForCardToUse ((int)hand.size(), false);
+		vector<int> cardsInHand = promptForCardToUse (playerHand.handSize(), false);
 		vector<int> cardsOnTable;
 		if (actionToTake != Trail) {
-			cardsOnTable = promptForCardToUse((int)tableCards.size(), true);
+			cardsOnTable = promptForCardToUse(tableCards.handSize(), true);
 		}
 		
 		int cardInHand = cardsInHand[0];
 		bool successfulResult = false;
 		vector<Card> cardsToCheck;
 		for (unsigned int i = 0; i < cardsOnTable.size(); i++) {
-			cardsToCheck.push_back(tableCards[cardsOnTable[i]]);
+			cardsToCheck.push_back(tableCards.getCardCopy(cardsOnTable[i]));
 		}
 		switch (actionToTake) {
 			//TODO: Add check to prevent reserved card from being played
 			case Player::Capture:
-				successfulResult = captureCard(hand[cardInHand], cardsToCheck);
+				successfulResult = captureCard(playerHand.getCardCopy(cardInHand) , cardsToCheck);
 				break;
 			case Player::Build:
 				//TODO: Check if creating to adding to build
-				successfulResult = createBuild(hand[cardInHand], hand, cardsToCheck);
+				successfulResult = createBuild(playerHand.getCardCopy(cardInHand), cardsToCheck);
 				break;
 			case Player::Trail:
 				//CHECK IF OWN BUILD and replace later
@@ -55,11 +50,13 @@ Player::PlayerMove Human::doTurn(vector<Card> hand, vector<Card>tableCards) {
 		}
 
 		if (successfulResult) {
-
-			return PlayerMove(actionToTake, cardInHand, cardsOnTable);
+			sort(cardsOnTable.begin(), cardsOnTable.end());
+			reverse(cardsOnTable.begin(), cardsOnTable.end());
+			Card played = playerHand.removeCard(cardInHand);
+			return PlayerMove(actionToTake, played, cardsOnTable);
 		}
 		else {
-			cout << "Invalid action" << endl;
+			Client::outputString("Invalid Action");
 		}
 	}
 	
@@ -68,15 +65,11 @@ Player::PlayerMove Human::doTurn(vector<Card> hand, vector<Card>tableCards) {
 }
 
 Player::Actions Human::promptForAction() {
-	while (true) {
-		cout << "Would you like to: (C)apture, (B)uild, (T)rail?" << endl;
-		char input;
-		cin >> input;
-
-		cin.clear();                              
-		cin.ignore(cin.rdbuf()->in_avail(), '\n');
-		
-		input = tolower(input);
+		vector<char> allowedLetters;
+		allowedLetters.push_back('c');
+		allowedLetters.push_back('b');
+		allowedLetters.push_back('t');
+		char input = Client::getCharInput("Would you like to: (C)apture, (B)uild, (T)rail?", allowedLetters);
 		if (input == 'c') {
 			return Capture;
 		}
@@ -86,14 +79,13 @@ Player::Actions Human::promptForAction() {
 		if (input == 't') {
 			return Trail;
 		}
-	}
 }
 
 
 vector<int> Human::promptForCardToUse(int size, bool selectingTable) {
 	vector<int> values;
 	if (size == 1) {
-		cout << "Only available card automatically choosen" << endl;
+		Client::outputString("Only available card automatically choosen");
 		values.push_back(0);
 		return values;
 	}
@@ -109,16 +101,11 @@ vector<int> Human::promptForCardToUse(int size, bool selectingTable) {
 	int input = 0;
 	vector<int> previousInputs;
 	while (true) {
-		while (input < 1 || input > size) {
-			cout << "Which card would you like to " << playOrSelect << " (1-" << size << ")" << endl;
-			cin >> input;
-			cin.clear();
-			cin.ignore(cin.rdbuf()->in_avail(), '\n');
-		}
+		input = Client::getIntInputRange("Which card would you like to " + playOrSelect + " (1-" + to_string(size) + ")", 1, size);
 		bool valid = true;
 		for (unsigned int i = 0; i < previousInputs.size(); i++) {
 			if (input == previousInputs[i]) {
-				cout << "Cannot select the same card twice" << endl;
+				Client::outputString("Cannot select the same card twice");
 				valid = false;
 				break;
 			}
@@ -132,14 +119,10 @@ vector<int> Human::promptForCardToUse(int size, bool selectingTable) {
 		input = 0;
 		
 		if (selectingTable) {
-			char moreValues = '0';
-			while (moreValues != 'y' && moreValues != 'n') {
-				cout << "Would you like to enter another card? (y/n)";
-				cin >> moreValues;
-				cin.clear();
-				cin.ignore(cin.rdbuf()->in_avail(), '\n');
-				moreValues = tolower(moreValues);
-			}
+			vector<char> yesNo;
+			yesNo.push_back('y');
+			yesNo.push_back('n');
+			char moreValues = Client::getCharInput("Would you like to enter another card? (y/n):", yesNo);
 			if (moreValues == 'n') {
 				break;
 			}

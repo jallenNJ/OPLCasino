@@ -4,6 +4,7 @@
 #include <random>
 #include <ctime>
 #include "Table.h"
+#include "Client.h"
 using namespace std;
 class Round {
 public:
@@ -30,7 +31,7 @@ public:
 		case COMPUTER_PLAYER:
 			return playerScores[COMPUTER_PLAYER];
 		default:
-			cerr << "Invalid selection to getPlayerScores, returning -1";
+			Client::outputError("Invalid selection to getPlayerScores, returning -1");
 			return -1;
 		}
 	}

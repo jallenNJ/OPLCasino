@@ -2,15 +2,11 @@
 
 
 Round::Round() {
-	char input = 0;
-	do {
-		cout << "(H)eads or (T)ails?";
-		
-		cin >> input;
-		cin.clear();
-		cin.ignore(cin.rdbuf()->in_avail(), '\n');//clears any extra in buffer
-		input = tolower(input);
-	} while (input!='h'  && input !='t');
+	vector<char> answers;
+	answers.push_back('h');
+	answers.push_back('t');
+	char input = Client::getCharInput("(H)eads or (T)ails?", answers);
+
 
 	bool guessedHeads = false;
 	if (input == 'h') {
@@ -21,21 +17,21 @@ Round::Round() {
 	int randNum = rand() % 100;
 	if (randNum % 2 == 0) { //Coin landed on heads
 		if (guessedHeads) {
-			cout << "Heads! Player goes first" << endl;
+			Client::outputString("Heads! Player goes first");
 			currentPlayer = HUMAN_PLAYER;
 		}
 		else {
-			cout << "Heads! Computer goes first" << endl;
+			Client::outputString("Heads! Computer goes first");
 			currentPlayer = COMPUTER_PLAYER;
 		}	
 	}
 	else { //Coin landed on tails
 		if (guessedHeads) {
-			cout << "Tails! Computer goes first" << endl;
+			Client::outputString("Tails! Computer goes first");
 			currentPlayer = COMPUTER_PLAYER;
 		}
 		else {
-			cout << "Tails! Player goes first" << endl;
+			Client::outputString("Tails! Player goes first");
 			currentPlayer = HUMAN_PLAYER;
 		}
 

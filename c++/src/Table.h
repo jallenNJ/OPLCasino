@@ -8,6 +8,7 @@
 #include "Human.h"
 #include "Computer.h"
 #include <iomanip>
+#include "Hand.h"
 
 using namespace std;
 class Table {
@@ -21,20 +22,25 @@ private:
 
 
 	static const int HAND_SIZE = 4;
-	vector<Card> hands[2]; 
-	vector<Card> looseCards;
-	vector<Card> piles[2];
-
+	Hand looseCards;
 	Deck* deck; 
 	Player** players;
 
-
-	void fillHand(vector<Card>* cardVec) {
+	void fillLooseCards() {
 		for (int i = 0; i < 4; i++) {
 			if (deck->isEmpty()) {
 				return;
 			}
-			cardVec->push_back(deck->drawCard());
+			looseCards.addCard(deck->drawCard());
+		}
+	}
+
+	void fillHand(int playerIndex) {
+		for (int i = 0; i < 4; i++) {
+			if (deck->isEmpty()) {
+				return;
+			}
+			players[playerIndex]->addToHand(deck->drawCard());
 		}
 	}
 

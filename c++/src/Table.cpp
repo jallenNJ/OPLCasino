@@ -34,7 +34,7 @@ const void Table::printBoard() {
 	names[1] = players[1]->getName();
 	names[2] = "Table";
 
-	int padding = max(names[0].length(), names[1].length());
+	int padding = (int)max(names[0].length(), names[1].length());
 	padding = max(padding, (int)names[2].length());
 	for (int i = 0; i < 3; i++) {
 		for (unsigned int j = padding; j > padding - names[i].size(); j--) {

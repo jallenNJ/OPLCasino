@@ -53,7 +53,7 @@ public:
 	}
 
 	const unsigned int handSize() {
-		return cardsInHand.size();
+		return (unsigned int)cardsInHand.size();
 	}
 
 	string toFormattedString();

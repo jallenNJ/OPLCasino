@@ -79,6 +79,9 @@ Player::Actions Human::promptForAction() {
 		if (input == 't') {
 			return Trail;
 		}
+
+		Client::outputError("Failed to find valid move, error handling with trail");
+		return Trail;
 }
 
 

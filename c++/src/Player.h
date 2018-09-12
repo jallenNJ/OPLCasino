@@ -53,7 +53,7 @@ public:
 protected:
 
 	string name;
-	virtual void setName() = 0;
+	virtual bool setName() = 0;
 	Hand playerHand;
 	Hand playerPile;
 

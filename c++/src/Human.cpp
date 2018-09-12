@@ -5,11 +5,12 @@
 Human::Human() {
 	setName();
 }
-void Human::setName() {
+bool Human::setName() {
 	
 	name = Client::getStringInput("Please enter your name: ");
 
 	Client::outputString("Welcome " + name + "!");
+	return true;
 	
 }
 

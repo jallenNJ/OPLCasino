@@ -13,7 +13,7 @@ public:
 	virtual PlayerMove doTurn(Hand) override;
 
 protected:
-	virtual void setName() override;
+	virtual bool setName() override;
 private:
 	Actions promptForAction();
 	vector<int> promptForCardToUse(int, bool = false);

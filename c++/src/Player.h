@@ -28,16 +28,18 @@ public:
 	};
 	Player();
 	virtual PlayerMove doTurn(Hand) = 0 ;
-	string getName() {
+	const string getName() {
 		return name;
 	}
 
-	void addToHand(Card toAdd) {
+	bool addToHand(Card toAdd) {
 		playerHand.addCard(toAdd);
+		return true;
 	}
 
-	void addToPile(Card toAdd) {
+	bool addToPile(Card toAdd) {
 		playerPile.addCard(toAdd);
+		return true;
 	}
 
 	string toFormattedString() {

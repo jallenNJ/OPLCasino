@@ -12,8 +12,9 @@ public:
 		cardsInHand.reserve(4);
 	}
 
-	inline void addCard(Card newCard) {
+	inline bool addCard(Card newCard) {
 		cardsInHand.push_back(newCard);
+		return true;
 	}
 
 

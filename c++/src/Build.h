@@ -44,9 +44,10 @@ public:
 		return sum;
 	}
 
-	inline void addCardToBuild(Card newCard) {
+	inline bool addCardToBuild(Card newCard) {
 		//TODO: Add check to make sure doesn't exceed 14 etc
 		cardsInBuild.push_back(newCard);
+		return true;
 	}
 
 private:

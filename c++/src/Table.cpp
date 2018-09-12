@@ -17,7 +17,7 @@ Table::Table() {
 
 
 const void Table::printBoard() {
-	cout << "\n";
+/*	cout << "\n";
 	cout <<left<< setw(15)<< players[0]->getName()<<": ";
 	cout << players[0]->toFormattedString();
 	cout << "\n";
@@ -27,7 +27,27 @@ const void Table::printBoard() {
 	cout << left << setw(15) << players[1]->getName() << ": ";
 	cout << players[1]->toFormattedString();
 	cout << "\n";
-	cout << endl;
+	cout << endl;*/
+
+	string names[3];
+	names[0] = players[0]->getName();
+	names[1] = players[1]->getName();
+	names[2] = "Table";
+
+	int padding = max(names[0].length(), names[1].length());
+	padding = max(padding, (int)names[2].length());
+	for (int i = 0; i < 3; i++) {
+		for (unsigned int j = padding; j > padding - names[i].size(); j--) {
+			names[i] += " ";
+		}
+		names[i] += ": ";
+	}
+	string formattedTable = "\n" + names[0] + players[0]->toFormattedString() + 
+							"\n" + names[2] + looseCards.toFormattedString() + 
+							"\n" + names[1] + players[1]->toFormattedString() +
+							"\n";
+	Client::outputString(formattedTable);
+
 }
 
 Table::~Table() {

@@ -22,23 +22,9 @@ private:
 
 
 	static const int HAND_SIZE = 4;
-	//vector<Card> hands[2]; 
-	//vector<Card> looseCards;
-	//vector<Card> playerPile;
-	//vector<Card> computerPile;
 	Hand looseCards;
 	Deck* deck; 
 	Player** players;
-
-
-	/*void fillHand(vector<Card>* cardVec) {
-		for (int i = 0; i < 4; i++) {
-			if (deck->isEmpty()) {
-				return;
-			}
-			cardVec->push_back(deck->drawCard());
-		}
-	}*/
 
 	void fillLooseCards() {
 		for (int i = 0; i < 4; i++) {

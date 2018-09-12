@@ -2,6 +2,7 @@
 #define HUMAN_H
 #include "Player.h"
 #include <iostream>
+#include "Client.h"
 
 
 using namespace std;

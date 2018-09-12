@@ -29,7 +29,7 @@ Player::PlayerMove Human::doTurn(Hand tableCards) {
 		bool successfulResult = false;
 		vector<Card> cardsToCheck;
 		for (unsigned int i = 0; i < cardsOnTable.size(); i++) {
-			cardsToCheck.push_back(tableCards.removeCard(cardsOnTable[i]));
+			cardsToCheck.push_back(tableCards.getCardCopy(cardsOnTable[i]));
 		}
 		switch (actionToTake) {
 			//TODO: Add check to prevent reserved card from being played

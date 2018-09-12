@@ -44,6 +44,13 @@ public:
 		return false;
 	}
 
+	inline string cardToString(int index) {
+		if (index > cardsInHand.size()) {
+			return "";
+		}
+		return cardsInHand[index].toString();
+	}
+
 	const unsigned int handSize() {
 		return cardsInHand.size();
 	}

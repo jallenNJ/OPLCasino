@@ -5,6 +5,7 @@
 #include "Card.h"
 #include "Hand.h"
 #include <algorithm>
+#include "Client.h"
 
 using namespace std;
  class Player {
@@ -41,6 +42,10 @@ public:
 
 	string toFormattedString() {
 		return playerHand.toFormattedString();
+	}
+
+	const int getHandSize() {
+		return playerHand.handSize();
 	}
 
 protected:

@@ -58,7 +58,17 @@ Table::~Table() {
 bool Table::runCycle() {
 	printBoard();
 	doPlayerMove(0);
-
+	doPlayerMove(1);
+	if (players[0]->getHandSize() == 0 && players[1]->getHandSize() == 0) {
+		if (deck->isEmpty()) {
+			return true;
+		}
+		else {
+			fillHand(0);
+			fillHand(1);
+		}
+		
+	}
 
 
 

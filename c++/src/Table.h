@@ -9,6 +9,7 @@
 #include "Computer.h"
 #include <iomanip>
 #include "Hand.h"
+#include "Build.h"
 
 using namespace std;
 class Table {

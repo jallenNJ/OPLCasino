@@ -31,11 +31,15 @@ public:
 	const bool isInvalid() {
 		return suit == 'N';
 	}
-private:
+
+protected:
 	char suit;
 	char symbol;
-	int numericValue;
+
 	void symbolToNumericValue();
+private:
+
+	int numericValue;
 	void setInvalidCard() {
 		suit = 'N';
 		symbol = '0';

@@ -6,7 +6,16 @@
 using namespace std;
 class Build : public Card {
 public:
+	Build() {
+		buildOwner = 0;
+	}
+	Build(Card first, int player) {
+		buildOwner = player;
+		cardsInBuild.push_back(first);
+		suit = 'B';
+		symbol = getSymbol();
 
+	}
 
 	virtual const string toString() override{
 		string convertted = "[ ";
@@ -50,6 +59,7 @@ public:
 			return false;
 		}
 		cardsInBuild.push_back(newCard);
+		symbol = getSymbol();
 		return true;
 	}
 

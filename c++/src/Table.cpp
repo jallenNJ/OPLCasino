@@ -78,6 +78,7 @@ bool Table::runCycle() {
 void Table::doPlayerMove(int playerIndex) {
 	
 	Player::PlayerMove resultTuple =  players[playerIndex]->doTurn(looseCards);
+	Build newBuild(resultTuple.playedCard, playerIndex);
 	switch (resultTuple.actionTaken) {
 	case Player::Actions::Capture:
 		players[playerIndex]->addToPile(resultTuple.playedCard);
@@ -86,6 +87,14 @@ void Table::doPlayerMove(int playerIndex) {
 		}
 		break;
 	case Player::Actions::Build:
+		
+		for (unsigned int i = 0; i < resultTuple.targetIndex.size(); i++) {
+			newBuild.addCardToBuild(looseCards.removeCard(resultTuple.targetIndex[i]));
+		}
+		looseCards.addCard(newBuild);
+
+
+
 		break;
 	case Player::Actions::Trail:
 		looseCards.addCard(resultTuple.playedCard);

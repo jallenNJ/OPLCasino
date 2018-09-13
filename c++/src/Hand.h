@@ -2,6 +2,7 @@
 #define HAND_H
 #include <vector>
 #include "Card.h"
+#include "Build.h"
 #include <string>
 
 
@@ -13,7 +14,14 @@ public:
 	}
 
 	inline bool addCard(Card newCard) {
-		cardsInHand.push_back(newCard);
+		Card* toAdd = new Card(newCard);
+		cardsInHand.push_back(toAdd);
+		return true;
+	}
+
+	inline bool addCard(Build newBuild) {
+		Card* toAdd = new Build(newBuild);
+		cardsInHand.push_back(toAdd);
 		return true;
 	}
 
@@ -22,7 +30,7 @@ public:
 		if (index >= cardsInHand.size()) {
 			return Card();
 		}
-		Card chosen = cardsInHand[index];
+		Card chosen = *cardsInHand[index];
 		return chosen;
 	}
 
@@ -30,7 +38,8 @@ public:
 		if (index >= cardsInHand.size()) {
 			return Card();
 		}
-		Card chosen = cardsInHand[index];
+		Card chosen = *cardsInHand[index];
+		delete cardsInHand[index];
 		cardsInHand.erase(cardsInHand.begin() + index);
 		return chosen;
 
@@ -38,7 +47,7 @@ public:
 
 	inline bool containsCardValue(int value) {
 		for (unsigned int i = 0; i < cardsInHand.size(); i++) {
-			if (cardsInHand[i].getNumericValue() == value) {
+			if (cardsInHand[i]->getNumericValue() == value) {
 				return true;
 			}
 		}
@@ -49,7 +58,7 @@ public:
 		if (index > cardsInHand.size()) {
 			return "";
 		}
-		return cardsInHand[index].toString();
+		return cardsInHand[index]->toString();
 	}
 
 	const unsigned int handSize() {
@@ -58,7 +67,7 @@ public:
 
 	string toFormattedString();
 private:
-	vector<Card> cardsInHand;
+	vector<Card*> cardsInHand;
 
 };
 #endif // !HAND_H

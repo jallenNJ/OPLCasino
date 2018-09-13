@@ -22,7 +22,7 @@ public:
 		for (unsigned int i = 0; i < cardsInBuild.size(); i++) {
 			convertted += cardsInBuild[i].toString() + " ";
 		}
-		convertted += " ]";
+		convertted += "]";
 		return convertted;
 	}
 

@@ -33,14 +33,20 @@ public:
 	const char getSuit() {
 		return suit;
 	}
+	const bool setOwner(string name) {
+		ownerName = name;
+	}
+	const string getOwner() {
+		return ownerName;
+	}
 
 protected:
 	char suit;
 	char symbol;
+	string ownerName;
 
 	void symbolToNumericValue();
 private:
-
 	int numericValue;
 	void setInvalidCard() {
 		suit = 'N';

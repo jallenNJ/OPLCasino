@@ -7,10 +7,10 @@ using namespace std;
 class Build : public Card {
 public:
 	Build() {
-		buildOwnerName = "";
+		
 	}
 	Build(Card first, string player) {
-		buildOwnerName = player;
+		ownerName = player;
 		cardsInBuild.push_back(first);
 		suit = 'B';
 		symbol = getSymbol();
@@ -65,7 +65,6 @@ public:
 
 private:
 	vector<Card> cardsInBuild;
-	string buildOwnerName;
 
 
 };

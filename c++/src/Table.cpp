@@ -92,7 +92,7 @@ void Table::doPlayerMove(int playerIndex) {
 			newBuild.addCardToBuild(looseCards.removeCard(resultTuple.targetIndex[i]));
 		}
 		looseCards.addCard(newBuild);
-
+		players[playerIndex]->reserveCardValue(newBuild.getNumericValue());
 
 
 		break;

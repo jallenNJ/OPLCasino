@@ -8,5 +8,14 @@ string Hand::toFormattedString() {
 	return formatted;
 
 
+}
 
+int Hand::countSymbol(char symbol) {
+	int sum = 0;
+	for (unsigned int i = 0; i < cardsInHand.size(); i++) {
+		if (cardsInHand[i]->getSymbol() == symbol) {
+			sum++;
+		}
+	}
+	return sum;
 }

@@ -66,6 +66,7 @@ public:
 	}
 
 	string toFormattedString();
+	int countSymbol(char);
 private:
 	vector<Card*> cardsInHand;
 

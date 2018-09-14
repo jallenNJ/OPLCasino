@@ -50,18 +50,49 @@ public:
 		return playerHand.handSize();
 	}
 
+	bool reserveCardValue(int value) {
+		if (value < 1 || value > 14) {
+			return false;
+		}
+		buildValues.push_back(value);
+		return true;
+	}
+
+	bool releaseBuildValue(int value) {
+		int location = findReservedValue(value);
+		if (location < 0) {
+			return false;
+		}
+		buildValues.erase(buildValues.begin() + location);
+		return true;
+	}
+
 protected:
+
+
+	int findReservedValue(int value) {
+		for (unsigned int i = 0; i < buildValues.size(); i++) {
+			if (buildValues[i] == value) {
+				return i;
+			}
+		}
+		return -1;
+	}
 
 	string name;
 	virtual bool setName() = 0;
 	Hand playerHand;
 	Hand playerPile;
+	vector<int> buildValues;
 
 
 	bool captureCard(Card, Card);
 	bool captureCard(Card, vector<Card>);
 	bool createBuild(Card, vector<Card>);
-	
+	bool checkTrail(Card);
+	int amountOfSymbolInHand(char symbol) {
+		return playerHand.countSymbol(symbol);
+	}
 
 
 };

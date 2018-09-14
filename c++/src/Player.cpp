@@ -26,10 +26,14 @@ Player::Player() {
  }
 
  bool Player::checkTrail(Card played) {
+	 return !checkReserved(played);
+ }
+
+ bool Player::checkReserved(Card played) {
 	 if (findReservedValue(played.getNumericValue()) >= 0) {
 		 if (amountOfSymbolInHand(played.getSymbol()) < 2) {
-			 return false;
+			 return true;
 		 }
-	 } 
-	 return true;
+	 }
+	 return false;
  }

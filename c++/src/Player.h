@@ -90,6 +90,7 @@ protected:
 	bool captureCard(Card, vector<Card>);
 	bool createBuild(Card, vector<Card>);
 	bool checkTrail(Card);
+	bool checkReserved(Card);
 	int amountOfSymbolInHand(char symbol) {
 		return playerHand.countSymbol(symbol);
 	}

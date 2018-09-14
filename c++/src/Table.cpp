@@ -78,7 +78,7 @@ bool Table::runCycle() {
 void Table::doPlayerMove(int playerIndex) {
 	
 	Player::PlayerMove resultTuple =  players[playerIndex]->doTurn(looseCards);
-	Build newBuild(resultTuple.playedCard, playerIndex);
+	Build newBuild(resultTuple.playedCard, players[playerIndex]->getName());
 	switch (resultTuple.actionTaken) {
 	case Player::Actions::Capture:
 		players[playerIndex]->addToPile(resultTuple.playedCard);

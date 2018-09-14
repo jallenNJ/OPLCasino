@@ -32,9 +32,6 @@ Player::PlayerMove Human::doTurn(Hand tableCards) {
 		for (unsigned int i = 0; i < cardsOnTable.size(); i++) {
 			cardsToCheck.push_back(tableCards.getCardCopy(cardsOnTable[i]));
 		}
-		if (actionToTake != Capture) {
-
-		}
 		switch (actionToTake) {
 			//TODO: Add check to prevent reserved card from being played
 			case Player::Capture:
@@ -46,7 +43,7 @@ Player::PlayerMove Human::doTurn(Hand tableCards) {
 				successfulResult = createBuild(playerHand.getCardCopy(cardInHand), cardsToCheck);
 				break;
 			case Player::Trail:
-				successfulResult = true;// checkReserved(playerHand.getCardCopy(cardInHand));
+				successfulResult = checkTrail(playerHand.getCardCopy(cardInHand));
 				break;
 			default:
 				break;

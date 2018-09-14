@@ -13,9 +13,10 @@ Tournament::~Tournament() {
 }
 
 void Tournament::RunTournament() {
-
-	allRounds.push_back(new Round());
-	allRounds[0].playRound();
+	Round first;
+	first.playRound();
+	//allRounds.push_back(new Round());
+	//allRounds[0].playRound();
 	
 	int winner = -1;
 	while (winner < 0) {

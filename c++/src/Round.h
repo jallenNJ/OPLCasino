@@ -42,7 +42,7 @@ public:
 private:
 
 	void intializeRound();
-	int currentPlayer;
+	int startingPlayer;
 	bool roundOver;
 	int playerScores[2];
 	int playerThatWonRound;

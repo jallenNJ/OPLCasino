@@ -1,7 +1,16 @@
 #include "Table.h"
 
 Table::Table() {
+	initTable();
 
+
+}
+
+Table::Table(bool humanStart) {
+	initTable(humanStart);
+}
+
+void Table::initTable(bool humanStart) {
 	Human* human = new Human();
 	Computer* computer = new Computer();
 	players = new Player*[2];
@@ -12,7 +21,7 @@ Table::Table() {
 	fillHand(0);
 	fillHand(1);
 	fillLooseCards();
-
+	humanFirst = humanStart;
 }
 
 
@@ -57,8 +66,17 @@ Table::~Table() {
 
 bool Table::runCycle() {
 	printBoard();
-	doPlayerMove(0);
-	doPlayerMove(1);
+	if (humanFirst) {
+		doPlayerMove(0);
+		printBoard();
+		doPlayerMove(1);
+	}
+	else {
+		doPlayerMove(1);
+		printBoard();
+		doPlayerMove(0);
+	}
+
 	if (players[0]->getHandSize() == 0 && players[1]->getHandSize() == 0) {
 		if (deck->isEmpty()) {
 			return true;

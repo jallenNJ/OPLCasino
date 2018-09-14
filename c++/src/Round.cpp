@@ -18,21 +18,21 @@ Round::Round() {
 	if (randNum % 2 == 0) { //Coin landed on heads
 		if (guessedHeads) {
 			Client::outputString("Heads! Player goes first");
-			currentPlayer = HUMAN_PLAYER;
+			startingPlayer = HUMAN_PLAYER;
 		}
 		else {
 			Client::outputString("Heads! Computer goes first");
-			currentPlayer = COMPUTER_PLAYER;
+			startingPlayer = COMPUTER_PLAYER;
 		}	
 	}
 	else { //Coin landed on tails
 		if (guessedHeads) {
 			Client::outputString("Tails! Computer goes first");
-			currentPlayer = COMPUTER_PLAYER;
+			startingPlayer = COMPUTER_PLAYER;
 		}
 		else {
 			Client::outputString("Tails! Player goes first");
-			currentPlayer = HUMAN_PLAYER;
+			startingPlayer = HUMAN_PLAYER;
 		}
 
 	}
@@ -40,11 +40,11 @@ Round::Round() {
 }
 
 Round::Round(bool humanFirst) {
-	if (true) {
-		currentPlayer = HUMAN_PLAYER;
+	if (humanFirst) {
+		startingPlayer = HUMAN_PLAYER;
 	}
 	else {
-		currentPlayer =  COMPUTER_PLAYER;
+		startingPlayer =  COMPUTER_PLAYER;
 	}
 
 	intializeRound();
@@ -59,7 +59,8 @@ void Round::intializeRound() {
 
 
 void Round::playRound() {
-	Table* table = new Table();
+
+	Table* table = new Table((startingPlayer == HUMAN_PLAYER));
 	//table->printBoard();
 	while (table->runCycle() == false);
 

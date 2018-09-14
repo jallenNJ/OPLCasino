@@ -15,13 +15,14 @@ using namespace std;
 class Table {
 public:
 	Table();
+	Table(bool);
 	~Table();
 	const void printBoard();
 	bool runCycle();
 	
 private:
-
-
+	bool humanFirst;
+	void initTable(bool = true);
 	static const int HAND_SIZE = 4;
 	Hand looseCards;
 	Deck* deck; 

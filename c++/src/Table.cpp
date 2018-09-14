@@ -26,17 +26,6 @@ void Table::initTable(bool humanStart) {
 
 
 const void Table::printBoard() {
-/*	cout << "\n";
-	cout <<left<< setw(15)<< players[0]->getName()<<": ";
-	cout << players[0]->toFormattedString();
-	cout << "\n";
-	cout << setw(15)<<"Table"<<":";
-	cout << " " << looseCards.toFormattedString();
-	cout << "\n";
-	cout << left << setw(15) << players[1]->getName() << ": ";
-	cout << players[1]->toFormattedString();
-	cout << "\n";
-	cout << endl;*/
 
 	string names[3];
 	names[0] = players[0]->getName();

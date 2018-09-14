@@ -9,6 +9,18 @@ Player::Player() {
 
  bool Player::captureCard(Card played, Card target) {
 	 return played.checkCapture(target);
+
+	 //FIX THE BELOW CODE BY OVERLOADING BUILD AS A SEPERATE FUNCTION
+	/*bool sameValue = played.checkCapture(target);
+	if (sameValue == false) {
+		return false;
+	}
+	if (checkReserved(played)) {
+		if (target.getSuit == 'B') {
+			if(target.)
+		}
+
+	}*/
  }
  bool Player::captureCard(Card played, vector<Card> targets) {
 	 return played.checkCapture(targets);

@@ -30,6 +30,10 @@ public:
 		return suit == 'N';
 	}
 
+	const char getSuit() {
+		return suit;
+	}
+
 protected:
 	char suit;
 	char symbol;

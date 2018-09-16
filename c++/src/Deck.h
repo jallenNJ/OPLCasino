@@ -7,7 +7,7 @@
 #include <queue>
 using namespace std;
 
-typedef	std::_Vector_iterator<std::_Vector_val<std::_Simple_types<Card>>> cardIterator;
+typedef	_Vector_iterator<_Vector_val<_Simple_types<Card>>> cardIterator;
 
 class Deck {
 public:

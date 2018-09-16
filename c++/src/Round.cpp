@@ -61,7 +61,6 @@ void Round::intializeRound() {
 void Round::playRound() {
 
 	Table* table = new Table((startingPlayer == HUMAN_PLAYER));
-	//table->printBoard();
 	while (table->runCycle() == false);
 
 	delete table;

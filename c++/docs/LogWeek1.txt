@@ -1,0 +1,8 @@
+Sep 7, 2018:
+Design:
+	-Spent time playing the card game to learn the rules (1.5 hours)
+Writing:
+	-Created the required classes .cpp and .h files(Card, Computer, Deck, Human, Player, Round, Tournanment) and Casino.cpp which contains the main() (.5 hours)
+	-Added basic Round loop:
+		
+	

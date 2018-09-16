@@ -136,3 +136,11 @@ Sep 14th, 2018
 	-Removed commented out code in the Table class which was left over from the move to the Player classes (Sep 11th log) .1 hour
 	
 	Day total 1.6 hours
+Sep 16th, 2018
+	-Created a yes/no input function wrapper inside of Client to clean up code that prompts only for that. Which keeps calling code clean (.1 hours)
+	-Implemented a skeleton of Seriliazation, which includes opening the file, and being able to tokenize each line
+		*New class Serializer which handles the opening, parsing, and storing of loaded in data.
+		* Tournament class is responsible for calling the init function of the static class in its constuctor
+		* Tournment checks for save loading before the first round
+	Above took 2.5 hours
+	Day Total 2.6 Hours

@@ -15,7 +15,8 @@ public:
 
 	Card drawCard() {
 		if (empty) {
-			abort();
+			Client::outputError("Drawing from empty deck, returning invalid card");
+			return Card();
 		}
 
 		Card toReturn = *topOfDeck;

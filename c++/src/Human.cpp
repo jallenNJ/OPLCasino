@@ -43,6 +43,7 @@ Player::PlayerMove Human::doTurn(Hand tableCards) {
 				successfulResult = createBuild(playerHand.getCardCopy(cardInHand), cardsToCheck);
 				break;
 			case Player::Trail:
+				//TODO: Make sure cannot trail with identical symbol
 				successfulResult = checkTrail(playerHand.getCardCopy(cardInHand));
 				break;
 			default:

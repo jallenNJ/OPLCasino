@@ -4,6 +4,7 @@
 Tournament::Tournament() {
 	scores[Round::HUMAN_PLAYER] = 0;
 	scores[Round::COMPUTER_PLAYER] = 0;
+	Serializer::init();
 }
 
 Tournament::~Tournament() {
@@ -13,10 +14,34 @@ Tournament::~Tournament() {
 }
 
 void Tournament::RunTournament() {
-	Round first;
-	first.playRound();
-	//allRounds.push_back(new Round());
-	//allRounds[0].playRound();
+	bool loaded = false;
+	while (true){
+		if (checkForSaveFileLoad()) {
+			 loaded = Serializer::loadInSaveFile(Serializer::getSaveFilePath());
+		}
+		else {
+			break;
+		}
+		if (loaded == false) {
+			if (Client::getYesNoInput("Would you like to try another file (y/n)?") == 'n') {
+				break;
+			}
+		} else{
+			break;
+		}
+
+	}
+
+	
+
+	if (!loaded) {
+		Round first;
+		first.playRound();
+		allRounds.push_back(first);
+	}
+		
+	
+
 	
 	int winner = -1;
 	while (winner < 0) {
@@ -32,6 +57,11 @@ void Tournament::RunTournament() {
 	}
 
 	cout << winner << " has won" << endl;
+}
+
+bool Tournament::checkForSaveFileLoad() {
+	return Client::getYesNoInput("Would you like to load in a save file (y/n)?");
+
 }
 
 int Tournament::checkForWinner() {

@@ -126,6 +126,7 @@
     <ClCompile Include="..\..\src\Player.cpp" />
     <ClCompile Include="..\..\src\PlayingCard.cpp" />
     <ClCompile Include="..\..\src\Round.cpp" />
+    <ClCompile Include="..\..\src\Serializer.cpp" />
     <ClCompile Include="..\..\src\Table.cpp" />
     <ClCompile Include="..\..\src\Tournament.cpp" />
   </ItemGroup>
@@ -141,8 +142,12 @@
     <ClInclude Include="..\..\src\Player.h" />
     <ClInclude Include="..\..\src\PlayingCard.h" />
     <ClInclude Include="..\..\src\Round.h" />
+    <ClInclude Include="..\..\src\Serializer.h" />
     <ClInclude Include="..\..\src\Table.h" />
     <ClInclude Include="..\..\src\Tournament.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\Savefile1.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -21,6 +21,13 @@ public:
 
 	static int getIntInputRange(string, int, int);
 
+	static char getYesNoInput(string prompt, bool forceLower = true) {
+		vector<char> yesNo;
+		yesNo.push_back('y');
+		yesNo.push_back('n');
+		return getCharInput(prompt, yesNo, forceLower);
+	}
+
 private:
 
 	static inline void clearSTDIn() {

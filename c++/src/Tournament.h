@@ -2,7 +2,7 @@
 #define TOURNAMENT_H
 #include <vector>
 #include"Round.h"
-
+#include "Serializer.h"
 
 
 using namespace std;
@@ -17,6 +17,8 @@ private:
 	vector<Round> allRounds;
 	int scores[2];
 	int checkForWinner();
+
+	bool checkForSaveFileLoad();
 
 	const int POINTS_TO_WIN = 21;
 	const int TIE = 2;

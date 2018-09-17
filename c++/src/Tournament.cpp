@@ -27,6 +27,7 @@ void Tournament::RunTournament() {
 				break;
 			}
 		} else{
+			Client::outputError("NEED TO INTIALIZE ROUND FROM SAVE FILE TO NOT CRASH");
 			break;
 		}
 

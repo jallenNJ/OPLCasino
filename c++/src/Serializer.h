@@ -26,11 +26,12 @@ protected:
 
 private:
 	enum SaveFileHeaders { Round, Computer, Human, Table, BuildOwner, Deck, Next, HangingData };
-	static map<string, SaveFileHeaders> fileHeadersToInt;
+	//static map<string, SaveFileHeaders> fileHeadersToInt;
 
-	static vector<string> parseLine(string);
-	static SaveFileHeaders labelToSaveFileHeaders(string);
+	//static SaveFileHeaders labelToSaveFileHeaders(string);
 	static int round;
+	static vector<string> readNNonBlankLines(ifstream&, int);
+	static vector<string> parseLine(string);
 	//string 
 
 	

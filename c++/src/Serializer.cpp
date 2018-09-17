@@ -97,6 +97,7 @@ bool Serializer::loadInSaveFile(string filePath) {
 			 data.push_back(buffer);
 		 }
 		 return data;
+	 }
  }
 
 /*

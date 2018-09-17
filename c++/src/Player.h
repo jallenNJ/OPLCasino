@@ -28,7 +28,7 @@ public:
 	};
 	Player();
 	virtual PlayerMove doTurn(Hand) = 0 ;
-	const string getName() {
+	const string getName() const{
 		return name;
 	}
 
@@ -42,11 +42,11 @@ public:
 		return true;
 	}
 
-	string toFormattedString() {
+	string toFormattedString() const{
 		return playerHand.toFormattedString();
 	}
 
-	const int getHandSize() {
+	const int getHandSize() const{
 		return playerHand.handSize();
 	}
 

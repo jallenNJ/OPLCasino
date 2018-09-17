@@ -29,7 +29,7 @@ public:
 
 	}
 
-	bool isEmpty() {
+	bool isEmpty() const {
 		return empty;
 	}
 

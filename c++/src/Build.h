@@ -17,7 +17,7 @@ public:
 
 	}
 
-	virtual const string toString() override{
+	virtual const string toString() const override {
 		string convertted = "[ ";
 		for (unsigned int i = 0; i < cardsInBuild.size(); i++) {
 			convertted += cardsInBuild[i].toString() + " ";
@@ -26,7 +26,7 @@ public:
 		return convertted;
 	}
 
-	const virtual char getSymbol() override {
+	const virtual char getSymbol() const override {
 		int nValue = getNumericValue();
 		switch (nValue) {
 			case 1:
@@ -45,7 +45,7 @@ public:
 		}
 	}
 
-	const virtual int getNumericValue() override {
+	const virtual int getNumericValue() const override {
 		int sum = 0;
 		for (int i = 0; i < cardsInBuild.size(); i++) {
 			sum += cardsInBuild[i].getNumericValue();

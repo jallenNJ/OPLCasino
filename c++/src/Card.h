@@ -10,33 +10,33 @@ public:
 		setInvalidCard();
 	}
 
-	virtual const string toString() {
+	virtual const string toString() const{
 		return string(1, suit)+ string(1, symbol);
 	}
 	
 	const bool checkCapture(Card);
 	const bool checkCapture(vector<Card>);
 
-	const virtual char getSymbol() {
+	const virtual char getSymbol() const{
 		return symbol;
 	}
 
 	//Aces return 1
-	const virtual int getNumericValue() {
+	const virtual int getNumericValue() const{
 		return numericValue;
 	}
 
-	const bool isInvalid() {
+	const bool isInvalid() const{
 		return suit == 'N';
 	}
 
-	const char getSuit() {
+	const char getSuit() const{
 		return suit;
 	}
-	const bool setOwner(string name) {
+	const bool setOwner(string name){
 		ownerName = name;
 	}
-	const string getOwner() {
+	const string getOwner() const{
 		return ownerName;
 	}
 

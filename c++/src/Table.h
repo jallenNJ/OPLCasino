@@ -37,7 +37,7 @@ private:
 		}
 	}
 
-	void fillHand(int playerIndex) {
+	void fillHand(int playerIndex) const{
 		for (int i = 0; i < 4; i++) {
 			if (deck->isEmpty()) {
 				return;

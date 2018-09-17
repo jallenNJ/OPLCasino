@@ -41,7 +41,7 @@ public:
 	}
 
 
-	inline Card getCardCopy(unsigned int index) {
+	inline Card getCardCopy(unsigned int index) const {
 		if (index >= cardsInHand.size()) {
 			return Card();
 		}
@@ -60,7 +60,7 @@ public:
 
 	}
 
-	inline bool containsCardValue(int value) {
+	inline bool containsCardValue(int value) const {
 		for (unsigned int i = 0; i < cardsInHand.size(); i++) {
 			if (cardsInHand[i]->getNumericValue() == value) {
 				return true;
@@ -69,19 +69,19 @@ public:
 		return false;
 	}
 
-	inline string cardToString(int index) {
+	inline string cardToString(int index) const{
 		if (index > cardsInHand.size()) {
 			return "";
 		}
 		return cardsInHand[index]->toString();
 	}
 
-	const unsigned int handSize() {
+	const unsigned int handSize() const{
 		return (unsigned int)cardsInHand.size();
 	}
 
-	string toFormattedString();
-	int countSymbol(char);
+	string toFormattedString() const;
+	int countSymbol(char) const;
 private:
 	vector<Card*> cardsInHand;
 

@@ -18,10 +18,10 @@ class Serializer {
 		bool isValid;
 		
 		PlayerInfo() {
-			name = string();
-			score = int();
-			hand = string();
-			pile = string();
+			name = "";
+			score = 0;
+			hand = "";
+			pile = "";
 			isValid = false;
 		}
 
@@ -53,6 +53,9 @@ protected:
 private:
 	static PlayerInfo computerPlayer;
 	static PlayerInfo humanPlayer;
+	static string table;
+	static string deck;
+	static string nextPlayer;
 	enum SaveFileHeaders { Round, Computer, Human, Table, BuildOwner, Deck, Next, HangingData };
 	//static map<string, SaveFileHeaders> fileHeadersToInt;
 

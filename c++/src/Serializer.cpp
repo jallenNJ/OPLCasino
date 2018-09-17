@@ -3,9 +3,15 @@
 int Serializer::round;
 Serializer::PlayerInfo Serializer::computerPlayer;
 Serializer::PlayerInfo Serializer::humanPlayer;
+string Serializer::table;
+string Serializer::deck;
+string Serializer::nextPlayer;
 
 void Serializer::init() {
 	round = 0;
+	table = "";
+	deck = "";
+	nextPlayer = "";
 
 	/*fileHeadersToInt["Round"] = Round;
 	fileHeadersToInt["Computer"] = Computer;
@@ -37,7 +43,12 @@ bool Serializer::loadInSaveFile(string filePath) {
 
 	round = stoi(parseLine(dataByType[0][0])[1]);
 	computerPlayer = readPlayerInfo(dataByType[1]);
-	humanPlayer = readPlayerInfo(dataByType[1]);
+	humanPlayer = readPlayerInfo(dataByType[2]);
+	table = removeHeader(dataByType[3][0]);
+	deck = removeHeader(dataByType[dataByType.size() - 2][0]);
+	nextPlayer = removeHeader(dataByType.back()[0]);
+
+
 
 
 /*

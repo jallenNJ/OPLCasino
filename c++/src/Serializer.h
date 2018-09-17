@@ -4,10 +4,12 @@
 #include <fstream>
 #include "Client.h"
 #include <sstream>
+#include <map>
 
 
 using namespace std;
 class Serializer {
+	
 public:
 
 	static bool loadInSaveFile(string);
@@ -23,12 +25,15 @@ protected:
 
 
 private:
+	enum SaveFileHeaders { Round, Computer, Human, Table, BuildOwner, Deck, Next, HangingData };
+	static map<string, SaveFileHeaders> fileHeadersToInt;
 
-
+	static vector<string> parseLine(string);
+	static SaveFileHeaders labelToSaveFileHeaders(string);
 	static int round;
 	//string 
 
-
+	
 };
 
 

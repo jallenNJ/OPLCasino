@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <queue>
+#include "Client.h"
 using namespace std;
 
 typedef	_Vector_iterator<_Vector_val<_Simple_types<Card>>> cardIterator;

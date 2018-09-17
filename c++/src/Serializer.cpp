@@ -1,6 +1,8 @@
 #include "Serializer.h"
 
 int Serializer::round;
+Serializer::PlayerInfo Serializer::computerPlayer;
+Serializer::PlayerInfo Serializer::humanPlayer;
 
 void Serializer::init() {
 	round = 0;
@@ -33,8 +35,9 @@ bool Serializer::loadInSaveFile(string filePath) {
 		dataByType.push_back(readNNonBlankLines(saveFile, 1));
 	}
 
-	//vector<string> round
-
+	round = stoi(parseLine(dataByType[0][0])[1]);
+	computerPlayer = readPlayerInfo(dataByType[1]);
+	humanPlayer = readPlayerInfo(dataByType[1]);
 
 
 /*
@@ -98,6 +101,26 @@ bool Serializer::loadInSaveFile(string filePath) {
 		 }
 		 return data;
 	 }
+ }
+
+ Serializer::PlayerInfo Serializer::readPlayerInfo(vector<string> data) {
+
+	 if (data.size() != 4) {
+		 return PlayerInfo();
+	 }
+	 string type = data[0];
+	 type = type.substr(0, type.length() - 1);
+	 int score = stoi(parseLine(data[1])[1]);
+	 string hand = removeHeader(data[2]);
+	 string pile = removeHeader(data[3]);
+
+	 return PlayerInfo(type, score, hand, pile);
+
+ }
+
+ string Serializer::removeHeader(string cards) {
+	 int colonIndex = cards.find(':');
+	 return cards.substr(colonIndex + 1);
  }
 
 /*

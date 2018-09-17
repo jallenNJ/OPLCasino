@@ -13,15 +13,6 @@ void Serializer::init() {
 	deck = "";
 	nextPlayer = "";
 
-	/*fileHeadersToInt["Round"] = Round;
-	fileHeadersToInt["Computer"] = Computer;
-	fileHeadersToInt["Human"] = Human;
-	fileHeadersToInt["Table"] = Table;
-	fileHeadersToInt["BuildOwner"] = BuildOwner;
-	fileHeadersToInt["Deck"] = Deck;
-	fileHeadersToInt["Next"] = Next;*/
-
-
 }
 
 
@@ -49,30 +40,6 @@ bool Serializer::loadInSaveFile(string filePath) {
 	nextPlayer = removeHeader(dataByType.back()[0]);
 
 
-
-
-/*
-	switch (labelToSaveFileHeaders(parsedLine[0]))
-	{
-	case Serializer::Round:
-		round = stoi(parsedLine[1]);
-		break;
-	case Serializer::Computer:
-		break;
-	case Serializer::Human:
-		break;
-	case Serializer::Table:
-		break;
-	case Serializer::BuildOwner:
-		break;
-	case Serializer::Deck:
-		break;
-	case Serializer::Next:
-		break;
-	case Serializer::HangingData:
-	default:
-		break;
-	}*/
 
 	return true;
 }
@@ -133,14 +100,3 @@ bool Serializer::loadInSaveFile(string filePath) {
 	 int colonIndex = cards.find(':');
 	 return cards.substr(colonIndex + 1);
  }
-
-/*
-
-Serializer::SaveFileHeaders Serializer::labelToSaveFileHeaders(string label) {
-	map<string, Serializer::SaveFileHeaders>::iterator mapIterator;
-	mapIterator = fileHeadersToInt.find(label);
-	if (mapIterator ==fileHeadersToInt.end()) {
-		return mapIterator->second;
-	}
-	return HangingData;
-}*/

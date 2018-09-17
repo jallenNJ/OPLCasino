@@ -4,7 +4,6 @@
 #include <fstream>
 #include "Client.h"
 #include <sstream>
-#include <map>
 
 
 using namespace std;
@@ -56,11 +55,9 @@ private:
 	static string table;
 	static string deck;
 	static string nextPlayer;
-	enum SaveFileHeaders { Round, Computer, Human, Table, BuildOwner, Deck, Next, HangingData };
-	//static map<string, SaveFileHeaders> fileHeadersToInt;
-
-	//static SaveFileHeaders labelToSaveFileHeaders(string);
 	static int round;
+
+
 	static vector<string> readNNonBlankLines(ifstream&, int);
 	static vector<string> parseLine(string);
 	static PlayerInfo readPlayerInfo(vector<string>);

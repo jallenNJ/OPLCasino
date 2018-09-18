@@ -154,3 +154,7 @@ Sep 17th, 2018
 	-Improved upon the existing function to load in the save file to access the new helper functions that were created above (1.5 hours)
 	
 	Day Total: 6 hours
+Sep 18th, 2018
+	Updated Rubric for submission today (.5 hours)
+	Commented Classes (1 hour)
+	Day total 1 Hour

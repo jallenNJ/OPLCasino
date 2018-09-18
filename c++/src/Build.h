@@ -47,7 +47,7 @@ public:
 
 	const virtual int getNumericValue() const override {
 		int sum = 0;
-		for (int i = 0; i < cardsInBuild.size(); i++) {
+		for (unsigned int i = 0; i < cardsInBuild.size(); i++) {
 			sum += cardsInBuild[i].getNumericValue();
 		}
 		return sum;

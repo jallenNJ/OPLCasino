@@ -2,8 +2,10 @@
 #define HAND_H
 #include <vector>
 #include "Card.h"
+#include "PlayingCard.h"
 #include "Build.h"
 #include <string>
+#include "Serializer.h"
 
 
 using namespace std;
@@ -11,6 +13,17 @@ class Hand {
 public:
 	Hand() {
 		cardsInHand.reserve(4);
+	}
+	Hand(string startingCards) {
+		vector<string> cards = Serializer::parseLine(startingCards);
+		for (unsigned int i = 0; i < cards.size(); i++) {
+			if (cards[i][0] == '[' || cards[i][0] == ']') {
+				Client::outputError("Hand class needs to be taught how to parse builds");
+				continue;
+			}
+			addCard(PlayingCard(cards[i][0], cards[i][1]));
+			
+		}
 	}
 
 	inline bool addCard(Card newCard) {
@@ -69,7 +82,7 @@ public:
 		return false;
 	}
 
-	inline string cardToString(int index) const{
+	inline string cardToString(unsigned int index) const{
 		if (index > cardsInHand.size()) {
 			return "";
 		}

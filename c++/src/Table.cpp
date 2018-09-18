@@ -10,6 +10,15 @@ Table::Table(bool humanStart) {
 	initTable(humanStart);
 }
 
+Table::Table(bool humanStart, bool loadFromSave) {
+	if (loadFromSave == false) {
+		Table(humanStart);
+		return;
+	}
+	initTable(humanStart, true);
+
+}
+
 void Table::initTable(bool humanStart) {
 	Human* human = new Human();
 	Computer* computer = new Computer();
@@ -24,6 +33,28 @@ void Table::initTable(bool humanStart) {
 	humanFirst = humanStart;
 }
 
+void Table::initTable(bool humanStart, bool loadFromSave) {
+	if (loadFromSave == false) {
+		initTable(humanStart);
+		return;
+	}
+
+	Human* human = new Human(true);
+	//Below this needs to be updated for saves
+	Computer* computer = new Computer();
+	players = new Player*[2];
+	players[0] = human;
+	players[1] = computer;
+
+	deck = new Deck();
+	fillHand(0);
+	fillHand(1);
+	fillLooseCards();
+	humanFirst = humanStart;
+
+
+
+}
 
 const void Table::printBoard() {
 

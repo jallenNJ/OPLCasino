@@ -17,6 +17,7 @@ public:
 
 	Round();
 	Round(bool);
+	Round(bool, bool);
 
 	~Round() {
 
@@ -46,6 +47,7 @@ private:
 	bool roundOver;
 	int playerScores[2];
 	int playerThatWonRound;
+	bool loadSave;
 
 	const int MAX_PLAYERS = 2;
 

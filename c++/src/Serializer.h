@@ -1,5 +1,5 @@
 #ifndef SERIALIZER_H
-#define SERIALIER_H
+#define SERIALIZER_H
 #include <string>
 #include <fstream>
 #include "Client.h"
@@ -9,6 +9,7 @@
 using namespace std;
 class Serializer {
 
+public:
 	struct PlayerInfo {
 		string name;
 		int score;
@@ -35,7 +36,7 @@ class Serializer {
 
 	};
 	
-public:
+
 
 	static bool loadInSaveFile(string);
 	static string inline getSaveFilePath() {
@@ -44,10 +45,25 @@ public:
 
 	static void init();
 
-protected:
+	static int getHumanScore() {
+
+		return humanPlayer.score;
+	}
+	static int getComputerScore() {
+
+		return computerPlayer.score;
+	}
 
 
+	static vector<string> parseLine(string);
 
+	static PlayerInfo getHumanPlayerInfo() {
+		return humanPlayer;
+	}
+
+	static bool nextPlayerIsHuman() {
+		return nextPlayer == "Human";
+	}
 
 private:
 	static PlayerInfo computerPlayer;
@@ -59,7 +75,7 @@ private:
 	static vector<string>buildOwners;
 
 	static vector<string> readNNonBlankLines(ifstream&, int);
-	static vector<string> parseLine(string);
+	
 	static PlayerInfo readPlayerInfo(vector<string>);
 	static inline string removeHeader(string);
 

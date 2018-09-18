@@ -16,6 +16,7 @@ class Table {
 public:
 	Table();
 	Table(bool);
+	Table(bool, bool);
 	~Table();
 	const void printBoard();
 	bool runCycle();
@@ -23,6 +24,7 @@ public:
 private:
 	bool humanFirst;
 	void initTable(bool = true);
+	void initTable(bool, bool);
 	static const int HAND_SIZE = 4;
 	Hand looseCards;
 	Deck* deck; 

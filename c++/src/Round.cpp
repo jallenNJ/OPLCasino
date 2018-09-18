@@ -50,17 +50,38 @@ Round::Round(bool humanFirst) {
 	intializeRound();
 }
 
+
+Round::Round(bool humanFirst, bool loadFromSave) {
+	//TODO fix dupe code
+	if (humanFirst) {
+		startingPlayer = HUMAN_PLAYER;
+	}
+	else {
+		startingPlayer = COMPUTER_PLAYER;
+	}
+	loadSave = loadFromSave;
+
+}
+
 void Round::intializeRound() {
 	playerScores[HUMAN_PLAYER] = 0;
 	playerScores[COMPUTER_PLAYER] = 0;
 	roundOver = false;
 	playerThatWonRound = -1;
+	loadSave = false;
 }
 
 
 void Round::playRound() {
-
-	Table* table = new Table((startingPlayer == HUMAN_PLAYER));
+	Table* table = NULL;
+	if (loadSave) {
+		//Maybe pass in the next player from Serializer?
+		table = new Table((startingPlayer == HUMAN_PLAYER), true);
+	}
+	else {
+		table = new Table((startingPlayer == HUMAN_PLAYER));
+	}
+	 
 	while (table->runCycle() == false);
 
 	delete table;

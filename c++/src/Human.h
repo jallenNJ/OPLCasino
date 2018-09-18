@@ -9,6 +9,7 @@ class Human : public Player {
 	
 public:
 	Human();
+	Human(bool);
 
 	virtual PlayerMove doTurn(Hand) override;
 

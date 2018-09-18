@@ -5,6 +5,19 @@
 Human::Human() {
 	setName();
 }
+
+Human::Human(bool loadFromSave) {
+	Serializer::PlayerInfo saveInfo = Serializer::getHumanPlayerInfo();
+	if (loadFromSave == false || saveInfo.isValid == false) {
+		Human();
+		return;
+	}
+
+	name = saveInfo.name;
+	playerHand = Hand(saveInfo.hand);
+	playerPile = Hand(saveInfo.pile);
+}
+
 bool Human::setName() {
 	
 	name = Client::getStringInput("Please enter your name: ");

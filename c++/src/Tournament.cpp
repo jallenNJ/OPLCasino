@@ -27,6 +27,10 @@ void Tournament::RunTournament() {
 				break;
 			}
 		} else{
+			scores[Round::HUMAN_PLAYER] = Serializer::getHumanScore();
+			scores[Round::COMPUTER_PLAYER] = Serializer::getComputerScore();
+			Round save(Serializer::nextPlayerIsHuman(), true);
+			save.playRound();
 			Client::outputError("NEED TO INTIALIZE ROUND FROM SAVE FILE TO NOT CRASH");
 			break;
 		}

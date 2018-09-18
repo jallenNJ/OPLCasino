@@ -43,7 +43,7 @@ bool Serializer::loadInSaveFile(string filePath) {
 		buildOwners.push_back(removeHeader(dataByType[i][0]));
 	}
 
-
+	saveFile.close();
 
 	return true;
 }

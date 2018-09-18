@@ -6,6 +6,7 @@
 #include "Hand.h"
 #include <algorithm>
 #include "Client.h"
+#include "Serializer.h"
 
 using namespace std;
  class Player {

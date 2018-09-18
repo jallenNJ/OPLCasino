@@ -156,5 +156,5 @@ Sep 17th, 2018
 	Day Total: 6 hours
 Sep 18th, 2018
 	Updated Rubric for submission today (.5 hours)
-	Commented Classes (1 hour)
-	Day total 1 Hour
+	Commented Classes (2 hour)
+	Day total 2.5 Hour

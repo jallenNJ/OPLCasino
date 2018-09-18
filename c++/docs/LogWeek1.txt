@@ -144,3 +144,13 @@ Sep 16th, 2018
 		* Tournment checks for save loading before the first round
 	Above took 2.5 hours
 	Day Total 2.6 Hours
+	
+Sep 17th, 2018
+	-Failed implementation of loading in the data from a file and using a map and enums to parse the data through a switch statement. All code discarded due to failing at parsing in any efficent method(2 hour)
+	-Created the Serializer::PlayerInfo struct and all its getters and mutators which allow for data to be read by the Player classes (.5 hours)
+	-Implemented a Serializer::parseLine function which can tokenize a given string and return it as a vector of strings (.5 hours)
+	-Implemented functions to read N lines from a fuction and have them returned as a vector of strings, where this function skips over blank lines. (.5 hours)
+	-Overloaded constructors for Round, Table, and Human to be able to load in save data for the human class (1 hour)
+	-Improved upon the existing function to load in the save file to access the new helper functions that were created above (1.5 hours)
+	
+	Day Total: 6 hours

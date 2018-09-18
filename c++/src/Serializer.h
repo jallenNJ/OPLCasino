@@ -56,7 +56,7 @@ private:
 	static string deck;
 	static string nextPlayer;
 	static int round;
-
+	static vector<string>buildOwners;
 
 	static vector<string> readNNonBlankLines(ifstream&, int);
 	static vector<string> parseLine(string);

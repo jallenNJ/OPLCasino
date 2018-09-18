@@ -26,6 +26,20 @@ Player::Player() {
 	 return played.checkCapture(targets);
  }
 
+ /* *********************************************************************
+Function Name: createBuild
+Purpose: To check if creating a build is a valid move
+Parameters:
+			played, the card being played from the hand
+			selectedCards, copies of the cards on the table being played
+Return Value: bool, true if valid, false if not
+Local Variables:
+			sum, the sum of selected cards
+Algorithm:
+			1) Sum the values of new cards
+			2) Check if it matches the selected Cards
+Assistance Received: none
+********************************************************************* */
  bool Player::createBuild(Card played, vector<Card> selectedCards) {
 	 int sum = played.getNumericValue();
 	 for (unsigned int i = 0; i < selectedCards.size(); i++) {

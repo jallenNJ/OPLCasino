@@ -6,6 +6,7 @@ using namespace std;
 class Card {
 	
 public:
+
 	/* *********************************************************************
 Function Name: Card()
 Purpose: Intaialize Object to the invalid card
@@ -91,7 +92,7 @@ Algorithm:
 Assistance Received: none
 ********************************************************************* */
 	const bool isInvalid() const{
-		return suit == invalidSymbol;
+		return suit == 'N';
 	}
 	/* *********************************************************************
 Function Name: getSuit()
@@ -152,10 +153,9 @@ protected:
 private:
 	int numericValue;
 
-	const char invalidSymbol = 'N';
 
 	void setInvalidCard() {
-		suit = invalidSymbol;
+		suit = 'N';
 		symbol = '0';
 	}
 

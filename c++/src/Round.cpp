@@ -1,6 +1,21 @@
 #include "Round.h"
 
+/* *********************************************************************
+Function Name: Round
+Purpose: To intialize a new round object with a coin toss
+Parameters:
+			None
+Return Value: Constructor
+Local Variables:
+			input, what the user called in the coin toss
+			guessedHeads a bool to store if they guessed heads, for cleaner code
 
+Algorithm:
+			1) Flip coin
+			2) See if the result matches
+			3) Intialize rest of member fields
+Assistance Received: none
+********************************************************************* */
 Round::Round() {
 	vector<char> answers;
 	answers.push_back('h');

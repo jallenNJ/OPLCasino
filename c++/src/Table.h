@@ -30,24 +30,36 @@ private:
 	Hand looseCards;
 	Deck* deck; 
 	Player** players;
-
+	vector<Build> buildsInProgress;
 	void fillLooseCards() {
 		string savedTable = Serializer::getTableCards();
 		if (savedTable.length() >= 0) {
 			vector<string> tokens = Serializer::parseLine(savedTable);
-			Build buildInProgress;
 			for (unsigned int i = 0; i < tokens.size(); i++) {
-				if (tokens[i][0] == '[') {
-					//Client::outputError("TABLE NEEDS TO BE PROGRAMED TO HANDLE BUILDS");
-
-					continue;
+				string token = tokens[i];
+				if (token[0] == '[') {
+					buildsInProgress.push_back(Build());
+					if (token.length() == 1) {
+						continue;
+					}
+					token = token.substr(1);
+					
 				}
-				else if (tokens[i][0] == ']') {
+				else if (token[0] == ']') {
+					looseCards.addCard(buildsInProgress.back());
 
 				}
-				char cardSuit = tokens[i][0];
-				char cardSymbol = tokens[i][1];
-				looseCards.addCard(PlayingCard(cardSuit, cardSymbol));
+
+				char cardSuit = token[0];
+				char cardSymbol = token[1];
+				if (buildsInProgress.size() > 0) {
+					buildsInProgress.back().addCardToBuild(PlayingCard(cardSuit, cardSymbol));
+				}
+				else {
+
+					looseCards.addCard(PlayingCard(cardSuit, cardSymbol));
+				}
+				
 			}
 			return;
 		}

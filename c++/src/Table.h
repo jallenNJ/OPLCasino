@@ -35,10 +35,15 @@ private:
 		string savedTable = Serializer::getTableCards();
 		if (savedTable.length() >= 0) {
 			vector<string> tokens = Serializer::parseLine(savedTable);
+			Build buildInProgress;
 			for (unsigned int i = 0; i < tokens.size(); i++) {
-				if (tokens[i][0] == '[' || tokens[i][0] == ']') {
-					Client::outputError("TABLE NEEDS TO BE PROGRAMED TO HANDLE BUILDS");
+				if (tokens[i][0] == '[') {
+					//Client::outputError("TABLE NEEDS TO BE PROGRAMED TO HANDLE BUILDS");
+
 					continue;
+				}
+				else if (tokens[i][0] == ']') {
+
 				}
 				char cardSuit = tokens[i][0];
 				char cardSymbol = tokens[i][1];

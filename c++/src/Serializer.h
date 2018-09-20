@@ -58,6 +58,10 @@ public:
 		return deck;
 	}
 
+	static string getTableCards() {
+		return table;
+	}
+
 
 	static vector<string> parseLine(string);
 

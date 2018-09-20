@@ -10,6 +10,7 @@
 #include <iomanip>
 #include "Hand.h"
 #include "Build.h"
+#include "Serializer.h"
 
 using namespace std;
 class Table {
@@ -31,6 +32,21 @@ private:
 	Player** players;
 
 	void fillLooseCards() {
+		string savedTable = Serializer::getTableCards();
+		if (savedTable.length() >= 0) {
+			vector<string> tokens = Serializer::parseLine(savedTable);
+			for (unsigned int i = 0; i < tokens.size(); i++) {
+				if (tokens[i][0] == '[' || tokens[i][0] == ']') {
+					Client::outputError("TABLE NEEDS TO BE PROGRAMED TO HANDLE BUILDS");
+					continue;
+				}
+				char cardSuit = tokens[i][0];
+				char cardSymbol = tokens[i][1];
+				looseCards.addCard(PlayingCard(cardSuit, cardSymbol));
+			}
+			return;
+		}
+
 		for (int i = 0; i < 4; i++) {
 			if (deck->isEmpty()) {
 				return;
@@ -38,6 +54,7 @@ private:
 			looseCards.addCard(deck->drawCard());
 		}
 	}
+
 
 	void fillHand(int playerIndex) const{
 		for (int i = 0; i < 4; i++) {

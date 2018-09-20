@@ -54,6 +54,10 @@ public:
 		return computerPlayer.score;
 	}
 
+	static string getDeck() {
+		return deck;
+	}
+
 
 	static vector<string> parseLine(string);
 
@@ -79,7 +83,6 @@ private:
 	static PlayerInfo readPlayerInfo(vector<string>);
 	static inline string removeHeader(string);
 
-	//string 
 
 	
 };

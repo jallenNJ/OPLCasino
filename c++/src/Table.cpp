@@ -203,7 +203,7 @@ void Table::doPlayerMove(int playerIndex) {
 
 void Table::fillLooseCards(){
 	string savedTable = Serializer::getTableCards();
-	if (savedTable.length() >= 0) {
+	if (savedTable.length() > 0) {
 		vector<string> tokens = Serializer::parseLine(savedTable);
 		for (unsigned int i = 0; i < tokens.size(); i++) {
 			string token = tokens[i];

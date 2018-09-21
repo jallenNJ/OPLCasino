@@ -31,59 +31,13 @@ private:
 	Deck* deck; 
 	Player** players;
 	vector<Build> buildsInProgress;
-	void fillLooseCards() {
-		string savedTable = Serializer::getTableCards();
-		if (savedTable.length() >= 0) {
-			vector<string> tokens = Serializer::parseLine(savedTable);
-			for (unsigned int i = 0; i < tokens.size(); i++) {
-				string token = tokens[i];
-				if (token[0] == '[') {
-					buildsInProgress.push_back(Build());
-					if (token.length() == 1) {
-						continue;
-					}
-					token = token.substr(1);
-					
-				}
-				else if (token[0] == ']') {
-					looseCards.addCard(buildsInProgress.back());
-					buildsInProgress.pop_back();
-					continue;
-
-				}
-
-				char cardSuit = token[0];
-				char cardSymbol = token[1];
-				if (buildsInProgress.size() > 0) {
-					buildsInProgress.back().addCardToBuild(PlayingCard(cardSuit, cardSymbol));
-					if (token.length() > 2) {
-						if (token[2] == ']') {
-							//DUPE CODE, MOVE TO INLINE
-							looseCards.addCard(buildsInProgress.back());
-							buildsInProgress.pop_back();
-
-						}
-					}
-				}
-				else {
-
-					looseCards.addCard(PlayingCard(cardSuit, cardSymbol));
-				}
-				
-			}
-			return;
-		}
-
-		for (int i = 0; i < 4; i++) {
-			if (deck->isEmpty()) {
-				return;
-			}
-			looseCards.addCard(deck->drawCard());
-		}
-	}
+	void fillLooseCards(); 
 
 
 	void fillHand(int playerIndex) const{
+		if (players[playerIndex]->getHandSize() > 0) {
+			return;
+		}
 		for (int i = 0; i < 4; i++) {
 			if (deck->isEmpty()) {
 				return;

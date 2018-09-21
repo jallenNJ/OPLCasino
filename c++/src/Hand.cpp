@@ -110,7 +110,7 @@ Assistance Received: none
 			if (cardsInHand[i]->getNumericValue() == newBuild.getNumericValue()) {
 				Build* original = dynamic_cast<Build*>(cardsInHand[i]);
 				Build* newMulti = new Build(*original);
-				newMulti->addCardToBuild((Build)newBuild);
+				newMulti->addCardToBuild(newBuild);
 				delete cardsInHand[i];
 				cardsInHand[i] = newMulti;
 				return true;

@@ -9,6 +9,11 @@ public:
 	//Call superclass and no more
 	PlayingCard() { };
 
+	PlayingCard(Card card) {
+		suit = card.getSuit();
+		symbol = card.getSymbol();
+		ownerName = card.getOwner();
+	}
 	PlayingCard(char, char);
 
 protected:

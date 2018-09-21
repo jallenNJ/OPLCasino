@@ -2,6 +2,7 @@
 #define BUILD_H
 #include "Card.h"
 #include <vector>
+#include "PlayingCard.h"
 
 using namespace std;
 class Build : public Card {
@@ -10,6 +11,11 @@ public:
 		
 	}
 
+	~Build() {
+		//for (unsigned int i = 0; i < cardsInBuild.size(); i++) {
+		//	delete cardsInBuild[i];
+		//}
+	}
 
 /* *********************************************************************
 Function Name: Build()
@@ -25,13 +31,15 @@ Algorithm:
 			2) Copy first into the main vector
 Assistance Received: none
 ********************************************************************* */
-	Build(Card first, string player) {
+	Build(Card& first, string player) {
 		ownerName = player;
-		cardsInBuild.push_back(first);
+
+		cardsInBuild.push_back(instanitateCopy(first));
 		suit = 'B';
 		symbol = getSymbol();
 
 	}
+
 
 /* *********************************************************************
 Function Name: toString
@@ -51,7 +59,7 @@ Assistance Received: none
 	virtual const string toString() const override {
 		string convertted = "[ ";
 		for (unsigned int i = 0; i < cardsInBuild.size(); i++) {
-			convertted += cardsInBuild[i].toString() + " ";
+			convertted += cardsInBuild[i]->toString() + " ";
 		}
 		convertted += "]";
 		return convertted;
@@ -108,7 +116,7 @@ Assistance Received: none
 	const virtual int getNumericValue() const override {
 		int sum = 0;
 		for (unsigned int i = 0; i < cardsInBuild.size(); i++) {
-			sum += cardsInBuild[i].getNumericValue();
+			sum += cardsInBuild[i]->getNumericValue();
 		}
 		return sum;
 	}
@@ -126,18 +134,30 @@ Algorithm:
 			2) Add to data structure
 Assistance Received: none
 ********************************************************************* */
-	inline bool addCardToBuild(Card newCard) {
+	inline bool addCardToBuild(Card& newCard) {
 		if (newCard.getNumericValue() + getNumericValue() > 14) {
 			return false;
 		}
-		cardsInBuild.push_back(newCard);
+
+		Card* add = instanitateCopy(newCard);
+		
+		cardsInBuild.push_back(add);
 		symbol = getSymbol();
 		suit = 'B';
 		return true;
 	}
 
 private:
-	vector<Card> cardsInBuild;
+	vector<Card*> cardsInBuild;
+
+	Card* instanitateCopy(Card& toCopy) {
+		if (toCopy.getSuit() == 'B') {
+			return new Build(toCopy, toCopy.getOwner());
+		}
+		else {
+			return new PlayingCard(toCopy);
+		}
+	}
 
 
 };

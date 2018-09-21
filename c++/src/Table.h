@@ -47,6 +47,8 @@ private:
 				}
 				else if (token[0] == ']') {
 					looseCards.addCard(buildsInProgress.back());
+					buildsInProgress.pop_back();
+					continue;
 
 				}
 
@@ -54,6 +56,14 @@ private:
 				char cardSymbol = token[1];
 				if (buildsInProgress.size() > 0) {
 					buildsInProgress.back().addCardToBuild(PlayingCard(cardSuit, cardSymbol));
+					if (token.length() > 2) {
+						if (token[2] == ']') {
+							//DUPE CODE, MOVE TO INLINE
+							looseCards.addCard(buildsInProgress.back());
+							buildsInProgress.pop_back();
+
+						}
+					}
 				}
 				else {
 

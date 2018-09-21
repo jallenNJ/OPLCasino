@@ -101,13 +101,16 @@ Assistance Received: none
 ********************************************************************* */
 
  bool Hand::addCard(Build newBuild) {
+	 if (newBuild.getSuit() == 'N') {
+		 return false;
+	 }
 	for (unsigned int i = 0; i < cardsInHand.size(); i++) {
 		//TODO: Test if this works when serializing is working
 		if (cardsInHand[i]->getSuit() == 'B') {
 			if (cardsInHand[i]->getNumericValue() == newBuild.getNumericValue()) {
 				Build* original = dynamic_cast<Build*>(cardsInHand[i]);
 				Build* newMulti = new Build(*original);
-				newMulti->addCardToBuild(newBuild);
+				newMulti->addCardToBuild((Build)newBuild);
 				delete cardsInHand[i];
 				cardsInHand[i] = newMulti;
 				return true;
@@ -115,6 +118,7 @@ Assistance Received: none
 		}
 	}
 
+	//Memory is free in the above delete
 	Card* toAdd = new Build(newBuild);
 	cardsInHand.push_back(toAdd);
 	return true;

@@ -132,6 +132,7 @@ Assistance Received: none
 		}
 		cardsInBuild.push_back(newCard);
 		symbol = getSymbol();
+		suit = 'B';
 		return true;
 	}
 

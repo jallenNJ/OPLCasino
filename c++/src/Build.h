@@ -40,6 +40,13 @@ Assistance Received: none
 
 	}
 
+	Build(Build& copy, string owner) {
+		this->cardsInBuild = copy.cardsInBuild;
+		ownerName = owner;
+		suit = 'B';
+		symbol = copy.getSymbol();
+	}
+
 
 /* *********************************************************************
 Function Name: toString
@@ -136,7 +143,7 @@ Assistance Received: none
 ********************************************************************* */
 	inline bool addCardToBuild(Card& newCard) {
 		if (newCard.getNumericValue() + getNumericValue() > 14) {
-			return false;
+		//	return false;
 		}
 
 		Card* add = instanitateCopy(newCard);
@@ -152,7 +159,7 @@ private:
 
 	Card* instanitateCopy(Card& toCopy) {
 		if (toCopy.getSuit() == 'B') {
-			return new Build(toCopy, toCopy.getOwner());
+			return new Build((*dynamic_cast<Build*>(&toCopy)), toCopy.getOwner());
 		}
 		else {
 			return new PlayingCard(toCopy);

@@ -33,6 +33,8 @@ private:
 	vector<Build> buildsInProgress;
 	void fillLooseCards(); 
 
+	void processPoppedBuild(vector<Build>&);
+
 
 	void fillHand(int playerIndex) const{
 		if (players[playerIndex]->getHandSize() > 0) {

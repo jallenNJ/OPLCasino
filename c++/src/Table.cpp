@@ -216,8 +216,8 @@ void Table::fillLooseCards(){
 
 			}
 			else if (token[0] == ']') {
-				looseCards.addCard(buildsInProgress.back());
-				buildsInProgress.pop_back();
+				processPoppedBuild(buildsInProgress);
+			
 				continue;
 
 			}
@@ -229,9 +229,7 @@ void Table::fillLooseCards(){
 				buildsInProgress.back().addCardToBuild(adding);
 				if (token.length() > 2) {
 					if (token[2] == ']') {
-						//DUPE CODE, MOVE TO INLINE
-						looseCards.addCard(buildsInProgress.back());
-						buildsInProgress.pop_back();
+						processPoppedBuild(buildsInProgress);
 
 					}
 				}
@@ -251,4 +249,20 @@ void Table::fillLooseCards(){
 		}
 		looseCards.addCard(deck->drawCard());
 	}
+}
+
+
+void Table::processPoppedBuild(vector<Build>& buildsInProgress) {
+	int amountOfBuilds = buildsInProgress.size();
+	if (amountOfBuilds == 1) {
+		looseCards.addCard(buildsInProgress.back());
+
+	}
+	else {
+
+		buildsInProgress[amountOfBuilds - 2].addCardToBuild(buildsInProgress.back());
+
+
+	}
+	buildsInProgress.pop_back();
 }

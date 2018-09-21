@@ -83,7 +83,11 @@ void Tournament::RunTournament() {
 }
 
 bool Tournament::checkForSaveFileLoad() {
-	return Client::getYesNoInput("Would you like to load in a save file (y/n)?");
+	char result = Client::getYesNoInput("Would you like to load in a save file (y/n)?");
+	if (result == 'y') {
+		return true;
+	}
+	return false;
 
 }
 

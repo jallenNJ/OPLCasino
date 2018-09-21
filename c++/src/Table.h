@@ -7,7 +7,6 @@
 #include "Player.h"
 #include "Human.h"
 #include "Computer.h"
-#include <iomanip>
 #include "Hand.h"
 #include "Build.h"
 #include "Serializer.h"
@@ -55,6 +54,8 @@ private:
 	}
 
 	void doPlayerMove(int player);
+
+	void actionMenu();
 	
 };
 

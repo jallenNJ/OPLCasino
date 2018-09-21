@@ -124,14 +124,17 @@ Assistance Received: none
 ********************************************************************* */
 bool Table::runCycle() {
 	printBoard();
+	actionMenu();
 	if (humanFirst) {
 		doPlayerMove(0);
 		printBoard();
+		actionMenu();
 		doPlayerMove(1);
 	}
 	else {
 		doPlayerMove(1);
 		printBoard();
+		actionMenu();
 		doPlayerMove(0);
 	}
 
@@ -265,4 +268,33 @@ void Table::processPoppedBuild(vector<Build>& buildsInProgress) {
 
 	}
 	buildsInProgress.pop_back();
+}
+
+
+void Table::actionMenu() {
+
+	string menu = "1) Save the Game\n";
+	menu += "2) Make a Move\n";
+	menu += "3) Ask for help\n";
+	menu += "4) Quit the Game\n";
+	int option = Client::getIntInputRange(menu, 1, 4);
+	switch (option) {
+		case 1:
+			Client::outputError("Saving needs to be implemented");
+			return;
+		case 2:
+			return;
+		case 3:
+			Client::outputError("Help not coded, make the move you think is best! :D");
+			return;
+
+		case 4:
+			Client::outputString("Thanks for playing!");
+			exit(0);
+		default:
+			Client::outputError("Invalid sanatized input, assuming make a move");
+			return;
+
+	}
+		
 }

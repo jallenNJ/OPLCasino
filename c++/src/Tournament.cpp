@@ -49,6 +49,7 @@ void Tournament::RunTournament() {
 			//Load in the data
 			scores[Round::HUMAN_PLAYER] = Serializer::getHumanScore();
 			scores[Round::COMPUTER_PLAYER] = Serializer::getComputerScore();
+			Serializer::setSaveScore(scores[Round::HUMAN_PLAYER], scores[Round::COMPUTER_PLAYER]);
 			Round save(Serializer::nextPlayerIsHuman(), true);
 			save.playRound();
 			Client::outputError("NEED TO INTIALIZE ROUND FROM SAVE FILE TO NOT CRASH");
@@ -71,6 +72,7 @@ void Tournament::RunTournament() {
 		//Sum Results here
 		scores[Round::HUMAN_PLAYER] += allRounds.back().getPlayerScore(Round::HUMAN_PLAYER);
 		scores[Round::COMPUTER_PLAYER] += allRounds.back().getPlayerScore(Round::COMPUTER_PLAYER);
+		Serializer::setSaveScore(scores[Round::HUMAN_PLAYER], scores[Round::COMPUTER_PLAYER]);
 		winner = checkForWinner();
 
 		//No winner, another round

@@ -15,6 +15,8 @@ string Serializer::tableToSave;
 string Serializer::deckToSave;
 string Serializer::nextPlayerToSave;
 
+int Serializer::computerSaveScore;
+int Serializer::humanSaveScore;
 void Serializer::init() {
 	round = 0;
 	table = "";
@@ -30,6 +32,8 @@ void Serializer::init() {
 	tableToSave = "";
 	deckToSave = "";
 	nextPlayerToSave = "";
+	computerSaveScore = 0;
+	humanSaveScore = 0;
 
 }
 

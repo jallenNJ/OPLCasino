@@ -79,26 +79,24 @@ public:
 
 	static bool setCompterPlayerSaveState(PlayerInfo comp) {
 		compterPlayerToSave = comp;
+		compterPlayerToSave.score = computerSaveScore;
 		return true;
 
 	}
 
 	static bool setHumanPlayerSaveState(PlayerInfo hum) {
 		humanPlayerToSave = hum;
+		humanPlayerToSave.score = humanSaveScore;
 		return true;
 
 	}
 
 
-	/*static bool setCompterPlayerSaveState(string name, int currentScore, string currentHand, string currentPile) {
-		compterPlayerToSave = PlayerInfo(name, currentScore, currentHand, currentPile);
-
+	static bool setSaveScore(int hScore, int cScore) {
+		humanSaveScore = hScore;
+		computerSaveScore = cScore;
+		return true;
 	}
-
-	static bool setHumanPlayerSaveState(string name, int currentScore, string currentHand, string currentPile) {
-		humanPlayerToSave = PlayerInfo(name, currentScore, currentHand, currentPile);
-
-	}*/
 
 	static bool setTableSaveState(string t) {
 		tableToSave = t;
@@ -118,6 +116,8 @@ private:
 	static PlayerInfo humanPlayer;
 	static PlayerInfo compterPlayerToSave;
 	static PlayerInfo humanPlayerToSave;
+	static int computerSaveScore;
+	static int humanSaveScore;
 	static string table;
 	static string tableToSave;
 	static string deck;

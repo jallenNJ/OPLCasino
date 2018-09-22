@@ -58,6 +58,15 @@ string Hand::toFormattedString() const {
 
 }
 
+string Hand::toString() const {
+	string formatted = "";
+	for (unsigned int i = 0; i < cardsInHand.size(); i++) {
+		formatted += cardsInHand[i]->toString() + " ";
+	}
+	return formatted;
+
+}
+
 /* *********************************************************************
 Function Name: countSymbol
 Purpose: To calculate the amount of time a specified symbol appears in the hand

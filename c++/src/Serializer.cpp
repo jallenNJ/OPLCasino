@@ -212,7 +212,8 @@ Assistance Received: none
 
 
  void Serializer::createSaveFile() {
-	 string fileName = Client::getStringInput("Please enter save file name");
+	 string fileName = Client::getStringInput("Please enter save file name (No file extension):");
+	 fileName += ".txt";
 	 ofstream saveFile;
 	 saveFile.open(fileName);
 	 if (!saveFile.is_open()) {
@@ -220,26 +221,26 @@ Assistance Received: none
 		 return;
 	 }
 
-	 string output = "Round: " + to_string(roundToSave) + "\n";
-	 output += "\n";
-	 output += "Computer:\n   Score: " + to_string(compterPlayerToSave.score) +
-			 "\n   Hand: " + compterPlayerToSave.hand +
-			 "\n   Pile: " + compterPlayerToSave.pile +
-			 "\n";
+	 saveFile << "Round: " + to_string(roundToSave) + "\n\n";
 
-	 output += "Human:\n   Score: " + to_string(humanPlayerToSave.score) +
-		 "\n   Hand: " + humanPlayerToSave.hand +
-		 "\n   Pile: " + humanPlayerToSave.pile +
+	 saveFile << "Computer:\n   Score : " << to_string(compterPlayerToSave.score) <<
+		 "\n   Hand: " << compterPlayerToSave.hand <<
+		 "\n   Pile: " << compterPlayerToSave.pile <<
 		 "\n";
 
-	 output += "Table: " + tableToSave + "\n";
+	 saveFile << "Human:\n   Score: " << to_string(humanPlayerToSave.score) <<
+		 "\n   Hand: " << humanPlayerToSave.hand <<
+		 "\n   Pile: " << humanPlayerToSave.pile <<
+		 "\n";
 
-	 output += "BUILD OWNER THINGS GO HERE\n";
+	 saveFile << "Table: " << tableToSave << "\n\n";
 
-	 output += "Deck: " + deckToSave + "\n";
+	 saveFile << "BUILD OWNER THINGS GO HERE\n\n";
 
-	 output += "Next Player: " + nextPlayerToSave;
+	 saveFile << "Deck: "<< deckToSave << "\n\n";
 
+	 saveFile << "Next Player: " << nextPlayerToSave;
 
-	 fileName.append(output);
+	 saveFile.close();
+
  }

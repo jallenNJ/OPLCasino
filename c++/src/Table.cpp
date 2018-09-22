@@ -271,7 +271,7 @@ void Table::processPoppedBuild(vector<Build>& buildsInProgress) {
 }
 
 
-void Table::actionMenu() {
+	void Table::actionMenu() {
 
 	string menu = "1) Save the Game\n";
 	menu += "2) Make a Move\n";
@@ -279,22 +279,32 @@ void Table::actionMenu() {
 	menu += "4) Quit the Game\n";
 	int option = Client::getIntInputRange(menu, 1, 4);
 	switch (option) {
-		case 1:
-			Client::outputError("Saving needs to be implemented");
-			return;
-		case 2:
-			return;
-		case 3:
-			Client::outputError("Help not coded, make the move you think is best! :D");
-			return;
+	case 1:
+		Client::outputError("Saving needs to be implemented");
+		return;
+	case 2:
+		return;
+	case 3:
+		Client::outputError("Help not coded, make the move you think is best! :D");
+		return;
 
-		case 4:
-			Client::outputString("Thanks for playing!");
-			exit(0);
-		default:
-			Client::outputError("Invalid sanatized input, assuming make a move");
-			return;
+	case 4:
+		Client::outputString("Thanks for playing!");
+		exit(0);
+	default:
+		Client::outputError("Invalid sanatized input, assuming make a move");
+		return;
 
 	}
-		
+}
+
+
+
+void Table::serilizeAllObjects() {
+	Serializer::setCompterPlayerSaveState(players[1]->saveSelf());
+	Serializer::setHumanPlayerSaveState(players[0]->saveSelf());
+	Serializer::setDeckSaveState(deck->toString());
+	Serializer::setTableSaveState(looseCards.toString());
+	Serializer::setNextPlayerSaveState("IMPLEMENT ME");
+
 }

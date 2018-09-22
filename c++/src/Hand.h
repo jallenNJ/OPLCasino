@@ -56,6 +56,7 @@ public:
 	}
 
 	string toFormattedString() const;
+	string toString() const;
 	int countSymbol(char) const;
 private:
 	vector<Card*> cardsInHand;

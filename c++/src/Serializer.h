@@ -43,6 +43,8 @@ public:
 		return Client::getStringInput("Please input save file path.");
 	}
 
+	static void createSaveFile();
+
 	static void init();
 
 	static int getHumanScore() {
@@ -73,13 +75,55 @@ public:
 		return nextPlayer == "Human";
 	}
 
+
+
+	static bool setCompterPlayerSaveState(PlayerInfo comp) {
+		compterPlayerToSave = comp;
+
+	}
+
+	static bool setHumanPlayerSaveState(PlayerInfo hum) {
+		humanPlayerToSave = hum;
+
+	}
+
+
+	/*static bool setCompterPlayerSaveState(string name, int currentScore, string currentHand, string currentPile) {
+		compterPlayerToSave = PlayerInfo(name, currentScore, currentHand, currentPile);
+
+	}
+
+	static bool setHumanPlayerSaveState(string name, int currentScore, string currentHand, string currentPile) {
+		humanPlayerToSave = PlayerInfo(name, currentScore, currentHand, currentPile);
+
+	}*/
+
+	static bool setTableSaveState(string t) {
+		tableToSave = t;
+		return true;
+	}
+	static bool setDeckSaveState(string d) {
+		deckToSave = d;
+		return true;
+	}
+	static bool setNextPlayerSaveState(string n) {
+		nextPlayer = n;
+		return true;
+	}
+
 private:
 	static PlayerInfo computerPlayer;
 	static PlayerInfo humanPlayer;
+	static PlayerInfo compterPlayerToSave;
+	static PlayerInfo humanPlayerToSave;
 	static string table;
+	static string tableToSave;
 	static string deck;
+	static string deckToSave;
 	static string nextPlayer;
+	static string nextPlayerToSave;
 	static int round;
+	static int roundToSave;
 	static vector<string>buildOwners;
 
 	static vector<string> readNNonBlankLines(ifstream&, int);

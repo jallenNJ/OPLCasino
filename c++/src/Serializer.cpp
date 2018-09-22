@@ -14,6 +14,16 @@ void Serializer::init() {
 	deck = "";
 	nextPlayer = "";
 
+	computerPlayer = PlayerInfo();
+	humanPlayer = PlayerInfo();
+	compterPlayerToSave = PlayerInfo();
+	humanPlayerToSave = PlayerInfo();
+
+	roundToSave = 0 ;
+	tableToSave = "";
+	deckToSave = "";
+	nextPlayerToSave = "";
+
 }
 
 
@@ -191,4 +201,38 @@ Assistance Received: none
 	 int colonIndex = cards.find(':');
 	 //Todo, handle check with not found?(May just return the entire string)
 	 return cards.substr(colonIndex + 1);
+ }
+
+
+ void Serializer::createSaveFile() {
+	 string fileName = Client::getStringInput("Please enter save file name");
+	 ofstream saveFile;
+	 saveFile.open(fileName);
+	 if (!saveFile.is_open()) {
+		 Client::outputError("Failed to create file. Please check to ensure the file is not locked, and program has write access to directory");
+		 return;
+	 }
+
+	 string output = "Round: " + to_string(roundToSave) + "\n";
+	 output += "\n";
+	 output += "Computer:\n   Score: " + to_string(compterPlayerToSave.score) +
+			 "\n   Hand: " + compterPlayerToSave.hand +
+			 "\n   Pile: " + compterPlayerToSave.pile +
+			 "\n";
+
+	 output += "Human:\n   Score: " + to_string(humanPlayerToSave.score) +
+		 "\n   Hand: " + humanPlayerToSave.hand +
+		 "\n   Pile: " + humanPlayerToSave.pile +
+		 "\n";
+
+	 output += "Table: " + tableToSave + "\n";
+
+	 output += "BUILD OWNER THINGS GO HERE\n";
+
+	 output += "Deck: " + deckToSave + "\n";
+
+	 output += "Next Player: " + nextPlayerToSave;
+
+
+	 fileName.append(output);
  }

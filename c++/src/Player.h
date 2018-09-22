@@ -47,6 +47,10 @@ public:
 		return playerHand.toFormattedString();
 	}
 
+	Serializer::PlayerInfo saveSelf() {
+		return Serializer::PlayerInfo(getName(), 0, playerHand.toString(), playerPile.toString());
+	}
+
 	const int getHandSize() const{
 		return playerHand.handSize();
 	}

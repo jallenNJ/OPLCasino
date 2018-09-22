@@ -26,6 +26,9 @@ private:
 	void initTable(bool = true);
 	void initTable(bool, bool);
 	static const int HAND_SIZE = 4;
+	void serilizeAllObjects();
+
+
 	Hand looseCards;
 	Deck* deck; 
 	Player** players;

@@ -87,3 +87,13 @@ void Deck::intializeCards() {
 
 	
 }
+
+
+
+string Deck::toString() const {
+	string result = "";
+	for (cardIterator i = topOfDeck; i != allCards.end(); i++) {
+		result += i->toString() + " ";
+	}
+	return result;
+}

@@ -266,3 +266,15 @@ void Table::processPoppedBuild(vector<Build>& buildsInProgress) {
 	}
 	buildsInProgress.pop_back();
 }
+
+
+void Table::serilizeAllObjects() {
+	Serializer::setCompterPlayerSaveState(players[1]->saveSelf());
+	Serializer::setHumanPlayerSaveState(players[0]->saveSelf());
+	Serializer::setDeckSaveState(deck->toString());
+	Serializer::setTableSaveState(looseCards.toString());
+	Serializer::setNextPlayerSaveState("IMPLEMENT ME");
+
+
+
+}

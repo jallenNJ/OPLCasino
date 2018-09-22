@@ -33,6 +33,8 @@ public:
 		return empty;
 	}
 
+	string toString() const;
+
 private:
 	char suitLetters[4];
 	char specialChar[5]; 

@@ -79,11 +79,13 @@ public:
 
 	static bool setCompterPlayerSaveState(PlayerInfo comp) {
 		compterPlayerToSave = comp;
+		return true;
 
 	}
 
 	static bool setHumanPlayerSaveState(PlayerInfo hum) {
 		humanPlayerToSave = hum;
+		return true;
 
 	}
 

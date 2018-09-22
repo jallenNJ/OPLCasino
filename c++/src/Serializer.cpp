@@ -8,6 +8,13 @@ string Serializer::deck;
 string Serializer::nextPlayer;
 vector<string> Serializer::buildOwners;
 
+Serializer::PlayerInfo Serializer::compterPlayerToSave;
+Serializer::PlayerInfo Serializer::humanPlayerToSave;
+int Serializer::roundToSave;
+string Serializer::tableToSave;
+string Serializer::deckToSave;
+string Serializer::nextPlayerToSave;
+
 void Serializer::init() {
 	round = 0;
 	table = "";

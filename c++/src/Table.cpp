@@ -280,7 +280,10 @@ void Table::processPoppedBuild(vector<Build>& buildsInProgress) {
 	int option = Client::getIntInputRange(menu, 1, 4);
 	switch (option) {
 	case 1:
-		Client::outputError("Saving needs to be implemented");
+		//Client::outputError("Saving needs to be implemented");
+		serilizeAllObjects();
+		Serializer::createSaveFile();
+		exit(0);
 		return;
 	case 2:
 		return;

@@ -76,7 +76,19 @@ public:
 	}
 
 
-	static bool setCompterPlayerSaveState(string name, int currentScore, string currentHand, string currentPile) {
+
+	static bool setCompterPlayerSaveState(PlayerInfo comp) {
+		compterPlayerToSave = comp;
+
+	}
+
+	static bool setHumanPlayerSaveState(PlayerInfo hum) {
+		humanPlayerToSave = hum;
+
+	}
+
+
+	/*static bool setCompterPlayerSaveState(string name, int currentScore, string currentHand, string currentPile) {
 		compterPlayerToSave = PlayerInfo(name, currentScore, currentHand, currentPile);
 
 	}
@@ -84,7 +96,7 @@ public:
 	static bool setHumanPlayerSaveState(string name, int currentScore, string currentHand, string currentPile) {
 		humanPlayerToSave = PlayerInfo(name, currentScore, currentHand, currentPile);
 
-	}
+	}*/
 
 	static bool setTableSaveState(string t) {
 		tableToSave = t;

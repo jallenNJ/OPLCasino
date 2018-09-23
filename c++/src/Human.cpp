@@ -87,7 +87,6 @@ Player::PlayerMove Human::doTurn(Hand tableCards) {
 		vector<int> required;
 		vector<vector<int>> optionial;
 		char input = '0';
-
 		//Call appropriate function based on each action
 		switch (actionToTake) {
 			//TODO: Add check to prevent reserved card from being played
@@ -108,6 +107,10 @@ Player::PlayerMove Human::doTurn(Hand tableCards) {
 			case Player::Build:
 				//TODO: Check if creating to adding to build
 				//TODO: Make sure can't played reserved card unless there is replacement
+				required = getSelectionOfCards(vector<int>(), tableCards, playerHand.getCardCopy(cardInHand).getNumericValue());
+				for (unsigned int i = 0; i < required.size(); i++) {
+					cardsToCheck.push_back(tableCards.getCardCopy(required[i]));
+				}
 				successfulResult = createBuild(playerHand.getCardCopy(cardInHand), cardsToCheck);
 				break;
 			case Player::Trail:
@@ -247,46 +250,17 @@ vector<int> Human::promptForCardToUse(int size, bool selectingTable) {
 vector<vector<int>> Human::getOptionialInput(vector<int> required, Hand tableCards, int targetVal) {
 	vector<vector<int>> returnVal;
 	char input = '0';
-	int cardIndex = 0;
 	while (true) {
-		input = Client::getYesNoInput("Are there any optionial sets, you'd wish you Capture?: ");
+		input = Client::getYesNoInput("Are there any optionial sets, you'd wish you Capture?(y/n): ");
 		if (input == 'n') {
 			break;
 		}				
-		string cardSet = "";
-		cardSet = Client::getStringInput("Please enter the indicies, space seperated, you'd like to capture");
-		vector<string>tokens = Serializer::parseLine(cardSet);
-		vector<int> currentSet;
-		for (unsigned int i = 0; i < tokens.size(); i++) {
-			try {
-				cardIndex = stoi(tokens[i]);
-			}
-			catch (exception e) {
-				continue;
-			}
-			cardIndex--;
-			for (unsigned int j = 0; j < required.size(); j++) {
-				if (cardIndex == required[j]) {
-					continue;
-				}
-			}
-			for (unsigned int j = 0; j < currentSet.size(); j++) {
-				if (cardIndex == currentSet[j]) {
-					continue;
-				}
-			}
-			currentSet.push_back(cardIndex);
+		vector<int> currentSet = getSelectionOfCards(required, tableCards, targetVal);
+		if (currentSet.size() == 0) {
+			continue;
 		}
-		if (currentSet.size() > 1) {
-			int sum =0;
-			for (unsigned int i = 0; i < currentSet.size(); i++) {
-				sum += tableCards.getCardCopy(currentSet[i]).getNumericValue();
-			}
-			if (sum == targetVal || (sum == 14 && targetVal == 1)) {
-				returnVal.push_back(currentSet);
-			}
-			
-		}
+		returnVal.push_back(currentSet);
+		
 
 		
 	}
@@ -296,3 +270,44 @@ vector<vector<int>> Human::getOptionialInput(vector<int> required, Hand tableCar
 
 
  }
+
+
+vector<int> Human::getSelectionOfCards(vector<int> prevSelected, Hand tableCards, int targetValue) {
+
+	string cardSet = "";
+	cardSet = Client::getStringInput("Please enter the indicies, space seperated, you'd like to select: ");
+	vector<string>tokens = Serializer::parseLine(cardSet);
+	vector<int> returnVal;
+	for (unsigned int i = 0; i < tokens.size(); i++) {
+		int cardIndex = 0;
+		try {
+			cardIndex = stoi(tokens[i]);
+		}
+		catch (exception e) {
+			continue;
+		}
+		cardIndex--;
+		for (unsigned int j = 0; j < prevSelected.size(); j++) {
+			if (cardIndex == prevSelected[j]) {
+				continue;
+			}
+		}
+		for (unsigned int j = 0; j < returnVal.size(); j++) {
+			if (cardIndex == returnVal[j]) {
+				continue;
+			}
+		}
+		returnVal.push_back(cardIndex);
+	}
+	if (returnVal.size() > 1) {
+		int sum = 0;
+		for (unsigned int i = 0; i < returnVal.size(); i++) {
+			sum += tableCards.getCardCopy(returnVal[i]).getNumericValue();
+		}
+		if (sum != targetValue && (sum == 14 && targetValue != 1)) {
+			returnVal.clear();
+		}
+
+	}
+	return returnVal;
+}

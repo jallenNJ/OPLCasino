@@ -71,25 +71,37 @@ Player::PlayerMove Human::doTurn(Hand tableCards) {
 		//Get all the vars
 		Actions actionToTake = promptForAction();
 		vector<int> cardsInHand = promptForCardToUse (playerHand.handSize(), false);
-		vector<int> cardsOnTable;
 
 		//If trailing, don't need to select which card on table to play
 		if (actionToTake != Trail) {
-			cardsOnTable = promptForCardToUse(tableCards.handSize(), true);
+		//	cardsOnTable = promptForCardToUse(tableCards.handSize(), true);
 		}
 		
 
 		int cardInHand = cardsInHand[0];
 		bool successfulResult = false;
 		vector<Card> cardsToCheck;
-		for (unsigned int i = 0; i < cardsOnTable.size(); i++) {
-			cardsToCheck.push_back(tableCards.getCardCopy(cardsOnTable[i]));
-		}
+	//	for (unsigned int i = 0; i < cardsOnTable.size(); i++) {
+	//		cardsToCheck.push_back(tableCards.getCardCopy(cardsOnTable[i]));
+	//	}
+		vector<int> required;
+		vector<vector<int>> optionial;
+		char input = '0';
 		//Call appropriate function based on each action
 		switch (actionToTake) {
 			//TODO: Add check to prevent reserved card from being played
 			case Player::Capture:
-				successfulResult = captureCard(playerHand.getCardCopy(cardInHand) , cardsToCheck);
+				required = findRequiredCaptures(playerHand.getCardCopy(cardInHand), tableCards);
+				
+			
+				Client::getYesNoInput("Are there any optionial sets, you'd wish you Capture?: ");
+					if (input == 'y') {
+						
+					}
+				
+				if (required.size() > 0) {
+						successfulResult = true;
+				}
 				break;
 			case Player::Build:
 				//TODO: Check if creating to adding to build
@@ -104,6 +116,7 @@ Player::PlayerMove Human::doTurn(Hand tableCards) {
 				break;
 		}
 		//If valid, return the tuple
+		vector<int> cardsOnTable = required;
 		if (successfulResult) {
 			sort(cardsOnTable.begin(), cardsOnTable.end());
 			reverse(cardsOnTable.begin(), cardsOnTable.end());

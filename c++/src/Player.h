@@ -72,6 +72,9 @@ public:
 		return true;
 	}
 
+	vector<int> findRequiredCaptures(PlayingCard played, Hand table);
+	//vector<int> findOptionialCaptures(PlayingCard played, Hand table);
+
 protected:
 
 

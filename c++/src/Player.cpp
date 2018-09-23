@@ -26,6 +26,32 @@ Player::Player() {
 	 return played.checkCapture(targets);
  }
 
+ vector<int> Player::findRequiredCaptures(PlayingCard played, Hand table) {
+	 vector<int> requireds;
+
+	 for (unsigned int i = 0; i < table.handSize(); i++) {
+		Card current =  table.getCardCopy(i);
+		 if (current.getSymbol() == played.getSymbol()) {
+			 if (current.getSuit() != 'B') {
+				 requireds.push_back(i);
+			 }
+			 else {
+				 if (current.getOwner() == getName() && checkReserved(played)) {
+					 requireds.push_back(i);
+				 }
+			 }
+		}
+	 }
+	 return requireds;
+ }
+
+ /*vector<int> Player::findOptionialCaptures(PlayingCard played, Hand table){
+
+	 for (unsigned int i = 0; i < table.handSize(); i++) {
+		 Card current = table.getCardCopy(i);
+	 }
+ }*/
+
  /* *********************************************************************
 Function Name: createBuild
 Purpose: To check if creating a build is a valid move

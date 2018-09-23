@@ -18,6 +18,7 @@ protected:
 private:
 	Actions promptForAction();
 	vector<int> promptForCardToUse(int, bool = false);
+	vector<vector<int>> getOptionialInput(vector<int> required, Hand tableCards, int targetValue);
 
 };
 

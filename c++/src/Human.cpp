@@ -87,17 +87,19 @@ Player::PlayerMove Human::doTurn(Hand tableCards) {
 		vector<int> required;
 		vector<vector<int>> optionial;
 		char input = '0';
+
 		//Call appropriate function based on each action
 		switch (actionToTake) {
 			//TODO: Add check to prevent reserved card from being played
 			case Player::Capture:
 				required = findRequiredCaptures(playerHand.getCardCopy(cardInHand), tableCards);
 				
-			
-				Client::getYesNoInput("Are there any optionial sets, you'd wish you Capture?: ");
-					if (input == 'y') {
-						
+				optionial = getOptionialInput(required, tableCards, playerHand.getCardCopy(cardInHand).getNumericValue());
+				for (unsigned int i = 0; i < optionial.size(); i++) {
+					for (unsigned int j = 0; j < optionial[i].size(); j++) {
+						required.push_back(optionial[i][j]);
 					}
+				}
 				
 				if (required.size() > 0) {
 						successfulResult = true;
@@ -240,3 +242,57 @@ vector<int> Human::promptForCardToUse(int size, bool selectingTable) {
 	
 	return values;
 }
+
+
+vector<vector<int>> Human::getOptionialInput(vector<int> required, Hand tableCards, int targetVal) {
+	vector<vector<int>> returnVal;
+	char input = '0';
+	int cardIndex = 0;
+	while (true) {
+		input = Client::getYesNoInput("Are there any optionial sets, you'd wish you Capture?: ");
+		if (input == 'n') {
+			break;
+		}				
+		string cardSet = "";
+		cardSet = Client::getStringInput("Please enter the indicies, space seperated, you'd like to capture");
+		vector<string>tokens = Serializer::parseLine(cardSet);
+		vector<int> currentSet;
+		for (unsigned int i = 0; i < tokens.size(); i++) {
+			try {
+				cardIndex = stoi(tokens[i]);
+			}
+			catch (exception e) {
+				continue;
+			}
+			cardIndex--;
+			for (unsigned int j = 0; j < required.size(); j++) {
+				if (cardIndex == required[j]) {
+					continue;
+				}
+			}
+			for (unsigned int j = 0; j < currentSet.size(); j++) {
+				if (cardIndex == currentSet[j]) {
+					continue;
+				}
+			}
+			currentSet.push_back(cardIndex);
+		}
+		if (currentSet.size() > 1) {
+			int sum =0;
+			for (unsigned int i = 0; i < currentSet.size(); i++) {
+				sum += tableCards.getCardCopy(currentSet[i]).getNumericValue();
+			}
+			if (sum == targetVal || (sum == 14 && targetVal == 1)) {
+				returnVal.push_back(currentSet);
+			}
+			
+		}
+
+		
+	}
+	return returnVal;
+
+
+
+
+ }

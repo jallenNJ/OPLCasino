@@ -106,5 +106,8 @@
     <Text Include="..\..\Savefile1.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="..\..\CaptureTest.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -89,3 +89,65 @@ Assistance Received: none
 	 }
 	 return false;
  }
+
+
+ vector<vector<int>> Player::findSelectableSets(int target, Hand table) {
+	 vector<vector<int>> allSets;
+	 if (target == 1) {
+		 target = 14;
+	 }
+	 vector<int> stackVector;
+	 int sum = 0;
+	
+	 stackVector.reserve(10);
+	 for (unsigned int i = 0; i < table.handSize(); i++) {
+		
+		 stackVector.clear();
+		 stackVector.push_back(table.getCardCopy(i).getNumericValue());
+		 if (stackVector[0] > target) {
+			 continue;
+		 }
+		 sum = stackVector[0];
+
+		 for (unsigned int offset = 1; offset < table.handSize() - 1; offset++) {
+			 for (unsigned int j = i + offset; j < table.handSize(); j++) {
+				 Card current = table.getCardCopy(j);
+				 if (target <= sum + current.getNumericValue()) {
+					 sum += current.getNumericValue();
+					 stackVector.push_back(current.getNumericValue());
+					 if (sum == target) {
+						 allSets.push_back(stackVector);
+						 stackVector.clear();
+					 }
+				 }
+			 }
+
+			 for (int j = i - offset; j >= 0; j--) {
+				 Card current = table.getCardCopy(j);
+				 if (target <= sum + current.getNumericValue()) {
+					 sum += current.getNumericValue();
+					 stackVector.push_back(current.getNumericValue());
+					 if (sum == target) {
+						 sort(stackVector.begin(), stackVector.end());
+						 bool found = false;
+						 for (unsigned int k = 0; k < allSets.size(); k++) {
+							 if (allSets[k] == stackVector) {
+								 found = true;
+								 break;
+							 }
+						 }
+						 allSets.push_back(stackVector);
+						 stackVector.clear();
+					 }
+				 }
+			 }
+
+		 }
+
+
+		
+
+
+	 }
+	 return allSets;
+ }

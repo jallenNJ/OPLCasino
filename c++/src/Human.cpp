@@ -92,7 +92,7 @@ Player::PlayerMove Human::doTurn(Hand tableCards) {
 			//TODO: Add check to prevent reserved card from being played
 			case Player::Capture:
 				required = findRequiredCaptures(playerHand.getCardCopy(cardInHand), tableCards);
-				
+				findSelectableSets(playerHand.getCardCopy(cardInHand).getNumericValue(), tableCards); //Debug to call the testing function
 				optionial = getOptionialInput(required, tableCards, playerHand.getCardCopy(cardInHand).getNumericValue());
 				for (unsigned int i = 0; i < optionial.size(); i++) {
 					for (unsigned int j = 0; j < optionial[i].size(); j++) {

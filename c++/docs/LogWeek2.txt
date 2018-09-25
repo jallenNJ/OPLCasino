@@ -46,5 +46,8 @@ Sep 24th, 2018
 	
 Sep 25th, 2018
 	Implemented a first version of Player::findSelectableSets which was salvaged from the work on sep 24th. Function still needs to be debugged for edge cases, however it works in ideal. This is the basis for the A.I classes. (1.5 hours)
+	Created framework for AI to make its card choices (.5 hours)
+	Debugged the AI checking for possible builds it can make. Currently it finds valid builds, but also tends to get a few invalid options which cause it to fail (1.5 hours)
 
-Day total 1.5 hours
+
+Day total 3.5 hours

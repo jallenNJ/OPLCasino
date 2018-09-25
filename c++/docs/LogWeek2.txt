@@ -1,0 +1,46 @@
+Sep 19th, 2018:
+	Modifed Deck::intializeCards() to include the ability to check to see if there are any decks loaded through the Serializer and restore the state (1 hour)
+	Modifed Table::fillLooseCards() to be able to intialize all table cards without formatting them into the builds (1 hours)
+	Extended the addition to Table::fillLooseCards() to properly load in builds and multi builds (1.5 hours)
+Day Total 3.5 hours
+
+Sep 20th, 2018:
+	Changed the build class to use pointers to store internal member data to prevent accidental recursion and object slicing (.5 hours)
+	Optimized Table::fillLooseCards() to remove a loop and restructured redundant code to be called only once (1 hour)
+
+Day Total: 1.5 hours
+
+Sep 21st, 2018:
+	Fixed Tournament::checkForSaveFileLoad() to properly respond to user input instead of always assuming yes (.5 hours)
+	Debugged an issue when not loading a save file that was causing a segmentation fault. Caused by an arronous >= (.5 hours to debug and fix)
+	Fixed Build Copy Constructor to be more efficent and properly apply the suit which allows for overloading and properly output when loaded from a save file (1 hour)
+	Added Table::actionMenu() to display the required menu and respond to the inputs (.5 hours)
+	
+Day Total: 2.5 hours
+
+Sep 22nd, 2018:
+	
+	Serializer::createSaveFile() to write data from the variables properly to a save file, minus for build owner. (1.5 hour)
+	Implemented Deck::toString() which allows the deck to be saved (.1 hour)
+	Implemented Hand::toString() which allows the hand to be saved (.1 hour)
+	Implemented Player::saveSelf() so the player class can format itself to be saved (.1 hour)
+	Implemented Table::serilizeAllObjects() which call the save functions for all its managed objects, and send the data to the serializer (.1 hours)
+	Debugged complier errors which were due to a linking error caused by a missing forward decleration in Serializer.cpp(.2 hours)
+	Converted Serializer::createSaveFile() to use output streams instead of building a string than writing that string for better efficency (.2 hours)
+	Tournament now ensures that the score data in the serializer object is up to date any time the score changes (.2 hours)
+	Rewrote the player class to detect when the player is required to capture a matching face card instead of relying on user input, this is in preperation for A.I implementation (1 hour)
+	Updated the set caputre logic to work with the new implementation of finding required caputres. This made the new function Human::getOptionialInput which asks for all the sets, and ensures they aren't choosen (1.5 hours)
+	Created a caputre test save file (.1 hour)	
+	
+Day Total 5 hours
+
+Sep 23rd, 2018
+	Updated the calls in the build processing to work with the new changes (.5 hours)
+	
+Day total .5 hours
+
+Sep 24th
+	Failed implementation of created an algorithm to find caputrable subsets with reasonable accuracy and efficency, which was planned to be used for convience for the Human and logic for the A.I (2 hours)
+		Some of this may be salvaged, this will depend on the following work
+	Day total: 2 hours
+	

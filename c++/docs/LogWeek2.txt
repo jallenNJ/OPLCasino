@@ -39,8 +39,12 @@ Sep 23rd, 2018
 	
 Day total .5 hours
 
-Sep 24th
+Sep 24th, 2018
 	Failed implementation of created an algorithm to find caputrable subsets with reasonable accuracy and efficency, which was planned to be used for convience for the Human and logic for the A.I (2 hours)
 		Some of this may be salvaged, this will depend on the following work
 	Day total: 2 hours
 	
+Sep 25th, 2018
+	Implemented a first version of Player::findSelectableSets which was salvaged from the work on sep 24th. Function still needs to be debugged for edge cases, however it works in ideal. This is the basis for the A.I classes. (1.5 hours)
+
+Day total 1.5 hours

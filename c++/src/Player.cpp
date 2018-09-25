@@ -134,9 +134,7 @@ Assistance Received: none
 						 stackVector.clear();
 						 break;
 					 }
-					// if (sum > target) {
-					//	 break;
-					// }
+
 				 }
 			 }
 

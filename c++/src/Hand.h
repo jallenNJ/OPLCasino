@@ -58,6 +58,17 @@ public:
 	string toFormattedString() const;
 	string toString() const;
 	int countSymbol(char) const;
+
+	int containsCard(char cardSuit, char cardSym) {
+		for (unsigned int i = 0; i < cardsInHand.size(); i++) {
+			Card* current = cardsInHand[i];
+			if (current->getSuit() == cardSuit && current->getSymbol() == cardSym) {
+				return i;
+			}
+		}
+		return -1;
+
+	}
 private:
 	vector<Card*> cardsInHand;
 

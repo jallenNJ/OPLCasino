@@ -22,10 +22,24 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 	}
 
 	for (unsigned int i = 0; i < playerHand.handSize(); i++) {
-		vector<vector<int>> possibleBuilds = findSelectableSets(playerHand.getCardCopy(i).getNumericValue(), table);
+		Card currentCard = playerHand.getCardCopy(i);
+		vector<vector<int>> possibleBuilds = findSelectableSets(currentCard.getNumericValue(), table);
 		if (possibleBuilds.size() > 0) {
-			Client::outputString("AI should build with the card in the " + to_string(i) + " postion");
-			break;
+			//Client::outputString("AI should build with the card in the " + to_string(i) + " postion");
+			vector<int> buildIndices = decideBestBuild(possibleBuilds);
+			vector<Card> cardsToCheck;
+			for (unsigned int i = 0; i < buildIndices.size(); i++) {
+				cardsToCheck.push_back(table.getCardCopy(buildIndices[i]));
+			}
+			bool result = createBuild(currentCard, cardsToCheck);
+			if (!result) {
+				Client::outputError ("Ai tried to create an invalid build after deeming it valid");
+				break;
+			}
+			sort(buildIndices.begin(), buildIndices.end());
+			reverse(buildIndices.begin(), buildIndices.end());
+			Client::outputString("AI IS MAKING A BUILD");
+			return PlayerMove(Player::Build, currentCard, buildIndices);
 		}
 	}
 
@@ -40,4 +54,27 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 	Client::outputString("AI has no better options, trailing");
 	Client::outputString("Ai played " + playerHand.cardToString(0)); 
 	return PlayerMove(Trail, playerHand.removeCard(0), vector<int>(1));
+}
+
+
+vector<int> Computer::decideBestBuild(vector<vector<int>> options) {
+	if (options.size() == 0) {
+		return vector<int>();
+	}
+	if (options.size() == 1) {
+		return options[0];
+	}
+
+	unsigned int largestSize = 0;
+	unsigned int indexOfLargest = 0;
+	for (unsigned int i = 0; i < options.size(); i++) {
+		if (options[i].size() > largestSize) {
+			largestSize = options[i].size();
+			indexOfLargest = i;
+		}
+	}
+
+	return options[indexOfLargest];
+
+
 }

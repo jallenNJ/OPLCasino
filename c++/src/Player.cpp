@@ -102,8 +102,6 @@ Assistance Received: none
 	 stackVector.reserve(10);
 	 for (unsigned int i = 0; i < table.handSize(); i++) {
 		
-		// stackVector.clear();
-		// stackVector.push_back(table.getCardCopy(i).getNumericValue());
 		 stackVector.push_back(i);
 		 if (stackVector[0] > target) {
 			 continue;

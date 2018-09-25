@@ -102,43 +102,41 @@ Assistance Received: none
 	 stackVector.reserve(10);
 	 for (unsigned int i = 0; i < table.handSize(); i++) {
 		
-		 stackVector.clear();
-		 stackVector.push_back(table.getCardCopy(i).getNumericValue());
+		// stackVector.clear();
+		// stackVector.push_back(table.getCardCopy(i).getNumericValue());
+		 stackVector.push_back(i);
 		 if (stackVector[0] > target) {
 			 continue;
 		 }
 		 sum = stackVector[0];
 
 		 for (unsigned int offset = 1; offset < table.handSize() - 1; offset++) {
+			 stackVector.clear();
+			 stackVector.push_back(i);
+			 sum = stackVector[0];
 			 for (unsigned int j = i + offset; j < table.handSize(); j++) {
 				 Card current = table.getCardCopy(j);
-				 if (target <= sum + current.getNumericValue()) {
+				 if (target >= sum + current.getNumericValue()) {
 					 sum += current.getNumericValue();
-					 stackVector.push_back(current.getNumericValue());
+					 stackVector.push_back(j);
 					 if (sum == target) {
-						 allSets.push_back(stackVector);
-						 stackVector.clear();
-					 }
-				 }
-			 }
-
-			 for (int j = i - offset; j >= 0; j--) {
-				 Card current = table.getCardCopy(j);
-				 if (target <= sum + current.getNumericValue()) {
-					 sum += current.getNumericValue();
-					 stackVector.push_back(current.getNumericValue());
-					 if (sum == target) {
-						 sort(stackVector.begin(), stackVector.end());
-						 bool found = false;
+						 bool dupe = false;
 						 for (unsigned int k = 0; k < allSets.size(); k++) {
-							 if (allSets[k] == stackVector) {
-								 found = true;
+							 if (stackVector == allSets[k]) {
+								 dupe = true;
 								 break;
 							 }
 						 }
-						 allSets.push_back(stackVector);
+						 if (!dupe) {
+							 allSets.push_back(stackVector);
+						 }
+						
 						 stackVector.clear();
+						 break;
 					 }
+					// if (sum > target) {
+					//	 break;
+					// }
 				 }
 			 }
 

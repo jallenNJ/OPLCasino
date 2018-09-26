@@ -230,12 +230,12 @@ Assistance Received: none
 	 saveFile << "Computer:\n   Score: " << to_string(compterPlayerToSave.score) <<
 		 "\n   Hand: " << compterPlayerToSave.hand <<
 		 "\n   Pile: " << compterPlayerToSave.pile <<
-		 "\n";
+		 "\n\n";
 
 	 saveFile << "Human:\n   Score: " << to_string(humanPlayerToSave.score) <<
 		 "\n   Hand: " << humanPlayerToSave.hand <<
 		 "\n   Pile: " << humanPlayerToSave.pile <<
-		 "\n";
+		 "\n\n";
 
 	 saveFile << "Table: " << tableToSave << "\n\n";
 

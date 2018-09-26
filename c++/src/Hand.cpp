@@ -25,6 +25,10 @@ Hand::Hand(string startingCards) {
 			Client::outputError("Hand class needs to be taught how to parse builds");
 			continue;
 		}
+		if (cards[i].length() < 2) {
+			continue;
+		}
+
 		//Add the card
 		addCard(PlayingCard(cards[i][0], cards[i][1]));
 

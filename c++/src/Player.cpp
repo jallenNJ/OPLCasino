@@ -91,11 +91,9 @@ Assistance Received: none
  }
 
 
- vector<vector<int>> Player::findSelectableSets(int playedCardValue, Hand table) {
+ vector<vector<int>> Player::findSelectableSets(Card playedCard, Hand table) {
+	 int playedCardValue = playedCard.getNumericValue();
 	 vector<vector<int>> allSets;
-	// if (played == 1) {
-	//	 target = 14;
-	// }
 	 vector<int> stackVector;
 	 int sum = 0;
 	
@@ -104,6 +102,9 @@ Assistance Received: none
 	 
 	 for (unsigned int cardInHandIndex = 0; cardInHandIndex < playerHand.handSize(); cardInHandIndex++) {
 		 Card cardInHand = playerHand.getCardCopy(cardInHandIndex);
+		 if (cardInHand.getSuit() == playedCard.getSuit() && cardInHand.getSymbol() == cardInHand.getSymbol()) {
+			 continue;
+		 }
 		 for (unsigned int firstCardOnTable = 0; firstCardOnTable < table.handSize(); firstCardOnTable++) {
 			 sum = playedCardValue;
 			 stackVector.clear();
@@ -124,22 +125,22 @@ Assistance Received: none
 					 stackVector.clear();
 					 Card current = table.getCardCopy(i);
 					 if (cardInHand.getNumericValue() >= sum + current.getNumericValue()) {
-						 sum + current.getNumericValue();
+						 sum += current.getNumericValue();
 						 stackVector.push_back(i);
 						 if (sum == cardInHand.getNumericValue()) {
-
-						 }
-						 bool dupe = false;
-						 for (unsigned int k = 0; k < allSets.size(); k++) {
-							 if (stackVector == allSets[k]) {
-								 dupe = true;
+							 bool dupe = false;
+							 for (unsigned int k = 0; k < allSets.size(); k++) {
+								 if (stackVector == allSets[k]) {
+									 dupe = true;
+									 break;
+								 }
+							 }
+							 if (!dupe) {
+								 allSets.push_back(stackVector);
 								 break;
 							 }
 						 }
-						 if (!dupe) {
-							 allSets.push_back(stackVector);
-							 break;
-						 }
+
 					 }
 				 }
 			 }

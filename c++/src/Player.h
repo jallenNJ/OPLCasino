@@ -102,7 +102,7 @@ protected:
 	int amountOfSymbolInHand(char symbol) {
 		return playerHand.countSymbol(symbol);
 	}
-	vector<vector<int>> findSelectableSets(int, Hand);
+	vector<vector<int>> findSelectableSets(Card, Hand);
 
 };
 

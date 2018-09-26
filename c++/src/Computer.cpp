@@ -23,7 +23,7 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 
 	for (unsigned int i = 0; i < playerHand.handSize(); i++) {
 		Card currentCard = playerHand.getCardCopy(i);
-		vector<vector<int>> possibleBuilds = findSelectableSets(currentCard.getNumericValue(), table);
+		vector<vector<int>> possibleBuilds = findSelectableSets(currentCard, table);
 		if (possibleBuilds.size() > 0) {
 			//Client::outputString("AI should build with the card in the " + to_string(i) + " postion");
 			vector<int> buildIndices = decideBestBuild(possibleBuilds);
@@ -38,10 +38,17 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 			}
 			sort(buildIndices.begin(), buildIndices.end());
 			reverse(buildIndices.begin(), buildIndices.end());
-			Client::outputString("AI IS MAKING A BUILD");
+			Client::outputString("AI played " + currentCard.toString() + " as it was an oppertunity to make a build");
 			return PlayerMove(Player::Build, currentCard, buildIndices);
 		}
 	}
+
+	if (buildValues.size() > 1) {
+		Client::outputString("AI HAS A BUILD THEY SHOULD CAPTURE");
+
+
+	}
+
 
 	for (unsigned int i = 0; i < playerHand.handSize(); i++) {
 		vector<int> possibleCaptures = findRequiredCaptures(playerHand.getCardCopy(i), table);

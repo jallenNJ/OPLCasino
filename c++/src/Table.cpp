@@ -21,6 +21,7 @@ Table::Table(bool humanStart, bool loadFromSave) {
 
 void Table::initTable(bool humanStart) {
 	Human* human = new Human();
+	//Computer* human = new Computer();  //This lineis for debugging with computer
 	Computer* computer = new Computer();
 	players = new Player*[2];
 	players[0] = human;

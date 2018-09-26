@@ -51,6 +51,7 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 			sort(buildIndices.begin(), buildIndices.end());
 			reverse(buildIndices.begin(), buildIndices.end());
 			Client::outputString("AI played " + currentCard.toString() + " as it was an oppertunity to make a build");
+			playerHand.removeCard(i);
 			return PlayerMove(Player::Build, currentCard, buildIndices);
 		}
 	}

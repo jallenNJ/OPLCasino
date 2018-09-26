@@ -26,11 +26,17 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 
 	int location = table.containsCard('D', 'X');
 	if (location > 0) {
-		Client::outputString("AI SHOULD CAPTURE 10 of hearts");
+		if (playerHand.containsCardValue(10)) {
+			Client::outputString("AI SHOULD CAPTURE 10 of hearts");
+		}
+		
 	}
 	location = table.containsCard('S', '2');
 	if (location > 0) {
-		Client::outputString("AI SHOULD CAPTURE 2 of spades");
+		if (playerHand.containsCardValue(2)) {
+			Client::outputString("AI SHOULD CAPTURE 2 of spades");
+		}
+		
 	}
 
 	for (unsigned int i = 0; i < playerHand.handSize(); i++) {
@@ -58,7 +64,26 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 
 	if (buildValues.size() > 1) {
 		Client::outputString("AI HAS A BUILD THEY SHOULD CAPTURE");
+		vector<int> captureIndices;
+		int cardIndex = 0;
+		Card played;
+		for (unsigned int i = 0; i < playerHand.handSize(); i++) {
+			played = playerHand.getCardCopy(i);
+			if (played.getNumericValue() == buildValues[0]) {
+				cardIndex = i;
+				Client::outputError("Need to unreserve value");
+			}
+		}
 
+
+		for (unsigned int i = 0; i < table.handSize(); i++) {
+			if (table.getCardCopy(i).getNumericValue() == played.getNumericValue()) {
+				captureIndices.push_back(i);
+			}
+		}
+
+		playerHand.removeCard(cardIndex);
+		return PlayerMove(Player::Capture, played, captureIndices);
 
 	}
 
@@ -66,7 +91,11 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 	for (unsigned int i = 0; i < playerHand.handSize(); i++) {
 		vector<int> possibleCaptures = findRequiredCaptures(playerHand.getCardCopy(i), table);
 		if (possibleCaptures.size() > 0) {
-			Client::outputString("AI should caputre with the card in the " + to_string(i) + " postion");
+			Card played = playerHand.getCardCopy(i);
+			Client::outputString("AI is playing " + played.toString() + " with the intention of capturing");
+			playerHand.removeCard(i);
+			return PlayerMove(Player::Capture, played, possibleCaptures);
+			//Client::outputString("AI should caputre with the card in the " + to_string(i) + " postion");
 			break;
 		}
 	}

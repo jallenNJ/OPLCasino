@@ -92,49 +92,72 @@ Assistance Received: none
 
 
  vector<vector<int>> Player::findSelectableSets(Card playedCard, Hand table) {
+
+	 //Cache the value for nicer syntax
 	 int playedCardValue = playedCard.getNumericValue();
 	 vector<vector<int>> allSets;
 	 vector<int> stackVector;
 	 int sum = 0;
 	
+	 //Reserve up to ten for better runtime
 	 stackVector.reserve(10);
 
 	 
+	 //This loop is responsible for checking every card in the players hand
 	 for (unsigned int cardInHandIndex = 0; cardInHandIndex < playerHand.handSize(); cardInHandIndex++) {
+		 //Save the card for readabilty
 		 Card cardInHand = playerHand.getCardCopy(cardInHandIndex);
+
+		 //If the played card is this card, skip
 		 if (cardInHand.getSuit() == playedCard.getSuit() && cardInHand.getSymbol() == cardInHand.getSymbol()) {
 			 continue;
 		 }
+
+		 //For every card on the table
 		 for (unsigned int firstCardOnTable = 0; firstCardOnTable < table.handSize(); firstCardOnTable++) {
+
+			 //Remove the old data and load in the constant data (the played card)
 			 sum = playedCardValue;
 			 stackVector.clear();
+
+			 //If the value is greater, cannot be used in a build
 			 if (sum > cardInHand.getNumericValue()) {
 				 continue;
 			 }
 
+			 //Store the first card we're checking for readability
 			 Card firstTableCard = table.getCardCopy(firstCardOnTable);
 			 if (cardInHand.getNumericValue() <= sum + firstTableCard.getNumericValue()) {
 				 continue;
 
 			 }
-
+			 //The offset to check every card after it
 			 for (unsigned int offset = 1; offset < table.handSize(); offset++) {
-				
+				//For every card after the first card
 				 for (unsigned int i = firstCardOnTable + offset; i < table.handSize(); i++) {
-					 //stackVector.erase(stackVector.begin() + 1, stackVector.end());
+					 //Reset previous attempts, and cache the current card for readabilty
 					 stackVector.clear();
 					 Card current = table.getCardCopy(i);
+
+					 //If the value with the new card matches or is less then,
 					 if (cardInHand.getNumericValue() >= sum + current.getNumericValue()) {
+						 //Add it to the propestive build
 						 sum += current.getNumericValue();
 						 stackVector.push_back(i);
+
+						 //If it matches
 						 if (sum == cardInHand.getNumericValue()) {
+
+							 //Check if its a duplicate
 							 bool dupe = false;
 							 for (unsigned int k = 0; k < allSets.size(); k++) {
-								 if (stackVector == allSets[k]) {
+								 if (stackVector == allSets[k]) { 
+									 //It is a duplicate
 									 dupe = true;
 									 break;
 								 }
 							 }
+							 //If not a duplicate, record it
 							 if (!dupe) {
 								 allSets.push_back(stackVector);
 								 break;
@@ -147,43 +170,6 @@ Assistance Received: none
 		 }
 	 }
 
-
-	/* for (unsigned int i = 0; i < table.handSize(); i++) {
-		 stackVector.clear();
-		 stackVector.push_back(i);
-		 Card setStarter = table.getCardCopy(stackVector[0]);
-		
-		 sum = setStarter.getNumericValue();
-
-		 for (unsigned int offset = 1; offset < table.handSize() - 1; offset++) {
-			 stackVector.clear();
-			 stackVector.push_back(i);
-			 sum = setStarter.getNumericValue();
-			 for (unsigned int j = i + offset; j < table.handSize(); j++) {
-				 Card current = table.getCardCopy(j);
-				 if (target >= sum + current.getNumericValue()) {
-					 sum += current.getNumericValue();
-					 stackVector.push_back(j);
-					 if (sum == target) {
-						 bool dupe = false;
-						 for (unsigned int k = 0; k < allSets.size(); k++) {
-							 if (stackVector == allSets[k]) {
-								 dupe = true;
-								 break;
-							 }
-						 }
-						 if (!dupe) {
-							 allSets.push_back(stackVector);
-						 }
-						
-						 stackVector.clear();
-						 break;
-					 }
-
-				 }
-			 }
-
-		 }*/
 
 
 	 return allSets;

@@ -227,7 +227,7 @@ Assistance Received: none
 
 	 saveFile << "Round: " + to_string(roundToSave) + "\n\n";
 
-	 saveFile << "Computer:\n   Score : " << to_string(compterPlayerToSave.score) <<
+	 saveFile << "Computer:\n   Score: " << to_string(compterPlayerToSave.score) <<
 		 "\n   Hand: " << compterPlayerToSave.hand <<
 		 "\n   Pile: " << compterPlayerToSave.pile <<
 		 "\n";

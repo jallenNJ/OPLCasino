@@ -5,6 +5,18 @@ Computer::Computer() {
 	setName();
 }
 
+Computer::Computer(bool loadSaveFile) {
+	Serializer::PlayerInfo saveInfo = Serializer::getComputerPlayerInfo();
+	if (!loadSaveFile || saveInfo.isValid == false) {
+		setName();
+		return;
+	}
+
+	setName();
+	playerHand = Hand(saveInfo.hand);
+	playerPile = Hand(saveInfo.pile);
+}
+
 bool Computer::setName() {
 	name = "Bleep Bloop"; //Maybe Clever Mongoose?
 	return true;

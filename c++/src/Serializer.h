@@ -71,6 +71,10 @@ public:
 		return humanPlayer;
 	}
 
+	static PlayerInfo getComputerPlayerInfo() {
+		return computerPlayer;
+	}
+
 	static bool nextPlayerIsHuman() {
 		return nextPlayer == "Human";
 	}

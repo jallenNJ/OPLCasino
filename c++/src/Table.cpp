@@ -40,8 +40,8 @@ void Table::initTable(bool humanStart, bool loadFromSave) {
 	}
 
 	Human* human = new Human(true);
+	Computer* computer = new Computer(true);
 	//Below this needs to be updated for saves
-	Computer* computer = new Computer();
 	players = new Player*[2];
 	players[0] = human;
 	players[1] = computer;

@@ -335,6 +335,25 @@ void Table::serilizeAllObjects() {
 	Serializer::setHumanPlayerSaveState(players[0]->saveSelf());
 	Serializer::setDeckSaveState(deck->toString());
 	Serializer::setTableSaveState(looseCards.toString());
-	Serializer::setNextPlayerSaveState("IMPLEMENT ME");
+	if (nextPlayerIndex.front() == 0) {
+		Serializer::setNextPlayerSaveState("Human");
+	}
+	else {
+		Serializer::setNextPlayerSaveState("Computer");
+	}
+	
+	for (unsigned int i = 0; i < looseCards.handSize(); i++) {
+		Card current = looseCards.getCardCopy(i);
+		if (current.getSuit() == 'B') {
+			string saveOwnerName = "";
+			if (current.getOwner() == players[0]->getName()) {
+				saveOwnerName = "Human";
+			}
+			else {
+				saveOwnerName = "Computer";
+			}
+			Serializer::addBuildToSave(looseCards.toStringOfIndex(i), saveOwnerName);
+		}
+	}
 
 }

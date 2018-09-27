@@ -69,6 +69,13 @@ public:
 		return -1;
 
 	}
+
+	string toStringOfIndex(int i) {
+		if (i >= cardsInHand.size()) {
+			return "";
+		}
+		return cardsInHand[i]->toString();
+	}
 private:
 	vector<Card*> cardsInHand;
 

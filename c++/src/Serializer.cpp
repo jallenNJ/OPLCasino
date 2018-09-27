@@ -242,7 +242,9 @@ Assistance Received: none
 
 	 saveFile << "Table: " << tableToSave << "\n\n";
 
-	 saveFile << "BUILD OWNER THINGS GO HERE\n\n";
+	 for (unsigned int i = 0; i < buildOwnersToSave.size(); i++) {
+		 saveFile << buildOwnersToSave[i] << "\n\n";
+	 }
 
 	 saveFile << "Deck: "<< deckToSave << "\n\n";
 

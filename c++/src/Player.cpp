@@ -37,7 +37,11 @@ Player::Player() {
 			 }
 			 else {
 				 if (current.getOwner() == getName() && checkReserved(played)) {
+					
 					 requireds.push_back(i);
+				 }
+				 else {
+					 Client::outputString("Build rejects, may be due to an owner string mismatch. FIX FOR CAPTURING OTHER BUILD");
 				 }
 			 }
 		}

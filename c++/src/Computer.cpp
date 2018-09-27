@@ -54,8 +54,8 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 			}
 			bool result = createBuild(currentCard, cardsToCheck);
 			if (!result) {
-				Client::outputError ("Ai tried to create an invalid build after deeming it valid");
-				break;
+				Client::outputError ("Ai tried to create an invalid build after deeming it valid, trying next result if it exists");
+				continue;
 			}
 			sort(buildIndices.begin(), buildIndices.end());
 			reverse(buildIndices.begin(), buildIndices.end());
@@ -74,7 +74,7 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 			played = playerHand.getCardCopy(i);
 			if (played.getNumericValue() == buildValues[0]) {
 				cardIndex = i;
-				releaseBuildValue(played.getNumericValue());
+				
 			}
 		}
 
@@ -84,7 +84,7 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 				captureIndices.push_back(i);
 			}
 		}
-
+		releaseBuildValue(played.getNumericValue());
 		playerHand.removeCard(cardIndex);
 		return PlayerMove(Player::Capture, played, captureIndices);
 

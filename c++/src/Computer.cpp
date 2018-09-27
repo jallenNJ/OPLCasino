@@ -41,7 +41,7 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 
 	for (unsigned int i = 0; i < playerHand.handSize(); i++) {
 		Card currentCard = playerHand.getCardCopy(i);
-		if (checkReserved(currentCard) >= 0) {
+		if (checkReserved(currentCard)) {
 			continue;
 		}
 		vector<vector<int>> possibleBuilds = findSelectableSets(currentCard, table);

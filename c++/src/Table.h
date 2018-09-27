@@ -10,6 +10,7 @@
 #include "Hand.h"
 #include "Build.h"
 #include "Serializer.h"
+#include <queue>
 
 using namespace std;
 class Table {
@@ -59,6 +60,8 @@ private:
 	void doPlayerMove(int player);
 
 	void actionMenu();
+
+	queue<int> nextPlayerIndex;
 	
 };
 

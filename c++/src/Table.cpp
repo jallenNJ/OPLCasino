@@ -124,8 +124,26 @@ Algorithm:
 Assistance Received: none
 ********************************************************************* */
 bool Table::runCycle() {
-	printBoard();
-	actionMenu();
+	//printBoard();
+	if (nextPlayerIndex.size() == 0) {
+		if (humanFirst) {
+			nextPlayerIndex.push(0);
+			nextPlayerIndex.push(1);
+		}
+		else {
+			nextPlayerIndex.push(1);
+			nextPlayerIndex.push(0);
+		}
+	}
+
+	while (nextPlayerIndex.size() != 0) {
+		printBoard();
+		actionMenu();
+		doPlayerMove(nextPlayerIndex.front());
+		nextPlayerIndex.pop();
+	}
+
+	/*actionMenu();
 	if (humanFirst) {
 		doPlayerMove(0);
 		printBoard();
@@ -137,7 +155,7 @@ bool Table::runCycle() {
 		printBoard();
 		actionMenu();
 		doPlayerMove(0);
-	}
+	}*/
 
 	if (players[0]->getHandSize() == 0 && players[1]->getHandSize() == 0) {
 		if (deck->isEmpty()) {
@@ -275,7 +293,13 @@ void Table::processPoppedBuild(vector<Build>& buildsInProgress) {
 	void Table::actionMenu() {
 
 	string menu = "1) Save the Game\n";
-	menu += "2) Make a Move\n";
+	if (nextPlayerIndex.front() == 0) {
+		menu += "2) Make a Move (Human)\n";
+	}
+	else {
+		menu += "2) Make a Move (Computer)\n";
+	}
+
 	menu += "3) Ask for help\n";
 	menu += "4) Quit the Game\n";
 	int option = Client::getIntInputRange(menu, 1, 4);

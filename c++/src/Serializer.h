@@ -115,6 +115,13 @@ public:
 		return true;
 	}
 
+	static bool addBuildToSave(string buildString, string owner) {
+		string add = "Build Owner: " + buildString + " " + owner;
+		buildOwnersToSave.push_back(add);
+		return true;
+	}
+
+
 private:
 	static PlayerInfo computerPlayer;
 	static PlayerInfo humanPlayer;
@@ -131,6 +138,7 @@ private:
 	static int round;
 	static int roundToSave;
 	static vector<string>buildOwners;
+	static vector<string>buildOwnersToSave;
 
 	static vector<string> readNNonBlankLines(ifstream&, int);
 	

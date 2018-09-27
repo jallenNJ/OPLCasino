@@ -14,9 +14,12 @@ int Serializer::roundToSave;
 string Serializer::tableToSave;
 string Serializer::deckToSave;
 string Serializer::nextPlayerToSave;
+vector<string> Serializer::buildOwnersToSave;
 
 int Serializer::computerSaveScore;
 int Serializer::humanSaveScore;
+
+
 void Serializer::init() {
 	round = 0;
 	table = "";

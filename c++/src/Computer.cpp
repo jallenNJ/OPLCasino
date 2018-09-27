@@ -41,6 +41,9 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 
 	for (unsigned int i = 0; i < playerHand.handSize(); i++) {
 		Card currentCard = playerHand.getCardCopy(i);
+		if (checkReserved(currentCard) >= 0) {
+			continue;
+		}
 		vector<vector<int>> possibleBuilds = findSelectableSets(currentCard, table);
 		if (possibleBuilds.size() > 0) {
 			//Client::outputString("AI should build with the card in the " + to_string(i) + " postion");
@@ -71,7 +74,7 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 			played = playerHand.getCardCopy(i);
 			if (played.getNumericValue() == buildValues[0]) {
 				cardIndex = i;
-				Client::outputError("Need to unreserve value");
+				releaseBuildValue(played.getNumericValue());
 			}
 		}
 

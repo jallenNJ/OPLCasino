@@ -112,5 +112,8 @@
     <Text Include="..\..\AiTest.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="..\..\DoubleCapSave.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

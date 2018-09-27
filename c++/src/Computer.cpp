@@ -84,6 +84,7 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 				captureIndices.push_back(i);
 			}
 		}
+
 		releaseBuildValue(played.getNumericValue());
 		playerHand.removeCard(cardIndex);
 		return PlayerMove(Player::Capture, played, captureIndices);

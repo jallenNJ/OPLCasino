@@ -149,6 +149,7 @@
   <ItemGroup>
     <Text Include="..\..\AiTest.txt" />
     <Text Include="..\..\CaptureTest.txt" />
+    <Text Include="..\..\DoubleCapSave.txt" />
     <Text Include="..\..\Savefile1.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

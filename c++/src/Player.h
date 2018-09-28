@@ -75,6 +75,12 @@ public:
 	vector<int> findRequiredCaptures(Card played, Hand table);
 	//vector<int> findOptionialCaptures(PlayingCard played, Hand table);
 
+
+	string pileToString() {
+		return playerPile.toString();
+	}
+
+
 protected:
 
 

@@ -79,7 +79,9 @@ public:
 	string pileToString() {
 		return playerPile.toString();
 	}
-
+	string getHandString() {
+		return playerHand.toString();
+	}
 
 protected:
 

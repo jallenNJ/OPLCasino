@@ -59,6 +59,15 @@ void Deck::intializeCards() {
 
 	string savedDeck = Serializer::getDeck();
 	if (savedDeck.length() == 0) {
+
+		char prebuiltDeck = Client::getYesNoInput("Would you like to load a pre made deck? (y/n)");
+		if (prebuiltDeck == 'y') {
+			savedDeck = Serializer::loadPrebuiltDeck();
+
+		}
+	}
+
+	if(savedDeck.length() == 0){
 		//For every Suit
 		for (int i = 0; i < 4; i++) {
 			//Create the ace

@@ -4,6 +4,7 @@
 #include <fstream>
 #include "Client.h"
 #include <sstream>
+#include <algorithm>
 
 
 using namespace std;
@@ -125,6 +126,7 @@ public:
 		return buildOwners;
 	}
 
+	static string loadPrebuiltDeck();
 
 private:
 	static PlayerInfo computerPlayer;

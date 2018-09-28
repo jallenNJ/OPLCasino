@@ -253,3 +253,36 @@ Assistance Received: none
 	 saveFile.close();
 
  }
+
+ string Serializer::loadPrebuiltDeck() {
+	 string filePath;
+	 ifstream deckFile;
+	 while (true) {
+		filePath = Client::getStringInput("Please enter the file path to the deck file: ");
+		deckFile.open(filePath);
+		if (deckFile.is_open()) {
+			break;
+		}
+		Client::outputError("Failed to open file: " + filePath);
+
+	 }
+	 string deckToReturn = "";
+	 while (!deckFile.eof()) {
+		 string line = "";
+		 getline(deckFile, line);
+		 if (line == ""){
+			 continue;
+		 }
+		 line.erase(remove_if(line.begin(), line.end(), isspace), line.end());
+		 if (line.length() > 2) {
+			 Client::outputError("Deck had token longer than a card, skipping.");
+			 continue;
+		 }
+		 deckToReturn += line + " ";
+	 }
+
+	 deckFile.close();
+	 return deckToReturn;
+
+
+ }

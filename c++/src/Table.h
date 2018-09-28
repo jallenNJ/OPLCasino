@@ -59,6 +59,8 @@ private:
 
 	void doPlayerMove(int player);
 
+	void createSuggestedMove();
+
 	void actionMenu();
 
 	queue<int> nextPlayerIndex;

@@ -59,7 +59,10 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 			}
 			sort(buildIndices.begin(), buildIndices.end());
 			reverse(buildIndices.begin(), buildIndices.end());
-			Client::outputString("AI played " + currentCard.toString() + " as it was an oppertunity to make a build");
+			if (name != "Advisor") {
+				Client::outputString("AI played " + currentCard.toString() + " as it was an oppertunity to make a build");
+			}
+			
 			playerHand.removeCard(i);
 			return PlayerMove(Player::Build, currentCard, buildIndices);
 		}
@@ -96,7 +99,9 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 		vector<int> possibleCaptures = findRequiredCaptures(playerHand.getCardCopy(i), table);
 		if (possibleCaptures.size() > 0) {
 			Card played = playerHand.getCardCopy(i);
-			Client::outputString("AI is playing " + played.toString() + " with the intention of capturing");
+			if (name != "Advisor") {
+				Client::outputString("AI is playing " + played.toString() + " with the intention of capturing");
+			}
 			playerHand.removeCard(i);
 			return PlayerMove(Player::Capture, played, possibleCaptures);
 			//Client::outputString("AI should caputre with the card in the " + to_string(i) + " postion");
@@ -104,8 +109,10 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 		}
 	}
 
-	Client::outputString("AI has no better options, trailing");
-	Client::outputString("Ai played " + playerHand.cardToString(0)); 
+	if (name != "Advisor") {
+		Client::outputString("AI has no better options, trailing");
+		Client::outputString("Ai played " + playerHand.cardToString(0));
+	}
 	return PlayerMove(Trail, playerHand.removeCard(0), vector<int>(1));
 }
 

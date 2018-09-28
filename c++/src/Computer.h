@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "Human.h"
 class Computer : public Player {
-
+	
 public:
 	Computer();
 	Computer(bool);
@@ -11,6 +11,7 @@ public:
 	Computer(Human& copy) {
 		name = "Advisor";
 		playerHand = Hand(copy.getHandString());
+		buildValues = copy.getReservedValues();
 	}
 protected:
 	virtual bool setName() override;

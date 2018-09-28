@@ -83,6 +83,10 @@ public:
 		return playerHand.toString();
 	}
 
+	vector<int> getReservedValues() const {
+		return buildValues;
+	}
+
 protected:
 
 

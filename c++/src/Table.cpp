@@ -223,7 +223,8 @@ void Table::doPlayerMove(int playerIndex) {
 		looseCards.addCard(resultTuple.playedCard);
 		break;
 	default:
-		abort();
+		Client::outputError("Invalid sanitized input");
+		//abort();
 		break;
 	}
 	
@@ -336,7 +337,12 @@ void Table::processPoppedBuild(vector<Build>& buildsInProgress) {
 	case 2:
 		return;
 	case 3:
-		Client::outputError("Help not coded, make the move you think is best! :D");
+		//Client::outputError("Help not coded, make the move you think is best! :D");
+		if (nextPlayerIndex.front() == 1) {
+			Client::outputString("The ai does not need to recommend a move to itself, instead it will make the move");
+			return;
+		}
+		createSuggestedMove();
 		return;
 
 	case 4:
@@ -377,4 +383,42 @@ void Table::serilizeAllObjects() {
 		}
 	}
 
+}
+
+
+void Table::createSuggestedMove() {
+	Player* advisor = new Computer(*dynamic_cast<Human*>(players[0]));
+	Player::PlayerMove recommendation = advisor->doTurn(looseCards);
+	string outputString = "The AI recommends that you ";
+	switch (recommendation.actionTaken)
+	{
+		case Player::Actions::Capture:
+			outputString += " capture with the card " + recommendation.playedCard.toString() +
+				"\n to capture these cards:";
+			for (unsigned int i = 0; i < recommendation.targetIndex.size(); i++) {
+				outputString += looseCards.getCardCopy(recommendation.targetIndex[i]).toString() + " ";
+			}
+			outputString += "\n";
+			break;
+		case Player::Actions::Build:
+			outputString += " create a build with the card " + recommendation.playedCard.toString() +
+				"\n and use these cards:";
+			for (unsigned int i = 0; i < recommendation.targetIndex.size(); i++) {
+				outputString += looseCards.getCardCopy(recommendation.targetIndex[i]).toString() + " ";
+			}
+			outputString += "\n";
+			break;
+		case Player::Actions::Trail:
+			outputString += " tail with this card " + recommendation.playedCard.toString() + " as there are no other options\n";
+
+			break;
+		default:
+			Client::outputError("AI recommendation returned an invalid enum");
+			break;
+	}
+
+
+	Client::outputString(outputString);
+
+	delete advisor;
 }

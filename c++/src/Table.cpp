@@ -278,8 +278,26 @@ void Table::fillLooseCards(){
 
 
 void Table::processPoppedBuild(vector<Build>& buildsInProgress) {
+	vector<string> buildsWithOwners = Serializer::getBuildOwners();
 	int amountOfBuilds = buildsInProgress.size();
 	if (amountOfBuilds == 1) {
+		string buildString = buildsInProgress.back().toString();
+		//Remove all white space from the string, then erase what is left over. 
+		buildString.erase(remove_if(buildString.begin(), buildString.end(), isspace), buildString.end());
+		for (unsigned int i = 0; i < buildsWithOwners.size(); i++) {
+			int buildI = buildsWithOwners[i].find_last_of(']');
+			//Increment to contain the bracket as we want amount of characters, not index
+			buildI++;
+			string buildText = buildsWithOwners[i].substr(0, buildI);
+			//Remove the white space in the same way
+			buildText.erase(remove_if(buildText.begin(), buildText.end(), isspace), buildText.end());
+
+			if (buildText == buildString) {
+				buildsInProgress.back().setOwner(buildsWithOwners[i].substr(buildI + 1));
+				break;
+			}
+		}
+
 		looseCards.addCard(buildsInProgress.back());
 
 	}

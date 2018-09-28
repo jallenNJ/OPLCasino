@@ -121,6 +121,10 @@ public:
 		return true;
 	}
 
+	static vector<string> getBuildOwners() {
+		return buildOwners;
+	}
+
 
 private:
 	static PlayerInfo computerPlayer;

@@ -70,7 +70,7 @@ public:
 
 	}
 
-	string toStringOfIndex(int i) {
+	string toStringOfIndex(unsigned int i) {
 		if (i >= cardsInHand.size()) {
 			return "";
 		}

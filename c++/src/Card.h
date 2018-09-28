@@ -150,8 +150,9 @@ protected:
 	string ownerName;
 
 	void symbolToNumericValue();
-private:
 	int numericValue;
+private:
+	
 
 
 	void setInvalidCard() {

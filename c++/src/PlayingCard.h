@@ -12,6 +12,14 @@ public:
 	PlayingCard(Card card) {
 		suit = card.getSuit();
 		symbol = card.getSymbol();
+		symbolToNumericValue();
+		ownerName = card.getOwner();
+	}
+
+	PlayingCard(PlayingCard& card) {
+		suit = card.getSuit();
+		symbol = card.getSymbol();
+		symbolToNumericValue();
 		ownerName = card.getOwner();
 	}
 	PlayingCard(char, char);
@@ -21,7 +29,7 @@ protected:
 
 
 private:
-
+	int numericValue;
 
 
 

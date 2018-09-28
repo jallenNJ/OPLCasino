@@ -8,7 +8,7 @@ using namespace std;
 class Build : public Card {
 public:
 	Build() {
-		
+		symbol = '0';
 	}
 
 	~Build() {
@@ -36,7 +36,8 @@ Assistance Received: none
 
 		cardsInBuild.push_back(instanitateCopy(first));
 		suit = 'B';
-		symbol = getSymbol();
+		symbol = first.getSymbol();
+		
 
 	}
 
@@ -125,6 +126,7 @@ Assistance Received: none
 		for (unsigned int i = 0; i < cardsInBuild.size(); i++) {
 			sum += cardsInBuild[i]->getNumericValue();
 		}
+
 		return sum;
 	}
 
@@ -149,7 +151,14 @@ Assistance Received: none
 		Card* add = instanitateCopy(newCard);
 		
 		cardsInBuild.push_back(add);
-		symbol = getSymbol();
+		if (getNumericValue() < 1) {
+			symbol = newCard.getSymbol();
+		}
+		else {
+			symbol = getSymbol();
+			
+		}
+		symbolToNumericValue();
 		suit = 'B';
 		return true;
 	}

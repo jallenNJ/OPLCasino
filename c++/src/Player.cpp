@@ -26,12 +26,12 @@ Player::Player() {
 	 return played.checkCapture(targets);
  }
 
- vector<int> Player::findRequiredCaptures(PlayingCard played, Hand table) {
+ vector<int> Player::findRequiredCaptures(Card played, Hand table) {
 	 vector<int> requireds;
 
 	 for (unsigned int i = 0; i < table.handSize(); i++) {
 		Card current =  table.getCardCopy(i);
-		 if (current.getSymbol() == played.getSymbol()) {
+		 if (current.getNumericValue() == played.getNumericValue()) {
 			 if (current.getSuit() != 'B') {
 				 requireds.push_back(i);
 			 }

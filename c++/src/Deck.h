@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <queue>
+#include <ctime>
 #include "Client.h"
 using namespace std;
 
@@ -39,12 +40,15 @@ private:
 	char suitLetters[4];
 	char specialChar[5]; 
 	vector<Card> allCards;
+	bool shuffleDeck;
 
 	cardIterator topOfDeck;
 	bool empty;
 
 	void intializeCards();
+
 	inline void shuffleCards() {
+		srand(time(NULL));
 		random_shuffle(allCards.begin(), allCards.end());
 	}
 	

@@ -112,7 +112,7 @@ public:
 		return true;
 	}
 	static bool setNextPlayerSaveState(string n) {
-		nextPlayer = n;
+		nextPlayerToSave = n;
 		return true;
 	}
 

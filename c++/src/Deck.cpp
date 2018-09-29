@@ -31,9 +31,12 @@ Deck::Deck(){
 	specialChar[3] = 'Q';
 	specialChar[4] = 'K';
 
-
+	shuffleDeck = true;
 	intializeCards();
-	shuffleCards();
+	if (shuffleDeck) {
+		shuffleCards();
+	}
+	
 	topOfDeck = allCards.begin();
 	empty = false;
 
@@ -84,6 +87,7 @@ void Deck::intializeCards() {
 		return;
 	}
 	else {
+		shuffleDeck = false;
 		vector<string> parsedCards = Serializer::parseLine(savedDeck);
 		for (unsigned int i=0; i < parsedCards.size(); i++) {
 			char cardSuit = parsedCards[i][0];

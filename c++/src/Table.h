@@ -38,6 +38,7 @@ private:
 
 	void processPoppedBuild(vector<Build>&);
 
+	void captureRemaingCards();
 
 	void fillHand(int playerIndex) const{
 		if (players[playerIndex]->getHandSize() > 0) {
@@ -64,6 +65,7 @@ private:
 	void actionMenu();
 
 	queue<int> nextPlayerIndex;
+	int lastCapture;
 	
 };
 

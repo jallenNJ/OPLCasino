@@ -32,6 +32,7 @@ void Table::initTable(bool humanStart) {
 	fillHand(1);
 	fillLooseCards();
 	humanFirst = humanStart;
+	lastCapture = 0;
 }
 
 void Table::initTable(bool humanStart, bool loadFromSave) {
@@ -52,7 +53,7 @@ void Table::initTable(bool humanStart, bool loadFromSave) {
 	fillHand(1);
 	fillLooseCards();
 	humanFirst = humanStart;
-
+	lastCapture = 0;
 
 
 }
@@ -148,6 +149,7 @@ bool Table::runCycle() {
 
 	if (players[0]->getHandSize() == 0 && players[1]->getHandSize() == 0) {
 		if (deck->isEmpty()) {
+			captureRemaingCards();
 			return true;
 		}
 		else {
@@ -193,6 +195,7 @@ void Table::doPlayerMove(int playerIndex) {
 		for (unsigned int i = 0; i < resultTuple.targetIndex.size(); i++) {
 			players[playerIndex]->addToPile(looseCards.removeCard(resultTuple.targetIndex[i]));
 		}
+		lastCapture = playerIndex;
 		break;
 	case Player::Actions::Build:
 		
@@ -412,4 +415,16 @@ void Table::createSuggestedMove() {
 	Client::outputString(outputString);
 
 	delete advisor;
+}
+
+
+void Table::captureRemaingCards() {
+
+	for ( int i = looseCards.handSize() -1; i >=0; i--) {
+		players[lastCapture]->addToPile(looseCards.getCardCopy(i));
+		looseCards.removeCard(i);
+
+	}
+
+
 }

@@ -34,6 +34,8 @@ Assistance Received: none
 void Tournament::RunTournament() {
 	bool loaded = false;
 	//Check if user wants to load save
+	Round* active = NULL;
+	Round* previous = NULL;
 	while (true){
 		if (checkForSaveFileLoad()) {
 			 loaded = Serializer::loadInSaveFile(Serializer::getSaveFilePath());
@@ -54,35 +56,36 @@ void Tournament::RunTournament() {
 			Serializer::setSaveScore(scores[Round::HUMAN_PLAYER], scores[Round::COMPUTER_PLAYER]);
 			Serializer::setRoundToSave(roundNumber);
 
-			Round save(Serializer::nextPlayerIsHuman(), true);
-			save.playRound();
-			Client::outputError("NEED TO INTIALIZE ROUND FROM SAVE FILE TO NOT CRASH");
+			active = new Round(Serializer::nextPlayerIsHuman(), true);
+	
 			break;
 		}
 
 	}
 
 	if (!loaded) {
-		Round first;
-		first.playRound();
-		allRounds.push_back(first);
-	}
-		
+		active = new Round();
 	
-
+		
+	}
+	active->playRound();
+	
 	
 	int winner = -1;
 	while (winner < 0) {
+		if (previous != NULL) {
+			delete previous;
+		}
+		previous = active;
 		//Sum Results here
-		scores[Round::HUMAN_PLAYER] += allRounds.back().getPlayerScore(Round::HUMAN_PLAYER);
-		scores[Round::COMPUTER_PLAYER] += allRounds.back().getPlayerScore(Round::COMPUTER_PLAYER);
+		scores[Round::HUMAN_PLAYER] += previous->getPlayerScore(Round::HUMAN_PLAYER);
+		scores[Round::COMPUTER_PLAYER] += previous->getPlayerScore(Round::COMPUTER_PLAYER);
 		Serializer::setSaveScore(scores[Round::HUMAN_PLAYER], scores[Round::COMPUTER_PLAYER]);
 		Serializer::setRoundToSave(roundNumber);
 		winner = checkForWinner();
 
 		//No winner, another round
-		allRounds.push_back(new Round(allRounds.back().getWinner()));
-		allRounds.back().playRound();
+		active = new Round();
 
 	}
 

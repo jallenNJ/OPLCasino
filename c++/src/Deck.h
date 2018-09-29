@@ -48,7 +48,7 @@ private:
 	void intializeCards();
 
 	inline void shuffleCards() {
-		srand(time(NULL));
+		srand((unsigned int)time(NULL));
 		random_shuffle(allCards.begin(), allCards.end());
 	}
 	

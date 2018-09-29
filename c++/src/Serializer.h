@@ -132,8 +132,9 @@ public:
 		return round;
 	}
 
-	static int setRoundToSave(int s) {
+	static bool setRoundToSave(int s) {
 		roundToSave = s;
+		return true;
 	}
 
 private:

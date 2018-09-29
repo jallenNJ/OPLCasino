@@ -76,7 +76,7 @@ Assistance Received: none
 
 	//Aces return 1
 	const virtual int getNumericValue() const{
-		return numericValue;
+		return symbolToNumericValue();
 	}
 
 	/* *********************************************************************
@@ -149,8 +149,9 @@ protected:
 	char symbol;
 	string ownerName;
 
-	void symbolToNumericValue();
-	int numericValue;
+	 int symbolToNumericValue() const;
+	char numericValueToSymbol(int);
+	//int numericValue;
 private:
 	
 

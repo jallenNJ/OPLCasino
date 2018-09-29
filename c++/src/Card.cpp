@@ -56,34 +56,55 @@ Algorithm:
 Assistance Received: none
 ********************************************************************* */
 
-void Card::symbolToNumericValue() {
+int Card::symbolToNumericValue() const {
 	//If its a digit, convert it to the ascii form of itself
 	if (isdigit(symbol)) {
-		numericValue = (int)(symbol - '0');
-		return;
+		return (int)(symbol - '0');
 	}
 	//Else, map the letter to its associated value per the game rules
 	switch (symbol) {
 		case 'A':
-			numericValue = 1;
+			return 1;
 			break;
 		case 'X':
-			numericValue = 10;
+			return 10;
 			break;
 		case 'J':
-			numericValue = 11;
+			return 11;
 			break;
 		case 'Q':
-			numericValue = 12;
+			return 12;
 			break;
 		case 'K':
-			numericValue = 13;
+			return 13;
 			break;
 		default: //Catch for invalid values
-			numericValue = 1;
+			return 1;
 			break;
 
 	}
-	return;
+
+}
+
+char Card::numericValueToSymbol(int val) {
+
+	if (val >= 2 || val <= 9) {
+		return to_string(val)[0];
+	}
+
+	switch (val)
+	{
+	case 10: 
+		return 'X';
+	case 11: 
+		return 'J';
+	case 12:
+		return 'Q';
+	case 13:
+		return 'K';
+	default:
+		return 'A';
+		break;
+	}
 
 }

@@ -41,7 +41,7 @@ public:
 
 	static bool loadInSaveFile(string);
 	static string inline getSaveFilePath() {
-		return Client::getStringInput("Please input save file path.");
+		return Client::getStringInput("Please input save file path: ");
 	}
 
 	static void createSaveFile();

@@ -97,7 +97,7 @@ const void Table::printBoard() {
 	string formattedTable = "\n" + names[0] + players[0]->toFormattedString() + 
 							"\n" + names[2] + looseCards.toFormattedString() + 
 							"\n" + names[1] + players[1]->toFormattedString() +
-							"\n\n"+ "Deck: " + deck->toString()+
+							"\n\n\n(Debug Data Dump:)\n"+ "Deck: " + deck->toString()+
 							"\n Pile of " + names[0] + players[0]->pileToString()+
 							"\n Pile of " + names[1]  + players[1]->pileToString()+
 							"\n";

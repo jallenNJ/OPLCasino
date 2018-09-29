@@ -76,6 +76,10 @@ public:
 		}
 		return cardsInHand[i]->toString();
 	}
+
+	int getAmountOfSuit(char) const;
+
+	//bool containsCard(char, char);
 private:
 	vector<Card*> cardsInHand;
 

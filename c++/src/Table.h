@@ -21,6 +21,13 @@ public:
 	~Table();
 	const void printBoard();
 	bool runCycle();
+
+	int getHumanScore() const {
+		return playerScores[0];
+	}
+	int getComputerScore() const {
+		return playerScores[1];
+	}
 	
 private:
 	bool humanFirst;
@@ -57,6 +64,7 @@ private:
 			cout << "" + (*cardVec)[i].toString() << " ";
 		}
 	}
+	void scoreRound();
 
 	void doPlayerMove(int player);
 
@@ -66,6 +74,7 @@ private:
 
 	queue<int> nextPlayerIndex;
 	int lastCapture;
+	int playerScores[2];
 	
 };
 

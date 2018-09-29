@@ -164,3 +164,15 @@ Assistance Received: none
 	 return chosen;
 
  }
+
+
+ int Hand::getAmountOfSuit(char targetSuit) const {
+	 int hits = 0;
+
+	 for (unsigned int i = 0; i < cardsInHand.size(); i++) {
+		 if (cardsInHand[i]->getSuit() == targetSuit) {
+			 hits++;
+		 }
+	 }
+	 return hits;
+ }

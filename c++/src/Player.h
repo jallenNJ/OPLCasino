@@ -87,6 +87,22 @@ public:
 		return buildValues;
 	}
 
+	int getPileSize() const {
+		return playerPile.handSize();
+	}
+
+	int getAmountOfSpadesInPile() const {
+		return playerPile.getAmountOfSuit('S');
+	}
+
+	bool containsCardInPile(char cardSuit, char cardSymbol) {
+		return (playerPile.containsCard(cardSuit, cardSymbol) >= 0);
+	}
+
+	int getAmountOfSymbolInPile(char sym) const {
+		return playerPile.countSymbol(sym);
+	}
+
 protected:
 
 

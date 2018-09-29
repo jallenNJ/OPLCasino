@@ -33,6 +33,8 @@ void Table::initTable(bool humanStart) {
 	fillLooseCards();
 	humanFirst = humanStart;
 	lastCapture = 0;
+	playerScores[0] = 0;
+	playerScores[1] = 0;
 }
 
 void Table::initTable(bool humanStart, bool loadFromSave) {
@@ -43,7 +45,6 @@ void Table::initTable(bool humanStart, bool loadFromSave) {
 
 	Human* human = new Human(true);
 	Computer* computer = new Computer(true);
-	//Below this needs to be updated for saves
 	players = new Player*[2];
 	players[0] = human;
 	players[1] = computer;
@@ -54,7 +55,8 @@ void Table::initTable(bool humanStart, bool loadFromSave) {
 	fillLooseCards();
 	humanFirst = humanStart;
 	lastCapture = 0;
-
+	playerScores[0] = 0;
+	playerScores[1] = 0;
 
 }
 
@@ -150,6 +152,9 @@ bool Table::runCycle() {
 	if (players[0]->getHandSize() == 0 && players[1]->getHandSize() == 0) {
 		if (deck->isEmpty()) {
 			captureRemaingCards();
+			scoreRound();
+			Client::outputString("Final state of board");
+			printBoard();
 			return true;
 		}
 		else {
@@ -158,8 +163,6 @@ bool Table::runCycle() {
 		}
 		
 	}
-
-
 
 	return false;
 }
@@ -426,5 +429,42 @@ void Table::captureRemaingCards() {
 
 	}
 
+
+}
+
+void Table::scoreRound() {
+	if (players[0]->getPileSize() > players[1]->getPileSize()) {
+		playerScores[0] += 3;
+	}
+	else if (players[0]->getPileSize() < players[1]->getPileSize()) {
+		playerScores[1] += 3;
+	}
+
+	int humanSpades = players[0]->getAmountOfSpadesInPile();
+	int compSpades = players[1]->getAmountOfSpadesInPile();
+
+	if (humanSpades > compSpades) {
+		playerScores[0]++;
+	}
+	else if (humanSpades < compSpades) {
+		playerScores[1]++;
+	}
+
+	if (players[0]->containsCardInPile('D', 'X')) {
+		playerScores[0] += 2;
+	}
+	else if (players[1]->containsCardInPile('D', 'X')) {
+		playerScores[1] += 2;
+	}
+
+	if (players[0]->containsCardInPile('S', '2')) {
+		playerScores[0] += 2;
+	}
+	else if (players[1]->containsCardInPile('S', '2')) {
+		playerScores[1] += 2;
+	}
+
+	playerScores[0] += players[0]->getAmountOfSymbolInPile('A');
+	playerScores[1] += players[0]->getAmountOfSymbolInPile('A');
 
 }

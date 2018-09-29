@@ -99,6 +99,10 @@ void Round::playRound() {
 	 
 	while (table->runCycle() == false);
 
+	playerScores[HUMAN_PLAYER] = table->getHumanScore();
+	playerScores[COMPUTER_PLAYER] = table->getComputerScore();
+
+	Client::outputString("Round Scores: Human: " + to_string(playerScores[HUMAN_PLAYER]) + "  Computer: " + to_string(playerScores[COMPUTER_PLAYER]) + "\n");
 	delete table;
 
 }

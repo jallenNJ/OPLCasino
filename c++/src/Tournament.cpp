@@ -102,7 +102,7 @@ void Tournament::RunTournament() {
 		break;
 	}
 
-	Client::outputString("Scores: Human: " + to_string( scores[Round::HUMAN_PLAYER]) + "   Computer: " + to_string(scores[Round::COMPUTER_PLAYER])_;
+	Client::outputString("Scores: Human: " + to_string( scores[Round::HUMAN_PLAYER]) + "   Computer: " + to_string(scores[Round::COMPUTER_PLAYER]));
 
 }
 

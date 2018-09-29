@@ -32,13 +32,14 @@ Deck::Deck(){
 	specialChar[4] = 'K';
 
 	shuffleDeck = true;
+	empty = false;
 	intializeCards();
 	if (shuffleDeck) {
 		shuffleCards();
 	}
 	
 	topOfDeck = allCards.begin();
-	empty = false;
+	
 
 }
 
@@ -90,9 +91,15 @@ void Deck::intializeCards() {
 		shuffleDeck = false;
 		vector<string> parsedCards = Serializer::parseLine(savedDeck);
 		for (unsigned int i=0; i < parsedCards.size(); i++) {
+			if (parsedCards[i].length() < 2) { //Skip for empty deck
+				continue;
+			}
 			char cardSuit = parsedCards[i][0];
 			char cardSymbol = parsedCards[i][1];
 			allCards.push_back(PlayingCard(cardSuit, cardSymbol));
+		}
+		if (allCards.size() == 0) {
+			empty = true;
 		}
 		return;
 	}

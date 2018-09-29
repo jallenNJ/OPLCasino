@@ -3,6 +3,7 @@
 #include "Card.h"
 #include <vector>
 #include "PlayingCard.h"
+#include "Client.h"
 
 using namespace std;
 class Build : public Card {
@@ -121,14 +122,19 @@ Algorithm:
 Assistance Received: none
 ********************************************************************* */
 
-	const virtual int getNumericValue() const override {
-		int sum = 0;
+	/*const virtual int getNumericValue()  override {
+		/*int sum = 0;
 		for (unsigned int i = 0; i < cardsInBuild.size(); i++) {
 			sum += cardsInBuild[i]->getNumericValue();
 		}
 
-		return sum;
-	}
+		return sum;*/
+		//
+	/*	if (numericValue < 1) {
+			symbolToNumericValue();
+		}
+		return numericValue;
+	}*/
 
 	/* *********************************************************************
 Function Name: addCardToBuild
@@ -144,21 +150,30 @@ Algorithm:
 Assistance Received: none
 ********************************************************************* */
 	inline bool addCardToBuild(Card& newCard) {
-		if (newCard.getNumericValue() + getNumericValue() > 14) {
-		//	return false;
-		}
+		//if (newCard.getNumericValue() + getNumericValue() > 14) {
+			
+		//}
 
 		Card* add = instanitateCopy(newCard);
-		
+
 		cardsInBuild.push_back(add);
-		if (getNumericValue() < 1) {
-			symbol = newCard.getSymbol();
+		if (add->getSuit() == 'B' && cardsInBuild.size() > 1) {
+			if (add->getNumericValue() != getNumericValue()) {
+				Client::outputError("Multibuild created with differing values");
+			}
+			return true;
 		}
-		else {
-			symbol = getSymbol();
+
+		if (cardsInBuild.size() == 1) {
+			symbol = newCard.getSymbol();
 			
 		}
+		else {
+			symbol = numericValueToSymbol(getNumericValue() + newCard.getNumericValue());
+		}
+
 		symbolToNumericValue();
+		
 		suit = 'B';
 		return true;
 	}

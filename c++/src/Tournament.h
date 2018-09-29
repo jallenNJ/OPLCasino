@@ -17,6 +17,7 @@ private:
 	vector<Round> allRounds;
 	int scores[2];
 	int checkForWinner();
+	int roundNumber;
 
 	bool checkForSaveFileLoad();
 

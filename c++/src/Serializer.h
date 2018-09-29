@@ -128,6 +128,14 @@ public:
 
 	static string loadPrebuiltDeck();
 
+	static int getRound() {
+		return round;
+	}
+
+	static int setRoundToSave(int s) {
+		roundToSave = s;
+	}
+
 private:
 	static PlayerInfo computerPlayer;
 	static PlayerInfo humanPlayer;

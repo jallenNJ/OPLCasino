@@ -4,6 +4,7 @@
 Tournament::Tournament() {
 	scores[Round::HUMAN_PLAYER] = 0;
 	scores[Round::COMPUTER_PLAYER] = 0;
+	roundNumber = 0;
 	Serializer::init();
 }
 
@@ -49,7 +50,10 @@ void Tournament::RunTournament() {
 			//Load in the data
 			scores[Round::HUMAN_PLAYER] = Serializer::getHumanScore();
 			scores[Round::COMPUTER_PLAYER] = Serializer::getComputerScore();
+			roundNumber = Serializer::getRound();
 			Serializer::setSaveScore(scores[Round::HUMAN_PLAYER], scores[Round::COMPUTER_PLAYER]);
+			Serializer::setRoundToSave(roundNumber);
+
 			Round save(Serializer::nextPlayerIsHuman(), true);
 			save.playRound();
 			Client::outputError("NEED TO INTIALIZE ROUND FROM SAVE FILE TO NOT CRASH");
@@ -73,6 +77,7 @@ void Tournament::RunTournament() {
 		scores[Round::HUMAN_PLAYER] += allRounds.back().getPlayerScore(Round::HUMAN_PLAYER);
 		scores[Round::COMPUTER_PLAYER] += allRounds.back().getPlayerScore(Round::COMPUTER_PLAYER);
 		Serializer::setSaveScore(scores[Round::HUMAN_PLAYER], scores[Round::COMPUTER_PLAYER]);
+		Serializer::setRoundToSave(roundNumber);
 		winner = checkForWinner();
 
 		//No winner, another round
@@ -81,7 +86,24 @@ void Tournament::RunTournament() {
 
 	}
 
-	cout << winner << " has won" << endl;
+	switch (winner)
+	{
+	case Round::HUMAN_PLAYER:
+		Client::outputString("The human has won!");
+		break;
+	case Round::COMPUTER_PLAYER:
+		Client::outputString("The computer has won!");
+		break;
+	case 2:
+		Client::outputString("The result is a tie!");
+		break;
+	default:
+		Client::outputError("Invalid enum in winner, view scores below to check");
+		break;
+	}
+
+	Client::outputString("Scores: Human: " + to_string( scores[Round::HUMAN_PLAYER]) + "   Computer: " + to_string(scores[Round::COMPUTER_PLAYER])_;
+
 }
 
 bool Tournament::checkForSaveFileLoad() {

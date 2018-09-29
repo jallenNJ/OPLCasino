@@ -155,7 +155,7 @@ private:
 	static vector<string>buildOwners;
 	static vector<string>buildOwnersToSave;
 
-	static vector<string> readNNonBlankLines(ifstream&, int);
+	static vector<string> readNNonBlankLines(ifstream&, unsigned int);
 	
 	static PlayerInfo readPlayerInfo(vector<string>);
 	static inline string removeHeader(string);

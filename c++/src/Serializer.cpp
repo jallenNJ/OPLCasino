@@ -118,7 +118,7 @@ Assistance Received: Worked with Andrew Wild to get the idea of passing the ifSt
 			by reference to a function to read target lines
 ********************************************************************* */
 //Worked w/ AW
- vector<string> Serializer::readNNonBlankLines(ifstream& file, int amountOfLines) {
+ vector<string> Serializer::readNNonBlankLines(ifstream& file, unsigned int amountOfLines) {
 	vector<string> results;
 	while (!file.eof() && results.size() < amountOfLines) {
 		string line = "";

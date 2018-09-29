@@ -84,6 +84,13 @@ void Tournament::RunTournament() {
 		Serializer::setRoundToSave(roundNumber);
 		winner = checkForWinner();
 
+		if (winner >= 0) {
+			break;
+		}
+
+
+		Client::outputString("Tournament Scores: Human: " + to_string(scores[Round::HUMAN_PLAYER]) + "   Computer: " + to_string(scores[Round::HUMAN_PLAYER]));
+
 		//No winner, another round
 		active = new Round();
 
@@ -92,20 +99,20 @@ void Tournament::RunTournament() {
 	switch (winner)
 	{
 	case Round::HUMAN_PLAYER:
-		Client::outputString("The human has won!");
+		Client::outputString("The human has won the tournament!");
 		break;
 	case Round::COMPUTER_PLAYER:
-		Client::outputString("The computer has won!");
+		Client::outputString("The computer has wonthe tournament!");
 		break;
 	case 2:
-		Client::outputString("The result is a tie!");
+		Client::outputString("The result of the tournament is a tie!");
 		break;
 	default:
 		Client::outputError("Invalid enum in winner, view scores below to check");
 		break;
 	}
 
-	Client::outputString("Scores: Human: " + to_string( scores[Round::HUMAN_PLAYER]) + "   Computer: " + to_string(scores[Round::COMPUTER_PLAYER]));
+	Client::outputString("Tournament Scores: Human: " + to_string( scores[Round::HUMAN_PLAYER]) + "   Computer: " + to_string(scores[Round::COMPUTER_PLAYER]));
 
 }
 
@@ -121,7 +128,7 @@ bool Tournament::checkForSaveFileLoad() {
 
 /* *********************************************************************
 Function Name: checkForWinner()
-Purpose: check if someone won and who
+Purpose: Check if someone won and who
 Parameters:
 			void
 Return Value: int the winner

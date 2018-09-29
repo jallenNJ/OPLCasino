@@ -146,20 +146,6 @@ bool Table::runCycle() {
 		nextPlayerIndex.pop();
 	}
 
-	/*actionMenu();
-	if (humanFirst) {
-		doPlayerMove(0);
-		printBoard();
-		actionMenu();
-		doPlayerMove(1);
-	}
-	else {
-		doPlayerMove(1);
-		printBoard();
-		actionMenu();
-		doPlayerMove(0);
-	}*/
-
 	if (players[0]->getHandSize() == 0 && players[1]->getHandSize() == 0) {
 		if (deck->isEmpty()) {
 			return true;
@@ -298,6 +284,11 @@ void Table::processPoppedBuild(vector<Build>& buildsInProgress) {
 
 			if (buildText == buildString) {
 				buildsInProgress.back().setOwner(buildsWithOwners[i].substr(buildI + 1));
+				int playerID = 0;
+				if (buildsInProgress.back().getOwner() != "Human" && buildsInProgress.back().getOwner() != players[0]->getName()) {
+					playerID = 1;
+				}
+				players[playerID]->reserveCardValue(buildsInProgress.back().getNumericValue());
 				break;
 			}
 		}

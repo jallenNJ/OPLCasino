@@ -89,10 +89,10 @@ void Tournament::RunTournament() {
 		}
 
 
-		Client::outputString("Tournament Scores: Human: " + to_string(scores[Round::HUMAN_PLAYER]) + "   Computer: " + to_string(scores[Round::HUMAN_PLAYER]));
+		Client::outputString("Tournament Scores: Human: " + to_string(scores[Round::HUMAN_PLAYER]) + "   Computer: " + to_string(scores[Round::COMPUTER_PLAYER]));
 
 		//No winner, another round
-		active = new Round();
+		active = new Round(previous->getWinner());
 
 	}
 

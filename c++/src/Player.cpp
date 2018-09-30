@@ -48,13 +48,6 @@ Player::Player() {
 	 return requireds;
  }
 
- /*vector<int> Player::findOptionialCaptures(PlayingCard played, Hand table){
-
-	 for (unsigned int i = 0; i < table.handSize(); i++) {
-		 Card current = table.getCardCopy(i);
-	 }
- }*/
-
  /* *********************************************************************
 Function Name: createBuild
 Purpose: To check if creating a build is a valid move
@@ -86,7 +79,7 @@ Assistance Received: none
 
  bool Player::checkReserved(Card played) {
 	 if (findReservedValue(played.getNumericValue()) >= 0) {
-		 if (amountOfSymbolInHand(played.getSymbol()) < 2) {
+		 if (amountOfSymbolInHand(played.getSymbol()) == 1) {
 			 return true;
 		 }
 	 }

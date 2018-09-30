@@ -196,7 +196,28 @@ void Table::doPlayerMove(int playerIndex) {
 	case Player::Actions::Capture:
 		players[playerIndex]->addToPile(resultTuple.playedCard);
 		for (unsigned int i = 0; i < resultTuple.targetIndex.size(); i++) {
-			players[playerIndex]->addToPile(looseCards.removeCard(resultTuple.targetIndex[i]));
+			Card removed = looseCards.removeCard(resultTuple.targetIndex[i]);
+			if (removed.getSuit() == 'B') {
+				string normalizedName = removed.getOwner();
+				if (normalizedName != "Computer" && normalizedName != "Human") {
+					if (normalizedName == players[0]->getName()) {
+						normalizedName = "Human";
+					}
+					else {
+						normalizedName = "Computer";
+					}
+				}
+
+				if ((normalizedName == "Computer" && playerIndex == 0) || normalizedName == "Human" && playerIndex == 1) {
+					if (playerIndex == 1) {
+						players[0]->releaseBuildValue(removed.getNumericValue());
+					}
+					else {
+						players[1]->releaseBuildValue(removed.getNumericValue());
+					}
+				}
+			}
+			players[playerIndex]->addToPile(removed);
 		}
 		lastCapture = playerIndex;
 		break;
@@ -406,7 +427,7 @@ void Table::createSuggestedMove() {
 			outputString += "\n";
 			break;
 		case Player::Actions::Trail:
-			outputString += " tail with this card " + recommendation.playedCard.toString() + " as there are no other options\n";
+			outputString += " trail with this card " + recommendation.playedCard.toString() + " as there are no other options\n";
 
 			break;
 		default:

@@ -454,16 +454,22 @@ void Table::captureRemaingCards() {
 }
 
 void Table::scoreRound() {
-	if (players[0]->getPileSize() > players[1]->getPileSize()) {
+
+	int humanCards = players[0]->getPileSize();
+	int compCards = players[1]->getPileSize();
+	Client::outputString(players[0]->getName() + " has " + to_string(humanCards) + " in their pile, and " + players[1]->getName() + " has " + to_string(compCards) + " in their pile");
+
+	if (humanCards > compCards) {
 		playerScores[0] += 3;
 	}
-	else if (players[0]->getPileSize() < players[1]->getPileSize()) {
+	else if (humanCards < compCards) {
 		playerScores[1] += 3;
 	}
 
 	int humanSpades = players[0]->getAmountOfSpadesInPile();
 	int compSpades = players[1]->getAmountOfSpadesInPile();
 
+	Client::outputString(players[0]->getName() + " has " + to_string(humanSpades) + " spades in their pile, and " + players[1]->getName() + " has " + to_string(compSpades) + " spades in their pile");
 	if (humanSpades > compSpades) {
 		playerScores[0]++;
 	}

@@ -28,6 +28,10 @@ public:
 	int getComputerScore() const {
 		return playerScores[1];
 	}
+
+	int getPlayerWhoCapturedLast()const {
+		return lastCapture;
+	}
 	
 private:
 	bool humanFirst;

@@ -37,8 +37,8 @@ public:
 		}
 	}
 
-	const int getWinner() const {
-		return playerThatWonRound;
+	const int getPlayerThatCapturedLast()const {
+		return playerLastCapture;
 	}
 private:
 
@@ -46,8 +46,8 @@ private:
 	int startingPlayer;
 	bool roundOver;
 	int playerScores[2];
-	int playerThatWonRound;
 	bool loadSave;
+	int playerLastCapture;
 
 	const int MAX_PLAYERS = 2;
 

@@ -82,7 +82,7 @@ void Round::intializeRound() {
 	playerScores[HUMAN_PLAYER] = 0;
 	playerScores[COMPUTER_PLAYER] = 0;
 	roundOver = false;
-	playerThatWonRound = -1;
+	playerLastCapture = -1;
 	loadSave = false;
 }
 
@@ -101,8 +101,10 @@ void Round::playRound() {
 
 	playerScores[HUMAN_PLAYER] = table->getHumanScore();
 	playerScores[COMPUTER_PLAYER] = table->getComputerScore();
+	
 
 	Client::outputString("Round Scores: Human: " + to_string(playerScores[HUMAN_PLAYER]) + "  Computer: " + to_string(playerScores[COMPUTER_PLAYER]) + "\n");
+	playerLastCapture = table->getPlayerWhoCapturedLast();
 	delete table;
 
 }

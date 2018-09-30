@@ -88,7 +88,7 @@ int Card::symbolToNumericValue() const {
 
 char Card::numericValueToSymbol(int val) {
 
-	if (val >= 2 || val <= 9) {
+	if (val >= 2 && val <= 9) {
 		return to_string(val)[0];
 	}
 

@@ -58,11 +58,12 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 				continue;
 			}
 			sort(buildIndices.begin(), buildIndices.end());
-			reverse(buildIndices.begin(), buildIndices.end());
+
 			if (name != "Advisor") {
-				Client::outputString("AI played " + currentCard.toString() + " as it was an oppertunity to make a build");
+				string buildCards = cardIndiciesToString(table, buildIndices);
+				Client::outputString("AI played " + currentCard.toString() + " as it was an oppertunity to make a build using cards: " + buildCards );
 			}
-			
+			reverse(buildIndices.begin(), buildIndices.end());
 			playerHand.removeCard(i);
 			return PlayerMove(Player::Build, currentCard, buildIndices);
 		}
@@ -80,7 +81,6 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 				
 			}
 		}
-
 
 		for (unsigned int i = 0; i < table.handSize(); i++) {
 			if (table.getCardCopy(i).getNumericValue() == played.getNumericValue()) {
@@ -100,7 +100,8 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 		if (possibleCaptures.size() > 0) {
 			Card played = playerHand.getCardCopy(i);
 			if (name != "Advisor") {
-				Client::outputString("AI is playing " + played.toString() + " with the intention of capturing");
+				string captureString = cardIndiciesToString(table, possibleCaptures);
+				Client::outputString("AI is playing " + played.toString() + " with the intention of capturing: " + captureString);
 			}
 			playerHand.removeCard(i);
 			return PlayerMove(Player::Capture, played, possibleCaptures);
@@ -136,5 +137,16 @@ vector<int> Computer::decideBestBuild(vector<vector<int>> options) {
 
 	return options[indexOfLargest];
 
+
+}
+
+
+string Computer::cardIndiciesToString(Hand table, vector<int> indicies) {
+
+	string cardString = "";
+	for (unsigned int i = 0; i < indicies.size(); i++) {
+		cardString += table.getCardCopy(indicies[i]).toString();
+	}
+	return cardString;
 
 }

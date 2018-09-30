@@ -108,75 +108,7 @@ Assistance Received: none
 		}
 	}
 
-	/* *********************************************************************
-Function Name: getNumericValue
-Purpose: To get the sum of all Cards in the build
-Parameters:
-			void
-Return Value: A const int, of the value of the build. [2-14] are valid values
-Local Variables:
-			sum, an int, the summation of all the cards
-Algorithm:
-			1) Sum the value of all the cards
-			2) Return the value
-Assistance Received: none
-********************************************************************* */
-
-	/*const virtual int getNumericValue()  override {
-		/*int sum = 0;
-		for (unsigned int i = 0; i < cardsInBuild.size(); i++) {
-			sum += cardsInBuild[i]->getNumericValue();
-		}
-
-		return sum;*/
-		//
-	/*	if (numericValue < 1) {
-			symbolToNumericValue();
-		}
-		return numericValue;
-	}*/
-
-	/* *********************************************************************
-Function Name: addCardToBuild
-Purpose: To add another card into the build
-Parameters:
-			newCards, a Card passed by value. If this card doesn't exceed 14, it will be added
-Return Value: bool. True if added, false if rejected
-Local Variables:
-			n/a
-Algorithm:
-			1) Check to make sure the Card is valid
-			2) Add to data structure
-Assistance Received: none
-********************************************************************* */
-	inline bool addCardToBuild(Card& newCard) {
-		//if (newCard.getNumericValue() + getNumericValue() > 14) {
-			
-		//}
-
-		Card* add = instanitateCopy(newCard);
-
-		cardsInBuild.push_back(add);
-		if (add->getSuit() == 'B' && cardsInBuild.size() > 1) {
-			if (add->getNumericValue() != getNumericValue()) {
-				Client::outputError("Multibuild created with differing values");
-			}
-			return true;
-		}
-
-		if (cardsInBuild.size() == 1) {
-			symbol = newCard.getSymbol();
-			
-		}
-		else {
-			symbol = numericValueToSymbol(getNumericValue() + newCard.getNumericValue());
-		}
-
-		symbolToNumericValue();
-		
-		suit = 'B';
-		return true;
-	}
+	bool addCardToBuild(Card& newCard);
 
 private:
 	vector<Card*> cardsInBuild;

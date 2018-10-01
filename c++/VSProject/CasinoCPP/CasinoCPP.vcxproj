@@ -151,6 +151,7 @@
     <Text Include="..\..\CaptureTest.txt" />
     <Text Include="..\..\DoubleCapSave.txt" />
     <Text Include="..\..\EndRoundTest.txt" />
+    <Text Include="..\..\ExtendBuild.txt" />
     <Text Include="..\..\PrebuiltDeck.txt" />
     <Text Include="..\..\Savefile1.txt" />
   </ItemGroup>

@@ -121,5 +121,8 @@
     <Text Include="..\..\EndRoundTest.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="..\..\ExtendBuild.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

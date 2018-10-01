@@ -224,8 +224,9 @@ void Table::doPlayerMove(int playerIndex) {
 	case Player::Actions::Build:
 		
 		for (unsigned int i = 0; i < resultTuple.targetIndex.size(); i++) {
-			Card removed = looseCards.removeCard(resultTuple.targetIndex[i]);
-			newBuild.addCardToBuild(removed);
+			Card* removed = looseCards.removeCardAsReference(resultTuple.targetIndex[i]);
+			newBuild.addCardToBuild(*removed);
+			delete removed;
 		}
 		looseCards.addCard(newBuild);
 		players[playerIndex]->reserveCardValue(newBuild.getNumericValue());

@@ -165,6 +165,17 @@ Assistance Received: none
 
  }
 
+ //Must delete allocated card once recieved
+ Card* Hand::removeCardAsReference(unsigned int index) {
+	 if (index >= cardsInHand.size()) {
+		 return NULL;
+	 }
+	 Card* chosen = cardsInHand[index];
+	 cardsInHand.erase(cardsInHand.begin() + index);
+	 return chosen;
+
+ }
+
 
  int Hand::getAmountOfSuit(char targetSuit) const {
 	 int hits = 0;

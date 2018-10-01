@@ -79,6 +79,8 @@ public:
 
 	int getAmountOfSuit(char) const;
 
+	Card* removeCardAsReference(unsigned int);
+
 	//bool containsCard(char, char);
 private:
 	vector<Card*> cardsInHand;

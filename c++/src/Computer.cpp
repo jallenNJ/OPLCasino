@@ -27,7 +27,29 @@ Player::PlayerMove Computer::doTurn(Hand table) {
 	int location = table.containsCard('D', 'X');
 	if (location > 0) {
 		if (playerHand.containsCardValue(10)) {
-			Client::outputString("AI SHOULD CAPTURE 10 of hearts");
+			Card play;
+			for (unsigned int i = 0; i < playerHand.handSize(); i++) {
+				play = playerHand.getCardCopy(i);
+				if (play.getSymbol() == 'X') {
+					break;
+				}
+			}
+			vector<int> targetCard;
+			for (unsigned int i = 0; i < table.handSize(); i++) {
+
+				if (table.getCardCopy(i).getSymbol() == 'X') {
+					targetCard.push_back(i);
+					break;
+				}
+
+			}
+			if (targetCard.size() != 0) {
+				Client::outputString("AI is capturing "+ table.getCardCopy(targetCard[0]).toString() + " due to it having a score value");
+				return PlayerMove(Player::Capture, play, targetCard);
+			}
+
+			
+			
 		}
 		
 	}

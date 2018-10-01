@@ -124,5 +124,8 @@
     <Text Include="..\..\ExtendBuild.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="..\..\SetCapture.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

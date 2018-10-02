@@ -155,6 +155,7 @@
     <Text Include="..\..\ExtendBuild.txt" />
     <Text Include="..\..\PrebuiltDeck.txt" />
     <Text Include="..\..\Savefile1.txt" />
+    <Text Include="..\..\Savefile1Comp.txt" />
     <Text Include="..\..\SetCapture.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

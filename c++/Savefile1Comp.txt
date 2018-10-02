@@ -1,0 +1,19 @@
+Round: 3
+  
+Computer:
+   Score: 17
+   Hand: H5 H6 D4 C9
+   Pile: SX SQ SK D6 H8
+ 
+Human:
+   Score: 14
+   Hand: SA S4 CA D7
+   Pile: DJ DA C3 C5
+
+Table:  [ [C6 S3] [S9] ] C8 CJ HA 
+
+Build Owner: [ [C6 S3] [S9] ] Computer
+
+Deck: S7 D3 D5 H2 H3 S5 D8 C2 H9 CX CQ CK HJ S2 S6 D9 DX DQ DK D2 HX HQ HK C4 C7 S8 SJ H4 H7 
+
+Next Player: Human

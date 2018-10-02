@@ -130,5 +130,8 @@
     <Text Include="..\..\AiPrio.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="..\..\Savefile1Comp.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -1,5 +1,9 @@
 #include "Serializer.h"
 
+
+
+
+//Forward decleration of all static member variables (For the linker)
 int Serializer::round;
 Serializer::PlayerInfo Serializer::computerPlayer;
 Serializer::PlayerInfo Serializer::humanPlayer;
@@ -20,6 +24,18 @@ int Serializer::computerSaveScore;
 int Serializer::humanSaveScore;
 
 
+/* *********************************************************************
+Function Name: init
+Purpose: To intialize the static members of the class (Acts as constructor)
+Parameters:
+			none
+Return Value: void
+Local Variables:
+			none
+Algorithm:
+			1) intialize all static variables to their default values
+Assistance Received: none
+********************************************************************* */
 void Serializer::init() {
 	round = 0;
 	table = "";
@@ -218,45 +234,89 @@ Assistance Received: none
  }
 
 
+ /* *********************************************************************
+Function Name: createSaveFile
+Purpose: To format all the data and save it to a file
+Parameters:
+			none
+Return Value: void
+Local Variables:
+			string fileName, the file path to open
+			ofStream saveFile, access to the save file
+Algorithm:
+			1) Prompt for path / name of file
+			2) Create the file
+			3) Write all data in correct format
+Assistance Received: none
+********************************************************************* */
  void Serializer::createSaveFile() {
+	 //Get the file path and open the file
 	 string fileName = Client::getStringInput("Please enter save file name (No file extension):");
 	 fileName += ".txt";
 	 ofstream saveFile;
 	 saveFile.open(fileName);
+
+	 //Ensure it opened
 	 if (!saveFile.is_open()) {
 		 Client::outputError("Failed to create file. Please check to ensure the file is not locked, and program has write access to directory");
 		 return;
 	 }
 
+	 //Save the round number
 	 saveFile << "Round: " + to_string(roundToSave) + "\n\n";
 
+	 //Save the computer object
 	 saveFile << "Computer:\n   Score: " << to_string(compterPlayerToSave.score) <<
 		 "\n   Hand: " << compterPlayerToSave.hand <<
 		 "\n   Pile: " << compterPlayerToSave.pile <<
 		 "\n\n";
 
+	 //Save the player object
 	 saveFile << "Human:\n   Score: " << to_string(humanPlayerToSave.score) <<
 		 "\n   Hand: " << humanPlayerToSave.hand <<
 		 "\n   Pile: " << humanPlayerToSave.pile <<
 		 "\n\n";
 
+	 //Save the table
 	 saveFile << "Table: " << tableToSave << "\n\n";
 
+	 //Save all build owners, if any
 	 for (unsigned int i = 0; i < buildOwnersToSave.size(); i++) {
 		 saveFile << buildOwnersToSave[i] << "\n\n";
 	 }
 
+	 //Save the deck
 	 saveFile << "Deck: "<< deckToSave << "\n\n";
-
+	
+	 //Save the next player
 	 saveFile << "Next Player: " << nextPlayerToSave;
 
+	 //Close the file
 	 saveFile.close();
 
  }
 
+ /* *********************************************************************
+Function Name: loadPrebuiltDeck
+Purpose: To load in the data from for a prebuilt deck from file
+Parameters:
+			none
+Return Value: string, the deck which was read in 
+Local Variables:
+			string filePath, the filePath which to open
+			ifstream deckFIle, the file object
+			string line, the current line on the file
+Algorithm:
+			1) Open the file
+			2) Read in the data
+			3) Format it in the string
+Assistance Received: none
+********************************************************************* */
  string Serializer::loadPrebuiltDeck() {
 	 string filePath;
 	 ifstream deckFile;
+
+	 //Get the file path, and ensure the file opened
 	 while (true) {
 		filePath = Client::getStringInput("Please enter the file path to the deck file: ");
 		deckFile.open(filePath);
@@ -267,20 +327,26 @@ Assistance Received: none
 
 	 }
 	 string deckToReturn = "";
-	 while (!deckFile.eof()) {
+	 while (!deckFile.eof()) { //Until the end of file
 		 string line = "";
+
+		 //Get the line and ensure it has contents
 		 getline(deckFile, line);
 		 if (line == ""){
 			 continue;
 		 }
+		 //Remove all the spaces from the line
 		 line.erase(remove_if(line.begin(), line.end(), isspace), line.end());
+		 //If the length of the file is greater than two, skip as it isn't a card
 		 if (line.length() > 2) {
 			 Client::outputError("Deck had token longer than a card, skipping.");
 			 continue;
 		 }
+		 //Add a space back
 		 deckToReturn += line + " ";
 	 }
 
+	 //Close the file and return
 	 deckFile.close();
 	 return deckToReturn;
 

@@ -147,6 +147,7 @@
     <ClInclude Include="..\..\src\Tournament.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\..\AiPrio.txt" />
     <Text Include="..\..\AiTest.txt" />
     <Text Include="..\..\CaptureTest.txt" />
     <Text Include="..\..\DoubleCapSave.txt" />
@@ -154,6 +155,7 @@
     <Text Include="..\..\ExtendBuild.txt" />
     <Text Include="..\..\PrebuiltDeck.txt" />
     <Text Include="..\..\Savefile1.txt" />
+    <Text Include="..\..\SetCapture.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -19,6 +19,24 @@ Table::Table(bool humanStart, bool loadFromSave) {
 
 }
 
+
+/* *********************************************************************
+Function Name: initTable 
+Purpose: To init the table without a save file, helper function to the constructor
+Parameters:
+			bool humanStart, if the human player is starting
+Return Value: void
+Local Variables:
+			Human * human, the human player being created
+			Computer * computer, the computer player being created
+Algorithm:
+			1) If loading from a save:
+			2) Create all players and tell them to intialize without a savefile
+			3) Generate the deck
+			4) Deal cards (Human, AI, Table)
+			5) Intialize vars
+Assistance Received: none
+********************************************************************* */
 void Table::initTable(bool humanStart) {
 	Human* human = new Human();
 	//Computer* human = new Computer();  //This lineis for debugging with computer
@@ -37,6 +55,25 @@ void Table::initTable(bool humanStart) {
 	playerScores[1] = 0;
 }
 
+
+/* *********************************************************************
+Function Name: initTable (Overload)
+Purpose: To init the table from a save file, helper function to the constructor
+Parameters:
+			bool humanStart, if the human player is starting
+			bool, loadFrom save, if to load from a save file
+Return Value: void 
+Local Variables:
+			Human * human, the human player being created
+			Computer * computer, the computer player being created
+Algorithm:
+			1) If loading from a save:
+			2) Create all players and tell them to load from a save
+			3) Generate the deck
+			4) Deal cards (Human, AI, Table)
+			5) Intialize vars
+Assistance Received: none
+********************************************************************* */
 void Table::initTable(bool humanStart, bool loadFromSave) {
 	if (loadFromSave == false) {
 		initTable(humanStart);

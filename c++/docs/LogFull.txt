@@ -231,14 +231,14 @@ Sep 27th, 2018:
 	
 Day Total 2.5 hours
 
-Day 28th, 2018:
+Sep 28th, 2018:
 	Rewrote a large portion of build code for checking for values to allow for builds to properly summed when loading in from a save file (1 hour)
 	Deck, and piles print out with the table on every loop to meet rubric requirements (.5 hours)
 	Implemented the AI help functionality, which spawns a Computer with the Human's information, and run its algorithm to get its move. (1 hour)
 	Fixed bug where the deck would still shuffle itself after being loaded in, causing ordered structure to be lost (.1 hour)
 Day Total  2.6 hours
 
-Day 29th,. 2018:
+Sep 29th, 2018:
 	Fixed faulty logic which would cause builds not to load in their owner correctly (.5 hours)
 	Debugged issues with the build class having issues tracking its own value when its a multi build, and would be unabled to be captured depending on the order of execution
 		This issue was fixed by rewriting the system of how to store the numberical value, which is to have it dynamically calculated (constant time) when needed
@@ -254,4 +254,24 @@ Day 29th,. 2018:
 	
 Day total: 7.7 hours
 	
+Sep 30th, 2018:
+		Added abilty to extend builds on the table, however the formatting in the multi build remains incorrect (1.5 hours)
+	Day Total 1.5 hours
+
+Oct 1st, 2018
+	Updated the menu so the computer does not see the "Ask for help prompt" (.5 hours)
+	Added priority capture for the 10 of diamonds (.5 hours)
+	Fixed issue with white space preventing the next player from loading in correctly from a save file (.5 hours to Debug and fix)
+	Fixed bug where the human could make a build of zero table cards if they submitted blank input (.2 hours)
+	Created multiple new save files to test edge cases (.5 hours)
+	Commented all functions missing headers, and improved inline comments to be fully flused out (1.5 hours)
+	Added new function to builds to extract all the cards in them, this allows for builds to be properly be displayed (and counted) in piles for scoring (1 hour)
+	Day Total: 4.7 hours
+Oct 2nd, 2018
+	Fixed an erronious >= (instead of >) which caused the AI to miss sets of 1 (.5 hours)
+	Improved generation of multi builds to prevent cases where data was lost, this code is similair to loading in save files(1 hour)
+	Improved UI, which includes a missed catch which had the Advisor speak as if it was playing, and improving output strings. Lastly, addedd a prompt for input before the program close (.5 hours)
+Day total: 2 hours
+
+Project Total: 	76.4 hours
 	

@@ -87,7 +87,7 @@ bool Serializer::loadInSaveFile(string filePath) {
 	table = removeHeader(dataByType[3][0]);
 	deck = removeHeader(dataByType[dataByType.size() - 2][0]);
 	nextPlayer = removeHeader(dataByType.back()[0]);
-	
+	nextPlayer.erase(remove_if(nextPlayer.begin(), nextPlayer.end(), isspace), nextPlayer.end());
 	//Get all the build owners, which may be zero.
 	for (unsigned int i = 4; i < dataByType.size() - 2; i++) {
 		buildOwners.push_back(removeHeader(dataByType[i][0]));

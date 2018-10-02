@@ -334,19 +334,31 @@ void Table::processPoppedBuild(vector<Build>& buildsInProgress) {
 }
 
 
-	void Table::actionMenu() {
-
+void Table::actionMenu() {
+	int option = 0;
 	string menu = "1) Save the Game\n";
 	if (nextPlayerIndex.front() == 0) {
 		menu += "2) Make a Move (Human)\n";
+
+		menu += "3) Ask for help\n";
+		menu += "4) Quit the Game\n";
+		option = Client::getIntInputRange(menu, 1, 4);
+		
+
 	}
 	else {
 		menu += "2) Make a Move (Computer)\n";
+
+		menu += "3) Quit the Game\n";
+		option = Client::getIntInputRange(menu, 1, 3);
+		if (option == 3) {
+			option++;
+		}
+
 	}
 
-	menu += "3) Ask for help\n";
-	menu += "4) Quit the Game\n";
-	int option = Client::getIntInputRange(menu, 1, 4);
+
+
 	switch (option) {
 	case 1:
 		serilizeAllObjects();
@@ -370,8 +382,8 @@ void Table::processPoppedBuild(vector<Build>& buildsInProgress) {
 	default:
 		Client::outputError("Invalid sanatized input, assuming make a move");
 		return;
-
 	}
+	
 }
 
 

@@ -1,0 +1,17 @@
+Round: 0
+
+Computer:
+   Score: 0
+   Hand: DQ S3 S4 CX 
+   Pile: 
+
+Human:
+   Score: 0
+   Hand: DJ HK C4 SX 
+   Pile: 
+
+Table: H5 DX D4 H6 
+
+Deck: S9 D3 C3 HA HQ H2 H9 HJ C7 D9 SK C5 H7 CA CX D7 CK DK S5 CQ D6 DA CJ S2 C6 S6 C2 S7 D5 SA H4 D2 C8 H8 SJ C9 SQ D8 S8 H3 
+
+Next Player: Computer

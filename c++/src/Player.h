@@ -122,10 +122,17 @@ protected:
 	vector<int> buildValues;
 
 
-	bool captureCard(Card, Card);
-	bool captureCard(Card, vector<Card>);
+	inline bool captureCard(Card played, Card target) {
+		return played.checkCapture(target);
+
+	}
+	inline bool captureCard(Card played, vector<Card> targets) {
+		return played.checkCapture(targets);
+	}
 	bool createBuild(Card, vector<Card>);
-	bool checkTrail(Card);
+	inline bool checkTrail(Card played) {
+		return !checkReserved(played);
+	}
 	bool checkReserved(Card);
 	int amountOfSymbolInHand(char symbol) {
 		return playerHand.countSymbol(symbol);

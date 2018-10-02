@@ -110,6 +110,10 @@ Player::PlayerMove Human::doTurn(Hand tableCards) {
 				for (unsigned int i = 0; i < required.size(); i++) {
 					cardsToCheck.push_back(tableCards.getCardCopy(required[i]));
 				}
+				if (cardsToCheck.size() == 0) {
+					successfulResult = false;
+					break;
+				}
 				successfulResult = createBuild(playerHand.getCardCopy(cardInHand), cardsToCheck);
 				break;
 			case Player::Trail:

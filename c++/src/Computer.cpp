@@ -139,7 +139,9 @@ Player::PlayerMove Computer::checkForPrioCard(Hand table, char targetSuit, char 
 					releaseBuildValue(play.getNumericValue());
 				}
 				//Output move and return
-				Client::outputString("AI is playing " + play.toString() + " to capture " + table.getCardCopy(targetCard[0]).toString() + " due to it having a score value. ");
+				if (name != "Advisor") {
+					Client::outputString("AI is playing " + play.toString() + " to capture " + table.getCardCopy(targetCard[0]).toString() + " due to it having a score value. ");
+				}
 				return PlayerMove(Player::Capture, play, targetCard);
 			}
 

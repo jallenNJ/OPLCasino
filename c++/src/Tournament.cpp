@@ -118,7 +118,8 @@ void Tournament::RunTournament() {
 	}
 
 	Client::outputString("Tournament Scores: Human: " + to_string( scores[Round::HUMAN_PLAYER]) + "   Computer: " + to_string(scores[Round::COMPUTER_PLAYER]));
-
+	int pause = 0;
+	pause = Client::getIntInputRange("Press 0 or 1 to close the program", 0, 1);
 }
 
 bool Tournament::checkForSaveFileLoad() {

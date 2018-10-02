@@ -23,7 +23,9 @@ bool Build::addCardToBuild(Card& newCard) {
 	cardsInBuild.push_back(add);
 	if (add->getSuit() == 'B' && cardsInBuild.size() > 1) {
 		if (add->getNumericValue() != getNumericValue()) {
-			Client::outputError("Multibuild created with differing values");
+			Client::outputError("Multibuild potentially created with differing values");
+			char outputC = getSymbol();
+			Client::outputError("Acting value for " + toString() + " is " + outputC);
 		}
 		return true;
 	}

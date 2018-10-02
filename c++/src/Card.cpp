@@ -48,7 +48,7 @@ Function Name: symbolToNumericValue()
 Purpose: To convert the face symbol to its numeric value
 Parameters:
 			none (uses memeber varible symbol)
-Return Value: Void (sets member numericValue) [1-13]
+Return Value: int [1-13] Aces return 1
 Local Variables:
 			none
 Algorithm:
@@ -85,6 +85,20 @@ int Card::symbolToNumericValue() const {
 	}
 
 }
+
+
+/* *********************************************************************
+Function Name: symbolToNumericValue()
+Purpose: To convert the face symbol to its numeric value
+Parameters:
+			int val, the value to convert. Invalid values return A
+Return Value: Char 2-9 or A,X,J,Q,K
+Local Variables:
+			none
+Algorithm:
+			1) Map the numeric value to its symbol
+Assistance Received: none
+********************************************************************* */
 
 char Card::numericValueToSymbol(int val) {
 

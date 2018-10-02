@@ -22,6 +22,13 @@ public:
 		cardsInHand.push_back(toAdd);
 		return true;
 	}
+
+	 bool addCard(vector<Card> newCards) {
+		 for (unsigned int i = 0; i < newCards.size(); i++) {
+			 addCard(newCards[i]);
+		}
+		 return true;
+	}
 	bool addCard(Build);
 
 	inline Card getCardCopy(unsigned int index) const {
@@ -81,7 +88,6 @@ public:
 
 	Card* removeCardAsReference(unsigned int);
 
-	//bool containsCard(char, char);
 private:
 	vector<Card*> cardsInHand;
 

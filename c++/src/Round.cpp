@@ -87,24 +87,48 @@ void Round::intializeRound() {
 }
 
 
+/* *********************************************************************
+Function Name: playRound()
+Purpose: To play the round to completion
+Parameters:
+			None
+Return Value: Void
+Local Variables:
+			Table* table, the table object running the game
+
+Algorithm:
+			1) Create the table, and load from save if specified
+			2) Run cycles (each player plays) in table until the round ends
+			3) Retrieve the scores from the table object
+			4) Output scores
+			5) Clean up local vars
+Assistance Received: none
+********************************************************************* */
 void Round::playRound() {
 	Table* table = NULL;
+	//Intialize the object
 	if (loadSave) {
-		//Maybe pass in the next player from Serializer?
+		//If save, load from save
 		table = new Table((startingPlayer == HUMAN_PLAYER), true);
 	}
 	else {
+		//Create a table from no save file
 		table = new Table((startingPlayer == HUMAN_PLAYER));
 	}
 	 
+	//Run cycles until the round completes in the table
 	while (table->runCycle() == false);
 
+	//Get the scores from the table
 	playerScores[HUMAN_PLAYER] = table->getHumanScore();
 	playerScores[COMPUTER_PLAYER] = table->getComputerScore();
 	
 
+	//Output the scores, and get the player who captured last
 	Client::outputString("Round Scores: Human: " + to_string(playerScores[HUMAN_PLAYER]) + "  Computer: " + to_string(playerScores[COMPUTER_PLAYER]) + "\n");
 	playerLastCapture = table->getPlayerWhoCapturedLast();
+
+	//Delete the object
 	delete table;
 
 }

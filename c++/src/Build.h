@@ -110,6 +110,26 @@ Assistance Received: none
 
 	bool addCardToBuild(Card& newCard);
 
+	vector<Card> getCardsInBuild() {
+		vector<Card> returnVal;
+		for (unsigned int i = 0; i < cardsInBuild.size(); i++) {
+			if (cardsInBuild[i]->getSuit() == 'B') {
+				vector<Card> subBuildCards =(dynamic_cast<Build*>(cardsInBuild[i])->getCardsInBuild());
+				for (unsigned int j = 0; j < subBuildCards.size(); j++) {
+					returnVal.push_back(subBuildCards[j]);
+				}
+				//break;
+			}
+			else {
+				returnVal.push_back(*cardsInBuild[i]);
+			}
+			//IF BUILD, GET ALL CARDS IN IT
+			
+			//ELSE APPEND
+		}
+		return returnVal;
+	}
+
 private:
 	vector<Card*> cardsInBuild;
 

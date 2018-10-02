@@ -159,28 +159,59 @@ Assistance Received: none
 		 return Card();
 	 }
 	 Card chosen = *cardsInHand[index];
+
 	 delete cardsInHand[index];
 	 cardsInHand.erase(cardsInHand.begin() + index);
 	 return chosen;
 
  }
 
- //Must delete allocated card once recieved
+ /* *********************************************************************
+Function Name: removeCardAsReference
+Purpose: To remove and return a copy of [pointer] to the Card at the specified index
+	This class will forget about the card
+Parameters:
+			index, an unsigned int index to the location in the array to remove from
+Return Value: A copy of the card removed. ***THE ACCEPTING FUNCTION MUST DEALLOCATE IT ONCE DONE***
+Local Variables:
+			Chosen: A new  of the Card* to return
+Algorithm:
+			1) Find the card in the hand
+			2) Copy it
+			3) Remove reference in this object
+			4) Return the pointer
+Assistance Received: none
+********************************************************************* */
  Card* Hand::removeCardAsReference(unsigned int index) {
 	 if (index >= cardsInHand.size()) {
 		 return NULL;
 	 }
 	 Card* chosen = cardsInHand[index];
+
 	 cardsInHand.erase(cardsInHand.begin() + index);
 	 return chosen;
 
  }
 
-
+ /* *********************************************************************
+Function Name: getAmountOfSuit
+Purpose: To get a count of all target suit in the hand
+Parameters:
+			char, targetSuit the suit to look for
+Return Value: An int of the amount of occurances
+Local Variables:
+			Hits: The itn counter
+Algorithm:
+			1) Loop through the hand
+			2) If suit matches target, increment counter
+Assistance Received: none
+********************************************************************* */
  int Hand::getAmountOfSuit(char targetSuit) const {
 	 int hits = 0;
 
+	 //For every card
 	 for (unsigned int i = 0; i < cardsInHand.size(); i++) {
+		 //Increment the counter if it matches the parameter
 		 if (cardsInHand[i]->getSuit() == targetSuit) {
 			 hits++;
 		 }

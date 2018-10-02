@@ -19,6 +19,11 @@ protected:
 private:
 	vector<int> decideBestBuild(vector<vector<int>> options);
 	string cardIndiciesToString(Hand, vector<int>);
+
+	PlayerMove checkForPrioCard(Hand, char, char, int);
+	PlayerMove checkForBuilds(Hand);
+	PlayerMove checkForBuildCapture(Hand);
+	PlayerMove checkForNormalCapture(Hand);
 };
 
 

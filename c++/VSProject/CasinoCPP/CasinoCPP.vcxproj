@@ -147,6 +147,7 @@
     <ClInclude Include="..\..\src\Tournament.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\..\AiPrio.txt" />
     <Text Include="..\..\AiTest.txt" />
     <Text Include="..\..\CaptureTest.txt" />
     <Text Include="..\..\DoubleCapSave.txt" />

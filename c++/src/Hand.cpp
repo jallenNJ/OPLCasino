@@ -122,8 +122,13 @@ Assistance Received: none
 		if (cardsInHand[i]->getSuit() == 'B') {
 			if (cardsInHand[i]->getNumericValue() == newBuild.getNumericValue()) {
 				Build* original = dynamic_cast<Build*>(cardsInHand[i]);
-				Build* newMulti = new Build(*original);
-				newMulti->addCardToBuild(newBuild);
+				//Build* newMulti = new Build(*original);
+				//newMulti->addCardToBuild(newBuild);
+				vector<Build> newMultiVector;
+				newMultiVector.push_back(*original);
+				newMultiVector.push_back(Build(newBuild));
+				createMulti(newMultiVector, original->getOwner());
+				Build* newMulti = new Build(newMultiVector[0]);
 				delete cardsInHand[i];
 				cardsInHand[i] = newMulti;
 				return true;
@@ -137,6 +142,33 @@ Assistance Received: none
 	return true;
 
 }
+
+
+ void Hand::createMulti(vector<Build>& buildsInProgress, string owner) {
+	 int amountOfBuilds = buildsInProgress.size();
+	 if (amountOfBuilds == 1) { //If only one
+
+		 string buildString = buildsInProgress.back().toString();
+		 //Remove all white space from the string, then erase what is left over. 
+		 buildString.erase(remove_if(buildString.begin(), buildString.end(), isspace), buildString.end());
+		 buildsInProgress.back().setOwner(owner);
+
+		 //Add itto the table
+		 //cardsInHand.add(buildsInProgress.back());
+		 return;
+	 }
+	 else {
+		 //Add the build to the build
+		 buildsInProgress[amountOfBuilds - 2].addCardToBuild(buildsInProgress.back());
+
+
+	 }
+	 //Remove the build from the stack
+	 buildsInProgress.pop_back();
+	 if (buildsInProgress.size() > 0) {
+		 createMulti(buildsInProgress, owner);
+	 }
+ }
 
  /* *********************************************************************
 Function Name: removeCard

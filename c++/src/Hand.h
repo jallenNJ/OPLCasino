@@ -89,6 +89,7 @@ public:
 	Card* removeCardAsReference(unsigned int);
 
 private:
+	void createMulti(vector<Build>&, string);
 	vector<Card*> cardsInHand;
 
 };

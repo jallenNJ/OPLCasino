@@ -442,7 +442,7 @@ Assistance Received: none
 void Table::processPoppedBuild(vector<Build>& buildsInProgress) {
 	//Get the list of build owners from the Serializer, and record the amount of builds currently being processed
 	vector<string> buildsWithOwners = Serializer::getBuildOwners();
-	int amountOfBuilds = buildsInProgress.size();
+	int amountOfBuilds = (int)buildsInProgress.size();
 
 	if (amountOfBuilds == 1) { //If only one
 
@@ -450,7 +450,7 @@ void Table::processPoppedBuild(vector<Build>& buildsInProgress) {
 		//Remove all white space from the string, then erase what is left over. 
 		buildString.erase(remove_if(buildString.begin(), buildString.end(), isspace), buildString.end());
 		for (unsigned int i = 0; i < buildsWithOwners.size(); i++) {
-			int buildI = buildsWithOwners[i].find_last_of(']');
+			int buildI = (int)buildsWithOwners[i].find_last_of(']');
 			//Increment to contain the bracket as we want amount of characters, not index
 			buildI++;
 			string buildText = buildsWithOwners[i].substr(0, buildI);

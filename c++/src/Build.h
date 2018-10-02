@@ -118,14 +118,12 @@ Assistance Received: none
 				for (unsigned int j = 0; j < subBuildCards.size(); j++) {
 					returnVal.push_back(subBuildCards[j]);
 				}
-				//break;
+
 			}
 			else {
 				returnVal.push_back(*cardsInBuild[i]);
 			}
-			//IF BUILD, GET ALL CARDS IN IT
-			
-			//ELSE APPEND
+
 		}
 		return returnVal;
 	}

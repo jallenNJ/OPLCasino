@@ -339,7 +339,7 @@ vector<int> Computer::decideBestBuild(vector<vector<int>> options) {
 	for (unsigned int i = 0; i < options.size(); i++) {
 		//If its larger, track it as the largest
 		if (options[i].size() > largestSize) {
-			largestSize = options[i].size();
+			largestSize = (unsigned int)options[i].size();
 			indexOfLargest = i;
 		}
 	}

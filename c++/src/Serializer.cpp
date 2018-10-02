@@ -228,7 +228,7 @@ Algorithm:
 Assistance Received: none
 ********************************************************************* */
  string Serializer::removeHeader(string cards) {
-	 int colonIndex = cards.find(':');
+	 int colonIndex = (int)cards.find(':');
 	 //Todo, handle check with not found?(May just return the entire string)
 	 return cards.substr(colonIndex + 1);
  }

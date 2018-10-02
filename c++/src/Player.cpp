@@ -148,10 +148,16 @@ Assistance Received: none
 
 			 //Store the first card we're checking for readability
 			 Card firstTableCard = table.getCardCopy(firstCardOnTable);
-			 if (cardInHand.getNumericValue() <= sum + firstTableCard.getNumericValue()) {
+			 if (cardInHand.getNumericValue() < sum + firstTableCard.getNumericValue()) {
 				 continue;
 
 			 }
+			 if (cardInHand.getNumericValue() == sum + firstTableCard.getNumericValue()) {
+				 stackVector.push_back(firstCardOnTable);
+				 allSets.push_back(stackVector);
+				 continue;
+			 }
+			 
 			 //The offset to check every card after it
 			 for (unsigned int offset = 1; offset < table.handSize(); offset++) {
 				//For every card after the first card

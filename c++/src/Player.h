@@ -43,6 +43,11 @@ public:
 		return true;
 	}
 
+	bool addToPile(vector<Card> toAdd) {
+		playerPile.addCard(toAdd);
+		return true;
+	}
+
 	string toFormattedString() const{
 		return playerHand.toFormattedString();
 	}

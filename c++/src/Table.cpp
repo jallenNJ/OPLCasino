@@ -233,9 +233,9 @@ void Table::doPlayerMove(int playerIndex) {
 	case Player::Actions::Capture:
 		players[playerIndex]->addToPile(resultTuple.playedCard);
 		for (unsigned int i = 0; i < resultTuple.targetIndex.size(); i++) {
-			Card removed = looseCards.removeCard(resultTuple.targetIndex[i]);
-			if (removed.getSuit() == 'B') {
-				string normalizedName = removed.getOwner();
+			Card* removed = looseCards.removeCardAsReference(resultTuple.targetIndex[i]);
+			if (removed->getSuit() == 'B') {
+				string normalizedName = removed->getOwner();
 				if (normalizedName != "Computer" && normalizedName != "Human") {
 					if (normalizedName == players[0]->getName()) {
 						normalizedName = "Human";
@@ -247,14 +247,21 @@ void Table::doPlayerMove(int playerIndex) {
 
 				if ((normalizedName == "Computer" && playerIndex == 0) || normalizedName == "Human" && playerIndex == 1) {
 					if (playerIndex == 1) {
-						players[0]->releaseBuildValue(removed.getNumericValue());
+						players[0]->releaseBuildValue(removed->getNumericValue());
 					}
 					else {
-						players[1]->releaseBuildValue(removed.getNumericValue());
+						players[1]->releaseBuildValue(removed->getNumericValue());
 					}
 				}
 			}
-			players[playerIndex]->addToPile(removed);
+			if (removed->getSuit() == 'B') {
+				players[playerIndex]->addToPile( dynamic_cast<Build *>(removed)->getCardsInBuild());
+			}
+			else {
+				players[playerIndex]->addToPile(*removed);
+			}
+			
+			delete removed;
 		}
 		lastCapture = playerIndex;
 		break;

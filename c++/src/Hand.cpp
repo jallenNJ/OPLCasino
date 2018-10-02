@@ -159,6 +159,7 @@ Assistance Received: none
 		 return Card();
 	 }
 	 Card chosen = *cardsInHand[index];
+
 	 delete cardsInHand[index];
 	 cardsInHand.erase(cardsInHand.begin() + index);
 	 return chosen;
@@ -186,6 +187,7 @@ Assistance Received: none
 		 return NULL;
 	 }
 	 Card* chosen = cardsInHand[index];
+
 	 cardsInHand.erase(cardsInHand.begin() + index);
 	 return chosen;
 

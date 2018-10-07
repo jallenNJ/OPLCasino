@@ -31,8 +31,57 @@
 )
 
 
+(defun getHeadTailChoice ()
+	(print "(H)eads or (T)ails")
+	(Let(
+		(input  (read))	
+		)
+		(cond 
+			((string-equal input "H") 'H)
+			((string-equal input "T") 'T)
+			(t (getHeadTailChoice))		
+		)	
+	)
+)
+
+(defun flipCoin ()
+	(Let (
+			(input (getHeadTailChoice))
+			(randNum (random 2))
+		)
+		
+		(cond 	((and (eq input 'h) (= randNum 0)) (print "Heads! Human goes first!") '0)
+				((and (eq input 'h) (= randNum 1)) (print "Tails! Computer goes first!") '1)
+				((and (eq input 't) (= randNum 0)) (print "Heads! Computer goes first!") '1)
+				(t (print "Tails! Human goes first!") '0)
+		)
+	)
+)
+
+(defun playRound (roundNum)
+	(Let (
+			(firstPlayer (flipCoin))
+	
+	
+	
+	
+	
+	
+		)
+	
+	
+	
+	
+	
+	)
+
+
+
+
+
+)
 			
-(defun runTournament (scores)
+(defun runTournament (scores round)
 	;Check scores here
 	
 	; run round as base case
@@ -42,7 +91,7 @@
 			((= result 0) (print "Human has won!"))
 			((= result 1) (print "Computer has won!"))
 			((= result 2) (print "Both players tied!"))
-			(t (print "Do GameLoop"))
+			(t (print (playRound 0)))
 		
 		
 		
@@ -64,5 +113,5 @@
 ;(print "Please enter Y/N")
 ;(getYesNoInput (read))
 
-(runTournament '(0 0))
+(runTournament '(0 0) 0)
 

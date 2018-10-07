@@ -60,7 +60,7 @@
 
 (defun playRound (roundNum)
 	(Let (
-			(firstPlayer (flipCoin))
+			(firstPlayer (cond ((= roundNum 0) (flipCoin))  (t (print "Set up player for follow up round") '0)))
 	
 	
 	

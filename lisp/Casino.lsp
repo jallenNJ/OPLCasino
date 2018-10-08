@@ -97,6 +97,17 @@
 		(print deck)
 )
 
+(defun promptForAction ()
+	(print "Would you like to Capture(1), Build(2), Trail(3)")
+	( Let ((userInput (read)))
+		(cond  ((equal userInput '1) '1)
+				((equal userInput '2) '2)
+				((equal userInput '3) '3)
+				(t (print "Invalid input") (promptForAction))
+		) 	
+	)
+)
+
 (defun playRound (roundNum)
 	(Let* (
 			(firstPlayer (cond ((= roundNum 0) (flipCoin))  (t (print "Set up player for follow up round") '0)))
@@ -107,7 +118,7 @@
 			(deck (nthcdr 12 startingDeck))
 		)
 		(printAll humanHand compHand tableCards deck)
-	
+		(promptForAction)
 	
 	)
 

@@ -80,6 +80,23 @@
 
 )
 
+(defun printAll (hHand cHand table deck)
+		(print 'Human )
+		(print 	hHand)
+		
+		(print '-----------)
+		(print 'Table )
+		(print table)
+		(print '-----------)
+		
+		(print 'Comp )
+		(print cHand)
+
+		(print '==================)
+		(print 'Deck)
+		(print deck)
+)
+
 (defun playRound (roundNum)
 	(Let* (
 			(firstPlayer (cond ((= roundNum 0) (flipCoin))  (t (print "Set up player for follow up round") '0)))
@@ -89,14 +106,7 @@
 			(tableCards (dealFourCards (nthcdr 8 startingDeck)))
 			(deck (nthcdr 12 startingDeck))
 		)
-		(print 'Human)
-		(print 	humanHand)
-		(print 'Comp)
-		(print compHand)
-		(print 'Table)
-		(print tableCards)
-		(print 'Deck)
-		(print deck)
+		(printAll humanHand compHand tableCards deck)
 	
 	
 	)

@@ -69,14 +69,34 @@
 	)
 )
 
+(defun dealFourCards (deck)
+   
+	
+	;(list (list (nth 0 deck) (nth 1 deck) (nth 2 deck)(nth 3 deck)) (nthcdr 4 deck))
+	
+	;Get the first four cards off the deck as a list of lists 
+	(list (nth 0 deck) (nth 1 deck) (nth 2 deck)(nth 3 deck))
+;
+
+)
+
 (defun playRound (roundNum)
-	(Let (
+	(Let* (
 			(firstPlayer (cond ((= roundNum 0) (flipCoin))  (t (print "Set up player for follow up round") '0)))
-	
+			(startingDeck (getFullDeck))
+			(humanHand (dealFourCards startingDeck))
+			(compHand  (dealFourCards (nthcdr 4 startingDeck)))
+			(tableCards (dealFourCards (nthcdr 8 startingDeck)))
+			(deck (nthcdr 12 startingDeck))
 		)
-	
-		
-	
+		(print 'Human)
+		(print 	humanHand)
+		(print 'Comp)
+		(print compHand)
+		(print 'Table)
+		(print tableCards)
+		(print 'Deck)
+		(print deck)
 	
 	
 	)
@@ -118,6 +138,8 @@
 ;;Right here is how to handle loading in
 ;(print "Please enter Y/N")
 ;(getYesNoInput (read))
+
+
 
 (runTournament '(0 0) 0)
 

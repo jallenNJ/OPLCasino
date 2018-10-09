@@ -122,7 +122,18 @@
 
 )
 
-(defun playRound (roundNum)
+
+
+(defun doCycle ()
+
+
+
+
+)
+
+
+
+(defun newRoundParams (roundNum)
 	(Let* (
 			(firstPlayer (cond ((= roundNum 0) (flipCoin))  (t (print "Set up player for follow up round") '0)))
 			(startingDeck (getFullDeck))
@@ -131,17 +142,36 @@
 			(tableCards (dealFourCards (nthcdr 8 startingDeck)))
 			(deck (nthcdr 12 startingDeck))
 		)
-		(printAll humanHand compHand tableCards deck)
-		(takeAction humanHand tableCards)
-		;(promptForAction)
 	
+	(list firstPlayer startingDeck humanHand compHand tableCards deck)
 	)
 
-
-
-
-
 )
+
+(defun playRound (roundNum roundParams)
+	(cond
+		((null roundParams) (playRound roundNum (newRoundParams roundNum)))
+		((< (list-length roundParams) 6) (print "THIS IS TERMINATING CASE, ADD PROPER HANDLING"))
+		(t (playRound roundNum (doCycle)))
+	)
+	
+)
+
+
+;(defun playRound (roundNum)
+;	(Let* (
+;			(firstPlayer (cond ((= roundNum 0) (flipCoin))  (t (print "Set up player for follow up round") '0)))
+;			(startingDeck (getFullDeck))
+;			(humanHand (dealFourCards startingDeck))
+;			(compHand  (dealFourCards (nthcdr 4 startingDeck)))
+;			(tableCards (dealFourCards (nthcdr 8 startingDeck)))
+;			(deck (nthcdr 12 startingDeck))
+;		)
+;		(printAll humanHand compHand tableCards deck)
+;		(takeAction humanHand tableCards)
+;		;(promptForAction)
+;	)
+;)
 			
 (defun runTournament (scores round)
 	;Check scores here
@@ -153,7 +183,7 @@
 			((= result 0) (print "Human has won!"))
 			((= result 1) (print "Computer has won!"))
 			((= result 2) (print "Both players tied!"))
-			(t (print (playRound 0)))
+			(t (print (playRound 0 ())))
 		
 		
 		

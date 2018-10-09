@@ -109,12 +109,17 @@
 )
 
 
+(defun doTrail (hand table)
+	( list (rest hand) (append table (list (first hand))))
+)
+
+
 (defun takeAction (hand table)
 	(Let ((actionToTake (promptForAction)))
 	
 		(cond ((equal actionToTake '1) "Caputure here")
 				((equal actionToTake '2) "Build here")
-				((equal actionToTake '3) "Trail here")
+				((equal actionToTake '3) "Trail here" (doTrail hand table))
 				(t (takeAction hand table))
 				
 		)	
@@ -123,12 +128,20 @@
 )
 
 
-
-(defun doCycle ()
-
-
-
-
+;;Pass in all the players, if remaining player, recursive call
+(defun doCycle (players table)
+	(Let* 
+		(
+			(hand (nth 0 players))
+			(pile (nth 1 players))
+			(resultTuple (takeAction hand table))
+		)
+	
+		(cond
+			(t (list resultTuple))
+			;(t (append () (list 'TestCase)))		
+		)
+	)
 )
 
 
@@ -138,12 +151,14 @@
 			(firstPlayer (cond ((= roundNum 0) (flipCoin))  (t (print "Set up player for follow up round") '0)))
 			(startingDeck (getFullDeck))
 			(humanHand (dealFourCards startingDeck))
+			(humanPile ())
 			(compHand  (dealFourCards (nthcdr 4 startingDeck)))
+			(compPile ())
 			(tableCards (dealFourCards (nthcdr 8 startingDeck)))
 			(deck (nthcdr 12 startingDeck))
 		)
 	
-	(list firstPlayer startingDeck humanHand compHand tableCards deck)
+		(list firstPlayer startingDeck tableCards deck humanHand humanPile compHand compPile)
 	)
 
 )
@@ -151,8 +166,12 @@
 (defun playRound (roundNum roundParams)
 	(cond
 		((null roundParams) (playRound roundNum (newRoundParams roundNum)))
-		((< (list-length roundParams) 6) (print "THIS IS TERMINATING CASE, ADD PROPER HANDLING"))
-		(t (playRound roundNum (doCycle)))
+		((< (list-length roundParams) 8) 
+			(print roundParams)
+			(printAll (nth 4 roundParams) (nth 6 roundParams) (nth 2 roundParams) (nth 3 roundParams)) 
+			(print "THIS IS TERMINATING CASE, ADD PROPER HANDLING")
+		)
+		(t (playRound roundNum (doCycle (nthcdr 4 roundParams) (nth 3 roundParams))))
 	)
 	
 )
@@ -204,7 +223,6 @@
 ;;Right here is how to handle loading in
 ;(print "Please enter Y/N")
 ;(getYesNoInput (read))
-
 
 
 (runTournament '(0 0) 0)

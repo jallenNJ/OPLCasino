@@ -97,6 +97,12 @@
 		(print deck)
 )
 
+
+(defun printBoard (parse) ; Parse round params
+	(printAll (nth 3 parse) (nth 5 parse) (nth 2 parse) (nth 1 parse)) 
+
+)
+
 (defun promptForAction ()
 	(print "Would you like to Capture(1), Build(2), Trail(3)")
 	( Let ((userInput (read)))
@@ -129,16 +135,19 @@
 
 
 ;;Pass in all the players, if remaining player, recursive call
-(defun doCycle (players table)
+(defun doCycle (players table playerGoing deck)
 	(Let* 
 		(
 			(hand (nth 0 players))
 			(pile (nth 1 players))
 			(resultTuple (takeAction hand table))
+			(nextPlayer (cond ((= playerGoing 0 ) 1) (t 0)))
 		)
 	
+		;Contains new hand, new table
+		;Make: firstPlayer deck tableCards humanHand humanPile compHand compPile
 		(cond
-			(t (list resultTuple))
+			(t (list nextPlayer deck (nth 1 resultTuple) (first resultTuple) () (nth 2 players) () )) ;Left piles () until implemented
 			;(t (append () (list 'TestCase)))		
 		)
 	)
@@ -158,7 +167,7 @@
 			(deck (nthcdr 12 startingDeck))
 		)
 	
-		(list firstPlayer startingDeck tableCards deck humanHand humanPile compHand compPile)
+		(list firstPlayer deck tableCards humanHand humanPile compHand compPile)
 	)
 
 )
@@ -166,31 +175,19 @@
 (defun playRound (roundNum roundParams)
 	(cond
 		((null roundParams) (playRound roundNum (newRoundParams roundNum)))
-		((< (list-length roundParams) 8) 
-			(print roundParams)
-			(printAll (nth 4 roundParams) (nth 6 roundParams) (nth 2 roundParams) (nth 3 roundParams)) 
+		((< (list-length roundParams) 7) 
+			;(print roundParams)
+			(printBoard roundParams)
 			(print "THIS IS TERMINATING CASE, ADD PROPER HANDLING")
 		)
-		(t (playRound roundNum (doCycle (nthcdr 4 roundParams) (nth 3 roundParams))))
+		(t 
+			(printBoard roundParams)
+			(playRound roundNum (doCycle (nthcdr 3 roundParams) (nth 2 roundParams) (first roundParams) (nth 1 roundParams)))	
+		)
 	)
 	
 )
 
-
-;(defun playRound (roundNum)
-;	(Let* (
-;			(firstPlayer (cond ((= roundNum 0) (flipCoin))  (t (print "Set up player for follow up round") '0)))
-;			(startingDeck (getFullDeck))
-;			(humanHand (dealFourCards startingDeck))
-;			(compHand  (dealFourCards (nthcdr 4 startingDeck)))
-;			(tableCards (dealFourCards (nthcdr 8 startingDeck)))
-;			(deck (nthcdr 12 startingDeck))
-;		)
-;		(printAll humanHand compHand tableCards deck)
-;		(takeAction humanHand tableCards)
-;		;(promptForAction)
-;	)
-;)
 			
 (defun runTournament (scores round)
 	;Check scores here

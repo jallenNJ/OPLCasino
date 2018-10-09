@@ -108,6 +108,20 @@
 	)
 )
 
+
+(defun takeAction (hand table)
+	(Let ((actionToTake (promptForAction)))
+	
+		(cond ((equal actionToTake '1) "Caputure here")
+				((equal actionToTake '2) "Build here")
+				((equal actionToTake '3) "Trail here")
+				(t (takeAction hand table))
+				
+		)	
+	)
+
+)
+
 (defun playRound (roundNum)
 	(Let* (
 			(firstPlayer (cond ((= roundNum 0) (flipCoin))  (t (print "Set up player for follow up round") '0)))
@@ -118,7 +132,8 @@
 			(deck (nthcdr 12 startingDeck))
 		)
 		(printAll humanHand compHand tableCards deck)
-		(promptForAction)
+		(takeAction humanHand tableCards)
+		;(promptForAction)
 	
 	)
 

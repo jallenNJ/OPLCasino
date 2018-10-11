@@ -58,6 +58,13 @@
 	)
 )
 
+;(defun getBeforeN (vector elements truncated)
+
+;(cond ((>= (list-length truncated) elements) truncated)
+;	(t (getBeforeN (rest vector) elements (list truncated (first vector))))
+
+
+;)
 
 ; Worked w/ JL NC
 (defun getFullDeck ()
@@ -67,6 +74,41 @@
 		(D A) (D 2) (D 3) (D 4) (D 5) (D 6) (D 7) (D 8) (D 9) (D X) (D J) (D Q) (D K)
 		(H A) (H 2) (H 3) (H 4) (H 5) (H 6) (H 7) (H 8) (H 9) (H X) (H J) (H Q) (H K)	
 	)
+)
+
+(defun shuffleDeck (deck shuffled)
+	(cond	
+		(
+			(> (list-length deck) 0) 
+				(let* 
+					(
+						(randomNum (random (list-length deck)))
+						(choosen (nth randomNum deck))
+						(newShuffle (cond ((null shuffled) (cons choosen ())) (t (append shuffled (cons choosen ())))))
+						(remainingPrev (nthcdr (- (list-length deck) randomNum)(reverse deck)))
+						(remainingAfter (nthcdr (+ randomNum 1) deck))			
+					
+					)
+					;(print "Random")
+					;(print randomNum)
+					;(print "choosen")
+					;(print choosen)
+					;(print "shuffled")
+					;(print newShuffle)
+					;(print "prev")
+					;(print remainingPrev)
+					;(print "after")
+					;(print remainingAfter)
+					;(print "Size is:")
+					;(print (list-length newShuffle ))
+					;(print (list-length (append remainingPrev remainingAfter) ))
+					;(print (+ (list-length newShuffle ) (list-length (append remainingPrev remainingAfter) )))
+					(shuffleDeck (append remainingPrev remainingAfter) newShuffle)
+				)
+		)
+		(t shuffled)
+	)
+	
 )
 
 (defun dealFourCards (deck)
@@ -158,7 +200,7 @@
 (defun newRoundParams (roundNum)
 	(Let* (
 			(firstPlayer (cond ((= roundNum 0) (flipCoin))  (t (print "Set up player for follow up round") '0)))
-			(startingDeck (getFullDeck))
+			(startingDeck (shuffleDeck (getFullDeck) ()))
 			(humanHand (dealFourCards startingDeck))
 			(humanPile ())
 			(compHand  (dealFourCards (nthcdr 4 startingDeck)))
@@ -221,6 +263,6 @@
 ;(print "Please enter Y/N")
 ;(getYesNoInput (read))
 
-
+;(trace getBeforeN)
 (runTournament '(0 0) 0)
 

@@ -58,13 +58,19 @@
 	)
 )
 
-;(defun getBeforeN (vector elements truncated)
+(defun removeNCard (n vector)
+	(let 
+		(
+			(remainingPrev (nthcdr (- (list-length vector) n)(reverse vector)))
+			(remainingAfter (nthcdr (+ n 1) vector))
+		)
+		(append remainingPrev remainingAfter)
+	
+	)
 
-;(cond ((>= (list-length truncated) elements) truncated)
-;	(t (getBeforeN (rest vector) elements (list truncated (first vector))))
 
 
-;)
+)
 
 ; Worked w/ JL NC
 (defun getFullDeck ()
@@ -85,8 +91,8 @@
 						(randomNum (random (list-length deck)))
 						(choosen (nth randomNum deck))
 						(newShuffle (cond ((null shuffled) (cons choosen ())) (t (append shuffled (cons choosen ())))))
-						(remainingPrev (nthcdr (- (list-length deck) randomNum)(reverse deck)))
-						(remainingAfter (nthcdr (+ randomNum 1) deck))			
+					;	(remainingPrev (nthcdr (- (list-length deck) randomNum)(reverse deck)))
+					;	(remainingAfter (nthcdr (+ randomNum 1) deck))			
 					
 					)
 					;(print "Random")
@@ -103,7 +109,8 @@
 					;(print (list-length newShuffle ))
 					;(print (list-length (append remainingPrev remainingAfter) ))
 					;(print (+ (list-length newShuffle ) (list-length (append remainingPrev remainingAfter) )))
-					(shuffleDeck (append remainingPrev remainingAfter) newShuffle)
+				;	(shuffleDeck (append remainingPrev remainingAfter) newShuffle)
+					(shuffleDeck (removeNCard randomNum deck) newShuffle)
 				)
 		)
 		(t shuffled)
@@ -112,9 +119,7 @@
 )
 
 (defun dealFourCards (deck)
-   
-	
-	;(list (list (nth 0 deck) (nth 1 deck) (nth 2 deck)(nth 3 deck)) (nthcdr 4 deck))
+ 
 	
 	;Get the first four cards off the deck as a list of lists 
 	(list (nth 0 deck) (nth 1 deck) (nth 2 deck)(nth 3 deck))
@@ -157,8 +162,37 @@
 )
 
 
+(defun getNumericInput(lowerBound upperBound)
+	;(print ('"Enter a number between" lowerBound '" and " upperBound))
+	(print "Test enter a num")
+	(let 
+		( 
+			(userInput (read))
+		)
+		( cond
+				((and (>= userInput lowerBound) (<= userInput upperBound)) userInput)
+				(t (print "Invalid input") (getNumericInput lowerBound upperBound))		
+		)	
+	)
+)
+
 (defun doTrail (hand table)
-	( list (rest hand) (append table (list (first hand))))
+	(let*
+		(
+			(input (getNumericInput 0 (list-length hand)))
+			(selectedCard (nth input hand))
+			(remainingCards (removeNCard input hand))
+		
+		
+		
+		)
+		(list remainingCards (append table (list selectedCard)))
+	
+	
+	)
+
+
+	;( list (rest hand) (append table (list (first hand))))
 )
 
 

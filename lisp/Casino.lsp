@@ -100,21 +100,7 @@
 					;	(remainingAfter (nthcdr (+ randomNum 1) deck))			
 					
 					)
-					;(print "Random")
-					;(print randomNum)
-					;(print "choosen")
-					;(print choosen)
-					;(print "shuffled")
-					;(print newShuffle)
-					;(print "prev")
-					;(print remainingPrev)
-					;(print "after")
-					;(print remainingAfter)
-					;(print "Size is:")
-					;(print (list-length newShuffle ))
-					;(print (list-length (append remainingPrev remainingAfter) ))
-					;(print (+ (list-length newShuffle ) (list-length (append remainingPrev remainingAfter) )))
-				;	(shuffleDeck (append remainingPrev remainingAfter) newShuffle)
+					
 					(shuffleDeck (removeNCard randomNum deck) newShuffle)
 				)
 		)
@@ -271,9 +257,6 @@
 
 			
 (defun runTournament (scores round)
-	;Check scores here
-	
-	; run round as base case
 	
 	(Let ((result (checkScores scores))) ;Get the result and store it 
 		(cond    
@@ -289,9 +272,6 @@
 	
 	)
 	
-	
-	;(cond ((< (checkScores scores) 3) (print "Someone has won!"))
-	;		(t (checkScores score)))
 
 
 		)			
@@ -302,6 +282,5 @@
 ;(print "Please enter Y/N")
 ;(getYesNoInput (read))
 
-;(trace getBeforeN)
 (runTournament '(0 0) 0)
 

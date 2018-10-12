@@ -93,7 +93,7 @@
 			(> (list-length deck) 0) 
 				(let* 
 					(
-						(randomNum (random (list-length deck)))
+						(randomNum (random (list-length deck) ))
 						(choosen (nth randomNum deck))
 						(newShuffle (cond ((null shuffled) (cons choosen ())) (t (append shuffled (cons choosen ())))))
 					;	(remainingPrev (nthcdr (- (list-length deck) randomNum)(reverse deck)))
@@ -165,6 +165,38 @@
 				(t (print "Invalid input") (getNumericInput lowerBound upperBound))		
 		)	
 	)
+)
+
+(defun doCapture (hand table)
+
+(let*
+		(
+			(playedCardInput (getNumericInput 0 (list-length hand)))
+			(selectedHandCard (nth playedCardInput hand))
+			(remainingHandCards (removeNCard playedCardInput hand))
+			(selectedCardInput (getNumericInput 0 (list-length table)))
+			(selectedTableCard (nth selectedCardInput table))
+			(remainingTableCards (removeNCard selectedTableCard table))
+		
+		)
+		;(list remainingCards (append table (list selectedCard)))
+		(cond
+			(
+				(equal (getCardSymbol selectedHandCard) (getCardSymbol selectedTableCard)) (list remainingCards remainingTableCards)
+				(t (list hand table))
+				
+			)
+			
+		
+		
+		)
+	
+	
+	)
+
+
+
+
 )
 
 (defun doTrail (hand table)

@@ -72,6 +72,11 @@
 
 )
 
+(defun getCardSymbol (card)
+	(first (rest card))
+)
+
+
 ; Worked w/ JL NC
 (defun getFullDeck ()
 

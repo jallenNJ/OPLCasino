@@ -231,7 +231,7 @@
 	;( list (rest hand) (append table (list (first hand))))
 )
 
-
+;return (hand table)
 (defun takeAction (hand table)
 	(Let ((actionToTake (promptForAction)))
 	
@@ -246,29 +246,61 @@
 )
 
 
-;;Pass in all the players, if remaining player, recursive call
+
+(defun doPlayerMove (hand pile table)
+	(let
+		(
+			(resultTuple (takeAction hand table))
+		)
+		(list (first resultTuple) pile (nth 1 table))
+	
+	)
+	
+
+
+)
+
+
+
 (defun doCycle (players table playerGoing deck)
 	(Let* 
 		(
-			(hand (nth 0 players))
-			(pile (nth 1 players))
-			(resultTuple (takeAction hand table))
-			(nextPlayer (cond ((= playerGoing 0 ) 1) (t 0)))
-			(result (list nextPlayer deck (nth 1 resultTuple) (first resultTuple) () (nth 2 players) () ))
+			(humanHand (cond ((= playerGoing 0) 	(first players)) (t (nth 2 players))))
+			(humanPile (cond ((= playerGoing 0) 	(nth 1 players)) (t (nth 3 players))))
+			(compHand (cond ((= playerGoing 0) 	(nth 2 players)) (t (nth 0 players))))
+			(compPile (cond ((= playerGoing 0) 	(nth 3 players)) (t (nth 1 players))))
+			;(resultTuple (takeAction hand table))
 		)
-	
+		(print "doPlayerMove returned")
+		(print (doPlayerMove humanHand humanPile table))
+	)
+
+
+)
+
+;;Pass in all the players, if remaining player, recursive call
+;(defun doCycle (players table playerGoing deck)
+;	(Let* 
+;		(
+;			(hand (nth 0 players))
+;			(pile (nth 1 players))
+;			(resultTuple (takeAction hand table))
+;			(nextPlayer (cond ((= playerGoing 0 ) 1) (t 0)))
+;			(result (list nextPlayer deck (nth 1 resultTuple) (first resultTuple) () (nth 2 players) () ))
+;		)
+;	
 		;Contains new hand, new table
 		;Make: firstPlayer deck tableCards humanHand humanPile compHand compPile
-		(cond
-			((null hand) (print "HAND CLEARED"))
-			(t result)
+;		(cond
+;			((null hand) (print "HAND CLEARED"))
+;			(t result)
 			
 			;((> (list-length (nthcdr 2 players)) 0) result);(doCycle ));result)
 			;(t result) ;Left piles () until implemented
 			;(t (append () (list 'TestCase)))		
-		)
-	)
-)
+;		)
+;	)
+;)
 
 
 

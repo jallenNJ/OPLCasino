@@ -72,10 +72,32 @@
 
 )
 
+
 (defun getCardSymbol (card)
 	(first (rest card))
 )
 
+(defun findAndRemoveSymbol (target vector result)
+	(let
+		(
+			(removedCards (first result))
+			(nonRemovedCards (first(rest result)))
+			
+		)
+		
+		(cond 
+			((> (list-length vector) 0)
+				(cond
+					((eq (getCardSymbol (first vector)) target) (findAndRemoveSymbol target (rest vector) (list (list removedCards (first vector)) nonRemovedCards))) 
+					(t (findAndRemoveSymbol target (rest vector) (list removedCards ( list nonRemovedCards (first vector)))))
+				)
+			)
+			(t result)
+		
+		)
+	)
+
+)
 
 ; Worked w/ JL NC
 (defun getFullDeck ()
@@ -93,7 +115,7 @@
 			(> (list-length deck) 0) 
 				(let* 
 					(
-						(randomNum (random (list-length deck) ))
+						(randomNum (random (list-length deck) (make-random-state)))
 						(choosen (nth randomNum deck))
 						(newShuffle (cond ((null shuffled) (cons choosen ())) (t (append shuffled (cons choosen ())))))
 					;	(remainingPrev (nthcdr (- (list-length deck) randomNum)(reverse deck)))
@@ -159,44 +181,35 @@
 	(let 
 		( 
 			(userInput (read))
+			;numberp to check 
 		)
+		
+		
 		( cond
-				((and (>= userInput lowerBound) (<= userInput upperBound)) userInput)
+				((and (numberp userInput)(and (>= userInput lowerBound) (< userInput upperBound))) userInput)
 				(t (print "Invalid input") (getNumericInput lowerBound upperBound))		
 		)	
 	)
 )
 
 (defun doCapture (hand table)
-
-(let*
+	(let*
 		(
 			(playedCardInput (getNumericInput 0 (list-length hand)))
 			(selectedHandCard (nth playedCardInput hand))
 			(remainingHandCards (removeNCard playedCardInput hand))
-			(selectedCardInput (getNumericInput 0 (list-length table)))
-			(selectedTableCard (nth selectedCardInput table))
-			(remainingTableCards (removeNCard selectedTableCard table))
-		
+			;(selectedTableInput (getNumericInput 0 (list-length table)))
+			;(selectedTableCard (nth selectedTableInput table))
+			;(remainingTableCards (removeNCard selectedTableInput table))
+			(resultTuple (findAndRemoveSymbol (getCardSymbol selectedHandCard) table ()))
+			(selectedTableCards (first resultTuple))
+			(remainingTableCards (first (rest resultTuple)))
 		)
-		;(list remainingCards (append table (list selectedCard)))
 		(cond
-			(
-				(equal (getCardSymbol selectedHandCard) (getCardSymbol selectedTableCard)) (list remainingCards remainingTableCards)
-				(t (list hand table))
-				
-			)
-			
-		
-		
+				((> (list-length selectedTableCards) 0) (list remainingHandCards remainingTableCards))
+				(t (list hand table))			
 		)
-	
-	
 	)
-
-
-
-
 )
 
 (defun doTrail (hand table)
@@ -222,7 +235,7 @@
 (defun takeAction (hand table)
 	(Let ((actionToTake (promptForAction)))
 	
-		(cond ((equal actionToTake '1) "Caputure here")
+		(cond ((equal actionToTake '1) "Capture here" (doCapture hand table))
 				((equal actionToTake '2) "Build here")
 				((equal actionToTake '3) "Trail here" (doTrail hand table))
 				(t (takeAction hand table))
@@ -241,12 +254,17 @@
 			(pile (nth 1 players))
 			(resultTuple (takeAction hand table))
 			(nextPlayer (cond ((= playerGoing 0 ) 1) (t 0)))
+			(result (list nextPlayer deck (nth 1 resultTuple) (first resultTuple) () (nth 2 players) () ))
 		)
 	
 		;Contains new hand, new table
 		;Make: firstPlayer deck tableCards humanHand humanPile compHand compPile
 		(cond
-			(t (list nextPlayer deck (nth 1 resultTuple) (first resultTuple) () (nth 2 players) () )) ;Left piles () until implemented
+			((null hand) (print "HAND CLEARED"))
+			(t result)
+			
+			;((> (list-length (nthcdr 2 players)) 0) result);(doCycle ));result)
+			;(t result) ;Left piles () until implemented
 			;(t (append () (list 'TestCase)))		
 		)
 	)
@@ -306,7 +324,7 @@
 	
 
 
-		)			
+)			
 			
 			
 ;(print(promptForFileLoadIn))

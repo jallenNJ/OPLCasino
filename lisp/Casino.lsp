@@ -248,13 +248,23 @@
 
 
 (defun doPlayerMove (hand pile table)
-	(let
-		(
-			(resultTuple (takeAction hand table))
+	(cond 
+		((null hand) (list hand pile table))
+		(t
+		
+		(let
+			(
+				(resultTuple (takeAction hand table))
+			)
+			(list (first resultTuple) pile (nth 1 resultTuple))
 		)
-		(list (first resultTuple) pile (nth 1 resultTuple))
+		
+		)
 	
 	)
+
+
+	
 	
 
 

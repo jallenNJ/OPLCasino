@@ -252,7 +252,7 @@
 		(
 			(resultTuple (takeAction hand table))
 		)
-		(list (first resultTuple) pile (nth 1 table))
+		(list (first resultTuple) pile (nth 1 resultTuple))
 	
 	)
 	
@@ -269,10 +269,14 @@
 			(humanPile (cond ((= playerGoing 0) 	(nth 1 players)) (t (nth 3 players))))
 			(compHand (cond ((= playerGoing 0) 	(nth 2 players)) (t (nth 0 players))))
 			(compPile (cond ((= playerGoing 0) 	(nth 3 players)) (t (nth 1 players))))
-			;(resultTuple (takeAction hand table))
+			(humanMove (doPlayerMove humanHand humanPile table))
+			(tableAfterHuman (nth 2 humanMove))
+			(boardPrintState (printBoard (list 0 deck tableAfterHuman (first humanMove) (nth 1 humanMove) compHand compPile))) ;Var unused, just to print board
+			(compMove (doPlayerMove compHand compPile tableAfterHuman))
+			(tableAfterBoth (nth 2 compMove))
 		)
-		(print "doPlayerMove returned")
-		(print (doPlayerMove humanHand humanPile table))
+		;Make: firstPlayer deck tableCards humanHand humanPile compHand compPile
+		(list playerGoing deck tableAfterBoth (first humanMove) (nth 1 humanMove) (first compMove) (nth 1 compMove) )
 	)
 
 

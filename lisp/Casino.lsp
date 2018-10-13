@@ -136,7 +136,19 @@
 	
 	;Get the first four cards off the deck as a list of lists 
 	(list (nth 0 deck) (nth 1 deck) (nth 2 deck)(nth 3 deck))
-;
+)
+
+(defun dealFourCardsIfEmpty (hand deck)
+
+
+	(cond 
+		((null hand) (list (dealFourCards deck) (nthcdr 4 deck))) 
+		(t (list hand deck))
+	
+	
+	)
+
+	
 
 )
 
@@ -263,11 +275,6 @@
 	
 	)
 
-
-	
-	
-
-
 )
 
 
@@ -344,9 +351,25 @@
 			(print "THIS IS TERMINATING CASE, ADD PROPER HANDLING")
 		)
 		(t 
-			(printBoard roundParams)
-			(playRound roundNum (doCycle (nthcdr 3 roundParams) (nth 2 roundParams) (first roundParams) (nth 1 roundParams)))	
-		)
+			(let* 
+				(
+					(humanHandCheck (dealFourCardsIfEmpty (nth 3 roundParams) (nth 1 roundParams)))
+					(deckAfterHuman (nth 1 humanHandCheck))
+					(compHandCheck (dealFourCardsIfEmpty (nth 5 roundParams) deckAfterHuman))
+					(deckAfterBoth (nth 1 compHandCheck))
+					(updatedPlayers (list (first humanHandCheck) (nth 4 roundParams) (first compHandCheck) (nth 6 roundParams)))
+					
+				)
+				(printBoard (append (list (first roundParams) deckAfterBoth (nth 2 roundParams)) updatedPlayers))
+				(playRound roundNum (doCycle updatedPlayers (nth 2 roundParams) (first roundParams) deckAfterBoth))
+			
+				)
+			)
+		
+		
+			;(printBoard roundParams)
+			;(playRound roundNum (doCycle (nthcdr 3 roundParams) (nth 2 roundParams) (first roundParams) (nth 1 roundParams)))	
+		
 	)
 	
 )

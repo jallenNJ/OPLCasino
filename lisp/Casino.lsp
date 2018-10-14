@@ -1,19 +1,20 @@
-(defun promptForFileLoadIn ()
-	(print "Would you like to load in a save file")
-	(cond ( (string-equal (read) "Y")  ; If yes
-				'(Y))
-			(t 
-				'(N)
-			)))
-
-			
 (defun getYesNoInput (input)
 		(cond( (string-equal input "Y") 
-					'(Y))
+					"Y")
 			 ( (string-equal input "N") 
-					'(N))
+					"N")
 			( t	(print "Try again")	(getYesNoInput (read)))
-			))
+		)
+)
+			
+(defun promptForFileLoadIn ()
+	(print "Would you like to load in a save file(y/n)")
+	(getYesNoInput (read))
+)
+
+
+			
+
 
 ; Check scores in form (HUMANSCORE, COMPSCORE)
 (defun checkScores (scores)
@@ -370,11 +371,11 @@
 )			
 			
 			
-;(print(promptForFileLoadIn))
-;;Right here is how to handle loading in
-;(print "Please enter Y/N")
+
 ;(getYesNoInput (read))
 
-(trace doPlayerMove)
-(runTournament '(0 0) 0)
+(cond ((string-equal (promptForFileLoadIn) "Y") (print "do the load"))
+
+		(t (runTournament '(0 0) 0)))
+
 

@@ -152,7 +152,7 @@
 
 )
 
-(defun printAll (hHand cHand table deck)
+(defun printAll (hHand cHand table deck nextPlayer)
 		(print 'Human )
 		(print 	hHand)
 		
@@ -167,11 +167,13 @@
 		(print '==================)
 		(print 'Deck)
 		(print deck)
+		
+		(cond ((= nextPlayer 0) (print "Human is next")) (t (print "Computer is next")))
 )
 
 
 (defun printBoard (parse) ; Parse round params
-	(printAll (nth 3 parse) (nth 5 parse) (nth 2 parse) (nth 1 parse)) 
+	(printAll (nth 3 parse) (nth 5 parse) (nth 2 parse) (nth 1 parse) (first parse)) 
 
 )
 
@@ -229,18 +231,10 @@
 		(
 			(input (getNumericInput 0 (list-length hand)))
 			(selectedCard (nth input hand))
-			(remainingCards (removeNCard input hand))
-		
-		
-		
+			(remainingCards (removeNCard input hand))		
 		)
 		(list remainingCards (append table (list selectedCard)))
-	
-	
 	)
-
-
-	;( list (rest hand) (append table (list (first hand))))
 )
 
 ;return (hand table)
@@ -254,9 +248,7 @@
 				
 		)	
 	)
-
 )
-
 
 
 (defun doPlayerMove (hand pile table)
@@ -278,7 +270,7 @@
 )
 
 
-
+;This functions does a cycle where both players play one card
 (defun doCycle (players table playerGoing deck)
 	(Let* 
 		(
@@ -286,42 +278,24 @@
 			(humanPile (cond ((= playerGoing 0) 	(nth 1 players)) (t (nth 3 players))))
 			(compHand (cond ((= playerGoing 0) 	(nth 2 players)) (t (nth 0 players))))
 			(compPile (cond ((= playerGoing 0) 	(nth 3 players)) (t (nth 1 players))))
-			(humanMove (doPlayerMove humanHand humanPile table))
-			(tableAfterHuman (nth 2 humanMove))
-			(boardPrintState (printBoard (list 0 deck tableAfterHuman (first humanMove) (nth 1 humanMove) compHand compPile))) ;Var unused, just to print board
-			(compMove (doPlayerMove compHand compPile tableAfterHuman))
-			(tableAfterBoth (nth 2 compMove))
+			
+			(firstMove (cond ((= playerGoing 0 ) (doPlayerMove humanHand humanPile table)) (t (doPlayerMove compHand compPile table))))
+			(tableAfterFirst (nth 2 firstMove))
+			(boardPlayerPrint (cond ((= playerGoing 0 ) (list (first firstMove) (nth 1 firstMove) compHand compPile)) (t (list humanHand humanPile (first firstMove) (nth 1 firstMove)))))
+			(boardPrintState (printBoard (append(list 0 deck tableAfterFirst )boardPlayerPrint))) ;Var unused, just to print board
+			
+			(secondMove (cond ((= playerGoing 0 ) (doPlayerMove compHand compPile tableAfterFirst)) (t (doPlayerMove humanHand humanPile tableAfterFirst))))
+			(tableAfterBoth (nth 2 secondMove))
+			(humanResult (cond  ((= playerGoing 0 ) (list (first firstMove) (nth 1 firstMove))) (t (list (first secondMove) (nth 1 secondMove)))))
+			(compResult (cond  ((= playerGoing 1 ) (list (first firstMove) (nth 1 firstMove))) (t (list (first secondMove) (nth 1 secondMove)))))
 		)
 		;Make: firstPlayer deck tableCards humanHand humanPile compHand compPile
-		(list playerGoing deck tableAfterBoth (first humanMove) (nth 1 humanMove) (first compMove) (nth 1 compMove) )
+		(list playerGoing deck tableAfterBoth (first humanResult) (nth 1 humanResult) (first compResult) (nth 1 compResult) )
 	)
 
 
 )
 
-;;Pass in all the players, if remaining player, recursive call
-;(defun doCycle (players table playerGoing deck)
-;	(Let* 
-;		(
-;			(hand (nth 0 players))
-;			(pile (nth 1 players))
-;			(resultTuple (takeAction hand table))
-;			(nextPlayer (cond ((= playerGoing 0 ) 1) (t 0)))
-;			(result (list nextPlayer deck (nth 1 resultTuple) (first resultTuple) () (nth 2 players) () ))
-;		)
-;	
-		;Contains new hand, new table
-		;Make: firstPlayer deck tableCards humanHand humanPile compHand compPile
-;		(cond
-;			((null hand) (print "HAND CLEARED"))
-;			(t result)
-			
-			;((> (list-length (nthcdr 2 players)) 0) result);(doCycle ));result)
-			;(t result) ;Left piles () until implemented
-			;(t (append () (list 'TestCase)))		
-;		)
-;	)
-;)
 
 
 
@@ -401,5 +375,6 @@
 ;(print "Please enter Y/N")
 ;(getYesNoInput (read))
 
+(trace doPlayerMove)
 (runTournament '(0 0) 0)
 

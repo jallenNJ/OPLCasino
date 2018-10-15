@@ -36,9 +36,9 @@
 (defun getRoundNumFromFile(data)
 	(list (first data))
 )
-;Returns the score (Comp, human)
+;Returns the score (Human, comp)
 (defun getScoresFromFile (data)
-	(list (nth 1 data) (nth 4 data))
+	(list (nth 4 data) (nth 1 data))
 )
 
 ;Gets the comp player form (hand, pile)
@@ -403,14 +403,14 @@
 )
 
 			
-(defun runTournament (scores round)
+(defun runTournament (scores round intialParams)
 	
 	(Let ((result (checkScores scores))) ;Get the result and store it 
 		(cond    
 			((= result 0) (print "Human has won!"))
 			((= result 1) (print "Computer has won!"))
 			((= result 2) (print "Both players tied!"))
-			(t (print (playRound 0 ())))
+			(t (print (playRound round intialParams)))
 		)
 	)
 )			
@@ -434,19 +434,21 @@
 				(lastCapturer (getLastCapturer fileData))
 			)
 			
-			(print roundNumber)
-			(print scores)
-			(print compPlayer)
-			(print humanPlayer)
-			(print table)
-			(print deck)
-			(print nextPlayer)
-			(print lastCapturer)
+			;(print roundNumber)
+			;(print scores)
+			;(print compPlayer)
+			;(print humanPlayer)
+			;(print table)
+			;(print deck)
+			;(print nextPlayer)
+			;(print lastCapturer)
+			;Make: firstPlayer deck tableCards humanHand humanPile compHand compPile
+			(runTournament scores  roundNumber (list nextPlayer deck table (first humanPlayer) (nth 1 humanPlayer) (first compPlayer) (nth 1 compPlayer)))
 		)
 	
 	)
 
-	(t (runTournament '(0 0) 0))
+	(t (runTournament '(0 0) 0 ()))
 )
 
 

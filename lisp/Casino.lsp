@@ -32,6 +32,51 @@
 	)
 )			
 
+;Returns the round number in a list
+(defun getRoundNumFromFile(data)
+	(list (first data))
+)
+;Returns the score (Comp, human)
+(defun getScoresFromFile (data)
+	(list (nth 1 data) (nth 4 data))
+)
+
+;Gets the comp player form (hand, pile)
+(defun getCompFromFile (data)
+	(list (nth 2 data) (nth 3 data))
+)
+;Gets the human player form (hand, pile)
+(defun getHumanFromFile (data)
+	(list (nth 5 data) (nth 6 data))
+)
+;Gets the table in a list
+(defun getTableFromFile (data)
+	(nth 7 data)
+)
+;Gets the next player, 0 human 1 comp
+(defun getNextPlayerFromFile (data)
+	(cond ((string-equal(nth (-(list-length data)1) data) "Human")0)(t 1) )
+)
+;Gets the deck 
+(defun getDeckFromFile (data)
+	(nth (-(list-length data)2) data )
+)
+;Gets the last capturer, 0 human 1 comp
+(defun getLastCapturer  (data)
+(cond ((string-equal(nth (-(list-length data)3) data) "Human")0)(t 1) )
+)
+;Get the build owners, non implemented
+(defun getBuildOwners (data)
+	(print "Implement getBuildOwners")
+
+)
+
+;(defun formatSaveFileToRoundParams (params)
+
+;(list (list(first params))())
+	
+
+;)
 
 ; Check scores in form (HUMANSCORE, COMPSCORE)
 (defun checkScores (scores)
@@ -162,12 +207,7 @@
 	(cond 
 		((null hand) (list (dealFourCards deck) (nthcdr 4 deck))) 
 		(t (list hand deck))
-	
-	
 	)
-
-	
-
 )
 
 (defun printAll (hHand cHand table deck nextPlayer)
@@ -310,11 +350,7 @@
 		;Make: firstPlayer deck tableCards humanHand humanPile compHand compPile
 		(list playerGoing deck tableAfterBoth (first humanResult) (nth 1 humanResult) (first compResult) (nth 1 compResult) )
 	)
-
-
 )
-
-
 
 
 (defun newRoundParams (roundNum)
@@ -375,24 +411,44 @@
 			((= result 1) (print "Computer has won!"))
 			((= result 2) (print "Both players tied!"))
 			(t (print (playRound 0 ())))
-		
-		
-		
 		)
-	
-	
 	)
-	
-
-
 )			
 			
 			
 
 ;(getYesNoInput (read))
 
-(cond ((string-equal (promptForFileLoadIn) "Y") (loadInFile))
+(cond 
+	((string-equal (promptForFileLoadIn) "Y") 
+		(let* 
+			(
+				(fileData (loadInFile))
+				(roundNumber (getRoundNumFromFile fileData))
+				(scores (getScoresFromFile fileData))
+				(compPlayer (getCompFromFile fileData))
+				(humanPlayer (getHumanFromFile fileData))
+				(table (getTableFromFile fileData))
+				(deck (getDeckFromFile fileData))
+				(nextPlayer (getNextPlayerFromFile fileData))
+				(lastCapturer (getLastCapturer fileData))
+			)
+			
+			(print roundNumber)
+			(print scores)
+			(print compPlayer)
+			(print humanPlayer)
+			(print table)
+			(print deck)
+			(print nextPlayer)
+			(print lastCapturer)
+		)
+	
+	)
 
-		(t (runTournament '(0 0) 0)))
+	(t (runTournament '(0 0) 0))
+)
+
+
 
 

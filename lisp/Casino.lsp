@@ -12,8 +12,25 @@
 	(getYesNoInput (read))
 )
 
+(defun getFilePath ()
+	(print "Please enter the fileName")
+	(read)
+)
 
-			
+
+(defun loadInFile ()
+	(let*
+		(
+			(filePath (getFilePath))
+			(saveFile (open filePath :if-does-not-exist nil))
+		)
+		
+		(cond 
+			((null saveFile) (print "File failed to open")(loadInFile))
+			(t  (read saveFile))
+		)
+	)
+)			
 
 
 ; Check scores in form (HUMANSCORE, COMPSCORE)
@@ -374,7 +391,7 @@
 
 ;(getYesNoInput (read))
 
-(cond ((string-equal (promptForFileLoadIn) "Y") (print "do the load"))
+(cond ((string-equal (promptForFileLoadIn) "Y") (loadInFile))
 
 		(t (runTournament '(0 0) 0)))
 

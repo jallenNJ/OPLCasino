@@ -250,7 +250,7 @@
 
 (defun getNumericInput(lowerBound upperBound)
 	;(print ('"Enter a number between" lowerBound '" and " upperBound))
-	(print "Test enter a num")
+	(print "Which card would you like to play, starting from 1? ")
 	(let 
 		( 
 			(userInput (read))

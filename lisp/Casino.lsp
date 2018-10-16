@@ -137,7 +137,6 @@
 
 
 (defun getCardSymbol (card)
-	;(print (type-of card))
 	(char (string card) 1)
 )
 
@@ -148,12 +147,12 @@
 			(nonRemovedCards (first(rest result)))
 			
 		)
-		
+
 		(cond 
 			((> (list-length vector) 0)
 				(cond
-					((eq (getCardSymbol (first vector)) target) (findAndRemoveSymbol target (rest vector) (list (list removedCards (first vector)) nonRemovedCards))) 
-					(t (findAndRemoveSymbol target (rest vector) (list removedCards ( list nonRemovedCards (first vector)))))
+					((eq (getCardSymbol (first vector)) target) (findAndRemoveSymbol target (rest vector) (list (list removedCards (first Vector)) nonRemovedCards))) ;(list (cons removedCards  (list (first vector))) nonRemovedCards)
+					(t (findAndRemoveSymbol target (rest vector) (list removedCards ( append nonRemovedCards  (list (first vector))))))
 				)
 			)
 			(t result)
@@ -168,7 +167,7 @@
 	'(	SA S2 S3 S4 S5 S6 S7 S8 S9 SX SJ SQ SK
 		CA C2 C3 C4 C5 C6 C7 C8 C9 CX CJ CQ CK
 		DA D2 D3 D4 D5 D6 D7 D8 D9 DX DJ DQ DK
-		SA S2 S3 S4 S5 S6 S7 S8 S9 SX SJ SQ SK
+		HA H2 H3 H4 H5 H6 H7 H8 H9 HX HJ HQ HK
 	)
 	;'(	(S A) (S 2) (S 3) (S 4) (S 5) (S 6) (S 7) (S 8) (S 9) (S X) (S J) (S Q) (S K) 
 	;	(C A) (C 2) (C 3) (C 4) (C 5) (C 6) (C 7) (C 8) (C 9) (C X) (C J) (C Q) (C K)
@@ -275,9 +274,7 @@
 			(playedCardInput (getNumericInput 0 (list-length hand)))
 			(selectedHandCard (nth playedCardInput hand))
 			(remainingHandCards (removeNCard playedCardInput hand))
-			;(selectedTableInput (getNumericInput 0 (list-length table)))
-			;(selectedTableCard (nth selectedTableInput table))
-			;(remainingTableCards (removeNCard selectedTableInput table))
+			
 			(resultTuple (findAndRemoveSymbol (getCardSymbol selectedHandCard) table ()))
 			(selectedTableCards (first resultTuple))
 			(remainingTableCards (first (rest resultTuple)))
@@ -420,10 +417,9 @@
 	)
 )			
 			
-			
+	
 
-;(getYesNoInput (read))
-
+;"Main"	
 (cond 
 	((string-equal (promptForFileLoadIn) "Y") 
 		(let* 

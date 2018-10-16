@@ -264,6 +264,61 @@
 	)
 )
 
+(defun symbolToNumericValue (input aceHigh)
+
+	(cond
+		( (eq input 'A) (cond (( null aceHigh) '1) ( t '14) ))
+		( (eq input '2) '2)
+		( (eq input '3) '3)
+		( (eq input '4) '4)
+		( (eq input '5) '5)
+		( (eq input '6) '6)
+		( (eq input '7) '7)
+		( (eq input '8) '8)
+		( (eq input '9) '9)
+		( (eq input 'X) '10)
+		( (eq input 'J) '11)
+		( (eq input 'Q) '12)
+		(t '13)
+	)
+
+)
+
+(defun numericValueToSymbol (input)
+	(cond
+		((= input 2) '2)
+		((= input 3) '3)
+		((= input 4) '4)
+		((= input 5) '5)
+		((= input 6) '6)
+		((= input 7) '7)
+		((= input 8) '8)
+		((= input 9) '9)
+		((= input 10) 'X)
+		((= input 11) 'J)
+		((= input 12) 'Q)
+		((= input 13) 'K)
+		(t 'A)
+	
+	
+	
+	
+	
+	)
+
+
+
+
+
+)
+
+(defun findSetsThatSum (target toProcess found)
+
+
+
+
+)
+
 (defun doCapture (hand table)
 	(let*
 		(
@@ -282,6 +337,27 @@
 	)
 )
 
+
+;(defun doBuild (hand table)
+;	(let*
+;		(
+;			(playedCardInput (getNumericInput 0 (list-length hand)))
+;			(selectedHandCard (nth playedCardInput hand))
+;			(remainingHandCards (removeNCard playedCardInput hand))
+		     
+;			(getBuildCards  table () )
+;		)
+	
+	
+	
+	
+;	)
+
+
+
+
+;)
+
 (defun doTrail (hand table)
 	(let*
 		(
@@ -298,7 +374,7 @@
 	(Let ((actionToTake (promptForAction)))
 	
 		(cond ((equal actionToTake '1) "Capture here" (doCapture hand table))
-				((equal actionToTake '2) "Build here")
+				((equal actionToTake '2) "Build here"); (doBuild hand table))
 				((equal actionToTake '3) "Trail here" (doTrail hand table))
 				(t (takeAction hand table))
 				
@@ -425,6 +501,22 @@
 			
 	
 
+	
+	
+(print (symbolToNumericValue 'A t))	
+(print (symbolToNumericValue 'A ()))
+(print (symbolToNumericValue '5 t))
+(print (symbolToNumericValue '7 t))
+(print (symbolToNumericValue 'X ()))
+(print (symbolToNumericValue 'Q t))	
+
+(print (numericValueToSymbol (symbolToNumericValue 'A t)))
+(print (numericValueToSymbol (symbolToNumericValue 'A ())))
+(print (numericValueToSymbol (symbolToNumericValue '7 ())))	
+(print (numericValueToSymbol (symbolToNumericValue 'X ())))	
+(print (numericValueToSymbol (symbolToNumericValue 'K ())))					
+	
+	
 ;"Main"	
 (cond 
 	((string-equal (promptForFileLoadIn) "Y") 
@@ -441,14 +533,7 @@
 				(lastCapturer (getLastCapturer fileData))
 			)
 			
-			;(print roundNumber)
-			;(print scores)
-			;(print compPlayer)
-			;(print humanPlayer)
-			;(print table)
-			;(print deck)
-			;(print nextPlayer)
-			;(print lastCapturer)
+
 			;Make: firstPlayer deck tableCards humanHand humanPile compHand compPile
 			(runTournament scores  roundNumber (list nextPlayer deck table (first humanPlayer) (nth 1 humanPlayer) (first compPlayer) (nth 1 compPlayer)))
 		)

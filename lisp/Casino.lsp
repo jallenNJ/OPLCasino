@@ -258,7 +258,7 @@
 		
 		
 		( cond
-				((and (numberp userInput)(and (>= userInput lowerBound) (< userInput upperBound))) userInput)
+				((and (numberp userInput)(and (> userInput lowerBound) (<= userInput upperBound))) (- userInput 1))
 				(t (print "Invalid input") (getNumericInput lowerBound upperBound))		
 		)	
 	)

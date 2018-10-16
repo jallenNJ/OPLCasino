@@ -499,24 +499,7 @@
 	)
 )			
 			
-	
-
-	
-	
-(print (symbolToNumericValue 'A t))	
-(print (symbolToNumericValue 'A ()))
-(print (symbolToNumericValue '5 t))
-(print (symbolToNumericValue '7 t))
-(print (symbolToNumericValue 'X ()))
-(print (symbolToNumericValue 'Q t))	
-
-(print (numericValueToSymbol (symbolToNumericValue 'A t)))
-(print (numericValueToSymbol (symbolToNumericValue 'A ())))
-(print (numericValueToSymbol (symbolToNumericValue '7 ())))	
-(print (numericValueToSymbol (symbolToNumericValue 'X ())))	
-(print (numericValueToSymbol (symbolToNumericValue 'K ())))					
-	
-	
+		
 ;"Main"	
 (cond 
 	((string-equal (promptForFileLoadIn) "Y") 

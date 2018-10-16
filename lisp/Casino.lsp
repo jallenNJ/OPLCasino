@@ -184,10 +184,7 @@
 					(
 						(randomNum (random (list-length deck) (make-random-state)))
 						(choosen (nth randomNum deck))
-						(newShuffle (cond ((null shuffled) (cons choosen ())) (t (append shuffled (cons choosen ())))))
-					;	(remainingPrev (nthcdr (- (list-length deck) randomNum)(reverse deck)))
-					;	(remainingAfter (nthcdr (+ randomNum 1) deck))			
-					
+						(newShuffle (cond ((null shuffled) (cons choosen ())) (t (append shuffled (cons choosen ())))))			
 					)
 					
 					(shuffleDeck (removeNCard randomNum deck) newShuffle)
@@ -257,7 +254,6 @@
 	(let 
 		( 
 			(userInput (read))
-			;numberp to check 
 		)
 		
 		
@@ -320,7 +316,17 @@
 			(
 				(resultTuple (takeAction hand table))
 			)
-			(list (first resultTuple) pile (nth 1 resultTuple))
+			(print "Result")
+			(print resultTuple)
+			
+			(cond 
+				;If move was invalid
+				((equal resultTuple (list hand table)) (print "Invalid move") (doPlayerMove hand pile table))
+				;Move was valid
+				(t (list (first resultTuple) pile (nth 1 resultTuple)))
+			
+			)
+			
 		)
 		
 		)

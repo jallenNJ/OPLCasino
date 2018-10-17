@@ -71,12 +71,6 @@
 
 )
 
-;(defun formatSaveFileToRoundParams (params)
-
-;(list (list(first params))())
-	
-
-;)
 
 ; Check scores in form (HUMANSCORE, COMPSCORE)
 (defun checkScores (scores)
@@ -312,11 +306,28 @@
 
 )
 
-(defun findSetsThatSum (target toProcess found)
+ 
+
+(defun findSetsThatSum (toProcess target current)
+	(cond 	((or
+				(or (< target 1) (> target 14)) 
+				( = (list-length toProcess) 0)
+			) current)
+			(t 
+				(cond ((>(symbolToNumericValue(getCardSymbol(first toProcess)) ()) target)
+							(findSetsThatSum (rest toProcess) target current)
+						)
+						(t (findSetsThatSum (rest toProcess) target (append current (list (first toProcess)))))
+						
+						)
+			
+			
+			
+			)
+	
 
 
-
-
+	)
 )
 
 (defun doCapture (hand table)
@@ -384,6 +395,8 @@
 
 
 (defun doPlayerMove (hand pile table)
+	(print "Test line")
+	(print (findSetsThatSum hand 12 ()))
 	(cond 
 		((null hand) (list hand pile table))
 		(t

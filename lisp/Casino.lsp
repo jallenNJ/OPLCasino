@@ -259,21 +259,20 @@
 )
 
 (defun symbolToNumericValue (input aceHigh)
-
 	(cond
-		( (eq input 'A) (cond (( null aceHigh) '1) ( t '14) ))
-		( (eq input '2) '2)
-		( (eq input '3) '3)
-		( (eq input '4) '4)
-		( (eq input '5) '5)
-		( (eq input '6) '6)
-		( (eq input '7) '7)
-		( (eq input '8) '8)
-		( (eq input '9) '9)
-		( (eq input 'X) '10)
-		( (eq input 'J) '11)
-		( (eq input 'Q) '12)
-		(t '13)
+		( (eq input #\A) (cond (( null aceHigh) 1) ( t 14) ))
+		( (eq input #\2) 2)
+		( (eq input #\3) 3)
+		( (eq input #\4) 4)
+		( (eq input #\5) 5)
+		( (eq input #\6) 6)
+		( (eq input #\7) 7)
+		( (eq input #\8) 8)
+		( (eq input #\9) 9)
+		( (eq input #\X) 10)
+		( (eq input #\J) 11)
+		( (eq input #\Q) 12)
+		(t 13)
 	)
 
 )
@@ -293,40 +292,48 @@
 		((= input 12) 'Q)
 		((= input 13) 'K)
 		(t 'A)
-	
-	
-	
-	
-	
+
 	)
 
+)
+
+ 
+(defun checkSetSum (check target checked)
+
+(print "checkSetSum")
+(print check)
+(print target)
+(print checked)
+(print "========")
+(cond ((null check) (cond ((= target 0 ) checked) (t ())))
+	(t (checkSetSum (rest check) (- target (symbolToNumericValue (getCardSymbol(first check)) ())) (append checked (list (first check)))))
+
+
+)
 
 
 
 
 )
 
- 
-
-(defun findSetsThatSum (toProcess target current)
+(defun findSetsThatSum (toProcess target currentResult currentSum)
+;	(print "Target is")
+;	(print target)
 	(cond 	((or
 				(or (< target 1) (> target 14)) 
 				( = (list-length toProcess) 0)
-			) current)
+			  ) 
+			  (checkSetSum currentResult target ()))
 			(t 
-				(cond ((>(symbolToNumericValue(getCardSymbol(first toProcess)) ()) target)
-							(findSetsThatSum (rest toProcess) target current)
+				;(print "DEBUG:")
+				;(print (symbolToNumericValue (getCardSymbol(first toProcess) )()))
+				(cond (( >(+ (symbolToNumericValue (getCardSymbol(first toProcess)) ()) currentSum) target)
+							(findSetsThatSum (rest toProcess) target currentResult currentSum)
 						)
-						(t (findSetsThatSum (rest toProcess) target (append current (list (first toProcess)))))
+						(t (findSetsThatSum (rest toProcess) target (append currentResult (list (first toProcess))) (+ currentSum (symbolToNumericValue (getCardSymbol(first toProcess)) ()))))
 						
-						)
-			
-			
-			
+				)
 			)
-	
-
-
 	)
 )
 
@@ -395,8 +402,8 @@
 
 
 (defun doPlayerMove (hand pile table)
-	(print "Test line")
-	(print (findSetsThatSum hand 12 ()))
+	(print "Sets that sum")
+	(print (findSetsThatSum hand 12 () 0))
 	(cond 
 		((null hand) (list hand pile table))
 		(t

@@ -300,11 +300,11 @@
  
 (defun checkSetSum (check target checked)
 
-(print "checkSetSum")
-(print check)
-(print target)
-(print checked)
-(print "========")
+;(print "checkSetSum")
+;(print check)
+;(print target)
+;(print checked)
+;(print "========")
 (cond ((null check) (cond ((= target 0 ) checked) (t ())))
 	(t (checkSetSum (rest check) (- target (symbolToNumericValue (getCardSymbol(first check)) ())) (append checked (list (first check)))))
 
@@ -334,6 +334,39 @@
 						
 				)
 			)
+	)
+)
+
+(defun findAllSetsThatSumForStarting (starting toProcess target found)
+	(let*
+		(
+			(result (findSetsThatSum toProcess target () 0))
+			(appendedFound (cond ((null result) found) (t (cond ((null found) (cons result ()))(t(list found result))))))
+		
+		)
+		(print appendedFound)	
+		(cond ((null toProcess) appendedFound)
+			(t (findAllSetsThatSumForStarting starting (rest toProcess) target appendedFound))
+		
+		)	
+	
+	
+	)
+
+)
+
+(defun findAllSetsThatSum (toProcess target found)
+	(let*
+		(
+			(result (findAllSetsThatSumForStarting (first toProcess) (rest toProcess) target found))
+			(appendedFound (cond ((null result) found) (t (cond ((null found) (cons result ()))(t(list found result))))))
+		
+		)
+		(cond 
+			((null toProcess) appendedFound)
+			(t (findAllSetsThatSum (rest toProcess) target appendedFound))
+		
+		)
 	)
 )
 
@@ -403,7 +436,7 @@
 
 (defun doPlayerMove (hand pile table)
 	(print "Sets that sum")
-	(print (findSetsThatSum hand 12 () 0))
+	(print (findAllSetsThatSum table 12 ()))
 	(cond 
 		((null hand) (list hand pile table))
 		(t

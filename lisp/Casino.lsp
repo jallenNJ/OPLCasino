@@ -341,7 +341,7 @@
 	(let*
 		(
 			(result (findSetsThatSum toProcess target () 0))
-			(appendedFound (cond ((null result) found) (t (cond ((null found) (cons result ()))(t(list found result))))))
+			(appendedFound (cond ((null result) found) (t (cond ((null found) result)(t(append (cons found () )(list result)))))))
 		
 		)
 		(print appendedFound)	
@@ -359,7 +359,7 @@
 	(let*
 		(
 			(result (findAllSetsThatSumForStarting (first toProcess) (rest toProcess) target found))
-			(appendedFound (cond ((null result) found) (t (cond ((null found) (cons result ()))(t(list found result))))))
+			(appendedFound (cond ((null result) found) (t (cond ((null found) result)(t(append (cons found () )(list result)))))))
 		
 		)
 		(cond 

@@ -297,6 +297,7 @@
 
 )
 
+
  
 (defun checkSetSum (check target checked)
 
@@ -305,14 +306,9 @@
 ;(print target)
 ;(print checked)
 ;(print "========")
-(cond ((null check) (cond ((= target 0 ) checked) (t ())))
-	(t (checkSetSum (rest check) (- target (symbolToNumericValue (getCardSymbol(first check)) ())) (append checked (list (first check)))))
-
-
-)
-
-
-
+	(cond ((null check) (cond ((= target 0 ) checked) (t ())))
+		(t (checkSetSum (rest check) (- target (symbolToNumericValue (getCardSymbol(first check)) ())) (append checked (list (first check)))))
+	)
 
 )
 
@@ -344,12 +340,11 @@
 			(appendedFound (cond ((null result) found) (t (cond ((null found) result)(t(append (cons found () )(list result)))))))
 		
 		)
-		(print appendedFound)	
+		;(print appendedFound)	
 		(cond ((null toProcess) appendedFound)
 			(t (findAllSetsThatSumForStarting starting (rest toProcess) target appendedFound))
 		
 		)	
-	
 	
 	)
 
@@ -388,6 +383,28 @@
 	)
 )
 
+(defun captureSets (handAndTable)
+
+	(print "Are there any additionial sets you would like to capture?")
+	(let
+		(
+			(hand (first handAndTable))
+			(table (rest handAndTable))
+			(yesNo (getYesNoInput (read)))
+		)
+	
+		(cond
+			((string-equal yesNo "N") handAndTable)
+			(t handAndTable)
+		)
+	
+	
+	)
+
+
+
+)
+
 
 ;(defun doBuild (hand table)
 ;	(let*
@@ -424,7 +441,7 @@
 (defun takeAction (hand table)
 	(Let ((actionToTake (promptForAction)))
 	
-		(cond ((equal actionToTake '1) "Capture here" (doCapture hand table))
+		(cond ((equal actionToTake '1) "Capture here" (captureSets(doCapture hand table)))
 				((equal actionToTake '2) "Build here"); (doBuild hand table))
 				((equal actionToTake '3) "Trail here" (doTrail hand table))
 				(t (takeAction hand table))
@@ -435,8 +452,8 @@
 
 
 (defun doPlayerMove (hand pile table)
-	(print "Sets that sum")
-	(print (findAllSetsThatSum table 12 ()))
+	;(print "Sets that sum")
+	;(print (findAllSetsThatSum table 12 ()))
 	(cond 
 		((null hand) (list hand pile table))
 		(t

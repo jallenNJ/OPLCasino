@@ -148,11 +148,8 @@
 			(remainingPrev (nthcdr (- (list-length vector) n)(reverse vector)))
 			(remainingAfter (nthcdr (+ n 1) vector))
 		)
-		(append remainingPrev remainingAfter)
-	
+		(append remainingPrev remainingAfter)	
 	)
-
-
 
 )
 
@@ -166,7 +163,6 @@
 		(
 			(removedCards (first result))
 			(nonRemovedCards (first(rest result)))
-			
 		)
 
 		(cond 
@@ -180,7 +176,6 @@
 		
 		)
 	)
-
 )
 
 ; Worked w/ JL NC
@@ -190,11 +185,6 @@
 		DA D2 D3 D4 D5 D6 D7 D8 D9 DX DJ DQ DK
 		HA H2 H3 H4 H5 H6 H7 H8 H9 HX HJ HQ HK
 	)
-	;'(	(S A) (S 2) (S 3) (S 4) (S 5) (S 6) (S 7) (S 8) (S 9) (S X) (S J) (S Q) (S K) 
-	;	(C A) (C 2) (C 3) (C 4) (C 5) (C 6) (C 7) (C 8) (C 9) (C X) (C J) (C Q) (C K)
-	;	(D A) (D 2) (D 3) (D 4) (D 5) (D 6) (D 7) (D 8) (D 9) (D X) (D J) (D Q) (D K)
-	;	(H A) (H 2) (H 3) (H 4) (H 5) (H 6) (H 7) (H 8) (H 9) (H X) (H J) (H Q) (H K)	
-	;)
 )
 
 (defun shuffleDeck (deck shuffled)
@@ -218,13 +208,11 @@
 
 (defun dealFourCards (deck)
  
-	
 	;Get the first four cards off the deck as a list of lists 
 	(list (nth 0 deck) (nth 1 deck) (nth 2 deck)(nth 3 deck))
 )
 
 (defun dealFourCardsIfEmpty (hand deck)
-
 
 	(cond 
 		((null hand) (list (dealFourCards deck) (nthcdr 4 deck))) 
@@ -270,13 +258,11 @@
 
 
 (defun getNumericInput(lowerBound upperBound)
-	;(print ('"Enter a number between" lowerBound '" and " upperBound))
 	(print "Which card would you like to play, starting from 1? ")
 	(let 
 		( 
 			(userInput (read))
 		)
-		
 		
 		( cond
 				((and (numberp userInput)(and (> userInput lowerBound) (<= userInput upperBound))) (- userInput 1))
@@ -301,7 +287,6 @@
 		( (eq input #\Q) 12)
 		(t 13)
 	)
-
 )
 
 (defun numericValueToSymbol (input)
@@ -319,42 +304,28 @@
 		((= input 12) 'Q)
 		((= input 13) 'K)
 		(t 'A)
-
 	)
-
 )
 
-
- 
 (defun checkSetSum (check target checked)
 
-;(print "checkSetSum")
-;(print check)
-;(print target)
-;(print checked)
-;(print "========")
 	(cond ((null check) (cond ((= target 0 ) checked) (t ())))
 		(t (checkSetSum (rest check) (- target (symbolToNumericValue (getCardSymbol(first check)) ())) (append checked (list (first check)))))
 	)
-
 )
 
 (defun findSetsThatSum (toProcess target currentResult currentSum)
-;	(print "Target is")
-;	(print target)
+
 	(cond 	((or
 				(or (< target 1) (> target 14)) 
 				( = (list-length toProcess) 0)
 			  ) 
 			  (checkSetSum currentResult target ()))
 			(t 
-				;(print "DEBUG:")
-				;(print (symbolToNumericValue (getCardSymbol(first toProcess) )()))
 				(cond (( >(+ (symbolToNumericValue (getCardSymbol(first toProcess)) ()) currentSum) target)
 							(findSetsThatSum (rest toProcess) target currentResult currentSum)
 						)
-						(t (findSetsThatSum (rest toProcess) target (append currentResult (list (first toProcess))) (+ currentSum (symbolToNumericValue (getCardSymbol(first toProcess)) ()))))
-						
+						(t (findSetsThatSum (rest toProcess) target (append currentResult (list (first toProcess))) (+ currentSum (symbolToNumericValue (getCardSymbol(first toProcess)) ()))))					
 				)
 			)
 	)
@@ -365,16 +336,12 @@
 		(
 			(result (findSetsThatSum toProcess target () 0))
 			(appendedFound (cond ((null result) found) (t (cond ((null found) result)(t(append (cons found () )(list result)))))))
-		
 		)
-		;(print appendedFound)	
-		(cond ((null toProcess) appendedFound)
-			(t (findAllSetsThatSumForStarting starting (rest toProcess) target appendedFound))
 		
+		(cond ((null toProcess) appendedFound)
+			(t (findAllSetsThatSumForStarting starting (rest toProcess) target appendedFound))		
 		)	
-	
 	)
-
 )
 
 (defun findAllSetsThatSum (toProcess target found)
@@ -430,12 +397,7 @@
 			((string-equal yesNo "N") handAndTable)
 			(t handAndTable)
 		)
-	
-	
 	)
-
-
-
 )
 
 
@@ -447,15 +409,8 @@
 ;			(remainingHandCards (removeNCard playedCardInput hand))
 		     
 ;			(getBuildCards  table () )
-;		)
-	
-	
-	
-	
+;		)	
 ;	)
-
-
-
 
 ;)
 
@@ -477,36 +432,34 @@
 		(cond ((equal actionToTake '1) "Capture here" (captureSets(doCapture hand table)))
 				((equal actionToTake '2) "Build here"); (doBuild hand table))
 				((equal actionToTake '3) "Trail here" (doTrail hand table))
-				(t (takeAction hand table))
-				
+				(t (takeAction hand table))	
 		)	
 	)
 )
 
 
 (defun doPlayerMove (hand pile table)
-	;(print "Sets that sum")
-	;(print (findAllSetsThatSum table 12 ()))
+	
 	(cond 
 		((null hand) (list hand pile table))
 		(t
 		
-		(let
-			(
-				(resultTuple (takeAction hand table))
+			(let
+				(
+					(resultTuple (takeAction hand table))
+				)
+				(print "Result")
+				(print resultTuple)
+				
+				(cond 
+					;If move was invalid
+					((equal resultTuple (list hand table)) (print "Invalid move") (doPlayerMove hand pile table))
+					;Move was valid
+					(t (list (first resultTuple) pile (nth 1 resultTuple)))
+				
+				)
+				
 			)
-			(print "Result")
-			(print resultTuple)
-			
-			(cond 
-				;If move was invalid
-				((equal resultTuple (list hand table)) (print "Invalid move") (doPlayerMove hand pile table))
-				;Move was valid
-				(t (list (first resultTuple) pile (nth 1 resultTuple)))
-			
-			)
-			
-		)
 		
 		)
 	
@@ -523,13 +476,12 @@
 			(print "3) Ask for help")
 			(print "4) Quit the game")
 		)
+		
 		(t 
 		
 			(print "1) Save the Game")
 			(print "2) Make a Move")
-			(print "3) Quit the game")
-		
-		
+			(print "3) Quit the game")	
 		)
 	)
 	
@@ -540,7 +492,6 @@
 			(input (cond ((and (= current 1) (= nonIndexForm 3)) 4) (t nonIndexForm)))
 		)
 	
-	
 		(cond
 			((= input 1) (saveGame))
 			((= input 2) (print "DO NOTHING in MENU") 2)
@@ -549,10 +500,6 @@
 			(t (print "Invalid menu option, assuming 2") 2)
 		)	
 	)
-
-
-
-
 )
 
 ;This functions does a cycle where both players play one card
@@ -606,7 +553,6 @@
 	(cond
 		((null roundParams) (playRound roundNum (newRoundParams roundNum)))
 		((< (list-length roundParams) 7) 
-			;(print roundParams)
 			(printBoard roundParams)
 			(print "THIS IS TERMINATING CASE, ADD PROPER HANDLING")
 		)
@@ -625,13 +571,7 @@
 			
 				)
 			)
-		
-		
-			;(printBoard roundParams)
-			;(playRound roundNum (doCycle (nthcdr 3 roundParams) (nth 2 roundParams) (first roundParams) (nth 1 roundParams)))	
-		
 	)
-	
 )
 
 			
@@ -664,16 +604,11 @@
 				(lastCapturer (getLastCapturer fileData))
 			)
 			
-
 			;Make: firstPlayer deck tableCards humanHand humanPile compHand compPile
 			(runTournament scores  roundNumber (list nextPlayer deck table (first humanPlayer) (nth 1 humanPlayer) (first compPlayer) (nth 1 compPlayer)))
 		)
 	
 	)
-
 	(t (runTournament '(0 0) 0 ()))
 )
-
-
-
 

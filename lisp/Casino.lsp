@@ -383,6 +383,12 @@
 	)
 )
 
+;(defun getSetInput ()
+;	(print "Please enter the set you want to capture, space seperated")
+;	()
+
+;)
+
 (defun captureSets (handAndTable)
 
 	(print "Are there any additionial sets you would like to capture?")
@@ -481,6 +487,41 @@
 
 )
 
+(defun displayMenu (current)
+
+	(cond 
+		((= current 0) 
+			(print "1) Save the Game")
+			(print "2) Make a Move")
+			(print "3) Ask for help")
+			(print "4) Quit the game")
+		)
+		(t 
+		
+			(print "1) Save the Game")
+			(print "2) Make a Move")
+			(print "3) Quit the game")
+		
+		
+		)
+	)
+	
+	(let*
+		(
+			(rawInput (cond ((= current 0 )(getNumericInput 0 4) ) (t (getNumericInput 0 3))))
+			(nonIndexForm (+ 1 rawInput))
+			(input (cond ((and (= current 1) (= nonIndexForm 3)) 4) (t nonIndexForm)))
+		)
+	
+		(print "Menu got")
+		(print input)
+	
+	)
+
+
+
+
+)
 
 ;This functions does a cycle where both players play one card
 (defun doCycle (players table playerGoing deck)
@@ -491,15 +532,20 @@
 			(compHand (cond ((= playerGoing 0) 	(nth 2 players)) (t (nth 0 players))))
 			(compPile (cond ((= playerGoing 0) 	(nth 3 players)) (t (nth 1 players))))
 			
+			(otherPlayer (cond ((= playerGoing 0) 1) (t 0)))
+			(menuOption (displayMenu playerGoing))
+			
 			(firstMove (cond ((= playerGoing 0 ) (doPlayerMove humanHand humanPile table)) (t (doPlayerMove compHand compPile table))))
 			(tableAfterFirst (nth 2 firstMove))
 			(boardPlayerPrint (cond ((= playerGoing 0 ) (list (first firstMove) (nth 1 firstMove) compHand compPile)) (t (list humanHand humanPile (first firstMove) (nth 1 firstMove)))))
 			(boardPrintState (printBoard (append(list 0 deck tableAfterFirst )boardPlayerPrint))) ;Var unused, just to print board
+			(menuOption2 (displayMenu otherPlayer))
 			
 			(secondMove (cond ((= playerGoing 0 ) (doPlayerMove compHand compPile tableAfterFirst)) (t (doPlayerMove humanHand humanPile tableAfterFirst))))
 			(tableAfterBoth (nth 2 secondMove))
 			(humanResult (cond  ((= playerGoing 0 ) (list (first firstMove) (nth 1 firstMove))) (t (list (first secondMove) (nth 1 secondMove)))))
 			(compResult (cond  ((= playerGoing 1 ) (list (first firstMove) (nth 1 firstMove))) (t (list (first secondMove) (nth 1 secondMove)))))
+			
 		)
 		;Make: firstPlayer deck tableCards humanHand humanPile compHand compPile
 		(list playerGoing deck tableAfterBoth (first humanResult) (nth 1 humanResult) (first compResult) (nth 1 compResult) )

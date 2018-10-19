@@ -30,6 +30,13 @@
 			(t  (read saveFile))
 		)
 	)
+)
+
+
+(defun closeApplication (statusNum)
+	(print "Thanks for playing! :D")
+	(exit statusNum)
+
 )			
 
 ;Returns the round number in a list
@@ -513,9 +520,14 @@
 			(input (cond ((and (= current 1) (= nonIndexForm 3)) 4) (t nonIndexForm)))
 		)
 	
-		(print "Menu got")
-		(print input)
 	
+		(cond
+			((= input 1) (print "IMPLEMENT SAVING"))
+			((= input 2) (print "DO NOTHING in MENU") 2)
+			((= input 3) (print "IMPLEMENT HELP" ) 3)
+			((= input 4) (closeApplication 0))
+			(t (print "Invalid menu option, assuming 2") 2)
+		)	
 	)
 
 

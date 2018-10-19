@@ -377,11 +377,39 @@
 	)
 )
 
-;(defun getSetInput ()
-;	(print "Please enter the set you want to capture, space seperated")
-;	()
 
-;)
+
+(defun getIndices (maxValue amount recieved)
+	(let* 
+		(
+			(input (getNumericInput 0 maxValue))
+			(appended (cond ((null recieved) (list input)) (t (append recieved (list input)))))
+		)
+		
+		(cond ((<= amount 1) appended)
+			(t (getIndices maxValue (- amount 1) appended)))
+	
+	)
+
+
+
+)
+
+
+(defun getSetInput (tableSize)
+	(print "Please enter how many cards in the set you want to choose")
+	(let*
+		(
+			(rawAmount (getNumericInput 1 6))
+			(amount (+ rawAmount 1))
+			(indices (getIndices tableSize amount ()))
+		
+		)
+		(print indices)
+	
+	)
+
+)
 
 (defun captureSets (handAndTable)
 
@@ -587,7 +615,7 @@
 	)
 )			
 			
-		
+(getSetInput 6)		
 ;"Main"	
 (cond 
 	((string-equal (promptForFileLoadIn) "Y") 

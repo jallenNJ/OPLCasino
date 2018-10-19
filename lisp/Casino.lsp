@@ -32,12 +32,32 @@
 	)
 )
 
-
 (defun closeApplication (statusNum)
 	(print "Thanks for playing! :D")
 	(exit statusNum)
 
-)			
+)
+
+(defun saveGame ()
+					 
+	(let
+		(
+			(file (open (getFilePath)
+                     :direction :output
+                     :if-exists :supersede
+                     :if-does-not-exist :create
+					 ))
+		)
+		
+		(format file "Test String :D")
+		(close file)
+		
+	)
+
+	(closeApplication 0)
+)
+
+			
 
 ;Returns the round number in a list
 (defun getRoundNumFromFile(data)
@@ -522,7 +542,7 @@
 	
 	
 		(cond
-			((= input 1) (print "IMPLEMENT SAVING"))
+			((= input 1) (saveGame))
 			((= input 2) (print "DO NOTHING in MENU") 2)
 			((= input 3) (print "IMPLEMENT HELP" ) 3)
 			((= input 4) (closeApplication 0))

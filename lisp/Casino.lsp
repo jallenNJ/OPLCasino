@@ -481,7 +481,15 @@
 		;(print selectedHandCard)
 		(cond
 			((null buildCardIndices) (list hand table))
-			(t (list remainingHandCards (append (getSelectedCards table (getIndicesNotInList (- (list-length table) 1) buildCardIndices () ) ()) (list (cons selectedHandCard buildCards)))))
+			(t 
+				(list 
+					remainingHandCards 
+					(append 
+						(getSelectedCards table (getIndicesNotInList (- (list-length table) 1) buildCardIndices () ) ()) 
+						(list (cons selectedHandCard buildCards))
+					)
+				)
+			)
 		)
 	)
 

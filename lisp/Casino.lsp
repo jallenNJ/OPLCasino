@@ -395,17 +395,31 @@
 
 )
 
-
-(defun getSetInput (tableSize)
+(defun getSelectedCards (vector indices retrieved)
+	(cond ((null indices) retrieved)
+		(t 
+			(getSelectedCards vector (rest indices) 
+				(cond 
+					((null retrieved) 
+						(list (nth (first indices) vector))) 
+					(t 
+						(append retrieved (list (nth (first indices) vector)))
+					)
+				)
+			)
+		)
+	)
+)
+(defun getSetInput (table)
 	(print "Please enter how many cards in the set you want to choose")
 	(let*
 		(
 			(rawAmount (getNumericInput 1 6))
 			(amount (+ rawAmount 1))
-			(indices (getIndices tableSize amount ()))
-		
+			(indices (getIndices (list-length table) amount ()))
+			(selectedSet (getSelectedCards table indices ()))
 		)
-		(print indices)
+	
 	
 	)
 
@@ -615,7 +629,7 @@
 	)
 )			
 			
-(getSetInput 6)		
+(getSetInput (list 'H5 'D6 'S2 'C7))		
 ;"Main"	
 (cond 
 	((string-equal (promptForFileLoadIn) "Y") 

@@ -378,6 +378,15 @@
 )
 
 
+; Returns T or nil
+(defun checkIfIndexIsInList (number vector)
+
+	(cond ((null vector) () )
+			((= number (first vector)))
+			(t (checkIfIndexIsInList number (rest vector)))
+	)
+)
+
 
 (defun getIndices (maxValue amount recieved)
 	(let* 

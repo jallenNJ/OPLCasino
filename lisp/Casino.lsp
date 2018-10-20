@@ -452,16 +452,17 @@
 			(output (print "What card to sumto?"))
 			(output2 (print remainingHandCards))
 			(selectedTargetCard (nth (getNumericInput 0 (list-length remainingHandCards)) remainingHandCards))
-		  ;  (debug1 (print (symbolToNumericValue(getCardSymbol selectedTargetCard))))
-		;	(debug2 (print (symbolToNumericValue(getCardSymbol selectedHandCard))))
+
 			(buildCardIndices (getSetInput table (- (symbolToNumericValue(getCardSymbol selectedTargetCard ) t) (symbolToNumericValue(getCardSymbol selectedHandCard ) () ))))
 			(buildCards (getSelectedCards table buildCardIndices ()))
+			
+			
 		)
 		(print "Do build needs to remove cards put into build")
 		;(print selectedHandCard)
 		(cond
 			((null buildCardIndices) (list hand table))
-			(t (list hand (append table (list (cons selectedHandCard buildCards)))))
+			(t (list hand (append (removeNCard  (first buildCardIndices )table) (list (cons selectedHandCard buildCards)))))
 		)
 	)
 

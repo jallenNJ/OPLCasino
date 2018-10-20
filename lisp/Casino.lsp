@@ -388,6 +388,16 @@
 )
 
 
+;Returns list of non included indices in ascending order
+(defun getIndicesNotInList (maxIndex vector result )
+	(cond 
+		((< maxIndex 0) (reverse result))
+		((null (checkIfIndexIsInList maxIndex vector )) (getIndicesNotInList (- maxIndex 1) vector (append result (list maxIndex))))
+		(t (getIndicesNotInList (- maxIndex 1) vector result))
+	)
+)
+
+
 (defun getIndices (maxValue amount recieved)
 	(let* 
 		(

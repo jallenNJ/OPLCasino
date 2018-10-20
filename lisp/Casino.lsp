@@ -155,8 +155,23 @@
 
 
 (defun getCardSymbol (card)
-	(char (string card) 1)
+	(cond 
+		((and (listp card) (> (list-length card) 1) )
+			(numericValueToSymbol 
+				( + 
+					(symbolToNumericValue (getCardSymbol (first card)) () ) 
+					(symbolToNumericValue (getCardSymbol (rest card))  () )
+				)
+			)
+		)
+		
+		((and (listp card) (= (list-length card) 1)) (getCardSymbol (first card)))
+		
+		(t (char (string card) 1))
+	)
+
 )
+
 
 (defun findAndRemoveSymbol (target vector result)
 	(let
@@ -272,7 +287,9 @@
 )
 
 (defun symbolToNumericValue (input aceHigh)
+
 	(cond
+		( (numberp input) input)
 		( (eq input #\A) (cond (( null aceHigh) 1) ( t 14) ))
 		( (eq input #\2) 2)
 		( (eq input #\3) 3)
@@ -306,6 +323,8 @@
 		(t 'A)
 	)
 )
+
+
 
 (defun checkSetSum (check target checked)
 
@@ -553,7 +572,7 @@
 	(cond 
 		((= current 0) 
 			(print "1) Save the Game")
-			(print "2) Make a Move")
+			(print "2) Make a Move (Human)")
 			(print "3) Ask for help")
 			(print "4) Quit the game")
 		)
@@ -561,7 +580,7 @@
 		(t 
 		
 			(print "1) Save the Game")
-			(print "2) Make a Move")
+			(print "2) Make a Move (Computer)")
 			(print "3) Quit the game")	
 		)
 	)

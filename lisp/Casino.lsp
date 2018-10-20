@@ -258,7 +258,7 @@
 
 
 (defun getNumericInput(lowerBound upperBound)
-	(print "Which card would you like to play, starting from 1? ")
+	(print "Please enter a number: ")
 	(let 
 		( 
 			(userInput (read))
@@ -388,10 +388,7 @@
 		
 		(cond ((<= amount 1) appended)
 			(t (getIndices maxValue (- amount 1) appended)))
-	
 	)
-
-
 
 )
 
@@ -419,10 +416,7 @@
 			(indices (getIndices (list-length table) amount ()))
 			(selectedSet (getSelectedCards table indices ()))
 		)
-	
-	
 	)
-
 )
 
 (defun captureSets (handAndTable)

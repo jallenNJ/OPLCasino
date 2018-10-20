@@ -408,12 +408,12 @@
 	)
 )
 
-;Returns T if set matches sum, and NIL if it doesn't
+;Returns (indices) if set matches sum, and NIL if it doesn't
 (defun getSetInput (table targetSum)
 	(print "Please enter how many cards in the set you want to choose")
 	(let*
 		(
-			(rawAmount (getNumericInput 1 6))
+			(rawAmount (getNumericInput 0 6))
 			(amount (+ rawAmount 1))
 			
 			(output (print "Please enter the indicies on new lines"))
@@ -421,7 +421,7 @@
 			(selectedSet (getSelectedCards table indices ()))
 			(selectedSum (checkSetSum selectedSet targetSum ()))
 		)
-		(cond ((null selectedSum) ()) (t t))
+		(cond ((null selectedSum) ()) (t indices))
 	)
 )
 
@@ -443,18 +443,29 @@
 )
 
 
-;(defun doBuild (hand table)
-;	(let*
-;		(
-;			(playedCardInput (getNumericInput 0 (list-length hand)))
-;			(selectedHandCard (nth playedCardInput hand))
-;			(remainingHandCards (removeNCard playedCardInput hand))
-		     
-;			(getBuildCards  table () )
-;		)	
-;	)
+(defun doBuild (hand table)
+	(let*
+		(
+			(playedCardInput (getNumericInput 0 (list-length hand)))
+			(selectedHandCard (nth playedCardInput hand))
+			(remainingHandCards (removeNCard playedCardInput hand))
+			(output (print "What card to sumto?"))
+			(output2 (print remainingHandCards))
+			(selectedTargetCard (nth (getNumericInput 0 (list-length remainingHandCards)) remainingHandCards))
+		  ;  (debug1 (print (symbolToNumericValue(getCardSymbol selectedTargetCard))))
+		;	(debug2 (print (symbolToNumericValue(getCardSymbol selectedHandCard))))
+			(buildCardIndices (getSetInput table (- (symbolToNumericValue(getCardSymbol selectedTargetCard ) t) (symbolToNumericValue(getCardSymbol selectedHandCard ) () ))))
+			(buildCards (getSelectedCards table buildCardIndices ()))
+		)
+		(print "Do build needs to remove cards put into build")
+		;(print selectedHandCard)
+		(cond
+			((null buildCardIndices) (list hand table))
+			(t (list hand (append table (list (cons selectedHandCard buildCards)))))
+		)
+	)
 
-;)
+)
 
 (defun doTrail (hand table)
 	(let*
@@ -472,7 +483,7 @@
 	(Let ((actionToTake (promptForAction)))
 	
 		(cond ((equal actionToTake '1) "Capture here" (captureSets(doCapture hand table)))
-				((equal actionToTake '2) "Build here"); (doBuild hand table))
+				((equal actionToTake '2) (doBuild hand table))
 				((equal actionToTake '3) "Trail here" (doTrail hand table))
 				(t (takeAction hand table))	
 		)	
@@ -629,7 +640,7 @@
 	)
 )			
 			
-(print (getSetInput (list 'H5 'D6 'S2 'C7) 9))		
+;(print (getSetInput (list 'H5 'D6 'S2 'C7) 9))		
 ;"Main"	
 (cond 
 	((string-equal (promptForFileLoadIn) "Y") 

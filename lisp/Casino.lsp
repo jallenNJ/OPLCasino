@@ -309,7 +309,7 @@
 
 (defun checkSetSum (check target checked)
 
-	(cond ((null check) (cond ((= target 0 ) checked) (t ())))
+	(cond ((null check) (cond ((= target 0 ) target) (t ())))
 		(t (checkSetSum (rest check) (- target (symbolToNumericValue (getCardSymbol(first check)) ())) (append checked (list (first check)))))
 	)
 )
@@ -407,15 +407,21 @@
 		)
 	)
 )
-(defun getSetInput (table)
+
+;Returns T if set matches sum, and NIL if it doesn't
+(defun getSetInput (table targetSum)
 	(print "Please enter how many cards in the set you want to choose")
 	(let*
 		(
 			(rawAmount (getNumericInput 1 6))
 			(amount (+ rawAmount 1))
+			
+			(output (print "Please enter the indicies on new lines"))
 			(indices (getIndices (list-length table) amount ()))
 			(selectedSet (getSelectedCards table indices ()))
+			(selectedSum (checkSetSum selectedSet targetSum ()))
 		)
+		(cond ((null selectedSum) ()) (t t))
 	)
 )
 
@@ -623,7 +629,7 @@
 	)
 )			
 			
-(getSetInput (list 'H5 'D6 'S2 'C7))		
+(print (getSetInput (list 'H5 'D6 'S2 'C7) 9))		
 ;"Main"	
 (cond 
 	((string-equal (promptForFileLoadIn) "Y") 

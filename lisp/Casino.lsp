@@ -33,7 +33,7 @@
 )
 
 (defun closeApplication (statusNum)
-	(print "Thanks for playing! :D")
+	(print "Thanks for playing Casino in Lisp! :D")
 	(exit statusNum)
 
 )

@@ -187,6 +187,50 @@
 	)
 )
 
+;Returns T or nil
+(defun hasTenOfHearts (vector)
+
+	(let
+		(
+			(suit (char (string (first vector)) 0))
+			(symb (getCardSymbol (first vector)))
+		)
+		
+		(cond 
+			((null vector) nil)
+			((and
+				(or (eq suit 'H) (eq suit #\H))
+				(or (eq symb 'X) (eq symb #\X))
+			 )
+				t
+			)
+			(t (hasTenOfHearts (rest vector)))	
+		)
+	)
+)
+
+;Returns T or nil
+(defun hasTwoOfSpades (vector)
+
+	(let
+		(
+			(suit (char (string (first vector)) 0))
+			(symb (getCardSymbol (first vector)))
+		)
+		
+		(cond 
+			((null vector) nil)
+			((and
+				(or (eq suit 'S) (eq suit #\S))
+				(or (eq symb '2) (eq symb #\2))
+			 )
+				t
+			)
+			(t (hasTwoOfSpades (rest vector)))	
+		)
+	)
+)
+
 (defun findAndRemoveSymbol (target vector result)
 	(let
 		(
@@ -677,10 +721,18 @@
 
 (defun calculateScores (humanPile compPile scores)
 
-	(let 
+	(let* 
 		(
-			(humanMostCards (cond ((> (list-length humanPile) (list-length compPile)) 3) (t 0)))
-			(compMostCards (cond ((< (list-length humanPile) (list-length compPile)) 3) (t 0)))
+			(humanMostCardsScore (cond ((> (list-length humanPile) (list-length compPile)) 3) (t 0)))
+			(compMostCardsScore (cond ((< (list-length humanPile) (list-length compPile)) 3) (t 0)))
+			
+			(humanSpades (countSpades humanPile 0))
+			(compSpades (countSpades compPile 0))
+			
+			(humanSpadesScore (cond ((> humanSpades compSpades) 1) (t 0)))
+			(compSpadesScore (cond ((< humanSpades compSpades) 1) (t 0)))
+		
+			
 			
 			
 		)

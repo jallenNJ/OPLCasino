@@ -173,6 +173,19 @@
 
 )
 
+(defun isSpade (card)
+	(let
+		(
+			(suit (char (string card) 0))
+		)
+		
+		(cond 
+			((eq suit 'S) t)
+			((eq suit #\S) t)
+			(t nil)
+		)
+	)
+)
 
 (defun findAndRemoveSymbol (target vector result)
 	(let
@@ -651,12 +664,45 @@
 
 )
 
+(defun countSpades (vector amount)
+	(cond
+		((null vector) amount)
+		((isSpade (first Vector)) (countSpades (rest vector) (+ amount 1)))
+		(t (countSpades (rest vector) amount))
+	
+	
+	)
+)
+
+
+(defun calculateScores (humanPile compPile scores)
+
+	(let 
+		(
+			(humanMostCards (cond ((> (list-length humanPile) (list-length compPile)) 3) (t 0)))
+			(compMostCards (cond ((< (list-length humanPile) (list-length compPile)) 3) (t 0)))
+			
+			
+		)
+	
+	
+	)
+
+
+
+)
+
 (defun playRound (roundNum roundParams scores)
+	;(print "Recieved")
+	;(print roundParams)
 	(cond
 		((null roundParams) (playRound roundNum (newRoundParams roundNum) (list roundNum (first scores) (nth 1 scores))))
-		((< (list-length roundParams) 7) 
+		((and (null (nth 1 roundParams)) (null (nth 3 roundParams))) 
 			(printBoard roundParams)
-			(print "THIS IS TERMINATING CASE, ADD PROPER HANDLING")
+			;(print "THIS IS TERMINATING CASE, ADD PROPER HANDLING")
+			(print "HANDLE LAST CAPTURER and LOOSE CARDS GOING THERE")
+			(print "PAST YOU RECOMMENDS RETURNING WHO DID AND HANDLING IN CALC SCORES")
+			(calculateScores (nth 4 roundParams) (nth 6 roundParams) scores)
 		)
 		(t 
 			(let* 
@@ -668,8 +714,9 @@
 					(updatedPlayers (list (first humanHandCheck) (nth 4 roundParams) (first compHandCheck) (nth 6 roundParams)))
 					
 				)
+				;(cond ((null humanHandCheck) (print "We empty boi")))
 				(printBoard (append (list (first roundParams) deckAfterBoth (nth 2 roundParams)) updatedPlayers))
-				(playRound roundNum (doCycle updatedPlayers (nth 2 roundParams) (first roundParams) deckAfterBoth) (list roundNum (first scores) (nth 1 scores)))
+				(playRound roundNum (doCycle updatedPlayers (nth 2 roundParams) (first roundParams) deckAfterBoth (list roundNum (first scores) (nth 1 scores))) scores)
 			
 				)
 			)

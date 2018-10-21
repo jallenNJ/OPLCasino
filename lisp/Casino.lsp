@@ -167,6 +167,7 @@
 		
 		((and (listp card) (= (list-length card) 1)) (getCardSymbol (first card)))
 		
+		((= (length (string card)) 1) (char (string card) 0))
 		(t (char (string card) 1))
 	)
 
@@ -183,8 +184,8 @@
 		(cond 
 			((> (list-length vector) 0)
 				(cond
-					((eq (getCardSymbol (first vector)) target) (findAndRemoveSymbol target (rest vector)  (cond ((null removedCards)  (list (list (first Vector)) nonRemovedCards)) (t (list (list removedCards (first Vector)) nonRemovedCards)))))
-					(t (findAndRemoveSymbol target (rest vector) (list removedCards ( append nonRemovedCards  (list (first vector))))))
+					((eq (getCardSymbol (first vector)) (getCardSymbol target)) (findAndRemoveSymbol target (rest vector)  (cond ((null removedCards)  (list (list (first Vector)) nonRemovedCards)) (t (list (list removedCards (first Vector)) nonRemovedCards)))))
+					(t (findAndRemoveSymbol target (rest vector) (list removedCards  (cond ((null nonRemovedCards) (list (first vector))) (t ( append nonRemovedCards  (list (first vector))))))))
 				)
 			)
 			(t result)
@@ -308,19 +309,19 @@
 
 (defun numericValueToSymbol (input)
 	(cond
-		((= input 2) '2)
-		((= input 3) '3)
-		((= input 4) '4)
-		((= input 5) '5)
-		((= input 6) '6)
-		((= input 7) '7)
-		((= input 8) '8)
-		((= input 9) '9)
-		((= input 10) 'X)
-		((= input 11) 'J)
-		((= input 12) 'Q)
-		((= input 13) 'K)
-		(t 'A)
+		((= input 2) #\2)
+		((= input 3) #\3)
+		((= input 4) #\4)
+		((= input 5) #\5)
+		((= input 6) #\6)
+		((= input 7) #\7)
+		((= input 8) #\8)
+		((= input 9) #\9)
+		((= input 10) #\X)
+		((= input 11) #\J)
+		((= input 12) #\Q)
+		((= input 13) #\K)
+		(t #\A)
 	)
 )
 
@@ -688,6 +689,7 @@
 )			
 			
 ;(print (getSetInput (list 'H5 'D6 'S2 'C7) 9))		
+
 ;"Main"	
 (cond 
 	((string-equal (promptForFileLoadIn) "Y") 

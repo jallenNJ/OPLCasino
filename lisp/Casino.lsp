@@ -595,7 +595,7 @@
 	
 		(cond
 			((= input 1) (saveGame saveData))
-			((= input 2) (print "DO NOTHING in MENU") 2)
+			((= input 2)  2)
 			((= input 3) (print "IMPLEMENT HELP" ) 3)
 			((= input 4) (closeApplication 0))
 			(t (print "Invalid menu option, assuming 2") 2)
@@ -669,7 +669,7 @@
 					
 				)
 				(printBoard (append (list (first roundParams) deckAfterBoth (nth 2 roundParams)) updatedPlayers))
-				(playRound roundNum (doCycle updatedPlayers (nth 2 roundParams) (first roundParams) deckAfterBoth (list roundNum (first scores) (nth 1 scores))))
+				(playRound roundNum (doCycle updatedPlayers (nth 2 roundParams) (first roundParams) deckAfterBoth) (list roundNum (first scores) (nth 1 scores)))
 			
 				)
 			)

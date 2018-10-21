@@ -187,8 +187,18 @@
 	)
 )
 
+(defun isAce (card)
+	(cond
+		((eq (getCardSymbol card) #\A) t)
+		((eq (getCardSymbol card) 'A) t)
+		(t nil)
+	
+	)
+
+)
+
 ;Returns T or nil
-(defun hasTenOfHearts (vector)
+(defun hasTenOfDiamonds (vector)
 
 	(let
 		(
@@ -199,12 +209,12 @@
 		(cond 
 			((null vector) nil)
 			((and
-				(or (eq suit 'H) (eq suit #\H))
+				(or (eq suit 'D) (eq suit #\D))
 				(or (eq symb 'X) (eq symb #\X))
 			 )
 				t
 			)
-			(t (hasTenOfHearts (rest vector)))	
+			(t (hasTenOfDiamonds (rest vector)))	
 		)
 	)
 )
@@ -718,6 +728,17 @@
 	)
 )
 
+(defun countAces (vector amount)
+	(cond
+		((null vector) amount)
+		((isAce (first Vector)) (countAces (rest vector) (+ amount 1)))
+		(t (countAces (rest vector) amount))
+	
+	
+	)
+)
+
+ 
 
 (defun calculateScores (humanPile compPile scores)
 
@@ -732,8 +753,11 @@
 			(humanSpadesScore (cond ((> humanSpades compSpades) 1) (t 0)))
 			(compSpadesScore (cond ((< humanSpades compSpades) 1) (t 0)))
 		
+			(humanTenDiamondsScore (cond ((hasTenOfHearts humanPile) 2) (t 0 )))
+			(compTenDiamondsScore (cond ((hasTenOfHearts compPile) 2) (t 0 )))
 			
-			
+			(humanTwoSpadesScore (cond ((hasTwoOfSpades humanPile) 1) (t 0 )))
+			(compTwoSpadesScore (cond ((hasTwoOfSpades compPile) 1) (t 0 )))
 			
 		)
 	

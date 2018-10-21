@@ -183,7 +183,7 @@
 		(cond 
 			((> (list-length vector) 0)
 				(cond
-					((eq (getCardSymbol (first vector)) target) (findAndRemoveSymbol target (rest vector) (list (list removedCards (first Vector)) nonRemovedCards))) ;(list (cons removedCards  (list (first vector))) nonRemovedCards)
+					((eq (getCardSymbol (first vector)) target) (findAndRemoveSymbol target (rest vector)  (cond ((null removedCards)  (list (list (first Vector)) nonRemovedCards)) (t (list (list removedCards (first Vector)) nonRemovedCards)))))
 					(t (findAndRemoveSymbol target (rest vector) (list removedCards ( append nonRemovedCards  (list (first vector))))))
 				)
 			)

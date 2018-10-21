@@ -733,14 +733,17 @@
 		((null vector) amount)
 		((isAce (first Vector)) (countAces (rest vector) (+ amount 1)))
 		(t (countAces (rest vector) amount))
-	
-	
 	)
 )
 
  
 
 (defun calculateScores (humanPile compPile scores)
+	(print "Human pile: ")
+	(print humanPile)
+	(print "Comp pile: ")
+	(print compPile)
+
 
 	(let* 
 		(
@@ -753,19 +756,47 @@
 			(humanSpadesScore (cond ((> humanSpades compSpades) 1) (t 0)))
 			(compSpadesScore (cond ((< humanSpades compSpades) 1) (t 0)))
 		
-			(humanTenDiamondsScore (cond ((hasTenOfHearts humanPile) 2) (t 0 )))
-			(compTenDiamondsScore (cond ((hasTenOfHearts compPile) 2) (t 0 )))
+			(humanTenDiamondsScore (cond ((hasTenOfDiamonds humanPile) 2) (t 0 )))
+			(compTenDiamondsScore (cond ((hasTenOfDiamonds compPile) 2) (t 0 )))
 			
 			(humanTwoSpadesScore (cond ((hasTwoOfSpades humanPile) 1) (t 0 )))
 			(compTwoSpadesScore (cond ((hasTwoOfSpades compPile) 1) (t 0 )))
-			
+
+			(humanAces (countAces humanPile 0))
+			(compAces (countAces compPile 0))
 		)
-	
-	
+		
+		(cond 
+			((> humanMostCardsScore compMostCardsScore) (print "Human had the most cards"))
+			((< humanMostCardsScore compMostCardsScore) (print "Comp had the most cards"))
+			(t (print "Players had equal cards"))
+		)
+		
+		(cond
+			((> humanSpadesScore compSpadesScore) (print "Human had the most spades"))
+			((< humanSpadesScore compSpadesScore) (print "Comp had the most spades"))
+			(t (print "They tied in Spades!"))
+		)
+		
+		(cond 
+			((> humanTenDiamondsScore 0) (print "Human had the DX"))
+			(t (print "Comp had the DX"))
+		)
+		(cond
+			((> humanTwoSpadesScore 0) (print "Human had the S2"))
+			(t (print "Comp had the S2"))
+		)
+		(print "Human had this many aces:")
+		(print humanAces)
+		(print "Comp had this many aces:")
+		(print compAces)
+		
+		(list 
+			(+(+(+(+(+(+ (first scores))humanMostCardsScore) humanSpadesScore) humanTenDiamondsScore) humanTwoSpadesScore) humanAces) 
+			(+(+(+(+(+(+ (nth 1 scores) compMostCardsScore)compSpadesScore)compTenDiamondsScore)compTwoSpadesScore) compAces))
+		)
+		
 	)
-
-
-
 )
 
 (defun playRound (roundNum roundParams scores)
@@ -778,6 +809,7 @@
 			;(print "THIS IS TERMINATING CASE, ADD PROPER HANDLING")
 			(print "HANDLE LAST CAPTURER and LOOSE CARDS GOING THERE")
 			(print "PAST YOU RECOMMENDS RETURNING WHO DID AND HANDLING IN CALC SCORES")
+			(print (calculateScores (nth 4 roundParams) (nth 6 roundParams) scores))
 			(calculateScores (nth 4 roundParams) (nth 6 roundParams) scores)
 		)
 		(t 
@@ -799,6 +831,22 @@
 	)
 )
 
+(defun outputTournamentResults (scores)
+	(print "Human had this many tournament points: ")
+	(print (first scores))
+	(print "Computer had this many tournament points: ")
+	(print (nth 1 scores))
+	(cond
+		((> (first scores) (nth 1 scores) )
+			(print "Human won!")
+		)
+		((< (first scores) (nth 1 scores)) (print "Computer won!"))
+		(t (print "The players tied!"))
+	)
+
+	
+
+)
 			
 (defun runTournament (scores round intialParams)
 	
@@ -812,8 +860,6 @@
 	)
 )			
 			
-		
-
 ;"Main"	
 (cond 
 	((string-equal (promptForFileLoadIn) "Y") 
@@ -831,10 +877,10 @@
 			)
 			
 			;Make: firstPlayer deck tableCards humanHand humanPile compHand compPile
-			(runTournament scores  roundNumber (list nextPlayer deck table (first humanPlayer) (nth 1 humanPlayer) (first compPlayer) (nth 1 compPlayer)))
+			(outputTournamentResults(runTournament scores  roundNumber (list nextPlayer deck table (first humanPlayer) (nth 1 humanPlayer) (first compPlayer) (nth 1 compPlayer))))
 		)
 	
 	)
-	(t (runTournament '(0 0) 0 ()))
+	(t (outputTournamentResults(runTournament '(0 0) 0 ())))
 )
 

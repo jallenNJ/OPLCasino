@@ -38,7 +38,7 @@
 
 )
 
-(defun saveGame ()
+(defun saveGame (data)
 					 
 	(let
 		(
@@ -49,7 +49,7 @@
 					 ))
 		)
 		
-		(format file "Test String :D")
+		(format file "~{~S~%~%~}" data)
 		(close file)
 		
 	)
@@ -568,7 +568,7 @@
 
 )
 
-(defun displayMenu (current)
+(defun displayMenu (current saveData)
 
 	(cond 
 		((= current 0) 
@@ -594,7 +594,7 @@
 		)
 	
 		(cond
-			((= input 1) (saveGame))
+			((= input 1) (saveGame saveData))
 			((= input 2) (print "DO NOTHING in MENU") 2)
 			((= input 3) (print "IMPLEMENT HELP" ) 3)
 			((= input 4) (closeApplication 0))
@@ -613,13 +613,14 @@
 			(compPile (cond ((= playerGoing 0) 	(nth 3 players)) (t (nth 1 players))))
 			
 			(otherPlayer (cond ((= playerGoing 0) 1) (t 0)))
-			(menuOption (displayMenu playerGoing))
+			(menuOption (displayMenu playerGoing (list '999 '999 compHand compPile '999 humanHand humanPile table 'UNSET deck 'UNSET)))
 			
 			(firstMove (cond ((= playerGoing 0 ) (doPlayerMove humanHand humanPile table)) (t (doPlayerMove compHand compPile table))))
 			(tableAfterFirst (nth 2 firstMove))
 			(boardPlayerPrint (cond ((= playerGoing 0 ) (list (first firstMove) (nth 1 firstMove) compHand compPile)) (t (list humanHand humanPile (first firstMove) (nth 1 firstMove)))))
 			(boardPrintState (printBoard (append(list 0 deck tableAfterFirst )boardPlayerPrint))) ;Var unused, just to print board
-			(menuOption2 (displayMenu otherPlayer))
+			
+			(menuOption2 (displayMenu otherPlayer () ))
 			
 			(secondMove (cond ((= playerGoing 0 ) (doPlayerMove compHand compPile tableAfterFirst)) (t (doPlayerMove humanHand humanPile tableAfterFirst))))
 			(tableAfterBoth (nth 2 secondMove))
@@ -688,7 +689,7 @@
 	)
 )			
 			
-;(print (getSetInput (list 'H5 'D6 'S2 'C7) 9))		
+		
 
 ;"Main"	
 (cond 

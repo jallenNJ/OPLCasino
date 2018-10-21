@@ -604,7 +604,7 @@
 )
 
 ;This functions does a cycle where both players play one card
-(defun doCycle (players table playerGoing deck)
+(defun doCycle (players table playerGoing deck saveFileParams)
 	(Let* 
 		(
 			(humanHand (cond ((= playerGoing 0) 	(first players)) (t (nth 2 players))))
@@ -613,7 +613,7 @@
 			(compPile (cond ((= playerGoing 0) 	(nth 3 players)) (t (nth 1 players))))
 			
 			(otherPlayer (cond ((= playerGoing 0) 1) (t 0)))
-			(menuOption (displayMenu playerGoing (list '999 '999 compHand compPile '999 humanHand humanPile table 'UNSET deck 'UNSET)))
+			(menuOption (displayMenu playerGoing (list (first saveFileParams) (nth 2 saveFileParams)  compHand compPile (nth 1 saveFileParams) humanHand humanPile table 'UNSET deck 'UNSET)))
 			
 			(firstMove (cond ((= playerGoing 0 ) (doPlayerMove humanHand humanPile table)) (t (doPlayerMove compHand compPile table))))
 			(tableAfterFirst (nth 2 firstMove))
@@ -651,9 +651,9 @@
 
 )
 
-(defun playRound (roundNum roundParams)
+(defun playRound (roundNum roundParams scores)
 	(cond
-		((null roundParams) (playRound roundNum (newRoundParams roundNum)))
+		((null roundParams) (playRound roundNum (newRoundParams roundNum) (list roundNum (first scores) (nth 1 scores))))
 		((< (list-length roundParams) 7) 
 			(printBoard roundParams)
 			(print "THIS IS TERMINATING CASE, ADD PROPER HANDLING")
@@ -669,7 +669,7 @@
 					
 				)
 				(printBoard (append (list (first roundParams) deckAfterBoth (nth 2 roundParams)) updatedPlayers))
-				(playRound roundNum (doCycle updatedPlayers (nth 2 roundParams) (first roundParams) deckAfterBoth))
+				(playRound roundNum (doCycle updatedPlayers (nth 2 roundParams) (first roundParams) deckAfterBoth (list roundNum (first scores) (nth 1 scores))))
 			
 				)
 			)
@@ -684,7 +684,7 @@
 			((= result 0) (print "Human has won!"))
 			((= result 1) (print "Computer has won!"))
 			((= result 2) (print "Both players tied!"))
-			(t (print (playRound round intialParams)))
+			(t (print (playRound round intialParams scores)))
 		)
 	)
 )			

@@ -107,7 +107,7 @@
 		)
 		;Specify directives, serializable (able to load back in)
 		; and two new lines
-		(format file "~{~S~%~%~}" data)
+		(format file "(~{~S~%~%~})" data)
 		;Close the streams
 		(close file)
 		

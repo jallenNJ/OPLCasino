@@ -909,10 +909,10 @@
 (defun doCycle (players table playerGoing deck saveFileParams)
 	(Let* 
 		(
-			(humanHand (cond ((= playerGoing 0) 	(first players)) (t (nth 2 players))))
-			(humanPile (cond ((= playerGoing 0) 	(nth 1 players)) (t (nth 3 players))))
-			(compHand  (cond ((= playerGoing 0) 	(nth 2 players)) (t (first players))))
-			(compPile ( cond ((= playerGoing 0) 	(nth 3 players)) (t (nth 1 players))))
+			(humanHand (first players))
+			(humanPile (nth 1 players))
+			(compHand (nth 2 players))
+			(compPile (nth 3 players))
 			
 			(otherPlayer (cond ((= playerGoing 0) 1) (t 0)))
 			(menuOption (displayMenu playerGoing (list (first saveFileParams) (nth 2 saveFileParams)  compHand compPile (nth 1 saveFileParams) humanHand humanPile table 'UNSET deck 'UNSET)))

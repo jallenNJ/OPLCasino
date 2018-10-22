@@ -193,10 +193,10 @@
 			(randNum (random 2))
 		)
 		
-		(cond 	((and (eq input 'h) (= randNum 0)) (print "Heads! Human goes first!") '0)
-				((and (eq input 'h) (= randNum 1)) (print "Tails! Computer goes first!") '1)
-				((and (eq input 't) (= randNum 0)) (print "Heads! Computer goes first!") '1)
-				(t (print "Tails! Human goes first!") '0)
+		(cond 	((and (eq input 'h) (= randNum 0)) (print "Heads! Human goes first!") 0)
+				((and (eq input 'h) (= randNum 1)) (print "Tails! Computer goes first!") 1)
+				((and (eq input 't) (= randNum 0)) (print "Heads! Computer goes first!") 1)
+				(t (print "Tails! Human goes first!") 0)
 		)
 	)
 )
@@ -682,7 +682,7 @@
 		(cond ((= nextPlayer 0) (print "Human is next")) (t (print "Computer is next")))
 )
 
-
+;Takes in next player deck table hHand <unused> cHand 
 (defun printBoard (parse) ; Parse round params
 	(printAll (nth 3 parse) (nth 5 parse) (nth 2 parse) (nth 1 parse) (first parse)) 
 
@@ -893,29 +893,45 @@
 
 
 
+(defun checkIfCapture (startPile afterPile)
+	(cond
+		((null afterPile) nil)
+		((equal startPile afterPile) nil)
+		(t t)
+	
+	)
+
+
+)
+
+
 ;This functions does a cycle where both players play one card
 (defun doCycle (players table playerGoing deck saveFileParams)
 	(Let* 
 		(
 			(humanHand (cond ((= playerGoing 0) 	(first players)) (t (nth 2 players))))
 			(humanPile (cond ((= playerGoing 0) 	(nth 1 players)) (t (nth 3 players))))
-			(compHand (cond ((= playerGoing 0) 	(nth 2 players)) (t (nth 0 players))))
-			(compPile (cond ((= playerGoing 0) 	(nth 3 players)) (t (nth 1 players))))
+			(compHand  (cond ((= playerGoing 0) 	(nth 2 players)) (t (first players))))
+			(compPile ( cond ((= playerGoing 0) 	(nth 3 players)) (t (nth 1 players))))
 			
 			(otherPlayer (cond ((= playerGoing 0) 1) (t 0)))
 			(menuOption (displayMenu playerGoing (list (first saveFileParams) (nth 2 saveFileParams)  compHand compPile (nth 1 saveFileParams) humanHand humanPile table 'UNSET deck 'UNSET)))
 			
 			(firstMove (cond ((= playerGoing 0 ) (doPlayerMove humanHand humanPile table)) (t (doPlayerMove compHand compPile table))))
+			(firstCaptured (cond ((= playerGoing 0) (checkIfCapture humanPile (nth 1 firstMove))) (t (checkIfCapture compPile (nth 1 firstMove)))))
 			(tableAfterFirst (nth 2 firstMove))
 			(boardPlayerPrint (cond ((= playerGoing 0 ) (list (first firstMove) (nth 1 firstMove) compHand compPile)) (t (list humanHand humanPile (first firstMove) (nth 1 firstMove)))))
+			;(boardPlayerPrint (cond ((= playerGoing 0 ) (list  compHand compPile (first firstMove) (nth 1 firstMove))) (t (list (first firstMove) (nth 1 firstMove) humanHand humanPile))))
 			(boardPrintState (printBoard (append(list 0 deck tableAfterFirst )boardPlayerPrint))) ;Var unused, just to print board
 			
 			(menuOption2 (displayMenu otherPlayer () ))
 			
 			(secondMove (cond ((= playerGoing 0 ) (doPlayerMove compHand compPile tableAfterFirst)) (t (doPlayerMove humanHand humanPile tableAfterFirst))))
+			(secondCaptured (cond ((= playerGoing 0) (checkIfCapture compPile (nth 1 firstMove))) (t (checkIfCapture humanPile (nth 1 firstMove)))))
 			(tableAfterBoth (nth 2 secondMove))
 			(humanResult (cond  ((= playerGoing 0 ) (list (first firstMove) (nth 1 firstMove))) (t (list (first secondMove) (nth 1 secondMove)))))
 			(compResult (cond  ((= playerGoing 1 ) (list (first firstMove) (nth 1 firstMove))) (t (list (first secondMove) (nth 1 secondMove)))))
+			
 			
 		)
 		;Make: firstPlayer deck tableCards humanHand humanPile compHand compPile
@@ -926,7 +942,7 @@
 
 (defun newRoundParams (roundNum)
 	(Let* (
-			(firstPlayer (cond ((= roundNum 0) (flipCoin))  (t (print "Set up player for follow up round") '0)))
+			(firstPlayer (cond ((= roundNum 0) (flipCoin))  (t (print "Set up player for follow up round") 0)))
 			(startingDeck (shuffleDeck (getFullDeck) ()))
 			(humanHand (dealFourCards startingDeck))
 			(humanPile ())
@@ -943,8 +959,6 @@
 
 
 (defun playRound (roundNum roundParams scores)
-	;(print "Recieved")
-	;(print roundParams)
 	(cond
 		((null roundParams) (playRound roundNum (newRoundParams roundNum) (list roundNum (first scores) (nth 1 scores))))
 		((and (null (nth 1 roundParams)) (null (nth 3 roundParams))) 
@@ -965,7 +979,6 @@
 					(updatedPlayers (list (first humanHandCheck) (nth 4 roundParams) (first compHandCheck) (nth 6 roundParams)))
 					
 				)
-				;(cond ((null humanHandCheck) (print "We empty boi")))
 				(printBoard (append (list (first roundParams) deckAfterBoth (nth 2 roundParams)) updatedPlayers))
 				(playRound roundNum (doCycle updatedPlayers (nth 2 roundParams) (first roundParams) deckAfterBoth (list roundNum (first scores) (nth 1 scores))) scores)
 			
@@ -1001,7 +1014,7 @@
 		)
 	)
 )			
-(trace runTournament)
+
 			
 ;"Main"	
 (cond 

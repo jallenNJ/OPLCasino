@@ -265,25 +265,35 @@
 	
 )
 
+;This functions deals four cards from the deck
+;Does NOT return a modified deck, only a list of the four cards
 (defun dealFourCards (deck)
  
 	;Get the first four cards off the deck as a list of lists 
 	(list (nth 0 deck) (nth 1 deck) (nth 2 deck)(nth 3 deck))
 )
 
+;This function checks if a deck is empty
+;If it is, deal four cards, and return that as the hand
+;Else, return the input
+;This function DOES return a truncated deck in the list
 (defun dealFourCardsIfEmpty (hand deck)
 
 	(cond 
+		;If hand is empty, cards need to be dealt
 		((null hand) (list (dealFourCards deck) (nthcdr 4 deck))) 
 		(t (list hand deck))
 	)
 )
 
-
+;This function takes the card symbol (as a char), and returns its numeric equivlant
+;aceHigh controls if aces are 1 or 14. nil for 1, non-Nil (t) for 14
 (defun symbolToNumericValue (input aceHigh)
 
 	(cond
+		;If its a number already, return that
 		( (numberp input) input)
+		;If Ace, return 1 or 14 based on aceHigh
 		( (eq input #\A) (cond (( null aceHigh) 1) ( t 14) ))
 		( (eq input #\2) 2)
 		( (eq input #\3) 3)
@@ -300,6 +310,7 @@
 	)
 )
 
+;This function takes the numeric value and returns the symbol as a char
 (defun numericValueToSymbol (input)
 	(cond
 		((= input 2) #\2)
@@ -319,12 +330,17 @@
 )
 
 
+;Remove the nth card from the list, and return the rest of the list
 (defun removeNCard (n vector)
 	(let 
 		(
+			;Get everything before the card in the list
+			;This is done by reversing the list, and taking everything after from n-1
 			(remainingPrev (nthcdr (- (list-length vector) n)(reverse vector)))
+			;Get everything after n
 			(remainingAfter (nthcdr (+ n 1) vector))
 		)
+		;Append these lists together and return
 		(append remainingPrev remainingAfter)	
 	)
 
@@ -332,21 +348,43 @@
 
 
 
-
+;This function finds all specified symbols in the provided vector, and then returns the vector without those symbols
+;To start off this function, pass nill to result
+;Result is in the form (removed, nonRemoved), and is returned when done execution
 (defun findAndRemoveSymbol (target vector result)
 	(let
 		(
+			;For readability, seperate and gives names
 			(removedCards (first result))
 			(nonRemovedCards (first(rest result)))
 		)
 
 		(cond 
+			;If cards left to process
 			((> (list-length vector) 0)
 				(cond
-					((eq (getCardSymbol (first vector)) (getCardSymbol target)) (findAndRemoveSymbol target (rest vector)  (cond ((null removedCards)  (list (list (first Vector)) nonRemovedCards)) (t (list (list removedCards (first Vector)) nonRemovedCards)))))
-					(t (findAndRemoveSymbol target (rest vector) (list removedCards  (cond ((null nonRemovedCards) (list (first vector))) (t ( append nonRemovedCards  (list (first vector))))))))
+					
+					;If the first card matches the symbol
+					((eq (getCardSymbol (first vector)) (getCardSymbol target)) 
+						(findAndRemoveSymbol target (rest vector)  
+						(cond 
+							;If vector is null, add list directly to correct index
+							((null removedCards)  
+								(list (list (first Vector)) nonRemovedCards)) 
+							(t ;Else, add to the list
+								(list (list removedCards (first Vector)) nonRemovedCards)))))
+					;Card does not match symbol	
+					(t (findAndRemoveSymbol target (rest vector) (list removedCards  
+						(cond 
+							;If current is nil,create list with this card
+							((null nonRemovedCards) 
+								(list (first vector))) 
+								
+							(t ;Else append to it
+							( append nonRemovedCards  (list (first vector))))))))
 				)
 			)
+			;No cards left, return what it found
 			(t result)
 		
 		)

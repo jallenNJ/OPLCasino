@@ -1,0 +1,25 @@
+(
+  1
+  
+   7
+
+   ( DK D2 HX H5 )
+
+   ( SX SQ SK D6 H8 S7 D3 D5 H2 H3 S5 D8 C2 H9 CX CQ CK HJ S2 S6 D9 DX DQ )
+ 
+   4
+
+   ( SA C7 S8 H4 )
+
+   ( DJ DA C3 C5 S4 CA C9 H7)
+
+   ( C8 CJ HA HQ HK C4 SJ )
+ 
+
+
+   Human
+
+   (  )
+
+   Human
+)

@@ -904,9 +904,14 @@
 
 )
 
+(defun indexToString (index)
+	(cond ((= index 0 ) "Human")
+			(t "Computer")
+	)
+)
 
 ;This functions does a cycle where both players play one card
-(defun doCycle (players table playerGoing deck saveFileParams)
+(defun doCycle (players table playerGoing deck saveFileParams lastCap)
 	(Let* 
 		(
 			(humanHand (first players))
@@ -915,7 +920,7 @@
 			(compPile (nth 3 players))
 			
 			(otherPlayer (cond ((= playerGoing 0) 1) (t 0)))
-			(menuOption (displayMenu playerGoing (list (first saveFileParams) (nth 2 saveFileParams)  compHand compPile (nth 1 saveFileParams) humanHand humanPile table 'UNSET deck 'UNSET)))
+			(menuOption (displayMenu playerGoing (list (first saveFileParams) (nth 2 saveFileParams)  compHand compPile (nth 1 saveFileParams) humanHand humanPile table (indexToString lastCap) deck (indexToString playerGoing))))
 			
 			(firstMove (cond ((= playerGoing 0 ) (doPlayerMove humanHand humanPile table)) (t (doPlayerMove compHand compPile table))))
 			(firstCaptured (cond ((= playerGoing 0) (checkIfCapture humanPile (nth 1 firstMove))) (t (checkIfCapture compPile (nth 1 firstMove)))))
@@ -980,7 +985,8 @@
 					
 				)
 				(printBoard (append (list (first roundParams) deckAfterBoth (nth 2 roundParams)) updatedPlayers))
-				(playRound roundNum (doCycle updatedPlayers (nth 2 roundParams) (first roundParams) deckAfterBoth (list roundNum (first scores) (nth 1 scores))) scores)
+				(print "ENSURE SAVE OF LAST CAPTURER BETWEEN CYCLES")
+				(playRound roundNum (doCycle updatedPlayers (nth 2 roundParams) (first roundParams) deckAfterBoth (list roundNum (first scores) (nth 1 scores)) 0) scores)
 			
 				)
 			)

@@ -61,7 +61,7 @@
 
 ;Returns the round number in a list
 (defun getRoundNumFromFile(data)
-	(list (first data))
+	 (first data)
 )
 ;Returns the score (Human, comp)
 (defun getScoresFromFile (data)
@@ -747,6 +747,9 @@
 
 	(let* 
 		(
+		
+			(humanStartScore (first scores))
+			(compStartScore  (nth 1 scores))
 			(humanMostCardsScore (cond ((> (list-length humanPile) (list-length compPile)) 3) (t 0)))
 			(compMostCardsScore (cond ((< (list-length humanPile) (list-length compPile)) 3) (t 0)))
 			
@@ -756,7 +759,8 @@
 			(humanSpadesScore (cond ((> humanSpades compSpades) 1) (t 0)))
 			(compSpadesScore (cond ((< humanSpades compSpades) 1) (t 0)))
 		
-			(humanTenDiamondsScore (cond ((hasTenOfDiamonds humanPile) 2) (t 0 )))
+			(humanTenDiamondsScore (cond ((
+			hasTenOfDiamonds humanPile) 2) (t 0 )))
 			(compTenDiamondsScore (cond ((hasTenOfDiamonds compPile) 2) (t 0 )))
 			
 			(humanTwoSpadesScore (cond ((hasTwoOfSpades humanPile) 1) (t 0 )))
@@ -791,9 +795,18 @@
 		(print "Comp had this many aces:")
 		(print compAces)
 		
+		(print "Human round score: ")
+		(print (+(+(+(+(+ humanMostCardsScore) humanSpadesScore) humanTenDiamondsScore) humanTwoSpadesScore) humanAces) )
+		(print "Computer total round score: ")
+		(print (+(+(+(+(+ compMostCardsScore)compSpadesScore)compTenDiamondsScore)compTwoSpadesScore) compAces))
+		
+		(print "Human total round score: ")
+		(print (+(+(+(+(+(+ humanStartScore)humanMostCardsScore) humanSpadesScore) humanTenDiamondsScore) humanTwoSpadesScore) humanAces) )
+		(print "Computer total round score: ")
+		(print (+(+(+(+(+(+ compStartScore compMostCardsScore)compSpadesScore)compTenDiamondsScore)compTwoSpadesScore) compAces)))
 		(list 
-			(+(+(+(+(+(+ (first scores))humanMostCardsScore) humanSpadesScore) humanTenDiamondsScore) humanTwoSpadesScore) humanAces) 
-			(+(+(+(+(+(+ (nth 1 scores) compMostCardsScore)compSpadesScore)compTenDiamondsScore)compTwoSpadesScore) compAces))
+			(+(+(+(+(+(+ humanStartScore)humanMostCardsScore) humanSpadesScore) humanTenDiamondsScore) humanTwoSpadesScore) humanAces) 
+			(+(+(+(+(+(+ compStartScore compMostCardsScore)compSpadesScore)compTenDiamondsScore)compTwoSpadesScore) compAces))
 		)
 		
 	)
@@ -852,13 +865,13 @@
 	
 	(Let ((result (checkScores scores))) ;Get the result and store it 
 		(cond    
-			((= result 0) (print "Human has won!"))
-			((= result 1) (print "Computer has won!"))
-			((= result 2) (print "Both players tied!"))
-			(t (print (playRound round intialParams scores)))
+			((< result 3) scores)
+			(t
+			(runTournament (playRound round intialParams scores) (+ round 1) () )) 
 		)
 	)
 )			
+(trace runTournament)
 			
 ;"Main"	
 (cond 
@@ -883,4 +896,5 @@
 	)
 	(t (outputTournamentResults(runTournament '(0 0) 0 ())))
 )
+
 

@@ -1,37 +1,56 @@
+;Joseph Allen | jallen6@ramapo.edu
+;	CMPS 366-01 Organization of Programming Languages Fa 18
+;	Lisp submission for Casino
+
+;====================
+; functions for loading or saving to a file (serialization)
+;====================
+
+
+;This function prompts the user and returns the string they enter
 (defun getFilePath ()
 	(print "Please enter the fileName")
 	(read)
 )
 
 
+
+;This function opens, reads the first list in a file, and returns its
 (defun loadInFile ()
 	(let*
 		(
+			;Get the file path
 			(filePath (getFilePath))
+			;Open the file, and if it doesn't exist, return nil instead of exception
 			(saveFile (open filePath :if-does-not-exist nil))
 		)
 		
 		(cond 
+			;If failed to open, prompt for new path
 			((null saveFile) (print "File failed to open")(loadInFile))
+			;Else, return the list
 			(t  (read saveFile))
 		)
 	)
 )
 
+;This functions outputs the closing message, and 
+; exits the application with inputted status num
 (defun closeApplication (statusNum)
 	(print "Thanks for playing Casino in Lisp! :D")
 	(exit statusNum)
 
 )
 
-
-;These functioms are for loading in a save game
+;This function displays the prompt for loading a file, then calls yes no input
 (defun promptForFileLoadIn ()
-
 	(print "Would you like to load in a save file(y/n)")
 	(getYesNoInput (read))
 )			
 
+; ******
+; These functions retrieve data from the loaded in list
+; ******
 ;Returns the round number in a list
 (defun getRoundNumFromFile(data)
 	 (first data)
@@ -72,44 +91,40 @@
 )
 
 
-
+;This function writes the data to the save file
+; with each element on its own line, then two \n following it
 (defun saveGame (data)
 					 
 	(let
 		(
+			;Open file to write
+			; Override if it exits, create if it doesn't
 			(file (open (getFilePath)
                      :direction :output
                      :if-exists :supersede
                      :if-does-not-exist :create
 					 ))
 		)
-		
+		;Specify directives, serializable (able to load back in)
+		; and two new lines
 		(format file "~{~S~%~%~}" data)
+		;Close the streams
 		(close file)
 		
 	)
-
+	;Quit the application
 	(closeApplication 0)
 )
 
 
 
-; Check scores in form (HUMANSCORE, COMPSCORE)
-(defun checkScores (scores)
-	(let ( ( human (first scores)) ;Get the human score
-			(comp (first(rest scores))) ;Get the comp score
-	)	
-		(cond 
-			((and (> human 20)(> human comp)) 0) ;If Human > 20 && human > comp
-			((and (> comp 20)(< human comp)) 1) ; If comp > 20 && human < comp
-			((and (> human 20)(= human comp)) 2) 
-			(t 3)
-		
-		)	
-	)
-)
 
-;These functions are for user input
+; =================================
+;These functions are for getting user input
+; =================================
+
+;This function is responsible for getting "Y" or "N" input
+;Recursivily calls itself until it does
 (defun getYesNoInput (input)
 		(cond( (string-equal input "Y") 
 					"Y")
@@ -118,6 +133,9 @@
 			( t	(print "Try again")	(getYesNoInput (read)))
 		)
 )
+
+;This function is responsible for getting if the user wants heads or tails
+;Recursivily calls itself until it works
 (defun getHeadTailChoice ()
 	(print "(H)eads or (T)ails")
 	(Let(
@@ -130,6 +148,10 @@
 		)	
 	)
 )
+
+;This function prompts the user for which move action they want to takeAction
+;Recursivily calls itself until a valid move is input
+;1 is Capture, 2 is Build, 3 is Trail
 (defun promptForAction ()
 	(print "Would you like to Capture(1), Build(2), Trail(3)")
 	( Let ((userInput (read)))
@@ -142,6 +164,10 @@
 )
 
 
+;This functions gets numeric input on the range [lowerBound upperBound)
+; However it prompts the user to enter on (lowerBound upperBound] for useablity
+; Therefore it takes what the user entered, subtracts one, and returns
+;Recursivily calls itself until a valid number is entered
 (defun getNumericInput(lowerBound upperBound)
 	(print "Please enter a number: ")
 	(let 
@@ -155,9 +181,12 @@
 		)	
 	)
 )
-
+;========================================
 ;These functions are for internal logic
+; This is mainly a misc category and used to format, retrieve or generate data as helper functions
+;=======================================
 
+;This function flips a coin, and says if the human won/lost based on user input
 (defun flipCoin ()
 	(Let (
 			(input (getHeadTailChoice))
@@ -172,26 +201,36 @@
 	)
 )
 
+;This function gets a card symbol (the base case if its a single card)
+;The over arching logic is to get the "symbol" of a build
 (defun getCardSymbol (card)
 	(cond 
+		;If its a build with more than one card left
 		((and (listp card) (> (list-length card) 1) )
 			(numericValueToSymbol 
+				;Add this value, with the rest of the build (found recursivly)
 				( + 
 					(symbolToNumericValue (getCardSymbol (first card)) () ) 
 					(symbolToNumericValue (getCardSymbol (rest card))  () )
 				)
 			)
 		)
-		
+		;Recursive base case, the last card in a build
 		((and (listp card) (= (list-length card) 1)) (getCardSymbol (first card)))
 		
+		;If a singleton card entered as a string
 		((= (length (string card)) 1) (char (string card) 0))
+		;If a singletone card entered as a symbol
 		(t (char (string card) 1))
 	)
 
 )
 
+
+
 ; Worked w/ JL NC
+;Create the full deck of cards as symbols
+; Worked with Josh Long and Nick Cockcraft for intialize algoirthm discussion (what data type to use as cards)
 (defun getFullDeck ()
 	'(	SA S2 S3 S4 S5 S6 S7 S8 S9 SX SJ SQ SK
 		CA C2 C3 C4 C5 C6 C7 C8 C9 CX CJ CQ CK
@@ -200,20 +239,27 @@
 	)
 )
 
+;This function shuffles the inputted deck
+; To start the shuffle, pass the deck to deck, and nil to shuffled
 (defun shuffleDeck (deck shuffled)
 	(cond	
 		(
+			;If cards are left to be shuffled
 			(> (list-length deck) 0) 
 				(let* 
 					(
+						;Get a random number between 0 and size of deck
 						(randomNum (random (list-length deck) (make-random-state)))
+						;Get that card
 						(choosen (nth randomNum deck))
+						;Append to the shuffled list, if its null create  list with this as first crd
 						(newShuffle (cond ((null shuffled) (cons choosen ())) (t (append shuffled (cons choosen ())))))			
 					)
-					
+					;Recursivily call this function
 					(shuffleDeck (removeNCard randomNum deck) newShuffle)
 				)
 		)
+		;Return the shuffled deck
 		(t shuffled)
 	)
 	
@@ -360,6 +406,21 @@
 
 
 ;These functions are for scoring
+
+; Check scores in form (HUMANSCORE, COMPSCORE)
+(defun checkScores (scores)
+	(let ( ( human (first scores)) ;Get the human score
+			(comp (first(rest scores))) ;Get the comp score
+	)	
+		(cond 
+			((and (> human 20)(> human comp)) 0) ;If Human > 20 && human > comp
+			((and (> comp 20)(< human comp)) 1) ; If comp > 20 && human < comp
+			((and (> human 20)(= human comp)) 2) ;If Human > 20 && human = comp
+			(t 3) ;Game must continue
+		
+		)	
+	)
+)
 
 (defun isSpade (card)
 	(let

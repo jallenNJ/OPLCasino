@@ -10,7 +10,16 @@
 ;This function prompts the user and returns the string they enter
 (defun getFilePath ()
 	(print "Please enter the fileName")
-	(read)
+	
+	(let
+		(
+			(input (read))
+		)
+		(cond 
+			((numberp input) (print "Please enter a string") (getFilePath))
+			(t input)
+		)
+	)	
 )
 
 

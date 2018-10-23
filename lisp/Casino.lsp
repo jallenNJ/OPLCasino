@@ -107,7 +107,7 @@
 		)
 		;Specify directives, serializable (able to load back in)
 		; and two new lines
-		(format file "(~{~S~%~%~})" data)
+		(format file "(~%~{~S~%~%~})" data)
 		;Close the streams
 		(close file)
 		
@@ -849,6 +849,18 @@
 	)
 )
 
+(defun computerTrail (hand table)
+
+	(let*
+		(
+			(input (random (list-length hand)))
+			(selectedCard (nth input hand))
+			(remainingCards (removeNCard input hand))		
+		)
+		(list remainingCards (append table (list selectedCard)))
+	)
+
+)
 ;return (hand table)
 (defun takeAction (hand table)
 	(Let ((actionToTake (promptForAction)))
@@ -861,34 +873,56 @@
 	)
 )
 
+(defun doComputerMove (hand pile table)
+	
+	(let
+		(
+			(resultTuple (computerTrail hand table))
+		)
+		
+		(cond 
+			;If move was invalid
+			;((equal resultTuple (list hand table)) (print "Invalid move") (doPlayerMove hand pile table))
+			;Move was valid
+			(t (list (first resultTuple) pile (nth 1 resultTuple)))
+		
+		)
+		
+	)
+)
 
-(defun doPlayerMove (hand pile table)
+
+(defun doHumanMove (hand pile table)
+
+	(let
+		(
+			(resultTuple (takeAction hand table))
+		)
+		(print "Result")
+		(print resultTuple)
+		
+		(cond 
+			;If move was invalid
+			((equal resultTuple (list hand table)) (print "Invalid move") (doPlayerMove hand pile table))
+			;Move was valid
+			(t (list (first resultTuple) pile (nth 1 resultTuple)))
+		
+		)
+		
+	)
+
+)
+
+(defun doPlayerMove (hand pile table playerId)
 	
 	(cond 
 		((null hand) (list hand pile table))
-		(t
-		
-			(let
-				(
-					(resultTuple (takeAction hand table))
-				)
-				(print "Result")
-				(print resultTuple)
-				
-				(cond 
-					;If move was invalid
-					((equal resultTuple (list hand table)) (print "Invalid move") (doPlayerMove hand pile table))
-					;Move was valid
-					(t (list (first resultTuple) pile (nth 1 resultTuple)))
-				
-				)
-				
-			)
-		
-		)
+		((= playerId 1) (doComputerMove hand pile table))
+	
+		(t (doHumanMove hand pile table))
 	
 	)
-
+	
 )
 
 
@@ -922,7 +956,7 @@
 			(otherPlayer (cond ((= playerGoing 0) 1) (t 0)))
 			(menuOption (displayMenu playerGoing (list (first saveFileParams) (nth 2 saveFileParams)  compHand compPile (nth 1 saveFileParams) humanHand humanPile table (indexToString lastCap) deck (indexToString playerGoing))))
 			
-			(firstMove (cond ((= playerGoing 0 ) (doPlayerMove humanHand humanPile table)) (t (doPlayerMove compHand compPile table))))
+			(firstMove (cond ((= playerGoing 0 ) (doPlayerMove humanHand humanPile table 0)) (t (doPlayerMove compHand compPile table 1))))
 			(firstCaptured (cond ((= playerGoing 0) (checkIfCapture humanPile (nth 1 firstMove))) (t (checkIfCapture compPile (nth 1 firstMove)))))
 			(tableAfterFirst (nth 2 firstMove))
 			(boardPlayerPrint (cond ((= playerGoing 0 ) (list (first firstMove) (nth 1 firstMove) compHand compPile)) (t (list humanHand humanPile (first firstMove) (nth 1 firstMove)))))
@@ -931,7 +965,7 @@
 			
 			(menuOption2 (displayMenu otherPlayer () ))
 			
-			(secondMove (cond ((= playerGoing 0 ) (doPlayerMove compHand compPile tableAfterFirst)) (t (doPlayerMove humanHand humanPile tableAfterFirst))))
+			(secondMove (cond ((= playerGoing 0 ) (doPlayerMove compHand compPile tableAfterFirst 1)) (t (doPlayerMove humanHand humanPile tableAfterFirst 0))))
 			(secondCaptured (cond ((= playerGoing 0) (checkIfCapture compPile (nth 1 firstMove))) (t (checkIfCapture humanPile (nth 1 firstMove)))))
 			(tableAfterBoth (nth 2 secondMove))
 			(humanResult (cond  ((= playerGoing 0 ) (list (first firstMove) (nth 1 firstMove))) (t (list (first secondMove) (nth 1 secondMove)))))

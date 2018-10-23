@@ -614,7 +614,7 @@
 		
 		(print "Human round score: ")
 		(print (+(+(+(+(+ humanMostCardsScore) humanSpadesScore) humanTenDiamondsScore) humanTwoSpadesScore) humanAces) )
-		(print "Computer total round score: ")
+		(print "Computer round score: ")
 		(print (+(+(+(+(+ compMostCardsScore)compSpadesScore)compTenDiamondsScore)compTwoSpadesScore) compAces))
 		
 		(print "Human total round score: ")

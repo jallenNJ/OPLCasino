@@ -909,7 +909,7 @@
 		
 		(cond 
 			;If move was invalid
-			((equal resultTuple (list hand table)) (print "Invalid move") (doPlayerMove hand pile table))
+			((equal resultTuple (list hand table)) (print "Invalid move") (doHumanMove hand pile table))
 			;Move was valid
 			(t (list (first resultTuple) pile (nth 1 resultTuple)))
 		

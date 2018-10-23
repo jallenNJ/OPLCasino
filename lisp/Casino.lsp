@@ -678,7 +678,7 @@
 
 ;Deals with outputting to console
 
-(defun printAll (hHand cHand table deck nextPlayer)
+(defun printAll (hHand cHand table deck nextPlayer humanPile compPile)
 		(print 'Human )
 		(print 	hHand)
 		
@@ -694,12 +694,19 @@
 		(print 'Deck)
 		(print deck)
 		
+		(print 'HumanPile)
+		(print humanPile)
+		(print '-)
+		(print 'ComputerPile)
+		(print compPile)
+		(print '---------------)
+		
 		(cond ((= nextPlayer 0) (print "Human is next")) (t (print "Computer is next")))
 )
 
-;Takes in next player deck table hHand <unused> cHand 
+;Takes in next player deck table hHand hPile cHand cPile
 (defun printBoard (parse) ; Parse round params
-	(printAll (nth 3 parse) (nth 5 parse) (nth 2 parse) (nth 1 parse) (first parse)) 
+	(printAll (nth 3 parse) (nth 5 parse) (nth 2 parse) (nth 1 parse) (first parse) (nth 4 parse) (nth 6 parse)) 
 
 )
 
@@ -802,7 +809,7 @@
 		)
 	)
 )
-(defun doCapture (hand table)
+(defun doCapture (hand pile table)
 	(let*
 		(
 			(playedCardInput (getNumericInput 0 (list-length hand)))
@@ -814,13 +821,13 @@
 			(remainingTableCards (first (rest resultTuple)))
 		)
 		(cond
-				((> (list-length selectedTableCards) 0) (list remainingHandCards remainingTableCards))
-				(t (list hand table))			
+				((> (list-length selectedTableCards) 0) (list remainingHandCards  (append (append pile (list selectedHandCard)) selectedTableCards) remainingTableCards))
+				(t (list hand pile table))			
 		)
 	)
 )
 
-(defun doBuild (hand table)
+(defun doBuild (hand pile table)
 	(let*
 		(
 			(playedCardInput (getNumericInput 0 (list-length hand)))
@@ -838,10 +845,11 @@
 		(print "Do build needs to remove cards put into build")
 		;(print selectedHandCard)
 		(cond
-			((null buildCardIndices) (list hand table))
+			((null buildCardIndices) (list hand pile table))
 			(t 
 				(list 
 					remainingHandCards 
+					pile
 					(append 
 						(getSelectedCards table (getIndicesNotInList (- (list-length table) 1) buildCardIndices () ) ()) 
 						(list (cons selectedHandCard buildCards))
@@ -853,14 +861,14 @@
 
 )
 
-(defun doTrail (hand table)
+(defun doTrail (hand pile table)
 	(let*
 		(
 			(input (getNumericInput 0 (list-length hand)))
 			(selectedCard (nth input hand))
 			(remainingCards (removeNCard input hand))		
 		)
-		(list remainingCards (append table (list selectedCard)))
+		(list remainingCards pile (append table (list selectedCard)))
 	)
 )
 
@@ -877,13 +885,13 @@
 
 )
 ;return (hand table)
-(defun takeAction (hand table)
+(defun takeAction (hand pile table)
 	(Let ((actionToTake (promptForAction)))
 	
-		(cond ((equal actionToTake '1) "Capture here" (captureSets(doCapture hand table)))
-				((equal actionToTake '2) (doBuild hand table))
-				((equal actionToTake '3) "Trail here" (doTrail hand table))
-				(t (takeAction hand table))	
+		(cond ((equal actionToTake '1) "Capture here" (captureSets(doCapture hand pile table)))
+				((equal actionToTake '2) (doBuild hand pile table))
+				((equal actionToTake '3) "Trail here" (doTrail hand pile table))
+				(t (takeAction hand pile table))	
 		)	
 	)
 )
@@ -900,18 +908,13 @@
 
 				(cond
 					((null (first result)) 	(aiCheckForCapture (rest vector) table (+ index 1)))
-					(t (append (list result) (list index)))
+					(t (list (first result) (nth 1 result) index))
 				)
-			
 			)
 		)
-	
-	)
-
-
-
-	
+	)	
 )
+
 
 (defun doComputerMove (hand pile table)
 	(let
@@ -920,7 +923,6 @@
 			(trailTuple (computerTrail hand table))
 		)
 		
-		(print (first captureResult))
 		(cond 
 			;If move was invalid
 			;((equal resultTuple (list hand table)) (print "Invalid move") (doPlayerMove hand pile table))
@@ -932,13 +934,13 @@
 		
 	)
 )
-(trace doComputerMove)
+
 
 (defun doHumanMove (hand pile table)
 
 	(let
 		(
-			(resultTuple (takeAction hand table))
+			(resultTuple (takeAction hand pile table))
 		)
 		(print "Result")
 		(print resultTuple)
@@ -947,7 +949,7 @@
 			;If move was invalid
 			((equal resultTuple (list hand table)) (print "Invalid move") (doHumanMove hand pile table))
 			;Move was valid
-			(t (list (first resultTuple) pile (nth 1 resultTuple)))
+			(t (list (first resultTuple) (nth 1 resultTuple) (nth 2 resultTuple)))
 		
 		)
 		

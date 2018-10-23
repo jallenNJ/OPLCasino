@@ -980,8 +980,8 @@
 			;If move was invalid
 			;((equal resultTuple (list hand table)) (print "Invalid move") (doPlayerMove hand pile table))
 			;Move was valid
-			((not (null (first captureResult))) (list (removeNCard (nth 2 captureResult) hand) (append (append pile (first captureResult )) (list (nth (nth 2 captureResult) hand ))) (nth 1 captureResult)))
-			(t (list (first trailTuple) pile (nth 1 trailTuple)))
+			((not (null (first captureResult))) (print "Ai is capturing") (list (removeNCard (nth 2 captureResult) hand) (append (append pile (first captureResult )) (list (nth (nth 2 captureResult) hand ))) (nth 1 captureResult)))
+			(t (print "AI is trailing")(list (first trailTuple) pile (nth 1 trailTuple)))
 		
 		)
 		

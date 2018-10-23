@@ -11,9 +11,9 @@
 
    ( SA C7 S8 H4 )
 
-   ( DJ DA C3 C5 S4 CA C9 H7)
-
    ( C8 CJ HA HQ HK C4 SJ )
+   
+   ( DJ DA C3 C5 S4 CA C9 H7)
  
 
 

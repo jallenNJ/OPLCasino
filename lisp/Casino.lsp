@@ -552,8 +552,10 @@
 (defun calculateScores (humanPile compPile scores)
 	(print "Human pile: ")
 	(print humanPile)
+	(print (list-length humanPile))
 	(print "Comp pile: ")
 	(print compPile)
+	(print (list-length compPile))
 
 
 	(let* 

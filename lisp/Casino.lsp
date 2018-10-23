@@ -799,16 +799,17 @@
 	(let
 		(
 			(hand (first handAndTable))
-			(table (rest handAndTable))
+			(table (first (rest handAndTable)))
 			(yesNo (getYesNoInput (read)))
 		)
 	
 		(cond
 			((string-equal yesNo "N") handAndTable)
-			(t handAndTable)
+			(t (getSetInput table (symbolToNumericValue (getCardSymbol (nth (-(list-length table)1) table)) t)))
 		)
 	)
 )
+;(trace captureSets)
 (defun doCapture (hand pile table)
 	(let*
 		(
@@ -947,7 +948,7 @@
 		
 		(cond 
 			;If move was invalid
-			((equal resultTuple (list hand table)) (print "Invalid move") (doHumanMove hand pile table))
+			((equal resultTuple (list hand pile table)) (print "Invalid move") (doHumanMove hand pile table))
 			;Move was valid
 			(t (list (first resultTuple) (nth 1 resultTuple) (nth 2 resultTuple)))
 		

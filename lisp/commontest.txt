@@ -1,0 +1,25 @@
+(
+0
+
+0
+
+(C9 D9 D6 S7)
+
+NIL
+
+0
+
+(SJ H8 SX C6)
+
+NIL
+
+(D2 D4 HA H9)
+
+"Human"
+
+(DQ HJ HX DK D3 S3 C7 S2 SK CX S4 C8 C3 DJ S8 CA S9 H4 C5 D7 H5 H6 SQ D8 CK SA S5 C4 H7 C2 D5 DX S6 H3 CJ HK H2 DA HQ
+ CQ)
+
+"Computer"
+
+)

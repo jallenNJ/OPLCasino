@@ -126,7 +126,9 @@
 ;This function is responsible for getting "Y" or "N" input
 ;Recursivily calls itself until it does
 (defun getYesNoInput (input)
-		(cond( (string-equal input "Y") 
+		(cond
+		((numberp input ) (print "Try again")	(getYesNoInput (read)))
+		( (string-equal input "Y") 
 					"Y")
 			 ( (string-equal input "N") 
 					"N")
@@ -283,6 +285,13 @@
 		;If hand is empty, cards need to be dealt
 		((null hand) (list (dealFourCards deck) (nthcdr 4 deck))) 
 		(t (list hand deck))
+	)
+)
+
+
+(defun indexToString (index)
+	(cond ((= index 0 ) "Human")
+			(t "Computer")
 	)
 )
 
@@ -879,24 +888,51 @@
 	)
 )
 
-(defun doComputerMove (hand pile table)
+(defun aiCheckForCapture (vector table index)
+	(cond 
+		((null vector) nil)
+		(t
+			(let*
+				(
+					(currentCard (first vector))
+					(result (findAndRemoveSymbol (getCardSymbol currentCard) table nil))
+				)
+
+				(cond
+					((null (first result)) 	(aiCheckForCapture (rest vector) table (+ index 1)))
+					(t (append (list result) (list index)))
+				)
+			
+			)
+		)
 	
+	)
+
+
+
+	
+)
+
+(defun doComputerMove (hand pile table)
 	(let
 		(
-			(resultTuple (computerTrail hand table))
+			(captureResult (aiCheckForCapture hand table 0))
+			(trailTuple (computerTrail hand table))
 		)
 		
+		(print (first captureResult))
 		(cond 
 			;If move was invalid
 			;((equal resultTuple (list hand table)) (print "Invalid move") (doPlayerMove hand pile table))
 			;Move was valid
-			(t (list (first resultTuple) pile (nth 1 resultTuple)))
+			((not (null (first captureResult))) (list (removeNCard (nth 2 captureResult) hand) (append (append pile (first captureResult )) (list (nth 2 hand ))) (nth 1 captureResult)))
+			(t (list (first trailTuple) pile (nth 1 trailTuple)))
 		
 		)
 		
 	)
 )
-
+(trace doComputerMove)
 
 (defun doHumanMove (hand pile table)
 
@@ -944,11 +980,6 @@
 
 )
 
-(defun indexToString (index)
-	(cond ((= index 0 ) "Human")
-			(t "Computer")
-	)
-)
 
 ;This functions does a cycle where both players play one card
 (defun doCycle (players table playerGoing deck saveFileParams lastCap)

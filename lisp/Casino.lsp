@@ -588,6 +588,10 @@
 			((< humanMostCardsScore compMostCardsScore) (print "Comp had the most cards"))
 			(t (print "Players had equal cards"))
 		)
+		(print "Human Spades")
+		(print humanSpades)
+		(print "Computer Spades")
+		(print compSpades)
 		
 		(cond
 			((> humanSpadesScore compSpadesScore) (print "Human had the most spades"))

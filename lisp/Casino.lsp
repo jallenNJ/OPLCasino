@@ -719,7 +719,6 @@
 ;These functions deals with sets
 
 (defun checkSetSum (check target checked)
-
 	(cond ((null check) (cond ((= target 0 ) target) (t ())))
 		(t (checkSetSum (rest check) (- target (symbolToNumericValue (getCardSymbol(first check)) ())) (append checked (list (first check)))))
 	)
@@ -799,13 +798,47 @@
 	(let
 		(
 			(hand (first handAndTable))
-			(table (first (rest handAndTable)))
+			(pile (nth 1 handAndTable))
+			(table (nth 2 handAndTable))
+			(playedCard (nth 3 handAndTable))
+			(playedCardIndex (nth 4 handAndTable))
+			(addedPlayedCard (nth 5 handAndTable))
 			(yesNo (getYesNoInput (read)))
 		)
 	
 		(cond
 			((string-equal yesNo "N") handAndTable)
-			(t (getSetInput table (symbolToNumericValue (getCardSymbol (nth (-(list-length table)1) table)) t)))
+			;(t (getSetInput table (symbolToNumericValue (getCardSymbol playedCard) t)))
+			
+			(t
+				(let 
+					(
+						(result (getSetInput table (symbolToNumericValue (getCardSymbol playedCard ) t)))
+					)
+					(print result)
+					(cond 
+						((null result) handAndTable)
+						
+						( t
+							(list (removeNCard playedCardIndex hand) 
+								(cond 
+									((and (null pile) (null addedPlayedCard))
+										(append (getSelectedCards table result () ) (list playedCard)))
+									((and not(null pile) (null addedPlayedCard))
+										(append (getSelectedCards table (getIndicesNotInList (- (list-length table) 1) result () ) ()) (list playedCard)))  
+										
+									((null pile) 
+										(getSelectedCards table result () )) 
+									(t 
+										(append pile result))) 
+									
+									(getSelectedCards table (getIndicesNotInList (- (list-length table) 1) result () ) ()) 
+							)
+						)
+					)
+				
+				)
+			)
 		)
 	)
 )
@@ -822,8 +855,8 @@
 			(remainingTableCards (first (rest resultTuple)))
 		)
 		(cond
-				((> (list-length selectedTableCards) 0) (list remainingHandCards  (append (append pile (list selectedHandCard)) selectedTableCards) remainingTableCards))
-				(t (list hand pile table))			
+				((> (list-length selectedTableCards) 0) (list remainingHandCards  (append (append pile (list selectedHandCard)) selectedTableCards) remainingTableCards selectedHandCard playedCardInput t))
+				(t (list hand pile table selectedHandCard playedCardInput () ))			
 		)
 	)
 )

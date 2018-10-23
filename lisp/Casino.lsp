@@ -840,8 +840,8 @@
 									((and (null pile) (null addedPlayedCard))
 										(append (getSelectedCards table result () ) (list playedCard)))
 									;Cards in pile and card not added already
-									((and not(null pile) (null addedPlayedCard))
-										(append (getSelectedCards table (getIndicesNotInList (- (list-length table) 1) result () ) ()) (list playedCard)))  
+									((and (not(null pile)) (null addedPlayedCard))
+										(append pile (append (getSelectedCards table (getIndicesNotInList (- (list-length table) 1) result () ) ()) (list playedCard))))  
 									;No cards in pile but card was added already... shouldn't happen... but better to have an edge case then crash	
 									((null pile) 
 										(getSelectedCards table result () )) 
@@ -861,7 +861,7 @@
 		)
 	)
 )
-;(trace captureSets)
+
 (defun doCapture (hand pile table)
 	(let*
 		(

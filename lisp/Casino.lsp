@@ -790,8 +790,9 @@
 	)
 )
 
-
+;====================================
 ;These functions are for player actions
+;====================================
 (defun captureSets (handAndTable)
 
 	(print "Are there any additionial sets you would like to capture?")
@@ -820,18 +821,27 @@
 						((null result) handAndTable)
 						
 						( t
-							(list (removeNCard playedCardIndex hand) 
+							(list 
+								;Add Hand
+								(removeNCard playedCardIndex hand) 
+								
+								;Add Pile
 								(cond 
+									;No cards in pile and card was not added already
 									((and (null pile) (null addedPlayedCard))
 										(append (getSelectedCards table result () ) (list playedCard)))
+									;Cards in pile and card not added already
 									((and not(null pile) (null addedPlayedCard))
 										(append (getSelectedCards table (getIndicesNotInList (- (list-length table) 1) result () ) ()) (list playedCard)))  
-										
+									;No cards in pile but card was added already... shouldn't happen... but better to have an edge case then crash	
 									((null pile) 
 										(getSelectedCards table result () )) 
+									;Pile exists and card added
 									(t 
-										(append pile result))) 
+										(append pile result))
+								) 
 									
+									;Add Table
 									(getSelectedCards table (getIndicesNotInList (- (list-length table) 1) result () ) ()) 
 							)
 						)

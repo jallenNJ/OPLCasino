@@ -1,0 +1,23 @@
+(
+	2
+	
+	9 
+	
+	( C6 H5 D9 )
+
+	( CK H4 D7 C9 H9 S9 CX C2 S6 H6 D8 SJ CQ DQ HA CJ D2 DX )
+	
+	10
+	
+	( S7 D5 HQ )
+	
+	( SX S8 DK DA H7 C8 HJ CA C4 C5 DJ SA S2 S4 S5 S3 D6 H2 D3 C7 H3 SQ H8 SK )
+	
+	( C3 D4 HK )
+	
+	Human
+	
+	( )
+
+	Computer
+)

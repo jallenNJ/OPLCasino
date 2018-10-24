@@ -570,6 +570,7 @@
 
 )
 
+;Checks if the vector has the DX
 ;Returns T or nil
 (defun hasTenOfDiamonds (vector)
 
@@ -582,6 +583,7 @@
 		(cond 
 			((null vector) nil)
 			((and
+				;Check both symbol and char representation
 				(or (eq suit 'D) (eq suit #\D))
 				(or (eq symb 'X) (eq symb #\X))
 			 )
@@ -592,6 +594,7 @@
 	)
 )
 
+;Check if the vector has the S2
 ;Returns T or nil
 (defun hasTwoOfSpades (vector)
 
@@ -615,6 +618,8 @@
 )
 
 
+;Counts all spades in the vector
+;Returns an int
 (defun countSpades (vector amount)
 	(cond
 		((null vector) amount)
@@ -625,6 +630,8 @@
 	)
 )
 
+;Counts all aces in the vector
+;Returns an int
 (defun countAces (vector amount)
 	(cond
 		((null vector) amount)
@@ -634,8 +641,28 @@
 )
 
  
-
+; *********************************************************************
+;Function Name: calculateScores
+;Purpose: To calculate the scores at the end of the round
+;Parameters:
+;            humanPile, a flatten list of cards
+;			compPile, a flatten list of cards
+;			scores, the current scores form (humanScore, compScore)
+;Return Value: form (humanScore, compScore)
+;Local Variables:
+;            only caches for readability, they could be removed (ie no user input)
+;Algorithm:
+;            1) Count Size of pile
+;			 2) Count amount of Spades
+;			 3) Find who has DX
+;			 4) Find who has S2
+;	 		 5)Count Aces
+;	 		 6) Sum score
+;Assistance Received: none
+;********************************************************************* 
 (defun calculateScores (humanPile compPile scores)
+	
+	;Output pile and sizes
 	(print "Human pile: ")
 	(print humanPile)
 	(print (list-length humanPile))
@@ -646,67 +673,86 @@
 
 	(let* 
 		(
-		
+			;Cache the scores 
 			(humanStartScore (first scores))
 			(compStartScore  (nth 1 scores))
+			
+			;Add points to who had the most cards
 			(humanMostCardsScore (cond ((> (list-length humanPile) (list-length compPile)) 3) (t 0)))
 			(compMostCardsScore (cond ((< (list-length humanPile) (list-length compPile)) 3) (t 0)))
 			
+			;Count Spades
 			(humanSpades (countSpades humanPile 0))
 			(compSpades (countSpades compPile 0))
 			
+			;Give points to who had the most
 			(humanSpadesScore (cond ((> humanSpades compSpades) 1) (t 0)))
 			(compSpadesScore (cond ((< humanSpades compSpades) 1) (t 0)))
 		
+			;Give points to who has the DX
 			(humanTenDiamondsScore (cond ((
-			hasTenOfDiamonds humanPile) 2) (t 0 )))
+				hasTenOfDiamonds humanPile) 2) (t 0 )))
 			(compTenDiamondsScore (cond ((hasTenOfDiamonds compPile) 2) (t 0 )))
 			
+			;Give points to who has the S2
 			(humanTwoSpadesScore (cond ((hasTwoOfSpades humanPile) 1) (t 0 )))
 			(compTwoSpadesScore (cond ((hasTwoOfSpades compPile) 1) (t 0 )))
 
+			;Count Aces
 			(humanAces (countAces humanPile 0))
 			(compAces (countAces compPile 0))
 		)
 		
+		;Print out who had more cards
 		(cond 
 			((> humanMostCardsScore compMostCardsScore) (print "Human had the most cards"))
 			((< humanMostCardsScore compMostCardsScore) (print "Comp had the most cards"))
 			(t (print "Players had equal cards"))
 		)
+		
+		;Print out amount of spades
 		(print "Human Spades")
 		(print humanSpades)
 		(print "Computer Spades")
 		(print compSpades)
 		
+		;Print out who had the most spades
 		(cond
 			((> humanSpadesScore compSpadesScore) (print "Human had the most spades"))
 			((< humanSpadesScore compSpadesScore) (print "Comp had the most spades"))
 			(t (print "They tied in Spades!"))
 		)
 		
+		;Print out who had the DX
 		(cond 
 			((> humanTenDiamondsScore 0) (print "Human had the DX"))
 			(t (print "Comp had the DX"))
 		)
+		;Print out who had the S2
 		(cond
 			((> humanTwoSpadesScore 0) (print "Human had the S2"))
 			(t (print "Comp had the S2"))
 		)
+		
+		;Print out the amount of aces
 		(print "Human had this many aces:")
 		(print humanAces)
 		(print "Comp had this many aces:")
 		(print compAces)
 		
+		;Print out the points for this round
 		(print "Human round score: ")
 		(print (+(+(+(+(+ humanMostCardsScore) humanSpadesScore) humanTenDiamondsScore) humanTwoSpadesScore) humanAces) )
 		(print "Computer round score: ")
 		(print (+(+(+(+(+ compMostCardsScore)compSpadesScore)compTenDiamondsScore)compTwoSpadesScore) compAces))
 		
+		;Print out the new scores
 		(print "Human total round score: ")
 		(print (+(+(+(+(+(+ humanStartScore)humanMostCardsScore) humanSpadesScore) humanTenDiamondsScore) humanTwoSpadesScore) humanAces) )
 		(print "Computer total round score: ")
 		(print (+(+(+(+(+(+ compStartScore compMostCardsScore)compSpadesScore)compTenDiamondsScore)compTwoSpadesScore) compAces)))
+		
+		;Return the scores
 		(list 
 			(+(+(+(+(+(+ humanStartScore)humanMostCardsScore) humanSpadesScore) humanTenDiamondsScore) humanTwoSpadesScore) humanAces) 
 			(+(+(+(+(+(+ compStartScore compMostCardsScore)compSpadesScore)compTenDiamondsScore)compTwoSpadesScore) compAces))
@@ -720,14 +766,14 @@
 (defun displayMenu (current saveData)
 
 	(cond 
-		((= current 0) 
+		((= current 0) ;Menu for the human
 			(print "1) Save the Game")
 			(print "2) Make a Move (Human)")
 			(print "3) Ask for help")
 			(print "4) Quit the game")
 		)
 		
-		(t 
+		(t  ;Menu for the computer
 		
 			(print "1) Save the Game")
 			(print "2) Make a Move (Computer)")
@@ -737,16 +783,22 @@
 	
 	(let*
 		(
+			;Convert out of index form, and if its 3 from computer, make it 4 (help -> quit)
 			(rawInput (cond ((= current 0 )(getNumericInput 0 4) ) (t (getNumericInput 0 3))))
 			(nonIndexForm (+ 1 rawInput))
 			(input (cond ((and (= current 1) (= nonIndexForm 3)) 4) (t nonIndexForm)))
 		)
 	
 		(cond
-			((= input 1) (saveGame saveData))
+			;Save and quit
+			((= input 1) (saveGame saveData
+			; Do move
 			((= input 2)  2)
+			;Help (not implemented)
 			((= input 3) (print "IMPLEMENT HELP" ) 3)
+			;Close application
 			((= input 4) (closeApplication 0))
+			;error catch, assumes 2
 			(t (print "Invalid menu option, assuming 2") 2)
 		)	
 	)
@@ -755,6 +807,8 @@
 
 ;Deals with outputting to console
 
+
+;Print all fields to board
 (defun printAll (hHand cHand table deck nextPlayer humanPile compPile)
 		(print 'Human )
 		(print 	hHand)
@@ -782,6 +836,7 @@
 )
 
 ;Takes in next player deck table hHand hPile cHand cPile
+;Wrapper to printAll
 (defun printBoard (parse) ; Parse round params
 	(printAll (nth 3 parse) (nth 5 parse) (nth 2 parse) (nth 1 parse) (first parse) (nth 4 parse) (nth 6 parse)) 
 
@@ -795,6 +850,7 @@
 
 ;These functions deals with sets
 
+;Check if the sets sum to target value
 (defun checkSetSum (check target checked)
 	(cond ((null check) (cond ((= target 0 ) target) (t ())))
 		(t (checkSetSum (rest check) (- target (symbolToNumericValue (getCardSymbol(first check)) ())) (append checked (list (first check)))))

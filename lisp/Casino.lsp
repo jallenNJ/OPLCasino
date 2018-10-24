@@ -1,10 +1,15 @@
-;Joseph Allen | jallen6@ramapo.edu
-;	CMPS 366-01 Organization of Programming Languages Fa 18
-;	Lisp submission for Casino
+;     ************************************************************
+;     * Name:  Joseph Allen jallen6@ramapo.edu                   *
+;     * Project: Lisp Casino project                             *
+;     * Class:  CMPS 366-01 OPL Fall 18                          *
+;     * Date:  2018-10-23                                        *
+;     ************************************************************
+
 
 ;====================
 ; functions for loading or saving to a file (serialization)
 ;====================
+
 
 
 ;This function prompts the user and returns the string they enter
@@ -366,6 +371,27 @@
 
 
 
+
+; *********************************************************************
+;Function Name: findAndRemoveSymbol
+;Purpose: To find all matching symbols in a hand, and remove them
+;Parameters:
+;            Target, the target symbol/char that is being removed
+;           vector, the hand of cards to remove them from
+;			Result, pass in nil to start the function
+;Return Value: List in form (removed, nonRemoved)
+;Local Variables:
+;            removedCards for (first result)
+;			 nonRemovedCards for (first (rest result))
+;Algorithm:
+;           	 1) Check if there are more cards left in the vector
+;				 2) 	If so, check if the that card matches the target
+;				 3)		If it does, add to removed, otherwise add to nonRemovedCards, and recursivly call the function
+;				 4)Return result
+;Assistance Received: none
+;********************************************************************* 
+
+
 ;This function finds all specified symbols in the provided vector, and then returns the vector without those symbols
 ;To start off this function, pass nill to result
 ;Result is in the form (removed, nonRemoved), and is returned when done execution
@@ -429,19 +455,55 @@
 )
 
 
+; *********************************************************************
+;Function Name: getIndices
+;Purpose: To get the indices from user input
+;Parameters:
+;            maxValue, the highest value 
+;			 amounthow many more to get
+;			 recieved, all the input that was recieved
+;Return Value: A list of inputs
+;Local Variables:
+;            input, what the user typed
+;			 appened, the input appened to recieved
+;Algorithm:
+;            1) Get input
+;            2) Add to result
+;			3) Repeat until done
+;Assistance Received: none
+;********************************************************************* 
 (defun getIndices (maxValue amount recieved)
 	(let* 
-		(
+		(	
+			;Cache the input
 			(input (getNumericInput 0 maxValue))
+			;Append to list, if list is null make new list
 			(appended (cond ((null recieved) (list input)) (t (append recieved (list input)))))
 		)
-		
+		;If none left
 		(cond ((<= amount 1) appended)
+			
 			(t (getIndices maxValue (- amount 1) appended)))
 	)
 
 )
 
+; *********************************************************************
+;Function Name: getSelectedCards
+;Purpose: To get all cards selected by a list of indicies
+;Parameters:
+;            vector, where to select cards from
+;			indicies, the indicies to select
+;			Retrieved, a list of all cards that were retrieved
+;Return Value: A list of selected cards
+;Local Variables:
+;            none
+;Algorithm:
+;            1) Get the card
+;			 2) Add to retrieved
+;			 3) Recursivily call until complete
+;Assistance Received: none
+;********************************************************************* 
 (defun getSelectedCards (vector indices retrieved)
 	(cond ((null indices) retrieved)
 		(t 
@@ -478,6 +540,8 @@
 	)
 )
 
+
+;Check if a card is a spade
 (defun isSpade (card)
 	(let
 		(
@@ -485,15 +549,19 @@
 		)
 		
 		(cond 
+			;For either a symbol or a char
 			((eq suit 'S) t)
 			((eq suit #\S) t)
+			;If reaches this case, its not a spade
 			(t nil)
 		)
 	)
 )
 
+;Checks if the card symbol is an ace
 (defun isAce (card)
 	(cond
+		;For both char and symbol
 		((eq (getCardSymbol card) #\A) t)
 		((eq (getCardSymbol card) 'A) t)
 		(t nil)

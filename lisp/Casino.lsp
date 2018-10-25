@@ -1000,7 +1000,10 @@
 										(append (getSelectedCards table result () ) (list playedCard)))
 									;Cards in pile and card not added already
 									((and (not(null pile)) (null addedPlayedCard))
-										(append pile (append (getSelectedCards table (getIndicesNotInList (- (list-length table) 1) result () ) ()) (list playedCard))))  
+										(append pile
+												(append (getSelectedCards table 
+												(getIndicesNotInList (- (list-length table) 1) result () ) ())
+												(list playedCard))))  
 									;No cards in pile but card was added already... shouldn't happen... but better to have an edge case then crash	
 									((null pile) 
 										(getSelectedCards table result () )) 
@@ -1095,7 +1098,8 @@
 			(selectedTargetCard (nth (getNumericInput 0 (list-length remainingHandCards)) remainingHandCards))
 
 			;Get the cards the user selects
-			(buildCardIndices (getSetInput table (- (symbolToNumericValue(getCardSymbol selectedTargetCard ) t) (symbolToNumericValue(getCardSymbol selectedHandCard ) () ))))
+			(buildCardIndices (getSetInput table (- (symbolToNumericValue(getCardSymbol selectedTargetCard ) t) 
+			(symbolToNumericValue(getCardSymbol selectedHandCard ) () ))))
 			(buildCards (getSelectedCards table buildCardIndices ()))
 			
 			
@@ -1320,17 +1324,37 @@
 			;Get id for other player
 			(otherPlayer (cond ((= playerGoing 0) 1) (t 0)))
 			;Display yhe menu
-			(menuOption (displayMenu playerGoing (list (first saveFileParams) (nth 2 saveFileParams)  compHand compPile (nth 1 saveFileParams) humanHand humanPile table (indexToString lastCap) deck (indexToString playerGoing))))
+			(menuOption (displayMenu playerGoing 
+				(list (first saveFileParams) 
+				(nth 2 saveFileParams)  
+				compHand compPile 
+				(nth 1 saveFileParams) 
+				humanHand humanPile table 
+				(indexToString lastCap) 
+				deck (indexToString 
+				playerGoing))))
 			
 			;Have the first player make their move
-			(firstMove (cond ((= playerGoing 0 ) (doPlayerMove humanHand humanPile table 0)) (t (doPlayerMove compHand compPile table 1))))
+			(firstMove (cond 
+							((= playerGoing 0 ) 
+								(doPlayerMove humanHand humanPile table 0)) 
+							(t 
+								(doPlayerMove compHand compPile table 1))))
 			
 			;Check if they captured
-			(firstCaptured (cond ((= playerGoing 0) (checkIfCapture humanPile (nth 1 firstMove))) (t (checkIfCapture compPile (nth 1 firstMove)))))
+			(firstCaptured (cond 
+								((= playerGoing 0) 
+									(checkIfCapture humanPile (nth 1 firstMove)))
+								(t 
+									(checkIfCapture compPile (nth 1 firstMove)))))
 			
 			;Update table and print
 			(tableAfterFirst (nth 2 firstMove))
-			(boardPlayerPrint (cond ((= playerGoing 0 ) (list (first firstMove) (nth 1 firstMove) compHand compPile)) (t (list humanHand humanPile (first firstMove) (nth 1 firstMove)))))
+			(boardPlayerPrint 
+				(cond ((= playerGoing 0 ) 
+							(list (first firstMove) (nth 1 firstMove) compHand compPile)) 
+						(t 
+							(list humanHand humanPile (first firstMove) (nth 1 firstMove)))))
 
 			(boardPrintState (printBoard (append(list 0 deck tableAfterFirst )boardPlayerPrint))) ;Var unused, just to print board
 			
@@ -1338,15 +1362,21 @@
 			(menuOption2 (displayMenu otherPlayer () ))
 			
 			;Have second player make their move
-			(secondMove (cond ((= playerGoing 0 ) (doPlayerMove compHand compPile tableAfterFirst 1)) (t (doPlayerMove humanHand humanPile tableAfterFirst 0))))
+			(secondMove (cond 
+							((= playerGoing 0 ) 
+								(doPlayerMove compHand compPile tableAfterFirst 1)) 
+							(t (doPlayerMove humanHand humanPile tableAfterFirst 0))))
 			;Check if they captured
-			(secondCaptured (cond ((= playerGoing 0) (checkIfCapture compPile (nth 1 firstMove))) (t (checkIfCapture humanPile (nth 1 firstMove)))))
+			(secondCaptured (cond ((= playerGoing 0) (checkIfCapture compPile (nth 1 firstMove))) 
+							(t (checkIfCapture humanPile (nth 1 firstMove)))))
 			;Print updated table
 			(tableAfterBoth (nth 2 secondMove))
 			
 			;Reformat data to be returned in a clean line
-			(humanResult (cond  ((= playerGoing 0 ) (list (first firstMove) (nth 1 firstMove))) (t (list (first secondMove) (nth 1 secondMove)))))
-			(compResult (cond  ((= playerGoing 1 ) (list (first firstMove) (nth 1 firstMove))) (t (list (first secondMove) (nth 1 secondMove)))))
+			(humanResult (cond  ((= playerGoing 0 ) (list (first firstMove) (nth 1 firstMove))) 
+								(t (list (first secondMove) (nth 1 secondMove)))))
+			(compResult (cond  ((= playerGoing 1 ) (list (first firstMove) (nth 1 firstMove))) 
+								(t (list (first secondMove) (nth 1 secondMove)))))
 			
 			
 		)
@@ -1355,8 +1385,22 @@
 	)
 )
 
-
-;This function generates the new paramters for a fresh round
+; *********************************************************************
+;Function Name: newRoundParams
+;Purpose: To generate a new round with a default state
+;Parameters:
+;            roundNum, an int for the current roun
+;Return Value: (list firstPlayer deck tableCards humanHand humanPile compHand compPile)
+;Local Variables:
+;            only caches for readability, they could be removed (ie no user input that is used more than once)
+;Algorithm:
+;            1) Set first player
+;			2) Create and shuffle deck
+;			3) Deal 4 card to human
+;			4) Deal 4 cards to computer
+;			5) Deal 4 cards to the table
+;Assistance Received: none
+;********************************************************************* 
 (defun newRoundParams (roundNum)
 	(Let* (
 			;Get the starting player
@@ -1409,13 +1453,15 @@
 					(compHandCheck (dealFourCardsIfEmpty (nth 5 roundParams) deckAfterHuman))
 					(deckAfterBoth (nth 1 compHandCheck))
 					;Reput this information into a list
-					(updatedPlayers (list (first humanHandCheck) (nth 4 roundParams) (first compHandCheck) (nth 6 roundParams)))
+					(updatedPlayers (list (first humanHandCheck) 
+						(nth 4 roundParams) (first compHandCheck) (nth 6 roundParams)))
 					
 				)
 				;Output the board and start the round
 				(printBoard (append (list (first roundParams) deckAfterBoth (nth 2 roundParams)) updatedPlayers))
 				(print "ENSURE SAVE OF LAST CAPTURER BETWEEN CYCLES")
-				(playRound roundNum (doCycle updatedPlayers (nth 2 roundParams) (first roundParams) deckAfterBoth (list roundNum (first scores) (nth 1 scores)) 0) scores)
+				(playRound roundNum (doCycle updatedPlayers (nth 2 roundParams) 
+					(first roundParams) deckAfterBoth (list roundNum (first scores) (nth 1 scores)) 0) scores)
 			
 				)
 			)

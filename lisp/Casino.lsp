@@ -853,7 +853,11 @@
 ;Check if the sets sum to target value
 (defun checkSetSum (check target checked)
 	(cond ((null check) (cond ((= target 0 ) target) (t ())))
-		(t (checkSetSum (rest check) (- target (symbolToNumericValue (getCardSymbol(first check)) ())) (append checked (list (first check)))))
+		(t 
+			(checkSetSum 
+				(rest check) 
+				(- target (symbolToNumericValue (getCardSymbol(first check)) ())) 
+				(append checked (list (first check)))))
 	)
 )
 
@@ -933,6 +937,29 @@
 ;====================================
 ;These functions are for player actions
 ;====================================
+
+; *********************************************************************
+;Function Name: captureSets
+;Purpose: To capture sets for the human player
+;Parameters:
+;            handAndTable, a list in form (hand pile table playedCard playedCardIndex addedPlayedCard)
+;				hand -- the hand of the player
+;				pile -- the cards in the pile
+;				table -- the cards on the table
+;				playedCard -- The card that was played (not as a list)
+;				playedCardIndex -- Index of the card in hand
+;				addedPlayedCard -- T or nil if it was added to pile already
+;Return Value: (hand pile table)
+;Local Variables:
+;            <caches of function calls>
+;			yesNo, the yes no from a user
+;Algorithm:
+;            1) If user wants to capture sets
+;            2) prompt for how many cards
+;			3) get those inputs
+;			4) Check if they are a valid set
+;			5) If they are, remove from table and add to pile
+;Assistance Received: none
 (defun captureSets (handAndTable)
 
 	(print "Are there any additionial sets you would like to capture?")
@@ -957,6 +984,7 @@
 						(result (getSetInput table (symbolToNumericValue (getCardSymbol playedCard ) t)))
 					)
 					(print result)
+					;Check if the input was valid
 					(cond 
 						((null result) handAndTable)
 						
@@ -993,7 +1021,22 @@
 	)
 )
 
-;This function is the entry point for the human to capture a card
+; *********************************************************************
+;Function Name: doCapture
+;Purpose: To choose card the user wants to play in a caputre
+;Parameters:
+;     	 hand, the player's hand a list of card
+;		pile, a list of cards on the table
+;		table, a list of cards on the tabble
+;Return Value: (hand pile table playedCard playedCardIndex boolIfPlayedAddedToPile)
+;Local Variables:
+;           caches of user input
+;			return values of functions to check if valid and readability
+;Algorithm:
+;            1) Get input
+;            2 Remove any cards that match
+;			3) Format return list
+;Assistance Received: none
 (defun doCapture (hand pile table)
 	(let*
 		(
@@ -1020,7 +1063,23 @@
 	)
 )
 
-;For the user to create a build
+; *********************************************************************
+;Function Name: doBuild
+;Purpose: To create a build from user input
+;Parameters:
+;            hand A list of cards in the hand
+;			 pile a list of cards in the pile
+;			table a list of cards on the table
+;Return Value: (hand pile table)
+;Local Variables:
+;            caches of user input and function returns
+;Algorithm:
+;            1) Get played card
+;            2) Get target sum
+;			3) Get card user wants to sum to
+;			4) Get set user wants to select
+;			5) Validate
+;Assistance Received: none
 (defun doBuild (hand pile table)
 	(let*
 		(
@@ -1129,7 +1188,21 @@
 	)	
 )
 
-;Function for the ai to make its move 
+; *********************************************************************
+;Function Name: doComputerMove
+;Purpose: To decide and execute move tfor the computer
+;Parameters:
+;           hand -- A list of card in the hand
+;			pile -- A list of cards in the pile
+;			table-- A list of cards on the table
+;
+;Return Value: (hand pile table)
+;Local Variables:
+;            return values from all possible actions (capture identical and trail)
+;Algorithm:
+;            1) Check if computer can capture, and return result if it can
+;			2) If not, trail
+;Assistance Received: none
 (defun doComputerMove (hand pile table)
 	(let
 		(
@@ -1212,30 +1285,66 @@
 )
 
 
-;This functions does a cycle where both players play one card
+; *********************************************************************
+;Function Name: doCylce
+;Purpose: To do one cycle where both players play one card (take one action)
+;Parameters:
+;            players -- List of lists (humanHand humanPile compHand compPile)
+;			table -- List of table cards
+;			playerGoind -- Int 0 is human, 1 is comp
+;			deck -- The deck of cards
+;			saveFileParams -- Extra information that the save file needs that isn't in other paramters
+;			lastCap -- int 0 or 1 of who captured last, 0 is human 1 is comp
+;Return Value: (list playerGoing deck tableAfterBoth (first humanResult) (nth 1 humanResult) (first compResult) (nth 1 compResult) )
+;Local Variables:
+;            caches of moves for functions which cannot be recalled without prompting for input
+;Algorithm:
+;            1) Print Board
+;			2) Diplay menus
+;			3) Have first player make a move
+;			4) Print board
+;			5) Display menu
+;			6)Second player makes move
+;			7) Reformat data to be returned
+
+;Assistance Received: none
 (defun doCycle (players table playerGoing deck saveFileParams lastCap)
 	(Let* 
 		(
+			;Put into readable names for player info
 			(humanHand (first players))
 			(humanPile (nth 1 players))
 			(compHand (nth 2 players))
 			(compPile (nth 3 players))
 			
+			;Get id for other player
 			(otherPlayer (cond ((= playerGoing 0) 1) (t 0)))
+			;Display yhe menu
 			(menuOption (displayMenu playerGoing (list (first saveFileParams) (nth 2 saveFileParams)  compHand compPile (nth 1 saveFileParams) humanHand humanPile table (indexToString lastCap) deck (indexToString playerGoing))))
 			
+			;Have the first player make their move
 			(firstMove (cond ((= playerGoing 0 ) (doPlayerMove humanHand humanPile table 0)) (t (doPlayerMove compHand compPile table 1))))
+			
+			;Check if they captured
 			(firstCaptured (cond ((= playerGoing 0) (checkIfCapture humanPile (nth 1 firstMove))) (t (checkIfCapture compPile (nth 1 firstMove)))))
+			
+			;Update table and print
 			(tableAfterFirst (nth 2 firstMove))
 			(boardPlayerPrint (cond ((= playerGoing 0 ) (list (first firstMove) (nth 1 firstMove) compHand compPile)) (t (list humanHand humanPile (first firstMove) (nth 1 firstMove)))))
-			;(boardPlayerPrint (cond ((= playerGoing 0 ) (list  compHand compPile (first firstMove) (nth 1 firstMove))) (t (list (first firstMove) (nth 1 firstMove) humanHand humanPile))))
+
 			(boardPrintState (printBoard (append(list 0 deck tableAfterFirst )boardPlayerPrint))) ;Var unused, just to print board
 			
+			;Output menu
 			(menuOption2 (displayMenu otherPlayer () ))
 			
+			;Have second player make their move
 			(secondMove (cond ((= playerGoing 0 ) (doPlayerMove compHand compPile tableAfterFirst 1)) (t (doPlayerMove humanHand humanPile tableAfterFirst 0))))
+			;Check if they captured
 			(secondCaptured (cond ((= playerGoing 0) (checkIfCapture compPile (nth 1 firstMove))) (t (checkIfCapture humanPile (nth 1 firstMove)))))
+			;Print updated table
 			(tableAfterBoth (nth 2 secondMove))
+			
+			;Reformat data to be returned in a clean line
 			(humanResult (cond  ((= playerGoing 0 ) (list (first firstMove) (nth 1 firstMove))) (t (list (first secondMove) (nth 1 secondMove)))))
 			(compResult (cond  ((= playerGoing 1 ) (list (first firstMove) (nth 1 firstMove))) (t (list (first secondMove) (nth 1 secondMove)))))
 			

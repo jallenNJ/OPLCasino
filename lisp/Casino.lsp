@@ -1091,6 +1091,8 @@
 	)
 
 )
+
+;For the user to select
 ;return (hand table)
 (defun takeAction (hand pile table)
 	(Let ((actionToTake (promptForAction)))
@@ -1103,18 +1105,23 @@
 	)
 )
 
+;Check for cards the ai can camputre
 (defun aiCheckForCapture (vector table index)
 	(cond 
+		;if no cards left
 		((null vector) nil)
 		(t
 			(let*
 				(
+					;Get the current card, and see if any match
 					(currentCard (first vector))
 					(result (findAndRemoveSymbol (getCardSymbol currentCard) table nil))
 				)
 
 				(cond
+					;If nothing, check next card
 					((null (first result)) 	(aiCheckForCapture (rest vector) table (+ index 1)))
+					;Return what was found
 					(t (list (first result) (nth 1 result) index))
 				)
 			)
@@ -1122,10 +1129,11 @@
 	)	
 )
 
-
+;Function for the ai to make its move 
 (defun doComputerMove (hand pile table)
 	(let
 		(
+			;Decide all moves in advance to evaluate
 			(captureResult (aiCheckForCapture hand table 0))
 			(trailTuple (computerTrail hand table))
 		)
@@ -1136,6 +1144,7 @@
 			;Move was valid
 			((not (null (first captureResult))) (print "Ai is capturing") (list (removeNCard (nth 2 captureResult) hand)
 			
+				;Add the card, this cond statment is to flatten the list 
 				(append pile 
 					(append 
 						(cond 
@@ -1148,6 +1157,7 @@
 							(t (list (first captureResult)))
 						) 
 						(list (nth (nth 2 captureResult) hand )))) (nth 1 captureResult)))
+			;If no capture, trail
 			(t (print "AI is trailing")(list (first trailTuple) pile (nth 1 trailTuple)))
 		
 		)
@@ -1155,7 +1165,7 @@
 	)
 )
 
-
+;For the human player to make their move
 (defun doHumanMove (hand pile table)
 
 	(let
@@ -1170,13 +1180,12 @@
 			((equal resultTuple (list hand pile table)) (print "Invalid move") (doHumanMove hand pile table))
 			;Move was valid
 			(t (list (first resultTuple) (nth 1 resultTuple) (nth 2 resultTuple)))
-		
-		)
-		
+		)	
 	)
-
 )
 
+;Call either human or computer to do their move
+; If no cards in hand, immediately return
 (defun doPlayerMove (hand pile table playerId)
 	
 	(cond 
@@ -1190,7 +1199,7 @@
 )
 
 
-
+;Function to see if the player made a capture
 (defun checkIfCapture (startPile afterPile)
 	(cond
 		((null afterPile) nil)
@@ -1238,45 +1247,63 @@
 )
 
 
+;This function generates the new paramters for a fresh round
 (defun newRoundParams (roundNum)
 	(Let* (
+			;Get the starting player
 			(firstPlayer (cond ((= roundNum 0) (flipCoin))  (t (print "Set up player for follow up round") 0)))
+			;Create and shuffle deck
 			(startingDeck (shuffleDeck (getFullDeck) ()))
+			;Deal four cards to the human and clear pile
 			(humanHand (dealFourCards startingDeck))
 			(humanPile ())
+			;Repeat for computer
 			(compHand  (dealFourCards (nthcdr 4 startingDeck)))
 			(compPile ())
+			;Deal four cards to the table
 			(tableCards (dealFourCards (nthcdr 8 startingDeck)))
+			;Remove cards from the deck
 			(deck (nthcdr 12 startingDeck))
 		)
 	
+		;Format tuple
 		(list firstPlayer deck tableCards humanHand humanPile compHand compPile)
 	)
 
 )
 
-
+;Controls the round and ends when deck and hands are empty
 (defun playRound (roundNum roundParams scores)
 	(cond
+		;If no params, create new round
 		((null roundParams) (playRound roundNum (newRoundParams roundNum) (list roundNum (first scores) (nth 1 scores))))
+		;If deck and human hand are empty
 		((and (null (nth 1 roundParams)) (null (nth 3 roundParams))) 
+			;End the round
+			
+			;Print out the current board
 			(printBoard roundParams)
 			;(print "THIS IS TERMINATING CASE, ADD PROPER HANDLING")
 			(print "HANDLE LAST CAPTURER and LOOSE CARDS GOING THERE")
 			(print "PAST YOU RECOMMENDS RETURNING WHO DID AND HANDLING IN CALC SCORES")
+			;Calculate the scores and output them
 			(print (calculateScores (nth 4 roundParams) (nth 6 roundParams) scores))
 			(calculateScores (nth 4 roundParams) (nth 6 roundParams) scores)
 		)
 		(t 
+			;Start round (from save)
 			(let* 
 				(
+					;Check if cards need ot be dealt, and deal from deck if empty
 					(humanHandCheck (dealFourCardsIfEmpty (nth 3 roundParams) (nth 1 roundParams)))
 					(deckAfterHuman (nth 1 humanHandCheck))
 					(compHandCheck (dealFourCardsIfEmpty (nth 5 roundParams) deckAfterHuman))
 					(deckAfterBoth (nth 1 compHandCheck))
+					;Reput this information into a list
 					(updatedPlayers (list (first humanHandCheck) (nth 4 roundParams) (first compHandCheck) (nth 6 roundParams)))
 					
 				)
+				;Output the board and start the round
 				(printBoard (append (list (first roundParams) deckAfterBoth (nth 2 roundParams)) updatedPlayers))
 				(print "ENSURE SAVE OF LAST CAPTURER BETWEEN CYCLES")
 				(playRound roundNum (doCycle updatedPlayers (nth 2 roundParams) (first roundParams) deckAfterBoth (list roundNum (first scores) (nth 1 scores)) 0) scores)
@@ -1286,6 +1313,7 @@
 	)
 )
 
+;Output the results of a completed tournament
 (defun outputTournamentResults (scores)
 	(print "Human had this many tournament points: ")
 	(print (first scores))
@@ -1302,13 +1330,13 @@
 	
 
 )
-			
+;Entry point to the tournaments			
 (defun runTournament (scores round intialParams)
 	
 	(Let ((result (checkScores scores))) ;Get the result and store it 
 		(cond    
-			((< result 3) scores)
-			(t
+			((< result 3) scores) ;If someone won, return the scores
+			(t ;Start the round
 			(runTournament (playRound round intialParams scores) (+ round 1) () )) 
 		)
 	)
@@ -1317,9 +1345,11 @@
 			
 ;"Main"	
 (cond 
-	((string-equal (promptForFileLoadIn) "Y") 
+	;If load in a save
+	((string-equal (promptForFileLoadIn) "Y")
 		(let* 
 			(
+				;Parse into readable names
 				(fileData (loadInFile))
 				(roundNumber (getRoundNumFromFile fileData))
 				(scores (getScoresFromFile fileData))
@@ -1331,11 +1361,15 @@
 				(lastCapturer (getLastCapturer fileData))
 			)
 			
+			;Play the tour with the params
 			;Make: firstPlayer deck tableCards humanHand humanPile compHand compPile
-			(outputTournamentResults(runTournament scores  roundNumber (list nextPlayer deck table (first humanPlayer) (nth 1 humanPlayer) (first compPlayer) (nth 1 compPlayer))))
+			(outputTournamentResults(runTournament scores  roundNumber 
+				(list nextPlayer deck table (first humanPlayer) 
+				(nth 1 humanPlayer) (first compPlayer) (nth 1 compPlayer))))
 		)
 	
 	)
+	;Else make a new start
 	(t (outputTournamentResults(runTournament '(0 0) 0 ())))
 )
 

@@ -791,7 +791,7 @@
 	
 		(cond
 			;Save and quit
-			((= input 1) (saveGame saveData
+			((= input 1) (saveGame saveData))
 			; Do move
 			((= input 2)  2)
 			;Help (not implemented)
@@ -836,7 +836,7 @@
 )
 
 ;Takes in next player deck table hHand hPile cHand cPile
-;Wrapper to printAll
+;Wrapper to printAll that is meant to print from round params
 (defun printBoard (parse) ; Parse round params
 	(printAll (nth 3 parse) (nth 5 parse) (nth 2 parse) (nth 1 parse) (first parse) (nth 4 parse) (nth 6 parse)) 
 
@@ -857,6 +857,8 @@
 	)
 )
 
+;This functions find all cards in the vector that sum to target value
+;returns a set of all sums	((sum1) (sum2) (sum n))
 (defun findSetsThatSum (toProcess target currentResult currentSum)
 
 	(cond 	((or
@@ -868,25 +870,33 @@
 				(cond (( >(+ (symbolToNumericValue (getCardSymbol(first toProcess)) ()) currentSum) target)
 							(findSetsThatSum (rest toProcess) target currentResult currentSum)
 						)
-						(t (findSetsThatSum (rest toProcess) target (append currentResult (list (first toProcess))) (+ currentSum (symbolToNumericValue (getCardSymbol(first toProcess)) ()))))					
+						(t 
+						(findSetsThatSum (rest toProcess) target 
+							(append currentResult (list (first toProcess))) 
+							(+ currentSum (symbolToNumericValue (getCardSymbol(first toProcess)) ()))))					
 				)
 			)
 	)
 )
 
+;This function wraps findAllSetsThatSum to start the loop with a target card to find
+; combinations that a greedy algorithm would miss
 (defun findAllSetsThatSumForStarting (starting toProcess target found)
 	(let*
 		(
 			(result (findSetsThatSum toProcess target () 0))
+			;Handle logic for null list up here
 			(appendedFound (cond ((null result) found) (t (cond ((null found) result)(t(append (cons found () )(list result)))))))
 		)
 		
 		(cond ((null toProcess) appendedFound)
+				;Recursivily call functions
 			(t (findAllSetsThatSumForStarting starting (rest toProcess) target appendedFound))		
 		)	
 	)
 )
 
+;This function finds all sets from all starting cards in the vector
 (defun findAllSetsThatSum (toProcess target found)
 	(let*
 		(
@@ -901,9 +911,6 @@
 		)
 	)
 )
-
-
-
 
 
 ;Returns (indices) if set matches sum, and NIL if it doesn't
@@ -986,34 +993,49 @@
 	)
 )
 
+;This function is the entry point for the human to capture a card
 (defun doCapture (hand pile table)
 	(let*
 		(
+			;Get the card the user selected
 			(playedCardInput (getNumericInput 0 (list-length hand)))
 			(selectedHandCard (nth playedCardInput hand))
 			(remainingHandCards (removeNCard playedCardInput hand))
 			
+			;Get te card user selected and the cards in the table
 			(resultTuple (findAndRemoveSymbol (getCardSymbol selectedHandCard) table ()))
 			(selectedTableCards (first resultTuple))
 			(remainingTableCards (first (rest resultTuple)))
 		)
 		(cond
-				((> (list-length selectedTableCards) 0) (list remainingHandCards  (append (append pile (list selectedHandCard)) selectedTableCards) remainingTableCards selectedHandCard playedCardInput t))
+				;If the user selected cards
+				((> (list-length selectedTableCards) 0) 
+					(list remainingHandCards  
+					(append (append pile (list selectedHandCard)) selectedTableCards) 
+					remainingTableCards selectedHandCard playedCardInput t))
+					
+				;If they did not, return this in case they want to select a set capture only
 				(t (list hand pile table selectedHandCard playedCardInput () ))			
 		)
 	)
 )
 
+;For the user to create a build
 (defun doBuild (hand pile table)
 	(let*
 		(
+			;Get the card to play
 			(playedCardInput (getNumericInput 0 (list-length hand)))
 			(selectedHandCard (nth playedCardInput hand))
 			(remainingHandCards (removeNCard playedCardInput hand))
+			
+			;Prompt for card the user wants to play
 			(output (print "What card to sumto?"))
 			(output2 (print remainingHandCards))
+			;Select that card
 			(selectedTargetCard (nth (getNumericInput 0 (list-length remainingHandCards)) remainingHandCards))
 
+			;Get the cards the user selects
 			(buildCardIndices (getSetInput table (- (symbolToNumericValue(getCardSymbol selectedTargetCard ) t) (symbolToNumericValue(getCardSymbol selectedHandCard ) () ))))
 			(buildCards (getSelectedCards table buildCardIndices ()))
 			
@@ -1022,8 +1044,10 @@
 		(print "Do build needs to remove cards put into build")
 		;(print selectedHandCard)
 		(cond
+			;If no valid cards, return input
 			((null buildCardIndices) (list hand pile table))
 			(t 
+				;Create the build on the table and remove appropriate cards
 				(list 
 					remainingHandCards 
 					pile
@@ -1038,25 +1062,31 @@
 
 )
 
+;Trail a card for the human
 (defun doTrail (hand pile table)
 	(let*
 		(
+			;Get the input and remove from hand
 			(input (getNumericInput 0 (list-length hand)))
 			(selectedCard (nth input hand))
 			(remainingCards (removeNCard input hand))		
 		)
+		;Add to table
 		(list remainingCards pile (append table (list selectedCard)))
 	)
 )
 
+;For the computer to trail
 (defun computerTrail (hand table)
 
 	(let*
 		(
+			;randomly select card to trail
 			(input (random (list-length hand)))
 			(selectedCard (nth input hand))
 			(remainingCards (removeNCard input hand))		
 		)
+		;Add to table
 		(list remainingCards (append table (list selectedCard)))
 	)
 

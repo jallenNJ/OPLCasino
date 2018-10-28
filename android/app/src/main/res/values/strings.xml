@@ -7,4 +7,5 @@
     <string name="headsButtonText">Heads</string>
     <string name="tailsButtonText">Tails</string>
     <string name="coinTossString">Call the Coin Toss!</string>
+    <string name="startButtonText">Start!</string>
 </resources>

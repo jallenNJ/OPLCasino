@@ -1,11 +1,15 @@
 package edu.ramapo.jallen6.oplcasino;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class CoinFlip extends AppCompatActivity {
+
+    private boolean humanFirst = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,7 @@ public class CoinFlip extends AppCompatActivity {
          if(view.getId() == R.id.headsButton){
              if(flipIsHeads){
                  textView.setText("Heads! Human goes first");
+                 humanFirst = true;
              }else{
                  textView.setText("Heads! Computer goes first");
              }
@@ -36,8 +41,17 @@ public class CoinFlip extends AppCompatActivity {
                  textView.setText("Heads! Computer goes first");
              } else{
                  textView.setText("Tails! Human goes first");
+                 humanFirst = true;
              }
          }
 
+        Button startButton = findViewById( R.id.startButton);
+         startButton.setVisibility(View.VISIBLE);
+    }
+
+
+    public void startGame (View view){
+        Intent intent = new Intent(this, Welcome.class);
+        startActivity(intent);
     }
 }

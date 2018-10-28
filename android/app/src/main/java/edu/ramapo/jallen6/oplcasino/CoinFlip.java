@@ -14,12 +14,29 @@ public class CoinFlip extends AppCompatActivity {
     }
 
     public void setText(View view){
-        //view.toString();
+         double randNumRaw = Math.random();
+         randNumRaw *= 10;
+         int randNum = (int) randNumRaw;
+         boolean flipIsHeads = false;
+        if(randNum % 2 == 0){
+            flipIsHeads = true;
+        }
+
          TextView textView = findViewById(R.id.result);
          if(view.getId() == R.id.headsButton){
-             textView.setText("Heads");
+             if(flipIsHeads){
+                 textView.setText("Heads! Human goes first");
+             }else{
+                 textView.setText("Heads! Computer goes first");
+             }
+
+
          } else{
-             textView.setText("Tails");
+             if(flipIsHeads){
+                 textView.setText("Heads! Computer goes first");
+             } else{
+                 textView.setText("Tails! Human goes first");
+             }
          }
 
     }

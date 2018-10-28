@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">OPLCasino</string>
     <string name="edit_message">Enter a message</string>
-    <string name="button_send">Send</string>
+    <string name="welcomeTitle">\"Welcome to jallen6\'s Casino App! :D</string>
+    <string name="newGame">Start a new game!</string>
+    <string name="loadIn">Load a Save Game</string>
+    <string name="headsButtonText">Heads</string>
+    <string name="tailsButtonText">Tails</string>
+    <string name="coinTossString">Call the Coin Toss!</string>
 </resources>

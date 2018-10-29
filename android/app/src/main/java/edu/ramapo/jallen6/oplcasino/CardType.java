@@ -2,7 +2,22 @@ package edu.ramapo.jallen6.oplcasino;
 
 public abstract class CardType {
 
+    public boolean setValue(int val){
+        if(val < 1 || val > 14){
+            return false;
+        }
+        numericValue = val;
+        return true;
+    }
 
+    public boolean setSuit(CardSuit su){
+        if(su == CardSuit.invalid){
+            return false;
+        }
+        suit = su;
+        return true;
+
+    }
 
     public int getValue(){
         return numericValue;
@@ -57,6 +72,6 @@ public abstract class CardType {
 
     }
 
-    private int numericValue;
-    private CardSuit suit;
+    protected int numericValue;
+    protected CardSuit suit;
 }

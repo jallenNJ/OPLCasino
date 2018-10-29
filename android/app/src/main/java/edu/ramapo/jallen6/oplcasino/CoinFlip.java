@@ -54,5 +54,6 @@ public class CoinFlip extends AppCompatActivity {
         Intent intent = new Intent(this, GameLoop.class);
         intent.putExtra("humanFirst", humanFirst );
         startActivity(intent);
+        finish();
     }
 }

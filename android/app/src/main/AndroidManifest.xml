@@ -25,7 +25,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Welcome" />
         </activity>
-        <activity android:name=".CoinFlip"></activity>
+        <activity android:name=".CoinFlip" />
+        <activity android:name=".GameLoop"></activity>
     </application>
 
 </manifest>

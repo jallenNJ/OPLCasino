@@ -47,6 +47,13 @@ public class CoinFlip extends AppCompatActivity {
 
         Button startButton = findViewById( R.id.startButton);
          startButton.setVisibility(View.VISIBLE);
+
+         Button headsButton = findViewById(R.id.headsButton);
+         headsButton.setAlpha(.5f);
+         headsButton.setClickable(false);
+         Button tailsButton = findViewById(R.id.tailsButton);
+         tailsButton.setAlpha(.5f);
+         tailsButton.setClickable(false);
     }
 
 

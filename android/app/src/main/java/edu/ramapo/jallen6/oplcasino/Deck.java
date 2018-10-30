@@ -36,4 +36,11 @@ public class Deck {
         return returnCard;
     }
 
+    public void dealFourCardsToHand(Hand target){
+        for(int i = 0; i < 4; i++){
+            target.addCard(drawCard());
+        }
+        return;
+    }
+
 }

@@ -12,7 +12,7 @@ public class GameLoop extends AppCompatActivity {
         setContentView(R.layout.activity_game_loop);
         Intent intent = getIntent();
         boolean humanStarting = intent.getBooleanExtra("humanFirst", true);
-
+        Round firstRound = new Round();
 
     }
 }

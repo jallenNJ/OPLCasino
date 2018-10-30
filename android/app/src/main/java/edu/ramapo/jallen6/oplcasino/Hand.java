@@ -22,6 +22,14 @@ public class Hand {
         return true;
     }
 
+    public CardType peekCard(int index){
+        if(index >= hand.size() || index < 0){
+            return null;
+        }
+
+        return hand.get(index);
+    }
+
     public CardType removeCard(int index){
         if(index >= hand.size() || index < 0){
             return null;

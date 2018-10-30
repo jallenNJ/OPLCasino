@@ -18,10 +18,14 @@ public class Round {
             startingPlayer = PlayerID.computerPlayer;
         }
         deck = new Deck();
+        playRound();
     }
 
     public void playRound(){
-
+        Deck deck = new Deck();
+        Hand test = new Hand();
+        deck.dealFourCardsToHand(test);
+        HandView testView = new HandView(test);
     }
 
 

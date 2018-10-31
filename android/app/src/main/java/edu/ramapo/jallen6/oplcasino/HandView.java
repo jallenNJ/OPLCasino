@@ -27,6 +27,7 @@ public class HandView extends BaseView {
     private void constructorHelper(boolean limit){
         hand = new Vector<CardView>(4,1);
         limitSelection = limit;
+        createViewsFromModel();
     }
     public void displayCard(ImageButton button, int cardIndex){
         if(button == null || cardIndex < 0 || cardIndex >= hand.size() ) {

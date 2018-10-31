@@ -24,6 +24,7 @@ public class GameLoop extends AppCompatActivity {
         Deck deck = new Deck();
         Hand test = new Hand();
         deck.dealFourCardsToHand(test);
+        currentRound.playRound();
         //testView = new HandView(test);
       //  cardViewTest1 = new CardView((Card)test.peekCard(0));
        // cardViewTest2 = new CardView((Card)test.peekCard(1));
@@ -43,16 +44,16 @@ public class GameLoop extends AppCompatActivity {
         int selectedId = view.getId();
         switch (selectedId){
             case R.id.hcard1:
-               viewHandler.displayCard(chosen, 1);
+               viewHandler.displayCard(chosen, 0);
                 break;
             case R.id.hcard2:
-                viewHandler.displayCard(chosen, 2);
+                viewHandler.displayCard(chosen, 1);
                 break;
             case R.id.hcard3:
-                viewHandler.displayCard(chosen, 3);
+                viewHandler.displayCard(chosen, 2);
                 break;
             case R.id.hcard4:
-                viewHandler.displayCard(chosen, 4);
+                viewHandler.displayCard(chosen, 3);
                 break;
         }
     }

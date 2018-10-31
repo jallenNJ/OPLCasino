@@ -6,9 +6,16 @@ import java.util.Vector;
 public class Hand {
 
     private Vector<CardType> hand;
+    boolean selectionLimitedToOne;
 
     Hand(){
         hand = new Vector<CardType>(4,1);
+        selectionLimitedToOne = true;
+    }
+
+    Hand(boolean limitSelection){
+        hand = new Vector<CardType>(4,1);
+        selectionLimitedToOne = limitSelection;
     }
 
     public int size(){

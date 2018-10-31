@@ -11,12 +11,11 @@ public class CardView extends BaseView {
     CardView(){
         model = new Card();
     }
+
     CardView(Card master){
         model = master;
     }
-
-
-    private int cardToGrapihic(){
+    private int cardToGraphic(){
         CardSuit suit = model.getSuit();
         switch(suit){
             case club:
@@ -163,7 +162,7 @@ public class CardView extends BaseView {
     }
     void setButton (ImageButton ref){
         if(ref != null){
-                ref.setImageResource(cardToGrapihic());
+                ref.setImageResource(cardToGraphic());
 
         }
 

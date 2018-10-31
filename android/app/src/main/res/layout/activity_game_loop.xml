@@ -7,20 +7,23 @@
     tools:context=".GameLoop">
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/hHand"
+        android:layout_width="120dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/bottomPlayerName"
-        android:textColor="@color/colorPrimary"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <ImageButton
         android:id="@+id/imageButton"
-        android:layout_width="275px"
-        android:layout_height="275px"
+        android:layout_width="70dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
         android:onClick="displayCard"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/testcard"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="344dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/hHand"
+        app:srcCompat="@drawable/testcard" />
 </android.support.constraint.ConstraintLayout>

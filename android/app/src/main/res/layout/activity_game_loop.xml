@@ -19,7 +19,7 @@
         android:layout_width="275px"
         android:layout_height="275px"
         android:onClick="displayCard"
-        app:srcCompat="@mipmap/testcard"
+        app:srcCompat="@drawable/testcard"
         tools:layout_editor_absoluteX="30dp"
         tools:layout_editor_absoluteY="344dp" />
 </android.support.constraint.ConstraintLayout>

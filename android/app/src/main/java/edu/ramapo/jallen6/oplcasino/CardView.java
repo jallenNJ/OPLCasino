@@ -17,8 +17,9 @@ public class CardView extends BaseView {
 
 
     void setButton (ImageButton ref){
-        //ref.setText(model.toString());
-        //ref.setImageResource(R.drawable.TestCard2);
-        ref.setImageDrawable(Drawable.createFromPath("@res/mipmap/testcard2"));
+        if(ref != null){
+                ref.setImageResource(R.drawable.testcard2);
+        }
+
     }
 }

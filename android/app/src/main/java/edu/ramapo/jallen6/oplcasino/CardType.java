@@ -52,7 +52,9 @@ public abstract class CardType {
                 return 'A';
         }
     }
-
+    public CardSuit getSuit(){
+        return suit;
+    }
     public char suitToChar(){
 
         switch (suit){

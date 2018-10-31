@@ -16,7 +16,7 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/hcard1"
         android:layout_width="60dp"
         android:layout_height="80dp"
         android:layout_marginBottom="8dp"
@@ -27,7 +27,7 @@
         app:srcCompat="@drawable/testcard" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/hcard2"
         android:layout_width="60dp"
         android:layout_height="80dp"
         android:layout_marginStart="4dp"
@@ -35,11 +35,11 @@
         android:onClick="displayCard"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton"
+        app:layout_constraintStart_toEndOf="@+id/hcard1"
         app:srcCompat="@drawable/testcard" />
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/hcard3"
         android:layout_width="60dp"
         android:layout_height="80dp"
         android:layout_marginStart="4dp"
@@ -47,11 +47,11 @@
         android:onClick="displayCard"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton2"
+        app:layout_constraintStart_toEndOf="@+id/hcard2"
         app:srcCompat="@drawable/testcard" />
 
     <ImageButton
-        android:id="@+id/imageButton4"
+        android:id="@+id/hcard4"
         android:layout_width="60dp"
         android:layout_height="80dp"
         android:layout_marginStart="4dp"
@@ -59,7 +59,7 @@
         android:onClick="displayCard"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton3"
+        app:layout_constraintStart_toEndOf="@+id/hcard3"
         app:srcCompat="@drawable/testcard" />
 
     <Button
@@ -70,5 +70,5 @@
         android:layout_marginBottom="8dp"
         android:text='"This is confirm / menu"'
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton4" />
+        app:layout_constraintStart_toEndOf="@+id/hcard4" />
 </android.support.constraint.ConstraintLayout>

@@ -18,7 +18,8 @@ public class CardView extends BaseView {
 
     void setButton (ImageButton ref){
         if(ref != null){
-                ref.setImageResource(R.drawable.testcard2);
+                ref.setImageResource(R.drawable.d3);
+
         }
 
     }

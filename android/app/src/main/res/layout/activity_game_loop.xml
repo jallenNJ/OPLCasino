@@ -7,6 +7,62 @@
     tools:context=".GameLoop">
 
     <TextView
+        android:id="@+id/cHand"
+        android:layout_width="50dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/bottomPlayerName"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ccard1"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="8dp"
+        android:onClick="displayCard"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toEndOf="@+id/hHand"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/testcard" />
+
+    <ImageButton
+        android:id="@+id/ccard2"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:onClick="displayCard"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toEndOf="@+id/ccard1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/testcard" />
+
+    <ImageButton
+        android:id="@+id/ccard3"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:onClick="displayCard"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toEndOf="@+id/ccard2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/testcard" />
+
+    <ImageButton
+        android:id="@+id/ccard4"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:onClick="displayCard"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toEndOf="@+id/ccard3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/testcard" />
+
+    <TextView
         android:id="@+id/hHand"
         android:layout_width="50dp"
         android:layout_height="80dp"

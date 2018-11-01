@@ -9,42 +9,33 @@ import android.widget.ImageButton;
 public class GameLoop extends AppCompatActivity {
     private HandView testView;
     Round currentRound;
-  //  private CardView cardViewTest1;
-  //  private CardView cardViewTest2;
- //   private CardView cardViewTest3;
- //   private CardView cardViewTest4;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_loop);
         Intent intent = getIntent();
         boolean humanStarting = intent.getBooleanExtra("humanFirst", true);
-        currentRound= new Round();
+        currentRound = new Round();
 
         Deck deck = new Deck();
         Hand test = new Hand();
         deck.dealFourCardsToHand(test);
         currentRound.playRound();
-        //testView = new HandView(test);
-      //  cardViewTest1 = new CardView((Card)test.peekCard(0));
-       // cardViewTest2 = new CardView((Card)test.peekCard(1));
-        //cardViewTest3 = new CardView((Card)test.peekCard(2));
-       // cardViewTest4 = new CardView((Card)test.peekCard(3));
-        //cardViewTest1.setButton();
+
     }
 
-    public void displayCard(View view){
-      //  cardViewTest.setButton((Button)findViewById(view.getId()));
-       // cardViewTest.setButton((ImageButton)findViewById(view.getId()));
+    public void displayCard(View view) {
+
         HandView viewHandler = currentRound.getPlayerHandHandler();
-        if(viewHandler == null){
+        if (viewHandler == null) {
             return;
         }
         ImageButton chosen = findViewById(view.getId());
         int selectedId = view.getId();
-        switch (selectedId){
+        switch (selectedId) {
             case R.id.hcard1:
-               viewHandler.displayCard(chosen, 0);
+                viewHandler.displayCard(chosen, 0);
                 break;
             case R.id.hcard2:
                 viewHandler.displayCard(chosen, 1);
@@ -57,7 +48,5 @@ public class GameLoop extends AppCompatActivity {
                 break;
         }
     }
-  //  public void drawHand(View view){
-   //     testView.displayCard(view);
-   // }
+
 }

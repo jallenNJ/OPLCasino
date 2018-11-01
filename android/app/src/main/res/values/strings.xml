@@ -9,4 +9,5 @@
     <string name="coinTossString">Call the Coin Toss!</string>
     <string name="startButtonText">Start!</string>
     <string name="bottomPlayerName">Human Hand</string>
+    <string name="topPlayer">Comp Hand</string>
 </resources>

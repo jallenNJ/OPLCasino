@@ -11,9 +11,10 @@
         android:layout_width="50dp"
         android:layout_height="80dp"
         android:layout_marginTop="8dp"
-        android:text="@string/bottomPlayerName"
+        android:text="@string/topPlayer"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:tag="Computer" />
 
     <ImageButton
         android:id="@+id/ccard1"
@@ -22,9 +23,10 @@
         android:layout_marginTop="8dp"
         android:onClick="displayCard"
         android:scaleType="fitXY"
-        app:layout_constraintStart_toEndOf="@+id/hHand"
+        app:layout_constraintStart_toEndOf="@+id/cHand"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/testcard" />
+        app:srcCompat="@drawable/testcard"
+        android:tag="Computer" />
 
     <ImageButton
         android:id="@+id/ccard2"
@@ -36,7 +38,8 @@
         android:scaleType="fitXY"
         app:layout_constraintStart_toEndOf="@+id/ccard1"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/testcard" />
+        app:srcCompat="@drawable/testcard"
+        android:tag="Computer" />
 
     <ImageButton
         android:id="@+id/ccard3"
@@ -48,7 +51,8 @@
         android:scaleType="fitXY"
         app:layout_constraintStart_toEndOf="@+id/ccard2"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/testcard" />
+        app:srcCompat="@drawable/testcard"
+        android:tag="Computer" />
 
     <ImageButton
         android:id="@+id/ccard4"
@@ -60,7 +64,8 @@
         android:scaleType="fitXY"
         app:layout_constraintStart_toEndOf="@+id/ccard3"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/testcard" />
+        app:srcCompat="@drawable/testcard"
+        android:tag="Computer" />
 
     <TextView
         android:id="@+id/hHand"
@@ -69,7 +74,8 @@
         android:layout_marginBottom="8dp"
         android:text="@string/bottomPlayerName"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:tag="Human" />
 
     <ImageButton
         android:id="@+id/hcard1"
@@ -80,7 +86,8 @@
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/hHand"
-        app:srcCompat="@drawable/testcard" />
+        app:srcCompat="@drawable/testcard" 
+		android:tag="Human"/>
 
     <ImageButton
         android:id="@+id/hcard2"
@@ -92,7 +99,8 @@
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/hcard1"
-        app:srcCompat="@drawable/testcard" />
+        app:srcCompat="@drawable/testcard"
+        android:tag="Human" />
 
     <ImageButton
         android:id="@+id/hcard3"
@@ -102,6 +110,7 @@
         android:layout_marginBottom="8dp"
         android:onClick="displayCard"
         android:scaleType="fitXY"
+        android:tag="Human"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/hcard2"
         app:srcCompat="@drawable/testcard" />
@@ -116,7 +125,8 @@
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/hcard3"
-        app:srcCompat="@drawable/testcard" />
+        app:srcCompat="@drawable/testcard"
+        android:tag="Human" />
 
     <Button
         android:id="@+id/button"

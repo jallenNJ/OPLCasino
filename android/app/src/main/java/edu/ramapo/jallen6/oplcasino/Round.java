@@ -5,6 +5,7 @@ public class Round {
     private PlayerID startingPlayer;
     private Deck deck;
     HandView testView;
+    HandView testView2;
 
     Round(){
         roundNum = 0;
@@ -25,15 +26,25 @@ public class Round {
     public void playRound(){
         Deck deck = new Deck();
         Hand test = new Hand();
+        Hand test2 = new Hand();
         deck.dealFourCardsToHand(test);
+        deck.dealFourCardsToHand(test2);
         testView = new HandView(test, true);
         testView.createViewsFromModel();
+        testView2 = new HandView(test2, true);
+        testView2.createViewsFromModel();
     }
 
-    public HandView getPlayerHandHandler(){
+    public HandView getHumanHandHandler(){
         //This should be replaced with the view
         // in the humanHand once that is implemented
         return testView;
+    }
+
+    public HandView getComputerHandHandler(){
+        //This should be replaced with the view
+        // in the compHand once that is implemented
+        return testView2;
     }
 
 

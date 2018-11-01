@@ -26,8 +26,14 @@ public class GameLoop extends AppCompatActivity {
     }
 
     public void displayCard(View view) {
+        HandView viewHandler = null;
 
-        HandView viewHandler = currentRound.getPlayerHandHandler();
+        if((view.getTag()).toString().equals("Human")){
+            viewHandler = currentRound.getHumanHandHandler();
+        }else{
+            viewHandler = currentRound.getComputerHandHandler();
+        }
+
         if (viewHandler == null) {
             return;
         }
@@ -35,15 +41,19 @@ public class GameLoop extends AppCompatActivity {
         int selectedId = view.getId();
         switch (selectedId) {
             case R.id.hcard1:
+            case R.id.ccard1:
                 viewHandler.displayCard(chosen, 0);
                 break;
             case R.id.hcard2:
+            case R.id.ccard2:
                 viewHandler.displayCard(chosen, 1);
                 break;
             case R.id.hcard3:
+            case R.id.ccard3:
                 viewHandler.displayCard(chosen, 2);
                 break;
             case R.id.hcard4:
+            case R.id.ccard4:
                 viewHandler.displayCard(chosen, 3);
                 break;
         }

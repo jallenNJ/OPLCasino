@@ -29,8 +29,21 @@ public abstract class Player {
         hand.addCard(add);
         return true;
     }
+    public boolean addCardsToHand(Card[] add){
+        for(int i =0; i < add.length; i++){
+            addCardToHand(add[i]);
+        }
+        return true;
+    }
     public boolean addCardToPile(Card add){
         pile.addCard(add);
+        return true;
+    }
+
+    public boolean addCardsToPile(Card[] add){
+        for(int i =0; i < add.length; i++){
+            addCardToPile(add[i]);
+        }
         return true;
     }
 

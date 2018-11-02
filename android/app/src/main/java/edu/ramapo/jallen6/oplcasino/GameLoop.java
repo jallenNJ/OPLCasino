@@ -7,14 +7,13 @@ import android.view.View;
 import android.widget.ImageButton;
 
 public class GameLoop extends AppCompatActivity {
-    private HandView testView;
     Round currentRound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_loop);
-        
+
         Intent intent = getIntent();
         boolean humanStarting = intent.getBooleanExtra("humanFirst", true);
         currentRound = new Round();

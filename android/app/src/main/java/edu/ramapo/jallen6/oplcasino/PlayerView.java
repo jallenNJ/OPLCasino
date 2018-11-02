@@ -19,6 +19,9 @@ public class PlayerView {
 
     }
 
+    public HandView getHand() {
+        return hand;
+    }
 
     public boolean addCardToHand(Card add){
         model.addCardToHand(add);

@@ -7,7 +7,9 @@ public class Round {
     private HandView testView;
     private HandView testView2;
     private Player[] players;
-
+    private PlayerView[] playerViews;
+    final int humanID = PlayerID.humanPlayer.ordinal();
+    final int compID = PlayerID.computerPlayer.ordinal();
 
     Round(){
         roundNum = 0;
@@ -26,28 +28,26 @@ public class Round {
 
     private void initRound(){
         players = new Player[2];
+        playerViews = new PlayerView[2];
         deck = new Deck();
-        Hand test = new Hand();
-        Hand test2 = new Hand();
-        deck.dealFourCardsToHand(test);
-        deck.dealFourCardsToHand(test2);
-        testView = new HandView(test, true);
-        testView.createViewsFromModel();
-        testView2 = new HandView(test2, true);
-        testView2.createViewsFromModel();
+
+        players[humanID]= new Human();
+        players[humanID].addCardsToHand(deck.getFourCards());
+        playerViews[humanID] = new PlayerView(players[humanID]);
+
+        players[compID]= new Human();
+        players[compID].addCardsToHand(deck.getFourCards());
+        playerViews[compID] = new PlayerView(players[compID]);
+
     }
 
 
     public HandView getHumanHandHandler(){
-        //This should be replaced with the view
-        // in the humanHand once that is implemented
-        return testView;
+        return playerViews[0].getHand();
     }
 
     public HandView getComputerHandHandler(){
-        //This should be replaced with the view
-        // in the compHand once that is implemented
-        return testView2;
+       return playerViews[1].getHand();
     }
 
 

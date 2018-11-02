@@ -43,4 +43,12 @@ public class Deck {
         return;
     }
 
+    public Card[] getFourCards(){
+        Card[] returnVal = new Card[4];
+        for(int i = 0;i < 4; i++ ){
+            returnVal[i] = drawCard();
+        }
+        return returnVal;
+    }
+
 }

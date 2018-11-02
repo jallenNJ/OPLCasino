@@ -14,6 +14,7 @@ public class GameLoop extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_loop);
+        
         Intent intent = getIntent();
         boolean humanStarting = intent.getBooleanExtra("humanFirst", true);
         currentRound = new Round();
@@ -21,7 +22,7 @@ public class GameLoop extends AppCompatActivity {
         Deck deck = new Deck();
         Hand test = new Hand();
         deck.dealFourCardsToHand(test);
-        currentRound.playRound();
+      //  currentRound.playRound();
 
     }
 

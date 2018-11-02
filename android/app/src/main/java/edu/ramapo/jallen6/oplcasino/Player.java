@@ -4,10 +4,26 @@ import java.util.Vector;
 
 public abstract class Player {
 
-    private Hand hand;
-    private int selectedIndex;
-    private Hand pile;
-    private Vector<Integer> reservedValues;
+    protected Hand hand;
+    protected int selectedIndex;
+    protected Hand pile;
+    protected Vector<Integer> reservedValues;
+
+    Player(){
+        hand = new Hand();
+        pile = new Hand();
+        selectedIndex = -1;
+        reservedValues = new Vector<Integer>(2,1);
+
+    }
+
+    public Hand getHand() {
+        return hand;
+    }
+
+    public Hand getPile(){
+        return pile;
+    }
 
     public boolean addCardToHand(Card add){
         hand.addCard(add);
@@ -17,6 +33,7 @@ public abstract class Player {
         pile.addCard(add);
         return true;
     }
+
 
     public boolean selectedCard(int index){
         if(index < 0 || index >= hand.size()){

@@ -14,10 +14,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import java.util.Vector;
+
 public class GameLoop extends AppCompatActivity {
     Round currentRound;
     final int selectedColor = Color.CYAN;
     final int normalColor = Color.WHITE;
+    private Integer[] humanHandIds;
+    private Integer[] compHandIds;
+    private Vector<Integer> tableButtonIds;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,10 +33,6 @@ public class GameLoop extends AppCompatActivity {
         boolean humanStarting = intent.getBooleanExtra("humanFirst", true);
         currentRound = new Round();
         initDisplayCards();
-
-      //  for(int i =0; i < 20; i++){
-      //      addButtonToTable();
-      //  }
 
 
     }
@@ -57,7 +59,9 @@ public class GameLoop extends AppCompatActivity {
         newButton.setOnClickListener(clickListener);
         newButton.setBackgroundColor(normalColor);
         // testSpawn.setTag(i);
+
         newButton.setId(View.generateViewId());
+        tableButtonIds.add(newButton.getId());
         newButton.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         LinearLayout view =  findViewById(R.id.tableScroll);
@@ -67,18 +71,29 @@ public class GameLoop extends AppCompatActivity {
 
     private void initDisplayCards(){
         HandView handler = currentRound.getHumanHandHandler();
+        humanHandIds = new Integer[4];
+        humanHandIds[0] = R.id.hcard1;
+        humanHandIds[1] = R.id.hcard2;
+        humanHandIds[2] = R.id.hcard3;
+        humanHandIds[3] = R.id.hcard4;
         handler.displayCard((ImageButton) findViewById(R.id.hcard1), 0);
         handler.displayCard((ImageButton) findViewById(R.id.hcard2), 1);
         handler.displayCard((ImageButton) findViewById(R.id.hcard3), 2);
         handler.displayCard((ImageButton) findViewById(R.id.hcard4), 3);
 
         handler = currentRound.getComputerHandHandler();
+        compHandIds = new Integer[4];
+        compHandIds[0] = R.id.ccard1;
+        compHandIds[1] = R.id.ccard2;
+        compHandIds[2] = R.id.ccard3;
+        compHandIds[3] = R.id.ccard4;
         handler.displayCard((ImageButton) findViewById(R.id.ccard1), 0);
         handler.displayCard((ImageButton) findViewById(R.id.ccard2), 1);
         handler.displayCard((ImageButton) findViewById(R.id.ccard3), 2);
         handler.displayCard((ImageButton) findViewById(R.id.ccard4), 3);
 
         handler = currentRound.getTableHandHandler();
+        tableButtonIds = new Vector<Integer>(4,4);
         for(int i =0; i < 4; i++){
             handler.displayCard(addButtonToTable(), i);
         }

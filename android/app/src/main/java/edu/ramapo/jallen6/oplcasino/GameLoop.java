@@ -2,6 +2,9 @@ package edu.ramapo.jallen6.oplcasino;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -25,9 +28,9 @@ public class GameLoop extends AppCompatActivity {
         currentRound = new Round();
         initDisplayCards();
 
-        for(int i =0; i < 20; i++){
-            addButtonToTable();
-        }
+      //  for(int i =0; i < 20; i++){
+      //      addButtonToTable();
+      //  }
 
 
     }
@@ -37,7 +40,7 @@ public class GameLoop extends AppCompatActivity {
         return view.getChildCount();
     }
 
-    private void addButtonToTable(){
+    private ImageButton addButtonToTable(){
         ImageButton newButton = new ImageButton(this);
        newButton.setImageResource(R.drawable.cardback);
         LinearLayout.LayoutParams lp = new
@@ -59,6 +62,7 @@ public class GameLoop extends AppCompatActivity {
 
         LinearLayout view =  findViewById(R.id.tableScroll);
         view.addView(newButton);
+        return newButton;
     }
 
     private void initDisplayCards(){
@@ -74,6 +78,11 @@ public class GameLoop extends AppCompatActivity {
         handler.displayCard((ImageButton) findViewById(R.id.ccard3), 2);
         handler.displayCard((ImageButton) findViewById(R.id.ccard4), 3);
 
+        handler = currentRound.getTableHandHandler();
+        for(int i =0; i < 4; i++){
+            handler.displayCard(addButtonToTable(), i);
+        }
+
     }
     public void displayCard(View view) {
         HandView viewHandler = null;
@@ -88,6 +97,7 @@ public class GameLoop extends AppCompatActivity {
             return;
         }
         ImageButton chosen = findViewById(view.getId());
+        toggleButtonColor(chosen);
         int selectedId = view.getId();
         switch (selectedId) {
             case R.id.hcard1:
@@ -111,9 +121,22 @@ public class GameLoop extends AppCompatActivity {
 
     public void tableCardClick(View view){
         ImageButton chosen = findViewById(view.getId());
-        chosen.setBackgroundColor(selectedColor);
-        HandView viewHandler = currentRound.getHumanHandHandler();
-        viewHandler.displayCard(chosen, 1);
+        toggleButtonColor(chosen);
+    }
+
+    private void toggleButtonColor(ImageButton ref){
+        if(ref == null){
+            return;
+        }
+        ColorDrawable background = (ColorDrawable)ref.getBackground();
+        int bgID = background.getColor();
+
+        if(bgID == selectedColor){
+            ref.setBackgroundColor(normalColor);
+        } else{
+            ref.setBackgroundColor(selectedColor);
+        }
+
     }
 
     private int intAsDP(int target){

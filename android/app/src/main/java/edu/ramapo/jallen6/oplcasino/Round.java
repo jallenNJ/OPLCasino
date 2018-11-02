@@ -4,7 +4,8 @@ public class Round {
     private int roundNum = 0;
     private PlayerID startingPlayer;
     private Deck deck;
-    private HandView table;
+    private HandView tableView;
+    private Hand table;
     private Player[] players;
     private PlayerView[] playerViews;
     final int humanID = PlayerID.humanPlayer.ordinal();
@@ -38,6 +39,10 @@ public class Round {
         players[compID].addCardsToHand(deck.getFourCards());
         playerViews[compID] = new PlayerView(players[compID]);
 
+        table = new Hand();
+        deck.dealFourCardsToHand(table);
+        tableView = new HandView(table, false);
+
     }
 
 
@@ -47,6 +52,10 @@ public class Round {
 
     public HandView getComputerHandHandler(){
        return playerViews[1].getHand();
+    }
+
+    public HandView getTableHandHandler(){
+        return tableView;
     }
 
 

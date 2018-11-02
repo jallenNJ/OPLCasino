@@ -13,7 +13,8 @@ import android.widget.LinearLayout;
 
 public class GameLoop extends AppCompatActivity {
     Round currentRound;
-
+    final int selectedColor = Color.CYAN;
+    final int normalColor = Color.WHITE;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +40,8 @@ public class GameLoop extends AppCompatActivity {
     private void addButtonToTable(){
         ImageButton newButton = new ImageButton(this);
        newButton.setImageResource(R.drawable.cardback);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics()), (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, getResources().getDisplayMetrics()));
+        LinearLayout.LayoutParams lp = new
+                LinearLayout.LayoutParams(intAsDP(50), intAsDP(80));
         lp.setMargins(20,0,20,0);
        newButton.setLayoutParams(lp);
         //   testSpawn.setOnClickListener(ClickListener);
@@ -50,7 +52,7 @@ public class GameLoop extends AppCompatActivity {
             }
         };
         newButton.setOnClickListener(clickListener);
-        newButton.setBackgroundColor(Color.WHITE);
+        newButton.setBackgroundColor(normalColor);
         // testSpawn.setTag(i);
         newButton.setId(View.generateViewId());
         newButton.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -109,9 +111,14 @@ public class GameLoop extends AppCompatActivity {
 
     public void tableCardClick(View view){
         ImageButton chosen = findViewById(view.getId());
-       // chosen.setBackgroundColor(Color.GREEN);
+        chosen.setBackgroundColor(selectedColor);
         HandView viewHandler = currentRound.getHumanHandHandler();
         viewHandler.displayCard(chosen, 1);
+    }
+
+    private int intAsDP(int target){
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, target,
+                getResources().getDisplayMetrics());
     }
 
 }

@@ -4,8 +4,7 @@ public class Round {
     private int roundNum = 0;
     private PlayerID startingPlayer;
     private Deck deck;
-    private HandView testView;
-    private HandView testView2;
+    private HandView table;
     private Player[] players;
     private PlayerView[] playerViews;
     final int humanID = PlayerID.humanPlayer.ordinal();

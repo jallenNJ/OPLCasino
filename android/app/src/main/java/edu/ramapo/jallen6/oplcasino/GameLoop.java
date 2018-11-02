@@ -17,14 +17,25 @@ public class GameLoop extends AppCompatActivity {
         Intent intent = getIntent();
         boolean humanStarting = intent.getBooleanExtra("humanFirst", true);
         currentRound = new Round();
-
-        Deck deck = new Deck();
-        Hand test = new Hand();
-        deck.dealFourCardsToHand(test);
-      //  currentRound.playRound();
+        initDisplayCards();
 
     }
 
+
+    private void initDisplayCards(){
+        HandView handler = currentRound.getHumanHandHandler();
+        handler.displayCard((ImageButton) findViewById(R.id.hcard1), 0);
+        handler.displayCard((ImageButton) findViewById(R.id.hcard2), 1);
+        handler.displayCard((ImageButton) findViewById(R.id.hcard3), 2);
+        handler.displayCard((ImageButton) findViewById(R.id.hcard4), 3);
+
+        handler = currentRound.getComputerHandHandler();
+        handler.displayCard((ImageButton) findViewById(R.id.ccard1), 0);
+        handler.displayCard((ImageButton) findViewById(R.id.ccard2), 1);
+        handler.displayCard((ImageButton) findViewById(R.id.ccard3), 2);
+        handler.displayCard((ImageButton) findViewById(R.id.ccard4), 3);
+
+    }
     public void displayCard(View view) {
         HandView viewHandler = null;
 

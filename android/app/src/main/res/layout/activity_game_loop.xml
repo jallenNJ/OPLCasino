@@ -26,7 +26,7 @@
         android:scaleType="fitXY"
         app:layout_constraintStart_toEndOf="@+id/cHand"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/testcard"
+        app:srcCompat="@drawable/cardback"
         android:tag="Computer" />
 
     <ImageButton
@@ -39,7 +39,7 @@
         android:scaleType="fitXY"
         app:layout_constraintStart_toEndOf="@+id/ccard1"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/testcard"
+        app:srcCompat="@drawable/cardback"
         android:tag="Computer" />
 
     <ImageButton
@@ -52,7 +52,7 @@
         android:scaleType="fitXY"
         app:layout_constraintStart_toEndOf="@+id/ccard2"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/testcard"
+        app:srcCompat="@drawable/cardback"
         android:tag="Computer" />
 
     <ImageButton
@@ -65,7 +65,7 @@
         android:scaleType="fitXY"
         app:layout_constraintStart_toEndOf="@+id/ccard3"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/testcard"
+        app:srcCompat="@drawable/cardback"
         android:tag="Computer" />
 
     <TextView
@@ -87,7 +87,7 @@
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/hHand"
-        app:srcCompat="@drawable/testcard" 
+        app:srcCompat="@drawable/cardback" 
 		android:tag="Human"/>
 
     <ImageButton
@@ -100,7 +100,7 @@
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/hcard1"
-        app:srcCompat="@drawable/testcard"
+        app:srcCompat="@drawable/cardback"
         android:tag="Human" />
 
     <ImageButton
@@ -114,7 +114,7 @@
         android:tag="Human"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/hcard2"
-        app:srcCompat="@drawable/testcard" />
+        app:srcCompat="@drawable/cardback" />
 
     <ImageButton
         android:id="@+id/hcard4"
@@ -126,7 +126,7 @@
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/hcard3"
-        app:srcCompat="@drawable/testcard"
+        app:srcCompat="@drawable/cardback"
         android:tag="Human" />
 
     <Button

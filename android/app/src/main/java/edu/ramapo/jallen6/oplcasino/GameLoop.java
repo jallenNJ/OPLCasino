@@ -31,7 +31,7 @@ public class GameLoop extends AppCompatActivity {
 
         Intent intent = getIntent();
         boolean humanStarting = intent.getBooleanExtra("humanFirst", true);
-        currentRound = new Round();
+        currentRound = new Round(0 , humanStarting );
         initDisplayCards();
 
 

@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 public class GameLoop extends AppCompatActivity {
@@ -29,16 +31,29 @@ public class GameLoop extends AppCompatActivity {
 
     }
 
+    private int getTableCardCount(){
+        LinearLayout view =  findViewById(R.id.tableScroll);
+        return view.getChildCount();
+    }
+
     private void addButtonToTable(){
         ImageButton newButton = new ImageButton(this);
        newButton.setImageResource(R.drawable.cardback);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(180, 260);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics()), (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, getResources().getDisplayMetrics()));
         lp.setMargins(20,0,20,0);
        newButton.setLayoutParams(lp);
         //   testSpawn.setOnClickListener(ClickListener);
-        newButton.setBackgroundColor(Color.TRANSPARENT);
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tableCardClick(view);
+            }
+        };
+        newButton.setOnClickListener(clickListener);
+        newButton.setBackgroundColor(Color.WHITE);
         // testSpawn.setTag(i);
         newButton.setId(View.generateViewId());
+        newButton.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         LinearLayout view =  findViewById(R.id.tableScroll);
         view.addView(newButton);
@@ -90,6 +105,13 @@ public class GameLoop extends AppCompatActivity {
                 viewHandler.displayCard(chosen, 3);
                 break;
         }
+    }
+
+    public void tableCardClick(View view){
+        ImageButton chosen = findViewById(view.getId());
+       // chosen.setBackgroundColor(Color.GREEN);
+        HandView viewHandler = currentRound.getHumanHandHandler();
+        viewHandler.displayCard(chosen, 1);
     }
 
 }

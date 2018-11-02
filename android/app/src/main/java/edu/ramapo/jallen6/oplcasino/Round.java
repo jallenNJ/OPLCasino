@@ -4,13 +4,15 @@ public class Round {
     private int roundNum = 0;
     private PlayerID startingPlayer;
     private Deck deck;
-    HandView testView;
-    HandView testView2;
+    private HandView testView;
+    private HandView testView2;
+    private Player[] players;
+
 
     Round(){
         roundNum = 0;
         startingPlayer = PlayerID.humanPlayer;
-        deck = new Deck();
+        initRound();
     }
     Round(int round, boolean humanFirst){
         roundNum = round;
@@ -19,12 +21,12 @@ public class Round {
         } else{
             startingPlayer = PlayerID.computerPlayer;
         }
-        deck = new Deck();
-        playRound();
+       initRound();
     }
 
-    public void playRound(){
-        Deck deck = new Deck();
+    private void initRound(){
+        players = new Player[2];
+        deck = new Deck();
         Hand test = new Hand();
         Hand test2 = new Hand();
         deck.dealFourCardsToHand(test);
@@ -34,6 +36,7 @@ public class Round {
         testView2 = new HandView(test2, true);
         testView2.createViewsFromModel();
     }
+
 
     public HandView getHumanHandHandler(){
         //This should be replaced with the view

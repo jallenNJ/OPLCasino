@@ -1,10 +1,13 @@
 package edu.ramapo.jallen6.oplcasino;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 public class GameLoop extends AppCompatActivity {
     Round currentRound;
@@ -19,8 +22,27 @@ public class GameLoop extends AppCompatActivity {
         currentRound = new Round();
         initDisplayCards();
 
+        for(int i =0; i < 20; i++){
+            addButtonToTable();
+        }
+
+
     }
 
+    private void addButtonToTable(){
+        ImageButton newButton = new ImageButton(this);
+       newButton.setImageResource(R.drawable.cardback);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(180, 260);
+        lp.setMargins(20,0,20,0);
+       newButton.setLayoutParams(lp);
+        //   testSpawn.setOnClickListener(ClickListener);
+        newButton.setBackgroundColor(Color.TRANSPARENT);
+        // testSpawn.setTag(i);
+        newButton.setId(View.generateViewId());
+
+        LinearLayout view =  findViewById(R.id.tableScroll);
+        view.addView(newButton);
+    }
 
     private void initDisplayCards(){
         HandView handler = currentRound.getHumanHandHandler();

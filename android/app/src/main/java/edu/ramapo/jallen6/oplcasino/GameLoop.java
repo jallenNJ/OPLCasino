@@ -20,8 +20,8 @@ public class GameLoop extends AppCompatActivity {
     Round currentRound;
     final int selectedColor = Color.CYAN;
     final int normalColor = Color.WHITE;
-    private Integer[] humanHandIds;
-    private Integer[] compHandIds;
+    private Vector<Integer> humanHandIds;
+    private Vector<Integer> compHandIds;
     private Vector<Integer> tableButtonIds;
 
     @Override
@@ -71,22 +71,22 @@ public class GameLoop extends AppCompatActivity {
 
     private void initDisplayCards(){
         HandView handler = currentRound.getHumanHandHandler();
-        humanHandIds = new Integer[4];
-        humanHandIds[0] = R.id.hcard1;
-        humanHandIds[1] = R.id.hcard2;
-        humanHandIds[2] = R.id.hcard3;
-        humanHandIds[3] = R.id.hcard4;
+        humanHandIds = new Vector<Integer>(4,1);
+        humanHandIds.add(R.id.hcard1);
+        humanHandIds.add(R.id.hcard2);
+        humanHandIds.add(R.id.hcard3);
+        humanHandIds.add(R.id.hcard4);
         handler.displayCard((ImageButton) findViewById(R.id.hcard1), 0);
         handler.displayCard((ImageButton) findViewById(R.id.hcard2), 1);
         handler.displayCard((ImageButton) findViewById(R.id.hcard3), 2);
         handler.displayCard((ImageButton) findViewById(R.id.hcard4), 3);
 
         handler = currentRound.getComputerHandHandler();
-        compHandIds = new Integer[4];
-        compHandIds[0] = R.id.ccard1;
-        compHandIds[1] = R.id.ccard2;
-        compHandIds[2] = R.id.ccard3;
-        compHandIds[3] = R.id.ccard4;
+        compHandIds = new Vector<Integer>(4,1);
+        compHandIds.add(R.id.ccard1);
+        compHandIds.add(R.id.ccard2);
+        compHandIds.add(R.id.ccard3);
+        compHandIds.add(R.id.ccard4);
         handler.displayCard((ImageButton) findViewById(R.id.ccard1), 0);
         handler.displayCard((ImageButton) findViewById(R.id.ccard2), 1);
         handler.displayCard((ImageButton) findViewById(R.id.ccard3), 2);
@@ -102,8 +102,10 @@ public class GameLoop extends AppCompatActivity {
     public void displayCard(View view) {
         HandView viewHandler = null;
 
+        boolean isHuman = false;
         if((view.getTag()).toString().equals("Human")){
             viewHandler = currentRound.getHumanHandHandler();
+            isHuman = true;
         }else{
             viewHandler = currentRound.getComputerHandHandler();
         }
@@ -114,28 +116,40 @@ public class GameLoop extends AppCompatActivity {
         ImageButton chosen = findViewById(view.getId());
         toggleButtonColor(chosen);
         int selectedId = view.getId();
+        int index =0;
         switch (selectedId) {
             case R.id.hcard1:
             case R.id.ccard1:
-                viewHandler.displayCard(chosen, 0);
+                index = 0;
                 break;
             case R.id.hcard2:
             case R.id.ccard2:
-                viewHandler.displayCard(chosen, 1);
+                index = 1;
                 break;
             case R.id.hcard3:
             case R.id.ccard3:
-                viewHandler.displayCard(chosen, 2);
+                index =2;
                 break;
             case R.id.hcard4:
             case R.id.ccard4:
-                viewHandler.displayCard(chosen, 3);
+                index = 3;
                 break;
         }
+        ImageButton previous;
+        if(isHuman){
+           previous =  indexToButton(humanHandIds, viewHandler.selectCard(index));
+        } else{
+            previous =  indexToButton(compHandIds, viewHandler.selectCard(index));
+        }
+        if(previous != null){
+            toggleButtonColor(previous);
+        }
+
     }
 
     public void tableCardClick(View view){
         ImageButton chosen = findViewById(view.getId());
+
         toggleButtonColor(chosen);
     }
 
@@ -157,6 +171,13 @@ public class GameLoop extends AppCompatActivity {
     private int intAsDP(int target){
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, target,
                 getResources().getDisplayMetrics());
+    }
+
+    private ImageButton indexToButton(Vector<Integer> listOfIds, int index){
+        if(index < 0 || index >= listOfIds.size()){
+            return null;
+        }
+        return findViewById(listOfIds.get(index));
     }
 
 }

@@ -23,6 +23,9 @@ public class HandView extends BaseView {
         constructorHelper(true);
     }
 
+    public int selectCard(int index){
+        return model.selectCard(index);
+    }
 
     private void constructorHelper(boolean limit){
         hand = new Vector<CardView>(4,1);

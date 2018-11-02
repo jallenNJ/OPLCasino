@@ -91,6 +91,7 @@ public class GameLoop extends AppCompatActivity {
         handler.displayCard((ImageButton) findViewById(R.id.ccard2), 1);
         handler.displayCard((ImageButton) findViewById(R.id.ccard3), 2);
         handler.displayCard((ImageButton) findViewById(R.id.ccard4), 3);
+        setClickableForVector(compHandIds, false);
 
         handler = currentRound.getTableHandHandler();
         tableButtonIds = new Vector<Integer>(4,4);
@@ -178,6 +179,13 @@ public class GameLoop extends AppCompatActivity {
             return null;
         }
         return findViewById(listOfIds.get(index));
+    }
+
+    private void setClickableForVector(Vector<Integer> buttonIds, boolean value){
+        for(int i =0; i < buttonIds.size(); i++){
+            ImageButton current = findViewById(buttonIds.get(i));
+            current.setClickable(value);
+        }
     }
 
 }

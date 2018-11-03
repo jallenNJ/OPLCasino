@@ -32,8 +32,13 @@ public class Hand {
         if(selectionLimitedToOne && selectedIndices.size() >0){
             int replacedVal = selectedIndices.remove(0);
             selectedIndices.clear();
-            selectedIndices.add(index);
-            return replacedVal;
+            if(replacedVal != index){
+                selectedIndices.add(index);
+                return replacedVal;
+            } else{
+                return -1;
+            }
+
         } else{
             selectedIndices.add(index);
             return -1;

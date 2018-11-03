@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -99,6 +100,7 @@ public class GameLoop extends AppCompatActivity {
             handler.displayCard(addButtonToTable(), i);
         }
 
+        setSubmitButton(false);
     }
     public void displayCard(View view) {
         HandView viewHandler = null;
@@ -143,7 +145,15 @@ public class GameLoop extends AppCompatActivity {
             previous =  indexToButton(compHandIds, viewHandler.selectCard(index));
         }
         if(previous != null && previous != chosen){
+
             toggleButtonColor(previous);
+            setSubmitButton(true);
+        }
+
+        if(isSelected(chosen)){
+            setSubmitButton(true);
+        } else {
+            setSubmitButton(false);
         }
 
     }
@@ -154,6 +164,15 @@ public class GameLoop extends AppCompatActivity {
         toggleButtonColor(chosen);
     }
 
+    //TODO: make toggle button color use this function
+    private boolean isSelected (ImageButton ref){
+        if(ref == null){
+            return false;
+        }
+        ColorDrawable background = (ColorDrawable)ref.getBackground();
+        int bgID = background.getColor();
+        return bgID == selectedColor;
+    }
     private void toggleButtonColor(ImageButton ref){
         if(ref == null){
             return;
@@ -185,6 +204,17 @@ public class GameLoop extends AppCompatActivity {
         for(int i =0; i < buttonIds.size(); i++){
             ImageButton current = findViewById(buttonIds.get(i));
             current.setClickable(value);
+        }
+    }
+
+    private void setSubmitButton(boolean asConfirm){
+        Button submit = findViewById(R.id.submitButton);
+        if(asConfirm){
+            submit.setBackgroundColor(Color.GREEN);
+            submit.setText("Confirm");
+        } else{
+            submit.setBackgroundColor(Color.LTGRAY);
+            submit.setText("Menu");
         }
     }
 

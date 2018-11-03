@@ -142,7 +142,7 @@ public class GameLoop extends AppCompatActivity {
         } else{
             previous =  indexToButton(compHandIds, viewHandler.selectCard(index));
         }
-        if(previous != null){
+        if(previous != null && previous != chosen){
             toggleButtonColor(previous);
         }
 

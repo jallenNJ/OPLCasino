@@ -47,6 +47,9 @@ public abstract class Player {
         return true;
     }
 
+    public int getHandSize(){
+        return hand.size();
+    }
 
     public boolean selectedCard(int index){
         if(index < 0 || index >= hand.size()){

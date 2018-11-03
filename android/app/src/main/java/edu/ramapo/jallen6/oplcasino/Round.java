@@ -1,5 +1,7 @@
 package edu.ramapo.jallen6.oplcasino;
 
+import java.util.Vector;
+
 public class Round {
     private int roundNum = 0;
     private PlayerID startingPlayer;
@@ -8,6 +10,7 @@ public class Round {
     private Hand table;
     private Player[] players;
     private PlayerView[] playerViews;
+    private Vector<PlayerID> moveQueue;
     final int humanID = PlayerID.humanPlayer.ordinal();
     final int compID = PlayerID.computerPlayer.ordinal();
 
@@ -43,8 +46,25 @@ public class Round {
         deck.dealFourCardsToHand(table);
         tableView = new HandView(table, false);
 
+        moveQueue = new Vector<PlayerID>(2,1);
+        fillMoveQueue(startingPlayer);
     }
+    private void fillMoveQueue(PlayerID start){
+        PlayerID other;
+        if(start == PlayerID.humanPlayer){
+            other = PlayerID.computerPlayer;
+        }else{
+            other = PlayerID.humanPlayer;
+        }
 
+        if(players[start.ordinal()].getHandSize() > 0){
+            moveQueue.add(start);
+        }
+
+        if(players[other.ordinal()].getHandSize() > 0){
+            moveQueue.add(other);
+        }
+    }
 
     public HandView getHumanHandHandler(){
         return playerViews[0].getHand();
@@ -58,5 +78,49 @@ public class Round {
         return tableView;
     }
 
+    public boolean doCycle(){
+        if(moveQueue.size() == 0){
+            return true;
+        }
+        PlayerID first = moveQueue.get(0);
+        int index = moveQueue.remove(0).ordinal();
+        PlayerMove result = doPlayerMove(index);
 
+
+
+
+        fillMoveQueue(first);
+        if(moveQueue.size() > 0){
+            return false;
+        }else{
+            return true;
+        }
+
+    }
+
+
+    private PlayerMove doPlayerMove(int playerId){
+        while(true){
+            PlayerMove result = players[playerId].doMove();
+            if(validateMove(result, playerId) ){
+                return result;
+            }
+        }
+
+    }
+
+
+    private boolean validateMove(PlayerMove move, int playerID){
+        PlayerActions action = move.getAction();
+
+        if(action == PlayerActions.Capture){
+            return false;
+        } else if(action == PlayerActions.Build){
+            return false;
+        } else if(action == PlayerActions.Trail){
+            return false;
+        } else{
+            return false;
+        }
+    }
 }

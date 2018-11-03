@@ -11,4 +11,6 @@
     <string name="bottomPlayerName">Human Hand</string>
     <string name="topPlayer">Comp Hand</string>
     <string name="tableIdentifer">Table Cards</string>
+    <string name="menuButtonText">Menu</string>
+    <string name="confirmButtonText">Confirm Move</string>
 </resources>

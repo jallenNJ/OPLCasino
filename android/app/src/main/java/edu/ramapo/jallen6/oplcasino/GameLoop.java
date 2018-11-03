@@ -211,10 +211,10 @@ public class GameLoop extends AppCompatActivity {
         Button submit = findViewById(R.id.submitButton);
         if(asConfirm){
             submit.setBackgroundColor(Color.GREEN);
-            submit.setText("Confirm");
+            submit.setText(R.string.confirmButtonText);
         } else{
             submit.setBackgroundColor(Color.LTGRAY);
-            submit.setText("Menu");
+            submit.setText(R.string.menuButtonText);
         }
     }
 

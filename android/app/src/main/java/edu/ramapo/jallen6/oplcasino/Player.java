@@ -54,7 +54,7 @@ public abstract class Player {
         return hand.size();
     }
 
-    public boolean selectedCard(int index){
+    public boolean selectCard(int index){
         if(index < 0 || index >= hand.size()){
             return false;
         }

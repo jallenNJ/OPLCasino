@@ -42,7 +42,7 @@ public class Round {
         players[humanID].addCardsToHand(deck.getFourCards());
         playerViews[humanID] = new PlayerView(players[humanID]);
 
-        players[compID]= new Human();
+        players[compID]= new Computer();
         players[compID].addCardsToHand(deck.getFourCards());
         playerViews[compID] = new PlayerView(players[compID]);
 
@@ -84,25 +84,7 @@ public class Round {
         return tableView;
     }
 
-   /* public boolean doCycle(){
-        if(moveQueue.size() == 0){
-            return true;
-        }
-        PlayerID first = moveQueue.get(0);
-        int index = moveQueue.remove(0).ordinal();
-        PlayerMove result = doPlayerMove(index);
 
-
-
-
-        fillMoveQueue(first);
-        if(moveQueue.size() > 0){
-            return false;
-        }else{
-            return true;
-        }
-
-    }*/
 
 
     public boolean doNextPlayerMove(){
@@ -152,7 +134,7 @@ public class Round {
         }
 
     }
-
+    
 
     private boolean validateMove(PlayerMove move, int playerID){
         PlayerActions action = move.getAction();

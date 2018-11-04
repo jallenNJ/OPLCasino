@@ -164,7 +164,7 @@ public class GameLoop extends AppCompatActivity {
         toggleButtonColor(chosen);
     }
 
-    //TODO: make toggle button color use this function
+
     private boolean isSelected (ImageButton ref){
         if(ref == null){
             return false;
@@ -177,14 +177,13 @@ public class GameLoop extends AppCompatActivity {
         if(ref == null){
             return;
         }
-        ColorDrawable background = (ColorDrawable)ref.getBackground();
-        int bgID = background.getColor();
 
-        if(bgID == selectedColor){
+        if(isSelected(ref)){
             ref.setBackgroundColor(normalColor);
         } else{
             ref.setBackgroundColor(selectedColor);
         }
+        return;
 
     }
 

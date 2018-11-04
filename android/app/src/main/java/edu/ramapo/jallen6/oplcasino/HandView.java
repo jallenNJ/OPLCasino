@@ -11,6 +11,7 @@ public class HandView extends BaseView {
     private Hand model;
     private Vector<CardView> hand;
     boolean limitSelection;
+    private CardView displayPool;
 
     HandView(){
         model = new Hand();
@@ -30,7 +31,13 @@ public class HandView extends BaseView {
     private void constructorHelper(boolean limit){
         hand = new Vector<CardView>(4,1);
         limitSelection = limit;
+        displayPool = null;
         createViewsFromModel();
+    }
+
+
+    public int size(){
+        return hand.size();
     }
     public void displayCard(ImageButton button, int cardIndex){
         if(button == null || cardIndex < 0 || cardIndex >= hand.size() ) {
@@ -39,6 +46,23 @@ public class HandView extends BaseView {
         hand.get(cardIndex).setButton(button);
        // Button button = view.findViewById(view.getId());
        // button.setText(model.peekCard(0).toString());
+    }
+
+    public void displaySelected(ImageButton button){
+        if(button == null || displayPool == null){
+            return;
+        }
+      //displayCard(button, hand.indexOf(displayPool));
+        displayPool.setButton(button);
+        displayPool = null;
+
+
+    }
+
+    public void addCard(Card add){
+        model.addCard(add);
+        hand.add(new CardView((Card)add));
+        displayPool = new CardView((Card) add);
     }
 
     public void createViewsFromModel(){

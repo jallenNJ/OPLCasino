@@ -11,8 +11,12 @@ public class Round {
     private Player[] players;
     private PlayerView[] playerViews;
     private Vector<PlayerID> moveQueue;
+
     final int humanID = PlayerID.humanPlayer.ordinal();
     final int compID = PlayerID.computerPlayer.ordinal();
+
+    private PlayerID lastPlayerMove;
+    private PlayerID lastCapturer;
 
     Round(){
         roundNum = 0;
@@ -47,6 +51,8 @@ public class Round {
         tableView = new HandView(table, false);
 
         moveQueue = new Vector<PlayerID>(2,1);
+        lastCapturer = PlayerID.humanPlayer;
+        lastPlayerMove = PlayerID.computerPlayer;
         fillMoveQueue(startingPlayer);
     }
     private void fillMoveQueue(PlayerID start){
@@ -78,7 +84,7 @@ public class Round {
         return tableView;
     }
 
-    public boolean doCycle(){
+   /* public boolean doCycle(){
         if(moveQueue.size() == 0){
             return true;
         }
@@ -96,8 +102,46 @@ public class Round {
             return true;
         }
 
-    }
+    }*/
 
+
+    public boolean doNextPlayerMove(){
+        if(moveQueue.size() == 0){
+            fillMoveQueue(startingPlayer);
+            if(moveQueue.size() == 0){
+                return  true;
+            }
+        }
+
+        PlayerID first = moveQueue.get(0);
+        int index = moveQueue.remove(0).ordinal();
+
+        PlayerMove result;
+        while (true){
+             result = doPlayerMove(index);
+            if(validateMove(result, index)){
+                break;
+            }
+        }
+
+        tableView.addCard(players[index].removeCardFromHand(result.getHandCardIndex()));
+
+
+
+
+        if(moveQueue.size() > 0){
+            return false;
+        }else{
+            fillMoveQueue(startingPlayer);
+            if(moveQueue.size() == 0){
+                return  true;
+            }else{
+                return  false;
+            }
+        }
+
+        //return  false;
+    }
 
     private PlayerMove doPlayerMove(int playerId){
         while(true){
@@ -118,9 +162,14 @@ public class Round {
         } else if(action == PlayerActions.Build){
             return false;
         } else if(action == PlayerActions.Trail){
-            return false;
+            return checkTrail(move, playerID);
         } else{
             return false;
         }
+    }
+
+
+    private boolean checkTrail(PlayerMove move, int playerID){
+        return true;
     }
 }

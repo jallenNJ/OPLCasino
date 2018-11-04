@@ -165,13 +165,21 @@ public class GameLoop extends AppCompatActivity {
     }
 
 
+    private int getBackgroundColorID(View v){
+        if(v == null){
+            return -1;
+        }
+        ColorDrawable background = (ColorDrawable)v.getBackground();
+        return background.getColor();
+    }
+
     private boolean isSelected (ImageButton ref){
         if(ref == null){
             return false;
         }
-        ColorDrawable background = (ColorDrawable)ref.getBackground();
-        int bgID = background.getColor();
-        return bgID == selectedColor;
+       // ColorDrawable background = (ColorDrawable)ref.getBackground();
+        //int bgID = background.getColor();
+        return getBackgroundColorID(ref) == selectedColor;
     }
     private void toggleButtonColor(ImageButton ref){
         if(ref == null){
@@ -214,6 +222,27 @@ public class GameLoop extends AppCompatActivity {
         } else{
             submit.setBackgroundColor(Color.LTGRAY);
             submit.setText(R.string.menuButtonText);
+        }
+    }
+
+
+    public void handleSubmitClick(View view){
+        if(view.getId() != R.id.submitButton){
+            return;
+        }
+
+        Button submit = (Button) view;
+        if(getBackgroundColorID(submit) == Color.GREEN){
+            //Do move
+
+            if(currentRound.doNextPlayerMove()){
+                // end round
+            } else{
+               currentRound.getTableHandHandler().displaySelected(addButtonToTable());
+            }
+        }else{
+            //Show menu
+            return;
         }
     }
 

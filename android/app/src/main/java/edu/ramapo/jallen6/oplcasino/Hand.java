@@ -28,6 +28,20 @@ public class Hand {
         return hand.size() == 0;
     }
 
+    public boolean hasSelectedCards(){
+        return selectedIndices.size() > 0;
+    }
+
+    public Vector<Integer> getSelectedIndices(){
+        if(selectedIndices == null){
+            return null;
+        }
+        if(selectedIndices.size() == 0){
+            return new Vector<Integer>(1,1);
+        }
+        return (Vector<Integer>)selectedIndices.clone();
+    }
+
     public int selectCard(int index){
         if(selectionLimitedToOne && selectedIndices.size() >0){
             int replacedVal = selectedIndices.remove(0);

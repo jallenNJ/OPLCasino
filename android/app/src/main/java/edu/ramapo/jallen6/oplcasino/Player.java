@@ -47,6 +47,9 @@ public abstract class Player {
         return true;
     }
 
+    public Card removeCardFromHand(int i){
+        return (Card)hand.removeCard(i);
+    }
     public int getHandSize(){
         return hand.size();
     }

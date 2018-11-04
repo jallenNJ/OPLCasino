@@ -12,6 +12,8 @@ public class Human extends Player {
     @Override
     public PlayerMove doMove() {
 
-       return  new PlayerMove(PlayerActions.Trail, 0, new Vector<Integer>(1,1));
+        return  new PlayerMove(PlayerActions.Trail, hand.getSelectedIndices().get(0), new Vector<Integer>(1,1));
+
+
     }
 }

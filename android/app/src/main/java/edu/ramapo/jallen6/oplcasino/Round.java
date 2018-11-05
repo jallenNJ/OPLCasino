@@ -108,7 +108,8 @@ public class Round {
             }
         }
 
-        tableView.addCard(players[index].removeCardFromHand(result.getHandCardIndex()));
+        tableView.addCard(playerViews[index].removeCardFromHand(result.getHandCardIndex()));
+       // tableView.addCard(playerViews[index].)
         lastMove = new PlayerMove(result);
 
 

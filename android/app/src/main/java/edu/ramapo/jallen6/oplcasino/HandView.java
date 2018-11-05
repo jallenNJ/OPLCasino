@@ -64,6 +64,21 @@ public class HandView extends BaseView {
         hand.add(new CardView((Card)add));
         displayPool = new CardView((Card) add);
     }
+    public void addCard(CardView add){
+       model.addCard(new Card(add.getModelSuit(), add.getModelValue()));
+       hand.add(add);
+       displayPool = new CardView(add);
+    }
+
+    public CardView removeCardFromHand(int index){
+        if(index >= hand.size() || index < 0){
+            return null;
+        }
+        CardView removed = hand.get(index);
+        hand.remove(index);
+        model.removeCard(index);
+        return removed;
+    }
 
     public void createViewsFromModel(){
         hand.clear();

@@ -11,6 +11,7 @@ public class Round {
     private Player[] players;
     private PlayerView[] playerViews;
     private Vector<PlayerID> moveQueue;
+    private PlayerMove lastMove;
 
     final int humanID = PlayerID.humanPlayer.ordinal();
     final int compID = PlayerID.computerPlayer.ordinal();
@@ -53,6 +54,7 @@ public class Round {
         moveQueue = new Vector<PlayerID>(2,1);
         lastCapturer = PlayerID.humanPlayer;
         lastPlayerMove = PlayerID.computerPlayer;
+        lastMove = null;
         fillMoveQueue(startingPlayer);
     }
     private void fillMoveQueue(PlayerID start){
@@ -107,7 +109,7 @@ public class Round {
         }
 
         tableView.addCard(players[index].removeCardFromHand(result.getHandCardIndex()));
-
+        lastMove = new PlayerMove(result);
 
 
 
@@ -125,6 +127,9 @@ public class Round {
         //return  false;
     }
 
+    public PlayerMove getLastPlayerMove(){
+        return lastMove;
+    }
     private PlayerMove doPlayerMove(int playerId){
         while(true){
             PlayerMove result = players[playerId].doMove();
@@ -134,7 +139,7 @@ public class Round {
         }
 
     }
-    
+
 
     private boolean validateMove(PlayerMove move, int playerID){
         PlayerActions action = move.getAction();

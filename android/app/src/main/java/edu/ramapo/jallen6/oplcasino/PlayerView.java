@@ -28,9 +28,15 @@ public class PlayerView {
         hand.createViewsFromModel();
         return true;
     }
+
+
     public boolean addCardToPile(Card add){
        // pile.addCard(add);
         return true;
+    }
+
+    public CardView removeCardFromHand(int index){
+        return hand.removeCardFromHand(index);
     }
 
 

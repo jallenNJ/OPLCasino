@@ -239,6 +239,9 @@ public class GameLoop extends AppCompatActivity {
                 // end round
             } else{
                currentRound.getTableHandHandler().displaySelected(addButtonToTable());
+               int playedCardIndex = currentRound.getLastPlayerMove().getHandCardIndex();
+               findViewById(humanHandIds.get(playedCardIndex)).setVisibility(View.INVISIBLE);
+
             }
         }else{
             //Show menu

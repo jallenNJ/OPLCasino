@@ -20,6 +20,12 @@ public class PlayerMove {
 
     }
 
+    PlayerMove(PlayerMove copy){
+        action = copy.getAction();
+        handCardIndex = copy.getHandCardIndex();
+        tableCardIndices = copy.getTableCardIndices();
+    }
+
     public PlayerActions getAction(){
         return action;
     }

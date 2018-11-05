@@ -13,7 +13,10 @@ public class Card extends CardType {
             numericValue = 0;
         }
     }
-
+    Card (Card copy){
+        suit = copy.getSuit();
+        numericValue = copy.getValue();
+    }
     //@androidx.annotation.NonNull
     @Override
     public String toString() {

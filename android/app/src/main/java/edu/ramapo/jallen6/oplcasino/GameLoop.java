@@ -25,6 +25,9 @@ public class GameLoop extends AppCompatActivity {
     private Vector<Integer> compHandIds;
     private Vector<Integer> tableButtonIds;
 
+    private Vector<ImageButton> humanHandButtons;
+    private Vector<ImageButton> compHandButtons;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +73,54 @@ public class GameLoop extends AppCompatActivity {
         return newButton;
     }
 
+
+    private void updateHumanButtons (boolean resetHand){
+        if(currentRound == null){
+            return;
+        }
+        HandView handler = currentRound.getHumanHandHandler();
+        if(handler == null){
+            return;
+        }
+        int invisbleButtons =0;
+        for(int i =0; i < humanHandButtons.size(); i++){
+            ImageButton current = humanHandButtons.get(i);
+            if(current.getVisibility() == View.INVISIBLE){
+                invisbleButtons++;
+                current.setVisibility(View.VISIBLE);
+            }
+        }
+        int validButtons = humanHandButtons.size() - invisbleButtons;
+        for(int i = 0; i < validButtons; i++){
+            ImageButton current = humanHandButtons.get(i);
+            handler.displayCard(current, i);
+        }
+        for(int i = validButtons; i< humanHandButtons.size(); i++){
+            ImageButton current = humanHandButtons.get(i);
+            current.setVisibility(View.INVISIBLE);
+        }
+
+
+/*        for(int i =0, j=0; i < humanHandButtons.size()-invisbleButtons; i++, j++){
+            ImageButton current = humanHandButtons.get(i);
+            if(current.getVisibility() == View.INVISIBLE){
+                if(!resetHand){
+                   invisbleButtons++;
+                }
+                current.setVisibility(View.VISIBLE);
+            }
+
+
+            handler.displayCard(current, j);
+
+
+        }
+
+        for(int i = humanHandButtons.size()- invisbleButtons; i < humanHandButtons.size(); i++){
+            humanHandButtons.get(i).setVisibility(View.INVISIBLE);
+        }*/
+    }
+
     private void initDisplayCards(){
         HandView handler = currentRound.getHumanHandHandler();
         humanHandIds = new Vector<Integer>(4,1);
@@ -77,6 +128,13 @@ public class GameLoop extends AppCompatActivity {
         humanHandIds.add(R.id.hcard2);
         humanHandIds.add(R.id.hcard3);
         humanHandIds.add(R.id.hcard4);
+
+        humanHandButtons = new Vector<ImageButton>(4,1);
+        humanHandButtons.add((ImageButton) findViewById(R.id.hcard1));
+        humanHandButtons.add((ImageButton) findViewById(R.id.hcard2));
+        humanHandButtons.add((ImageButton) findViewById(R.id.hcard3));
+        humanHandButtons.add((ImageButton) findViewById(R.id.hcard4));
+
         handler.displayCard((ImageButton) findViewById(R.id.hcard1), 0);
         handler.displayCard((ImageButton) findViewById(R.id.hcard2), 1);
         handler.displayCard((ImageButton) findViewById(R.id.hcard3), 2);
@@ -88,6 +146,14 @@ public class GameLoop extends AppCompatActivity {
         compHandIds.add(R.id.ccard2);
         compHandIds.add(R.id.ccard3);
         compHandIds.add(R.id.ccard4);
+
+        compHandButtons= new Vector<ImageButton>(4,1);
+        compHandButtons.add((ImageButton) findViewById(R.id.ccard1));
+        compHandButtons.add((ImageButton) findViewById(R.id.ccard2));
+        compHandButtons.add((ImageButton) findViewById(R.id.ccard3));
+        compHandButtons.add((ImageButton) findViewById(R.id.ccard4));
+
+
         handler.displayCard((ImageButton) findViewById(R.id.ccard1), 0);
         handler.displayCard((ImageButton) findViewById(R.id.ccard2), 1);
         handler.displayCard((ImageButton) findViewById(R.id.ccard3), 2);
@@ -241,7 +307,7 @@ public class GameLoop extends AppCompatActivity {
                currentRound.getTableHandHandler().displaySelected(addButtonToTable());
                int playedCardIndex = currentRound.getLastPlayerMove().getHandCardIndex();
                findViewById(humanHandIds.get(playedCardIndex)).setVisibility(View.INVISIBLE);
-
+               updateHumanButtons(false);
             }
         }else{
             //Show menu

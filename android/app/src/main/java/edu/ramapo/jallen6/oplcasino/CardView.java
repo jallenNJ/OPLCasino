@@ -6,7 +6,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 public class CardView extends BaseView {
-    Card model;
+    private Card model;
 
     CardView(){
         model = new Card();
@@ -15,6 +15,19 @@ public class CardView extends BaseView {
     CardView(Card master){
         model = master;
     }
+
+    CardView(CardView copy){
+        model = new Card(copy.model);
+    }
+
+    public CardSuit getModelSuit(){
+        return  model.getSuit();
+    }
+
+    public int getModelValue(){
+        return model.getValue();
+    }
+
     private int cardToGraphic(){
         CardSuit suit = model.getSuit();
         switch(suit){

@@ -28,6 +28,8 @@ public class GameLoop extends AppCompatActivity {
     private Vector<ImageButton> humanHandButtons;
     private Vector<ImageButton> compHandButtons;
 
+    private boolean humanButtonsAreClickable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +39,29 @@ public class GameLoop extends AppCompatActivity {
         boolean humanStarting = intent.getBooleanExtra("humanFirst", true);
         currentRound = new Round(0 , humanStarting );
         initDisplayCards();
+        setClickabilityForMove(humanStarting);
 
 
     }
+
+
+    private void setClickabilityForMove(boolean humanTurn){
+        if(humanTurn) {
+            setClickableForVector(humanHandIds, true);
+            setClickableForVector(tableButtonIds, true);
+            humanButtonsAreClickable = true;
+        } else{
+            setClickableForVector(humanHandIds, false);
+            setClickableForVector(tableButtonIds, false);
+            humanButtonsAreClickable = false;
+        }
+
+    }
+
+    private void setUpButtonsForNextPlayer(){
+        setClickabilityForMove(!humanButtonsAreClickable);
+    }
+
 
     private int getTableCardCount(){
         LinearLayout view =  findViewById(R.id.tableScroll);
@@ -306,8 +328,10 @@ public class GameLoop extends AppCompatActivity {
             } else{
                currentRound.getTableHandHandler().displaySelected(addButtonToTable());
                int playedCardIndex = currentRound.getLastPlayerMove().getHandCardIndex();
+               //TODO: make handler be for current player
                findViewById(humanHandIds.get(playedCardIndex)).setVisibility(View.INVISIBLE);
                updateHumanButtons(false);
+               setUpButtonsForNextPlayer();
             }
         }else{
             //Show menu

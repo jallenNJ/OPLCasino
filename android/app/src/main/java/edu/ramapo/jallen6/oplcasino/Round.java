@@ -18,6 +18,7 @@ public class Round {
 
     private PlayerID lastPlayerMove;
     private PlayerID lastCapturer;
+    private boolean roundOver;
 
     Round(){
         roundNum = 0;
@@ -34,7 +35,9 @@ public class Round {
        initRound();
     }
 
+
     private void initRound(){
+        roundOver = false;
         players = new Player[2];
         playerViews = new PlayerView[2];
         deck = new Deck();
@@ -87,12 +90,15 @@ public class Round {
     }
 
 
-
+    public boolean isRoundOver(){
+        return roundOver;
+    }
 
     public boolean doNextPlayerMove(){
         if(moveQueue.size() == 0){
             fillMoveQueue(startingPlayer);
             if(moveQueue.size() == 0){
+                roundOver = true;
                 return  true;
             }
         }
@@ -101,12 +107,12 @@ public class Round {
         int index = moveQueue.remove(0).ordinal();
 
         PlayerMove result;
-        while (true){
-             result = doPlayerMove(index);
-            if(validateMove(result, index)){
-                break;
-            }
+        result = doPlayerMove(index);
+        if(!validateMove(result, index)){
+            //TODO: Make sure user re prompts instead of continuing on.
+            return false;
         }
+
 
         tableView.addCard(playerViews[index].removeCardFromHand(result.getHandCardIndex()));
        // tableView.addCard(playerViews[index].)

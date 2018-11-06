@@ -339,6 +339,27 @@ public class GameLoop extends AppCompatActivity {
             //Do move
 
             if(currentRound.doNextPlayerMove()){
+                //Valid move
+
+                //Todo:Check for round over
+                currentRound.getTableHandHandler().displaySelected(addButtonToTable());
+                int playedCardIndex = currentRound.getLastPlayerMove().getHandCardIndex();
+                if(humanButtonsAreClickable){
+                    findViewById(humanHandIds.get(playedCardIndex)).setVisibility(View.INVISIBLE);
+                    updateHumanButtons(false);
+                } else{
+                    findViewById(compHandIds.get(playedCardIndex)).setVisibility(View.INVISIBLE);
+                    updateCompButtons(false);
+                }
+
+                setUpButtonsForNextPlayer();
+
+
+            } else{
+               // invalid move
+            }
+
+          /* if(currentRound.doNextPlayerMove()){
                 // end round
             } else{
                currentRound.getTableHandHandler().displaySelected(addButtonToTable());
@@ -353,7 +374,7 @@ public class GameLoop extends AppCompatActivity {
                 }
 
                setUpButtonsForNextPlayer();
-            }
+            }*/
         }else{
             //Show menu
             return;

@@ -98,6 +98,7 @@ public class GameLoop extends AppCompatActivity {
     }
 
 
+
     private void updateHumanButtons (boolean resetHand){
         if(currentRound == null){
             return;
@@ -107,8 +108,10 @@ public class GameLoop extends AppCompatActivity {
             return;
         }
         int invisbleButtons =0;
+        handler.unSelectAllCards();
         for(int i =0; i < humanHandButtons.size(); i++){
             ImageButton current = humanHandButtons.get(i);
+            current.setBackgroundColor(normalColor);
             if(current.getVisibility() == View.INVISIBLE){
                 invisbleButtons++;
                 current.setVisibility(View.VISIBLE);

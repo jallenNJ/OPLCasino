@@ -7,7 +7,7 @@ public class Hand {
 
     private Vector<CardType> hand;
     private Vector<Integer> selectedIndices;
-    boolean selectionLimitedToOne;
+    private boolean selectionLimitedToOne;
 
     Hand(){
         hand = new Vector<CardType>(4,1);
@@ -39,7 +39,7 @@ public class Hand {
         if(selectedIndices.size() == 0){
             return new Vector<Integer>(1,1);
         }
-        return (Vector<Integer>)selectedIndices.clone();
+       return new Vector<Integer>(selectedIndices);
     }
 
     public int selectCard(int index){
@@ -57,6 +57,11 @@ public class Hand {
             selectedIndices.add(index);
             return -1;
         }
+    }
+
+    public void unSelectAllCards(){
+
+        selectedIndices.clear();
     }
     public boolean addCard(CardType add){
         hand.add(add);

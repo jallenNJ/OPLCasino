@@ -28,6 +28,8 @@ public class HandView extends BaseView {
         return model.selectCard(index);
     }
 
+    public void unSelectAllCards(){model.unSelectAllCards();}
+
     private void constructorHelper(boolean limit){
         hand = new Vector<CardView>(4,1);
         limitSelection = limit;

@@ -50,10 +50,12 @@ public class GameLoop extends AppCompatActivity {
             setClickableForVector(humanHandIds, true);
             setClickableForVector(tableButtonIds, true);
             humanButtonsAreClickable = true;
+            setSubmitButton(false);
         } else{
             setClickableForVector(humanHandIds, false);
             setClickableForVector(tableButtonIds, false);
             humanButtonsAreClickable = false;
+            setSubmitButton(true);
         }
 
     }
@@ -122,25 +124,35 @@ public class GameLoop extends AppCompatActivity {
             current.setVisibility(View.INVISIBLE);
         }
 
+    }
 
-/*        for(int i =0, j=0; i < humanHandButtons.size()-invisbleButtons; i++, j++){
-            ImageButton current = humanHandButtons.get(i);
+    //TODO: Merge with update human Buttons
+    private void updateCompButtons (boolean resetHand){
+        if(currentRound == null){
+            return;
+        }
+        HandView handler = currentRound.getComputerHandHandler();
+        if(handler == null){
+            return;
+        }
+        int invisbleButtons =0;
+        for(int i =0; i < compHandButtons.size(); i++){
+            ImageButton current = compHandButtons.get(i);
             if(current.getVisibility() == View.INVISIBLE){
-                if(!resetHand){
-                   invisbleButtons++;
-                }
+                invisbleButtons++;
                 current.setVisibility(View.VISIBLE);
             }
-
-
-            handler.displayCard(current, j);
-
-
+        }
+        int validButtons = compHandButtons.size() - invisbleButtons;
+        for(int i = 0; i < validButtons; i++){
+            ImageButton current = compHandButtons.get(i);
+            handler.displayCard(current, i);
+        }
+        for(int i = validButtons; i< compHandButtons.size(); i++){
+            ImageButton current = compHandButtons.get(i);
+            current.setVisibility(View.INVISIBLE);
         }
 
-        for(int i = humanHandButtons.size()- invisbleButtons; i < humanHandButtons.size(); i++){
-            humanHandButtons.get(i).setVisibility(View.INVISIBLE);
-        }*/
     }
 
     private void initDisplayCards(){
@@ -329,8 +341,14 @@ public class GameLoop extends AppCompatActivity {
                currentRound.getTableHandHandler().displaySelected(addButtonToTable());
                int playedCardIndex = currentRound.getLastPlayerMove().getHandCardIndex();
                //TODO: make handler be for current player
-               findViewById(humanHandIds.get(playedCardIndex)).setVisibility(View.INVISIBLE);
-               updateHumanButtons(false);
+                if(humanButtonsAreClickable){
+                    findViewById(humanHandIds.get(playedCardIndex)).setVisibility(View.INVISIBLE);
+                    updateHumanButtons(false);
+                } else{
+                    findViewById(compHandIds.get(playedCardIndex)).setVisibility(View.INVISIBLE);
+                    updateCompButtons(false);
+                }
+
                setUpButtonsForNextPlayer();
             }
         }else{

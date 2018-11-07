@@ -13,7 +13,7 @@ public class PlayerView {
     PlayerView(Player master){
         model = master;
         hand = new HandView(model.getHand(), true);
-        pile = new HandView (model.getHand(), false);
+        pile = new HandView (model.getPile(), false);
         selectedIndex = -1;
         reservedValues = new Vector<Integer>(2,1);
 

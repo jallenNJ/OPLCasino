@@ -37,7 +37,7 @@ public class GameLoop extends AppCompatActivity {
 
         Intent intent = getIntent();
         boolean humanStarting = intent.getBooleanExtra("humanFirst", true);
-        currentRound = new Round(0 , humanStarting );
+        currentRound = new Round(0, humanStarting);
         initDisplayCards();
         setClickabilityForMove(humanStarting);
 
@@ -45,13 +45,13 @@ public class GameLoop extends AppCompatActivity {
     }
 
 
-    private void setClickabilityForMove(boolean humanTurn){
-        if(humanTurn) {
+    private void setClickabilityForMove(boolean humanTurn) {
+        if (humanTurn) {
             setClickableForVector(humanHandIds, true);
             setClickableForVector(tableButtonIds, true);
             humanButtonsAreClickable = true;
             setSubmitButton(false);
-        } else{
+        } else {
             setClickableForVector(humanHandIds, false);
             setClickableForVector(tableButtonIds, false);
             humanButtonsAreClickable = false;
@@ -60,23 +60,23 @@ public class GameLoop extends AppCompatActivity {
 
     }
 
-    private void setUpButtonsForNextPlayer(){
+    private void setUpButtonsForNextPlayer() {
         setClickabilityForMove(!humanButtonsAreClickable);
     }
 
 
-    private int getTableCardCount(){
-        LinearLayout view =  findViewById(R.id.tableScroll);
+    private int getTableCardCount() {
+        LinearLayout view = findViewById(R.id.tableScroll);
         return view.getChildCount();
     }
 
-    private ImageButton addButtonToTable(){
+    private ImageButton addButtonToTable() {
         ImageButton newButton = new ImageButton(this);
-       newButton.setImageResource(R.drawable.cardback);
+        newButton.setImageResource(R.drawable.cardback);
         LinearLayout.LayoutParams lp = new
                 LinearLayout.LayoutParams(intAsDP(50), intAsDP(80));
-        lp.setMargins(20,0,20,0);
-       newButton.setLayoutParams(lp);
+        lp.setMargins(20, 0, 20, 0);
+        newButton.setLayoutParams(lp);
         //   testSpawn.setOnClickListener(ClickListener);
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
@@ -92,14 +92,62 @@ public class GameLoop extends AppCompatActivity {
         tableButtonIds.add(newButton.getId());
         newButton.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-        LinearLayout view =  findViewById(R.id.tableScroll);
+        LinearLayout view = findViewById(R.id.tableScroll);
         view.addView(newButton);
         return newButton;
     }
 
 
+    private void updateHandButtons(boolean forHuman, boolean resetHand) {
+        if (currentRound == null) {
+            return;
+        }
+        HandView handler;
+        Vector<ImageButton> buttons;
+        if (forHuman) {
+            handler = currentRound.getHumanHandHandler();
+            buttons = humanHandButtons;
+        } else {
+            handler = currentRound.getComputerHandHandler();
+            buttons = compHandButtons;
+        }
 
-    private void updateHumanButtons (boolean resetHand){
+
+        if (handler == null) {
+            return;
+        }
+        int invisibleButtons = 0;
+        handler.unSelectAllCards();
+
+        for (int i = 0; i < buttons.size(); i++) {
+            ImageButton current = buttons.get(i);
+            current.setBackgroundColor(normalColor);
+            if (current.getVisibility() == View.INVISIBLE) {
+                invisibleButtons++;
+                current.setVisibility(View.VISIBLE);
+            }
+        }
+
+        if (resetHand) {
+            invisibleButtons = 0;
+        }
+        int validButtons = buttons.size() - invisibleButtons;
+        for (int i = 0; i < validButtons; i++) {
+            ImageButton current = buttons.get(i);
+            handler.displayCard(current, i);
+        }
+
+        for (int i = validButtons; i < buttons.size(); i++) {
+            ImageButton current = buttons.get(i);
+            current.setVisibility(View.INVISIBLE);
+        }
+
+
+    }
+
+
+
+  /*  private void updateHumanButtons (boolean resetHand){
         if(currentRound == null){
             return;
         }
@@ -165,7 +213,7 @@ public class GameLoop extends AppCompatActivity {
         }
 
     }
-
+*/
     private void initDisplayCards(){
         HandView handler = currentRound.getHumanHandHandler();
         humanHandIds = new Vector<Integer>(4,1);
@@ -380,18 +428,19 @@ public class GameLoop extends AppCompatActivity {
                 int playedCardIndex = currentRound.getLastPlayerMove().getHandCardIndex();
                 if(humanButtonsAreClickable){
                     findViewById(humanHandIds.get(playedCardIndex)).setVisibility(View.INVISIBLE);
-                    updateHumanButtons(false);
+                    updateHandButtons(true, false);
                 } else{
                     findViewById(compHandIds.get(playedCardIndex)).setVisibility(View.INVISIBLE);
-                    updateCompButtons(false);
+                    updateHandButtons(false, false);
+
                 }
 
 
 
                 if(currentRound.getHumanHandHandler().size() == 0){
                     currentRound.updateViews();
-                    updateHumanButtons(true);
-                    updateCompButtons(true);
+                    updateHandButtons(true, true);
+                    updateHandButtons(false, true);
 
                     HandView human = currentRound.getHumanHandHandler();
                     HandView comp = currentRound.getComputerHandHandler();

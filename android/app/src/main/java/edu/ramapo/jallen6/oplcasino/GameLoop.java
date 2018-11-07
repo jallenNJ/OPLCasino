@@ -38,12 +38,19 @@ public class GameLoop extends AppCompatActivity {
         Intent intent = getIntent();
         boolean humanStarting = intent.getBooleanExtra("humanFirst", true);
         currentRound = new Round(0, humanStarting);
+        ActionLog.init();
+        ActionLog.addLog("New game started!");
+        updateLogButton();
         initDisplayCards();
         setClickabilityForMove(humanStarting);
 
 
     }
 
+
+    private void updateLogButton(){
+        ((Button)findViewById(R.id.logButton)).setText(ActionLog.getLast());
+    }
 
     private void setClickabilityForMove(boolean humanTurn) {
         if (humanTurn) {

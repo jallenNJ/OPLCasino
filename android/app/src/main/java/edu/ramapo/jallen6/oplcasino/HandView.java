@@ -38,6 +38,7 @@ public class HandView extends BaseView implements Observer {
 
         if(model.size() > hand.size()){
             createViewsFromModel();
+            displayPool = hand.get(hand.size()-1);
         }else{
             removeCardFromHand(model.fetchRemovedIndex());
 

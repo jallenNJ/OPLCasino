@@ -36,7 +36,7 @@ public class HandView extends BaseView implements Observer {
     public void update (Observable o, Object arg){
         int debug = model.countObservers();
 
-        if(model.size() > hand.size()){
+        if(model.size() >= hand.size()){
             createViewsFromModel();
             displayPool = hand.get(hand.size()-1);
         }else{

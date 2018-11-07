@@ -128,10 +128,13 @@ public class GameLoop extends AppCompatActivity {
             }
         }
 
+        int validButtons;
         if (resetHand) {
-            invisibleButtons = 0;
+            validButtons = buttons.size();
+        }else{
+            validButtons = buttons.size() - invisibleButtons;
         }
-        int validButtons = buttons.size() - invisibleButtons;
+
         for (int i = 0; i < validButtons; i++) {
             ImageButton current = buttons.get(i);
             handler.displayCard(current, i);
@@ -144,7 +147,7 @@ public class GameLoop extends AppCompatActivity {
 
 
     }
-    
+
     private void initDisplayCards(){
         HandView handler = currentRound.getHumanHandHandler();
         humanHandIds = new Vector<Integer>(4,1);
@@ -366,9 +369,7 @@ public class GameLoop extends AppCompatActivity {
 
                 }
 
-
-
-                if(currentRound.getHumanHandHandler().size() == 0){
+                if(currentRound.getHumanHandHandler().size() == 4 && currentRound.getComputerHandHandler().size() ==4){
                     currentRound.updateViews();
                     updateHandButtons(true, true);
                     updateHandButtons(false, true);
@@ -377,7 +378,7 @@ public class GameLoop extends AppCompatActivity {
                     HandView comp = currentRound.getComputerHandHandler();
                     for(int i=0; i < 4; i++){
                         human.displayCard(humanHandButtons.get(i), i);
-                        comp.displayCard(humanHandButtons.get(i), i);
+                        comp.displayCard(compHandButtons.get(i), i);
                     }
 
 

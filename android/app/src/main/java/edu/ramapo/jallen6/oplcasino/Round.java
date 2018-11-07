@@ -90,10 +90,8 @@ public class Round {
     }
 
     public void updateViews(){
-       // playerViews[0] = new PlayerView(players[0]);
         playerViews[0].getHand().createViewsFromModel();
         playerViews[1].getHand().createViewsFromModel();
-        //playerViews[1] = new PlayerView(players[1]);
     }
 
     public boolean isRoundOver(){

@@ -54,6 +54,10 @@ public abstract class Player {
         return hand.size();
     }
 
+    public int getSelectedIndex() {
+        return hand.getSelectedIndices().get(0);
+    }
+
     public boolean selectCard(int index){
         if(index < 0 || index >= hand.size()){
             return false;
@@ -75,6 +79,8 @@ public abstract class Player {
         reservedValues.remove(res.getValue());
         return true;
     }
+
+
 
     public abstract PlayerMove doMove();
 }

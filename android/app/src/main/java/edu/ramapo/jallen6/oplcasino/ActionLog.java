@@ -18,4 +18,15 @@ public class ActionLog {
     static void addLog(String s){
         log.add(s);
     }
+
+   static int getLogSize(){
+        return log.size();
+   }
+
+   static String getLogEntry(int index){
+        if(index < 0 || index >= log.size()){
+            return "";
+        }
+        return log.get(index);
+   }
 }

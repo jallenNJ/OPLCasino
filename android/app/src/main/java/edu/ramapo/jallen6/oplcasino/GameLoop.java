@@ -144,76 +144,7 @@ public class GameLoop extends AppCompatActivity {
 
 
     }
-
-
-
-  /*  private void updateHumanButtons (boolean resetHand){
-        if(currentRound == null){
-            return;
-        }
-        HandView handler = currentRound.getHumanHandHandler();
-        if(handler == null){
-            return;
-        }
-        int invisibleButtons =0;
-        handler.unSelectAllCards();
-        for(int i =0; i < humanHandButtons.size(); i++){
-            ImageButton current = humanHandButtons.get(i);
-            current.setBackgroundColor(normalColor);
-            if(current.getVisibility() == View.INVISIBLE){
-                invisibleButtons++;
-                current.setVisibility(View.VISIBLE);
-            }
-        }
-
-        if(resetHand){
-            invisibleButtons = 0;
-        }
-        int validButtons = humanHandButtons.size() - invisibleButtons;
-        for(int i = 0; i < validButtons; i++){
-            ImageButton current = humanHandButtons.get(i);
-            handler.displayCard(current, i);
-        }
-
-        for(int i = validButtons; i< humanHandButtons.size(); i++){
-            ImageButton current = humanHandButtons.get(i);
-            current.setVisibility(View.INVISIBLE);
-        }
-
-    }
-
-    //TODO: Merge with update human Buttons
-    private void updateCompButtons (boolean resetHand){
-        if(currentRound == null){
-            return;
-        }
-        HandView handler = currentRound.getComputerHandHandler();
-        if(handler == null){
-            return;
-        }
-        int invisibleButtons =0;
-        for(int i =0; i < compHandButtons.size(); i++){
-            ImageButton current = compHandButtons.get(i);
-            if(current.getVisibility() == View.INVISIBLE){
-                invisibleButtons++;
-                current.setVisibility(View.VISIBLE);
-            }
-        }
-        if(resetHand){
-            invisibleButtons = 0;
-        }
-        int validButtons = compHandButtons.size() - invisibleButtons;
-        for(int i = 0; i < validButtons; i++){
-            ImageButton current = compHandButtons.get(i);
-            handler.displayCard(current, i);
-        }
-        for(int i = validButtons; i< compHandButtons.size(); i++){
-            ImageButton current = compHandButtons.get(i);
-            current.setVisibility(View.INVISIBLE);
-        }
-
-    }
-*/
+    
     private void initDisplayCards(){
         HandView handler = currentRound.getHumanHandHandler();
         humanHandIds = new Vector<Integer>(4,1);

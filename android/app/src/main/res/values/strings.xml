@@ -13,4 +13,5 @@
     <string name="tableIdentifer">Table Cards</string>
     <string name="menuButtonText">Menu</string>
     <string name="confirmButtonText">Confirm Move</string>
+    <string name="logLabel">Last Move (Log)</string>
 </resources>

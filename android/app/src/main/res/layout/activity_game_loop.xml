@@ -166,4 +166,25 @@
         android:onClick="handleSubmitClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/hcard4" />
+
+    <TextView
+        android:id="@+id/logTag"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/logLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cHand" />
+
+    <Button
+        android:id="@+id/logButton"
+        android:layout_width="235dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@android:color/transparent"
+        android:text="Button"
+        app:layout_constraintStart_toEndOf="@+id/logTag"
+        app:layout_constraintTop_toTopOf="@+id/logTag" />
+
 </android.support.constraint.ConstraintLayout>

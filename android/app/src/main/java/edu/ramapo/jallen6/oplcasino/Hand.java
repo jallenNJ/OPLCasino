@@ -1,18 +1,21 @@
 package edu.ramapo.jallen6.oplcasino;
 
 
+import java.util.Observable;
 import java.util.Vector;
 
-public class Hand {
+public class Hand extends Observable {
 
     private Vector<CardType> hand;
     private Vector<Integer> selectedIndices;
     private boolean selectionLimitedToOne;
+    private int removedIndex;
 
     Hand(){
         hand = new Vector<CardType>(4,1);
         selectionLimitedToOne = true;
         selectedIndices = new Vector<Integer>(1,1);
+
     }
 
     Hand(boolean limitSelection){
@@ -65,6 +68,8 @@ public class Hand {
     }
     public boolean addCard(CardType add){
         hand.add(add);
+        this.setChanged();
+        this.notifyObservers();
         return true;
     }
 
@@ -75,6 +80,12 @@ public class Hand {
 
         return hand.get(index);
     }
+public  int fetchRemovedIndex(){
+        int returnVal = removedIndex;
+        removedIndex = -1;
+        return returnVal;
+       // return removedIndex;
+}
 
     public CardType removeCard(int index){
         if(index >= hand.size() || index < 0){
@@ -82,6 +93,9 @@ public class Hand {
         }
         CardType removed = hand.get(index);
         hand.remove(index);
+        removedIndex = index;
+        this.setChanged();
+        this.notifyObservers();
         return removed;
     }
 

@@ -378,6 +378,23 @@ public class GameLoop extends AppCompatActivity {
                     updateCompButtons(false);
                 }
 
+
+
+                if(currentRound.getHumanHandHandler().size() == 0){
+                    currentRound.updateViews();
+                    updateHumanButtons(true);
+                    updateCompButtons(true);
+
+                    HandView human = currentRound.getHumanHandHandler();
+                    HandView comp = currentRound.getComputerHandHandler();
+                    for(int i=0; i < 4; i++){
+                        human.displayCard(humanHandButtons.get(i), i);
+                        comp.displayCard(humanHandButtons.get(i), i);
+                    }
+
+
+                }
+
                 setUpButtonsForNextPlayer();
                 clearTableSelection();
 
@@ -386,22 +403,6 @@ public class GameLoop extends AppCompatActivity {
                // invalid move
             }
 
-          /* if(currentRound.doNextPlayerMove()){
-                // end round
-            } else{
-               currentRound.getTableHandHandler().displaySelected(addButtonToTable());
-               int playedCardIndex = currentRound.getLastPlayerMove().getHandCardIndex();
-               //TODO: make handler be for current player
-                if(humanButtonsAreClickable){
-                    findViewById(humanHandIds.get(playedCardIndex)).setVisibility(View.INVISIBLE);
-                    updateHumanButtons(false);
-                } else{
-                    findViewById(compHandIds.get(playedCardIndex)).setVisibility(View.INVISIBLE);
-                    updateCompButtons(false);
-                }
-
-               setUpButtonsForNextPlayer();
-            }*/
         }else{
             //Show menu
             return;

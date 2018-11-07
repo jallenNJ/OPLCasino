@@ -89,6 +89,12 @@ public class Round {
         return tableView;
     }
 
+    public void updateViews(){
+       // playerViews[0] = new PlayerView(players[0]);
+        playerViews[0].getHand().createViewsFromModel();
+        playerViews[1].getHand().createViewsFromModel();
+        //playerViews[1] = new PlayerView(players[1]);
+    }
 
     public boolean isRoundOver(){
         return roundOver;
@@ -131,11 +137,16 @@ public class Round {
         }
 
 
-        tableView.addCard(playerViews[index].removeCardFromHand(result.getHandCardIndex()));
+       // tableView.addCard(playerViews[index].removeCardFromHand(result.getHandCardIndex()));
+        table.addCard(players[index].removeCardFromHand(result.getHandCardIndex()));
        // tableView.addCard(playerViews[index].)
         lastMove = new PlayerMove(result);
 
 
+        if(players[humanID].getHandSize() == 0 && players[compID].getHandSize() == 0){
+            players[humanID].addCardsToHand(deck.getFourCards());
+            players[compID].addCardsToHand(deck.getFourCards());
+        }
 
         if(moveQueue.size() > 0){
             return true;

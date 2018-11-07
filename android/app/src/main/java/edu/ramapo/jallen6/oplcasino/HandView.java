@@ -1,12 +1,15 @@
 package edu.ramapo.jallen6.oplcasino;
 
 import android.media.Image;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-;import java.util.Vector;
+;import java.util.Observable;
+import java.util.Observer;
+import java.util.Vector;
 
-public class HandView extends BaseView {
+public class HandView extends BaseView implements Observer {
 
     private Hand model;
     private Vector<CardView> hand;
@@ -30,10 +33,23 @@ public class HandView extends BaseView {
 
     public void unSelectAllCards(){model.unSelectAllCards();}
 
+    public void update (Observable o, Object arg){
+        int debug = model.countObservers();
+
+        if(model.size() > hand.size()){
+            createViewsFromModel();
+        }else{
+            removeCardFromHand(model.fetchRemovedIndex());
+
+        }
+
+    }
     private void constructorHelper(boolean limit){
         hand = new Vector<CardView>(4,1);
         limitSelection = limit;
         displayPool = null;
+
+        model.addObserver(this);
         createViewsFromModel();
     }
 
@@ -61,16 +77,16 @@ public class HandView extends BaseView {
 
     }
 
-    public void addCard(Card add){
+   /* public void addCard(Card add){
         model.addCard(add);
         hand.add(new CardView((Card)add));
         displayPool = new CardView((Card) add);
-    }
-    public void addCard(CardView add){
-       model.addCard(new Card(add.getModelSuit(), add.getModelValue()));
-       hand.add(add);
-       displayPool = new CardView(add);
-    }
+    }*/
+  //  public void addCard(CardView add){
+    //   model.addCard(new Card(add.getModelSuit(), add.getModelValue()));
+     //  hand.add(add);
+     //  displayPool = new CardView(add);
+   // }
 
     public CardView removeCardFromHand(int index){
         if(index >= hand.size() || index < 0){
@@ -78,7 +94,7 @@ public class HandView extends BaseView {
         }
         CardView removed = hand.get(index);
         hand.remove(index);
-        model.removeCard(index);
+      //  model.removeCard(index);
         return removed;
     }
 

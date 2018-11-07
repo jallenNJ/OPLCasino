@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Welcome" android:screenOrientation="portrait">
+        <activity
+            android:name=".Welcome"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,8 +28,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Welcome" />
         </activity>
-        <activity android:name=".CoinFlip" android:screenOrientation="portrait"/>
-        <activity android:name=".GameLoop" android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".CoinFlip"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".GameLoop"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ActionLogPopup"
+            android:screenOrientation="portrait"
+            ></activity>
     </application>
 
 </manifest>

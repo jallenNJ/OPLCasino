@@ -94,6 +94,23 @@ public class Round {
         return roundOver;
     }
 
+    public Vector<Integer> findMatchingIndexOnTable(){
+        int playedIndex = players[moveQueue.firstElement().ordinal()].getSelectedIndex();
+        Vector<Integer> allMatching = new Vector<Integer>(2,1);
+        if(playedIndex < 0 ){
+            return allMatching;
+        }
+        int playedValue = players[moveQueue.firstElement().ordinal()].getHand()
+                .peekCard(playedIndex).getValue();
+        for(int i =0; i < table.size();i++){
+            if(table.peekCard(i).getValue() == playedValue){
+                allMatching.add(i);
+            }
+        }
+        return allMatching;
+
+    }
+
     public boolean doNextPlayerMove(){
         if(moveQueue.size() == 0){
             fillMoveQueue(startingPlayer);
@@ -121,10 +138,10 @@ public class Round {
 
 
         if(moveQueue.size() > 0){
-            return false;
+            return true;
         }else{
             fillMoveQueue(startingPlayer);
-            return moveQueue.size() == 0;
+            return true;
         }
 
         //return  false;

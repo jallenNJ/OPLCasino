@@ -124,11 +124,7 @@ public class Round {
             return false;
         }else{
             fillMoveQueue(startingPlayer);
-            if(moveQueue.size() == 0){
-                return  true;
-            }else{
-                return  false;
-            }
+            return moveQueue.size() == 0;
         }
 
         //return  false;

@@ -210,7 +210,9 @@ public class GameLoop extends AppCompatActivity {
         currentRound.getTableHandHandler().unSelectAllCards();
         LinearLayout table = findViewById(R.id.tableScroll);
         for(int i =0; i < tableButtonIds.size(); i++){
-            findViewById(tableButtonIds.get(i)).setBackgroundColor(normalColor);
+            ImageButton current = findViewById(tableButtonIds.get(i));
+            current.setBackgroundColor(normalColor);
+            current.setClickable(true);
         }
     }
 
@@ -218,7 +220,9 @@ public class GameLoop extends AppCompatActivity {
         Vector<Integer> targetCards = currentRound.findMatchingIndexOnTable();
         HandView handler = currentRound.getTableHandHandler();
         for(int i =0; i < targetCards.size(); i++){
-            findViewById(tableButtonIds.get(targetCards.get(i))).setBackgroundColor(selectedColor);
+            ImageButton current = findViewById(tableButtonIds.get(targetCards.get(i)));
+            current.setBackgroundColor(selectedColor);
+            current.setClickable(false);
             handler.selectCard(targetCards.get(i));
 
         }

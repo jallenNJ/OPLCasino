@@ -205,6 +205,25 @@ public class GameLoop extends AppCompatActivity {
 
         setSubmitButton(false);
     }
+
+    private void clearTableSelection(){
+        currentRound.getTableHandHandler().unSelectAllCards();
+        LinearLayout table = findViewById(R.id.tableScroll);
+        for(int i =0; i < tableButtonIds.size(); i++){
+            findViewById(tableButtonIds.get(i)).setBackgroundColor(normalColor);
+        }
+    }
+
+    private void selectRequiredCards(){
+        Vector<Integer> targetCards = currentRound.findMatchingIndexOnTable();
+        HandView handler = currentRound.getTableHandHandler();
+        for(int i =0; i < targetCards.size(); i++){
+            findViewById(tableButtonIds.get(targetCards.get(i))).setBackgroundColor(selectedColor);
+            handler.selectCard(targetCards.get(i));
+
+        }
+    }
+
     public void displayCard(View view) {
         HandView viewHandler = null;
 
@@ -254,6 +273,8 @@ public class GameLoop extends AppCompatActivity {
         }
 
         if(isSelected(chosen)){
+            clearTableSelection();
+            selectRequiredCards();
             setSubmitButton(true);
         } else {
             setSubmitButton(false);
@@ -353,6 +374,7 @@ public class GameLoop extends AppCompatActivity {
                 }
 
                 setUpButtonsForNextPlayer();
+                clearTableSelection();
 
 
             } else{

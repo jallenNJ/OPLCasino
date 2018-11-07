@@ -52,6 +52,13 @@ public class GameLoop extends AppCompatActivity {
         ((Button)findViewById(R.id.logButton)).setText(ActionLog.getLast());
     }
 
+    public void openActionLog(View view){
+
+        Intent intent = new Intent(this, ActionLogPopup.class);
+        startActivityForResult(intent,RESULT_CANCELED);
+
+    }
+
     private void setClickabilityForMove(boolean humanTurn) {
         if (humanTurn) {
             setClickableForVector(humanHandIds, true);

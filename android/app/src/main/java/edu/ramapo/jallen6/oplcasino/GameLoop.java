@@ -117,11 +117,16 @@ public class GameLoop extends AppCompatActivity {
                 current.setVisibility(View.VISIBLE);
             }
         }
+
+        if(resetHand){
+            invisibleButtons = 0;
+        }
         int validButtons = humanHandButtons.size() - invisibleButtons;
         for(int i = 0; i < validButtons; i++){
             ImageButton current = humanHandButtons.get(i);
             handler.displayCard(current, i);
         }
+
         for(int i = validButtons; i< humanHandButtons.size(); i++){
             ImageButton current = humanHandButtons.get(i);
             current.setVisibility(View.INVISIBLE);
@@ -145,6 +150,9 @@ public class GameLoop extends AppCompatActivity {
                 invisibleButtons++;
                 current.setVisibility(View.VISIBLE);
             }
+        }
+        if(resetHand){
+            invisibleButtons = 0;
         }
         int validButtons = compHandButtons.size() - invisibleButtons;
         for(int i = 0; i < validButtons; i++){

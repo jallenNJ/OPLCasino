@@ -276,8 +276,9 @@ public class GameLoop extends AppCompatActivity {
             setSubmitButton(true);
         }
 
+        clearTableSelection();
         if(isSelected(chosen)){
-            clearTableSelection();
+
             selectRequiredCards();
             setSubmitButton(true);
         } else {

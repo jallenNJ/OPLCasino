@@ -134,7 +134,7 @@ public class Round {
             return false;
         }
 
-
+        players[index].addMoveToLog(result, table);
        // tableView.addCard(playerViews[index].removeCardFromHand(result.getHandCardIndex()));
         table.addCard(players[index].removeCardFromHand(result.getHandCardIndex()));
        // tableView.addCard(playerViews[index].)
@@ -189,3 +189,5 @@ public class Round {
         return true;
     }
 }
+
+

@@ -370,6 +370,8 @@ public class GameLoop extends AppCompatActivity {
 
             if(currentRound.doNextPlayerMove()){
                 //Valid move
+                updateLogButton();
+
 
                 //Todo:Check for round over
                 currentRound.getTableHandHandler().displaySelected(addButtonToTable());

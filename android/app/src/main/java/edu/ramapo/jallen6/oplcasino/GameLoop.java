@@ -85,14 +85,33 @@ public class GameLoop extends AppCompatActivity {
         return view.getChildCount();
     }
 
-    private ImageButton addButtonToTable() {
+
+    private ImageButton generateButton(){
+        //Generate the button and give it an ID
         ImageButton newButton = new ImageButton(this);
+        newButton.setId(View.generateViewId());
+
+        //Give it a default image
         newButton.setImageResource(R.drawable.cardback);
+
+        //Set the margins and size
         LinearLayout.LayoutParams lp = new
                 LinearLayout.LayoutParams(intAsDP(50), intAsDP(80));
         lp.setMargins(20, 0, 20, 0);
         newButton.setLayoutParams(lp);
-        //   testSpawn.setOnClickListener(ClickListener);
+
+        //Ensure the background is the normal color and the crop is correct
+        newButton.setBackgroundColor(normalColor);
+        newButton.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+        return newButton;
+
+    }
+
+
+    private ImageButton addButtonToTable() {
+
+        ImageButton newButton = generateButton();
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,12 +119,7 @@ public class GameLoop extends AppCompatActivity {
             }
         };
         newButton.setOnClickListener(clickListener);
-        newButton.setBackgroundColor(normalColor);
-        // testSpawn.setTag(i);
-
-        newButton.setId(View.generateViewId());
         tableButtonIds.add(newButton.getId());
-        newButton.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         LinearLayout view = findViewById(R.id.tableScroll);
         view.addView(newButton);
@@ -125,6 +139,24 @@ public class GameLoop extends AppCompatActivity {
             tableButtonIds.remove(i);
         }
     }
+
+  /*  private void addCardToPile(ImageButton ref, boolean forHuman){
+        if(ref == null){
+            return;
+        }
+        LinearLayout view;
+        if(forHuman){
+            view = (LinearLayout)findViewById(R.id.humanPileLayout);
+        } else{
+            //computer here
+        }
+
+
+
+
+
+
+    }*/
 
     private void updateHandButtons(boolean forHuman, boolean resetHand) {
         if (currentRound == null) {

@@ -112,7 +112,7 @@
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/hHand"
-        app:srcCompat="@drawable/cardback" 
+        app:srcCompat="@drawable/cardback"
 		android:tag="Human"/>
 
     <ImageButton
@@ -135,7 +135,7 @@
         android:layout_height="80dp"
         android:layout_marginStart="4dp"
         android:layout_marginBottom="8dp"
-		android:background="@android:color/white"
+        android:background="@android:color/white"
         android:onClick="displayCard"
         android:scaleType="centerCrop"
         android:tag="Human"
@@ -184,7 +184,7 @@
         android:layout_marginStart="8dp"
         android:background="@android:color/transparent"
         android:onClick="openActionLog"
-        android:text="Button"
+        android:text="LOG "
         app:layout_constraintStart_toEndOf="@+id/logTag"
         app:layout_constraintTop_toTopOf="@+id/logTag" />
 

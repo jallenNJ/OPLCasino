@@ -56,7 +56,7 @@ public class Round {
         players[compID].addCardsToHand(deck.getFourCards());
         playerViews[compID] = new PlayerView(players[compID]);
 
-        table = new Hand();
+        table = new Hand(false);
         deck.dealFourCardsToHand(table);
         tableView = new HandView(table, false);
 

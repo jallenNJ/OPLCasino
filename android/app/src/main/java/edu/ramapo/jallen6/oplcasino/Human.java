@@ -8,6 +8,7 @@ public class Human extends Player {
 
     Human(){
         super();
+        name = "Human";
     }
     @Override
     public PlayerMove doMove() {

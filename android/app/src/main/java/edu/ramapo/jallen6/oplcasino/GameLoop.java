@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import java.util.Collections;
 import java.util.Vector;
 
 public class GameLoop extends AppCompatActivity {
@@ -111,6 +112,19 @@ public class GameLoop extends AppCompatActivity {
         return newButton;
     }
 
+
+    private void removeButtonsFromTable(Vector<Integer> targets){
+        if(targets == null){
+            return;
+        }
+        Collections.sort(targets, Collections.<Integer>reverseOrder());
+        LinearLayout view = findViewById(R.id.tableScroll);
+        for(int i =0; i < targets.size(); i++){
+            //+1 is to skip over the label
+            view.removeViewAt(i+1);
+            tableButtonIds.remove(i);
+        }
+    }
 
     private void updateHandButtons(boolean forHuman, boolean resetHand) {
         if (currentRound == null) {
@@ -295,6 +309,13 @@ public class GameLoop extends AppCompatActivity {
         ImageButton chosen = findViewById(view.getId());
 
         toggleButtonColor(chosen);
+        int index = tableButtonIds.indexOf(view.getId());
+        if(isSelected(chosen)){
+            currentRound.getTableHandHandler().selectCard(index);
+        }else{
+            //currentRound.getTableHandHandler().
+        }
+        //
     }
 
 
@@ -374,7 +395,16 @@ public class GameLoop extends AppCompatActivity {
 
 
                 //Todo:Check for round over
-                currentRound.getTableHandHandler().displaySelected(addButtonToTable());
+
+                if(currentRound.getLastAction() == PlayerActions.Trail){
+                    currentRound.getTableHandHandler().displaySelected(addButtonToTable());
+                } else if(currentRound.getLastAction() == PlayerActions.Build){
+                    //Handle builds here
+                } else{
+                    //Capture
+                    removeButtonsFromTable(currentRound.getLastPlayerMove().getTableCardIndices());
+                }
+
                 int playedCardIndex = currentRound.getLastPlayerMove().getHandCardIndex();
                 if(humanButtonsAreClickable){
                     findViewById(humanHandIds.get(playedCardIndex)).setVisibility(View.INVISIBLE);

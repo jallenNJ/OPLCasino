@@ -35,6 +35,12 @@ public class Round {
        initRound();
     }
 
+    public PlayerActions getLastAction(){
+        if (lastMove == null){
+            return PlayerActions.Invalid;
+        }
+        return lastMove.getAction();
+    }
 
     private void initRound(){
         roundOver = false;
@@ -135,13 +141,24 @@ public class Round {
         }
 
         players[index].addMoveToLog(result, table);
-       // tableView.addCard(playerViews[index].removeCardFromHand(result.getHandCardIndex()));
-        table.addCard(players[index].removeCardFromHand(result.getHandCardIndex()));
-       // tableView.addCard(playerViews[index].)
+        if(result.getAction() == PlayerActions.Trail){
+            table.addCard(players[index].removeCardFromHand(result.getHandCardIndex()));
+        } else{
+            players[index].addCardToPile(players[index].removeCardFromHand(result.getHandCardIndex()));
+            //Player move indices are sorted descending, therefore can iterate normally
+            Vector<Integer> indices = result.getTableCardIndices();
+            for(int i =0; i < result.getTableCardIndiciesSize(); i++){
+                //TODO: Check cast option when builds are added
+                players[index].addCardToPile((Card)table.removeCard(indices.get(i)));
+            }
+        }
+
+
         lastMove = new PlayerMove(result);
 
 
         if(players[humanID].getHandSize() == 0 && players[compID].getHandSize() == 0){
+            //TODO: check deck size and don't deal if empty
             players[humanID].addCardsToHand(deck.getFourCards());
             players[compID].addCardsToHand(deck.getFourCards());
         }
@@ -160,8 +177,9 @@ public class Round {
         return lastMove;
     }
     private PlayerMove doPlayerMove(int playerId){
+        //TODO: REMOVE LOOP
         while(true){
-            PlayerMove result = players[playerId].doMove();
+            PlayerMove result = players[playerId].doMove(table);
             if(validateMove(result, playerId) ){
                 return result;
             }
@@ -174,7 +192,7 @@ public class Round {
         PlayerActions action = move.getAction();
 
         if(action == PlayerActions.Capture){
-            return false;
+            return checkCapture(move, playerID);
         } else if(action == PlayerActions.Build){
             return false;
         } else if(action == PlayerActions.Trail){
@@ -184,6 +202,7 @@ public class Round {
         }
     }
 
+    private boolean checkCapture(PlayerMove move, int playerID){return true;}
 
     private boolean checkTrail(PlayerMove move, int playerID){
         return true;

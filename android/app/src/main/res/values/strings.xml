@@ -14,4 +14,5 @@
     <string name="menuButtonText">Menu</string>
     <string name="confirmButtonText">Confirm Move</string>
     <string name="logLabel">Last Move (Log)</string>
+    <string name="bottomPlayerPile">Human Pile</string>
 </resources>

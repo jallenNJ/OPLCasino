@@ -1,5 +1,7 @@
 package edu.ramapo.jallen6.oplcasino;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Vector;
 
 public class PlayerMove {
@@ -16,7 +18,8 @@ public class PlayerMove {
     PlayerMove(PlayerActions ac, int hand, Vector<Integer> tableCI){
         action = ac;
         handCardIndex = hand;
-        tableCardIndices = (Vector<Integer> )tableCI.clone();
+        tableCardIndices = new Vector<Integer>(tableCI);
+        Collections.sort(tableCardIndices, Collections.<Integer>reverseOrder());
 
     }
 
@@ -24,6 +27,7 @@ public class PlayerMove {
         action = copy.getAction();
         handCardIndex = copy.getHandCardIndex();
         tableCardIndices = copy.getTableCardIndices();
+        Collections.sort(tableCardIndices, Collections.<Integer>reverseOrder());
     }
 
     public PlayerActions getAction(){

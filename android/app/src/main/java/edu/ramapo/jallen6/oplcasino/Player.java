@@ -87,11 +87,11 @@ public abstract class Player {
         switch (move.getAction()){
             case Capture:
                 entry += "is capturing with " + hand.peekCard(move.getHandCardIndex()).toString() +
-                        " to capture";
+                        " to capture" ;
                 break;
             case Build:
                 entry += "is building with " + hand.peekCard(move.getHandCardIndex()).toString() +
-                        " to capture";
+                        " using ";
                 break;
             case Trail:
                 entry += "is trailing with " + hand.peekCard(move.getHandCardIndex()).toString();
@@ -107,7 +107,7 @@ public abstract class Player {
             entry += table.peekCard(tableIndices.get(i)).toString() + " ";
         }
         if(move.getAction() != PlayerActions.Trail){
-            entry = entry.substring(0, entry.length() -2) + ".";
+            entry = entry.substring(0, entry.length() -1) + ".";
         }else{
             entry += ".";
         }
@@ -120,5 +120,5 @@ public abstract class Player {
 
 
 
-    public abstract PlayerMove doMove();
+    public abstract PlayerMove doMove(final Hand table);
 }

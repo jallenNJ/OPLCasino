@@ -9,7 +9,7 @@ public class Computer extends Player {
         name = "Computer";
     }
 
-    public PlayerMove doMove() {
+    public PlayerMove doMove(final Hand table) {
 
         return  new PlayerMove(PlayerActions.Trail, 0, new Vector<Integer>(1,1));
 

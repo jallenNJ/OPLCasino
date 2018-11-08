@@ -8,12 +8,14 @@ public abstract class Player {
     protected int selectedIndex;
     protected Hand pile;
     protected Vector<Integer> reservedValues;
+    protected String name;
 
     Player(){
         hand = new Hand();
         pile = new Hand();
         selectedIndex = -1;
         reservedValues = new Vector<Integer>(2,1);
+        name = "Player";
 
     }
 
@@ -78,6 +80,42 @@ public abstract class Player {
     public boolean releaseBuildValue(Card res){
         reservedValues.remove(res.getValue());
         return true;
+    }
+
+   public void addMoveToLog(PlayerMove move, Hand table){
+        String entry = name + " ";
+        switch (move.getAction()){
+            case Capture:
+                entry += "is capturing with " + hand.peekCard(move.getHandCardIndex()).toString() +
+                        " to capture";
+                break;
+            case Build:
+                entry += "is building with " + hand.peekCard(move.getHandCardIndex()).toString() +
+                        " to capture";
+                break;
+            case Trail:
+                entry += "is trailing with " + hand.peekCard(move.getHandCardIndex()).toString();
+                break;
+            case Invalid:
+                default:
+                entry += "is making a move ";
+                break;
+        }
+
+        Vector<Integer> tableIndices = move.getTableCardIndices();
+        for(int i =0; i < move.getTableCardIndiciesSize(); i++){
+            entry += table.peekCard(tableIndices.get(i)).toString() + " ";
+        }
+        if(move.getAction() != PlayerActions.Trail){
+            entry = entry.substring(0, entry.length() -2) + ".";
+        }else{
+            entry += ".";
+        }
+
+        ActionLog.addLog(entry);
+
+
+
     }
 
 

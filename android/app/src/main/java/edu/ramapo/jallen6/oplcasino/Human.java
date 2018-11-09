@@ -17,7 +17,7 @@ public class Human extends Player {
     public PlayerMove doMove(final Hand table) {
 
         final Vector<Integer> selected = new Vector<Integer> (table.getSelectedIndices());
-        return new PlayerMove(moveToUse, hand.getSelectedIndices().get(0), new Vector<Integer>(1,1));
+        return new PlayerMove(moveToUse, hand.getSelectedIndices().get(0), selected);
      /*   if(selected.size() == 0){
             return  new PlayerMove(Trail, hand.getSelectedIndices().get(0), new Vector<Integer>(1,1));
         } else{

@@ -15,4 +15,7 @@
     <string name="confirmButtonText">Confirm Move</string>
     <string name="logLabel">Last Move (Log)</string>
     <string name="bottomPlayerPile">Human Pile</string>
+    <string name="caputreAction">Capture</string>
+    <string name="buildAction">Build</string>
+    <string name="trailAction">Trail</string>
 </resources>

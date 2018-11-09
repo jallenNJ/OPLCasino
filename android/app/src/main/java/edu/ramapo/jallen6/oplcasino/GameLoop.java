@@ -471,7 +471,7 @@ public class GameLoop extends AppCompatActivity {
             } else{
                 // invalid move
 
-                
+
                 updateHandButtons(true, false);
                 setSubmitButton(false);
                 clearTableSelection();

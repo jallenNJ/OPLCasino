@@ -212,6 +212,9 @@ public class Round {
     private boolean checkCapture(PlayerMove move, int playerID){
         int playedValue = players[playerID].getHand().peekCard(move.getHandCardIndex()).getValue();
         Vector<Integer> selected = move.getTableCardIndices();
+        if(selected.size() == 0){
+            return  false;
+        }
         for(int i =0; i < selected.size();i++){
             if(table.peekCard(selected.get(i)).getValue() != playedValue){
                 return false;

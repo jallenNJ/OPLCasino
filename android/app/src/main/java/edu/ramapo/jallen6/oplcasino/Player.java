@@ -98,8 +98,9 @@ public abstract class Player {
                 break;
             case Invalid:
                 default:
-                entry += "is making a move ";
-                break;
+                entry += " tried an invalid move.";
+                ActionLog.addLog(entry);
+                return;
         }
 
         Vector<Integer> tableIndices = move.getTableCardIndices();

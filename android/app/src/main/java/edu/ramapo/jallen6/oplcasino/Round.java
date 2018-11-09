@@ -137,6 +137,7 @@ public class Round {
         result = doPlayerMove(index);
         if(!validateMove(result, index)){
             //TODO: Make sure user re prompts instead of continuing on.
+            players[index].addMoveToLog(result, table);
             return false;
         }
 
@@ -177,13 +178,14 @@ public class Round {
         return lastMove;
     }
     private PlayerMove doPlayerMove(int playerId){
-        //TODO: REMOVE LOOP
-        while(true){
             PlayerMove result = players[playerId].doMove(table);
             if(validateMove(result, playerId) ){
                 return result;
+            } else{
+                result.markInvalid();
+                return result;
             }
-        }
+
 
     }
 
@@ -202,7 +204,16 @@ public class Round {
         }
     }
 
-    private boolean checkCapture(PlayerMove move, int playerID){return true;}
+    private boolean checkCapture(PlayerMove move, int playerID){
+        int playedValue = players[playerID].getHand().peekCard(move.getHandCardIndex()).getValue();
+        Vector<Integer> selected = move.getTableCardIndices();
+        for(int i =0; i < selected.size();i++){
+            if(table.peekCard(selected.get(i)).getValue() != playedValue){
+                return false;
+            }
+        }
+        return true;
+    }
 
     private boolean checkTrail(PlayerMove move, int playerID){
         return true;

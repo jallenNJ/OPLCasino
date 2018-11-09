@@ -33,6 +33,11 @@ public class PlayerMove {
     public PlayerActions getAction(){
         return action;
     }
+
+    public void markInvalid(){
+        action = PlayerActions.Invalid;
+    }
+
     public int getHandCardIndex(){
         return handCardIndex;
     }

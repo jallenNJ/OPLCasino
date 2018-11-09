@@ -196,6 +196,7 @@
         android:layout_marginEnd="2dp"
         android:layout_marginBottom="120dp"
         android:checkedButton="@+id/trailRadio"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 

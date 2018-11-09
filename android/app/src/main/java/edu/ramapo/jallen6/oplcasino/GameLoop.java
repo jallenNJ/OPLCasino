@@ -14,6 +14,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 
 import java.util.Collections;
 import java.util.Vector;
@@ -65,12 +66,13 @@ public class GameLoop extends AppCompatActivity {
             setClickableForVector(humanHandIds, true);
             setClickableForVector(tableButtonIds, true);
             humanButtonsAreClickable = true;
-            setSubmitButton(false);
+            setSubmitButton(false, true);
         } else {
+            //For computer
             setClickableForVector(humanHandIds, false);
             setClickableForVector(tableButtonIds, false);
             humanButtonsAreClickable = false;
-            setSubmitButton(true);
+            setSubmitButton(true, false);
         }
 
     }
@@ -253,7 +255,7 @@ public class GameLoop extends AppCompatActivity {
             handler.displayCard(addButtonToTable(), i);
         }
 
-        setSubmitButton(false);
+        setSubmitButton(false, false);
     }
 
     private void clearTableSelection(){
@@ -323,16 +325,16 @@ public class GameLoop extends AppCompatActivity {
         if(previous != null && previous != chosen){
 
             toggleButtonColor(previous);
-            setSubmitButton(true);
+            setSubmitButton(true, isHuman);
         }
 
         clearTableSelection();
         if(isSelected(chosen)){
 
             selectRequiredCards();
-            setSubmitButton(true);
+            setSubmitButton(true, isHuman);
         } else {
-            setSubmitButton(false);
+            setSubmitButton(false, isHuman);
         }
 
     }
@@ -400,14 +402,24 @@ public class GameLoop extends AppCompatActivity {
         }
     }
 
-    private void setSubmitButton(boolean asConfirm){
+    private void setSubmitButton(boolean asConfirm, boolean humanMove){
+
+        //NOTE: Some functions that call asConfirm as false, always pass false for humanMove
         Button submit = findViewById(R.id.submitButton);
+        RadioGroup actionGroup = findViewById(R.id.actionRadio);
         if(asConfirm){
             submit.setBackgroundColor(Color.GREEN);
             submit.setText(R.string.confirmButtonText);
+            if(humanMove){
+                actionGroup.setVisibility(View.VISIBLE);
+            }else{
+                actionGroup.setVisibility(View.INVISIBLE);
+            }
+
         } else{
             submit.setBackgroundColor(Color.LTGRAY);
             submit.setText(R.string.menuButtonText);
+            actionGroup.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -466,6 +478,7 @@ public class GameLoop extends AppCompatActivity {
 
                 setUpButtonsForNextPlayer();
                 clearTableSelection();
+               // setSubmitButton(false. false);
 
 
             } else{
@@ -473,7 +486,7 @@ public class GameLoop extends AppCompatActivity {
 
 
                 updateHandButtons(true, false);
-                setSubmitButton(false);
+                setSubmitButton(false, false);
                 clearTableSelection();
 
             }

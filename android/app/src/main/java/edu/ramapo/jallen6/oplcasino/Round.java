@@ -121,6 +121,10 @@ public class Round {
 
     }
 
+    public void setMoveActionForCurrentPlayer(PlayerActions pass){
+        players[moveQueue.get(0).ordinal()].setMoveToUse(pass);
+    }
+
     public boolean doNextPlayerMove(){
         if(moveQueue.size() == 0){
             fillMoveQueue(startingPlayer);

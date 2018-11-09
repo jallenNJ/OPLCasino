@@ -9,12 +9,14 @@ public abstract class Player {
     protected Hand pile;
     protected Vector<Integer> reservedValues;
     protected String name;
+    protected PlayerActions moveToUse;
 
     Player(){
         hand = new Hand();
         pile = new Hand();
         selectedIndex = -1;
         reservedValues = new Vector<Integer>(2,1);
+        moveToUse = PlayerActions.Invalid;
         name = "Player";
 
     }
@@ -119,7 +121,9 @@ public abstract class Player {
 
     }
 
-
+    public void setMoveToUse(PlayerActions move) {
+        moveToUse = move;
+    }
 
     public abstract PlayerMove doMove(final Hand table);
 }

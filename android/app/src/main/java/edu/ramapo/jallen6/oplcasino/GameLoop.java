@@ -19,6 +19,11 @@ import android.widget.RadioGroup;
 import java.util.Collections;
 import java.util.Vector;
 
+import static edu.ramapo.jallen6.oplcasino.PlayerActions.Build;
+import static edu.ramapo.jallen6.oplcasino.PlayerActions.Capture;
+import static edu.ramapo.jallen6.oplcasino.PlayerActions.Invalid;
+import static edu.ramapo.jallen6.oplcasino.PlayerActions.Trail;
+
 public class GameLoop extends AppCompatActivity {
     Round currentRound;
     final int selectedColor = Color.CYAN;
@@ -43,6 +48,17 @@ public class GameLoop extends AppCompatActivity {
         ActionLog.init();
         ActionLog.addLog("New game started!");
         updateLogButton();
+
+        RadioGroup radio = findViewById(R.id.actionRadio);
+
+        radio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int id) {
+                onRadioButtonChange(id);
+            }
+        });
+
+
         initDisplayCards();
         setClickabilityForMove(humanStarting);
 
@@ -160,6 +176,26 @@ public class GameLoop extends AppCompatActivity {
 
     }*/
 
+
+    public void onRadioButtonChange(int id){
+
+        switch (id){
+            case R.id.captureRadio:
+                currentRound.setMoveActionForCurrentPlayer(Capture);
+                break;
+            case R.id.buildRadio:
+                currentRound.setMoveActionForCurrentPlayer(Build);
+                break;
+            case R.id.trailRadio:
+                currentRound.setMoveActionForCurrentPlayer(Trail);
+                break;
+            default:
+                currentRound.setMoveActionForCurrentPlayer(Invalid);
+                break;
+        }
+
+
+    }
     private void updateHandButtons(boolean forHuman, boolean resetHand) {
         if (currentRound == null) {
             return;
@@ -429,10 +465,14 @@ public class GameLoop extends AppCompatActivity {
             return;
         }
 
+
         Button submit = (Button) view;
         if(getBackgroundColorID(submit) == Color.GREEN){
             //Do move
 
+           // RadioGroup radioGroup = findViewById(R.id.actionRadio);
+            //radioGroup.
+            //currentRound.setMoveActionForCurrentPlayer(radioGroup.se);
             boolean moveResultState = currentRound.doNextPlayerMove();
             updateLogButton();
             if(moveResultState){
@@ -444,7 +484,7 @@ public class GameLoop extends AppCompatActivity {
 
                 if(currentRound.getLastAction() == PlayerActions.Trail){
                     currentRound.getTableHandHandler().displaySelected(addButtonToTable());
-                } else if(currentRound.getLastAction() == PlayerActions.Build){
+                } else if(currentRound.getLastAction() == Build){
                     //Handle builds here
                 } else{
                     //Capture

@@ -89,7 +89,7 @@ public abstract class Player {
         switch (move.getAction()){
             case Capture:
                 entry += "is capturing with " + hand.peekCard(move.getHandCardIndex()).toString() +
-                        " to capture" ;
+                        " to capture " ;
                 break;
             case Build:
                 entry += "is building with " + hand.peekCard(move.getHandCardIndex()).toString() +

@@ -131,7 +131,7 @@ public class Round {
         }
 
         PlayerID first = moveQueue.get(0);
-        int index = moveQueue.remove(0).ordinal();
+        int index = moveQueue.get(0).ordinal();
 
         PlayerMove result;
         result = doPlayerMove(index);
@@ -140,6 +140,7 @@ public class Round {
             players[index].addMoveToLog(result, table);
             return false;
         }
+        moveQueue.remove(0);
 
         players[index].addMoveToLog(result, table);
         if(result.getAction() == PlayerActions.Trail){

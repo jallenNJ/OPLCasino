@@ -421,9 +421,11 @@ public class GameLoop extends AppCompatActivity {
         if(getBackgroundColorID(submit) == Color.GREEN){
             //Do move
 
-            if(currentRound.doNextPlayerMove()){
+            boolean moveResultState = currentRound.doNextPlayerMove();
+            updateLogButton();
+            if(moveResultState){
                 //Valid move
-                updateLogButton();
+
 
 
                 //Todo:Check for round over
@@ -467,7 +469,13 @@ public class GameLoop extends AppCompatActivity {
 
 
             } else{
-               // invalid move
+                // invalid move
+
+                
+                updateHandButtons(true, false);
+                setSubmitButton(false);
+                clearTableSelection();
+
             }
 
         }else{

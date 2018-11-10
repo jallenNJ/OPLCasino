@@ -23,7 +23,11 @@ public class PlayerView {
         return hand;
     }
 
-    public boolean addCardToHand(Card add){
+    public HandView getPile(){
+        return pile;
+    }
+
+   /* public boolean addCardToHand(Card add){
         model.addCardToHand(add);
         hand.createViewsFromModel();
         return true;
@@ -37,7 +41,7 @@ public class PlayerView {
 
     public CardView removeCardFromHand(int index){
         return hand.removeCardFromHand(index);
-    }
+    }*/
 
 
 

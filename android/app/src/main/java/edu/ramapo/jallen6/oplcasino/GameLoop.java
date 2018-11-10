@@ -177,7 +177,11 @@ public class GameLoop extends AppCompatActivity {
             ImageButton current = findViewById(tableButtonIds.get(targets.get(i)));
             view.removeView(current);
             tableButtonIds.remove(new Integer(current.getId()));
-            addCardToPile(true);
+            if(currentRound.getLastCapturer() == PlayerID.humanPlayer){
+                addCardToPile(true);
+            } else{
+                addCardToPile(false);
+            }
         }
     }
 
@@ -189,8 +193,8 @@ public class GameLoop extends AppCompatActivity {
             pile = currentRoundView.getHumanPileHandler();
         } else{
             //computer here
-            view = null;
-            pile = null;
+            view = (LinearLayout)findViewById(R.id.compPileLayout);
+            pile = currentRoundView.getComputerHandHandler();
         }
 
         pile.createViewsFromModel();
@@ -553,11 +557,16 @@ public class GameLoop extends AppCompatActivity {
 
             } else{
                 // invalid move or round over;
+                if(currentRound.isRoundOver()){
+
+                } else{
+                    updateHandButtons(true, false);
+                    setSubmitButton(false, false);
+                    clearTableSelection();
+                }
 
 
-                updateHandButtons(true, false);
-                setSubmitButton(false, false);
-                clearTableSelection();
+
 
             }
 

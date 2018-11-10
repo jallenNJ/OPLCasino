@@ -7,6 +7,7 @@ public class RoundView extends BaseView {
 
     private HandView tableView;
     private PlayerView[] playerViews;
+    private DeckView deckView;
 
 
     final int humanID = PlayerID.humanPlayer.ordinal();
@@ -23,8 +24,10 @@ public class RoundView extends BaseView {
         playerViews[humanID] = new PlayerView(model.getPlayers()[humanID]);
         playerViews[compID] = new PlayerView(model.getPlayers()[compID]);
         tableView = new HandView(model.getTable(), false);
+        deckView = new DeckView(model.getDeck());
     }
 
+    public DeckView getDeckViewHandler(){return deckView;}
     public HandView getHumanHandHandler(){
         return playerViews[0].getHand();
     }
@@ -40,6 +43,7 @@ public class RoundView extends BaseView {
     public void updateViews(){
         playerViews[0].getHand().createViewsFromModel();
         playerViews[1].getHand().createViewsFromModel();
+        deckView.createViewsFromModel();
     }
 
     public void updatePileViews(){

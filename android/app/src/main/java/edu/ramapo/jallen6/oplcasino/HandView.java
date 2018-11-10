@@ -34,7 +34,6 @@ public class HandView extends BaseView implements Observer {
     public void unSelectAllCards(){model.unSelectAllCards();}
 
     public void update (Observable o, Object arg){
-        int debug = model.countObservers();
 
         if(model.size() >= hand.size()){
             createViewsFromModel();
@@ -63,8 +62,6 @@ public class HandView extends BaseView implements Observer {
             return;
         }
         hand.get(cardIndex).setButton(button);
-       // Button button = view.findViewById(view.getId());
-       // button.setText(model.peekCard(0).toString());
     }
 
     public void displaySelected(ImageButton button){
@@ -74,7 +71,6 @@ public class HandView extends BaseView implements Observer {
       //displayCard(button, hand.indexOf(displayPool));
         displayPool.setButton(button);
         displayPool = null;
-
 
     }
 

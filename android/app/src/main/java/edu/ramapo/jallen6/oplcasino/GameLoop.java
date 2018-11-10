@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import java.util.Collections;
 import java.util.Vector;
@@ -59,6 +61,7 @@ public class GameLoop extends AppCompatActivity {
 
 
         initDisplayCards();
+        updateDeckScroll();
         setClickabilityForMove(humanStarting);
 
 
@@ -74,6 +77,23 @@ public class GameLoop extends AppCompatActivity {
         Intent intent = new Intent(this, ActionLogPopup.class);
         startActivityForResult(intent,RESULT_CANCELED);
 
+    }
+
+
+    public void updateDeckScroll(){
+        DeckView deckHandler = currentRoundView.getDeckViewHandler();
+        LinearLayout view = findViewById(R.id.deckLayout);
+        TextView label = findViewById(R.id.deckLabel);
+        label.setText("Deck: "+ deckHandler.size() + "Cards");
+
+        //TODO: Find a way to clear or update the view
+      //  view.removeAllViewsInLayout();
+        for(int i =0; i < deckHandler.size(); i++){
+            ImageButton current = generateButton();
+            current.setClickable(false);
+            deckHandler.displayCard(current,i);
+            view.addView(current);
+        }
     }
 
     private void setClickabilityForMove(boolean humanTurn) {

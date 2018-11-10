@@ -2,9 +2,10 @@ package edu.ramapo.jallen6.oplcasino;
 
 
 import java.util.Collections;
+import java.util.Observable;
 import java.util.Vector;
 
-public class Deck {
+public class Deck extends Observable {
     private Vector<Card> deck;
 
 
@@ -27,7 +28,7 @@ public class Deck {
     public boolean isEmpty(){
         return deck.size() == 0;
     }
-    public Card drawCard(){
+    private Card drawCard(){
         if(isEmpty()){
             return null;
         }
@@ -38,17 +39,33 @@ public class Deck {
 
     public void dealFourCardsToHand(Hand target){
         for(int i = 0; i < 4; i++){
+            //TODO: Here is probably where the seg fault at end of came is from
             target.addCard(drawCard());
         }
+        this.setChanged();
+        this.notifyObservers();
         return;
     }
 
     public Card[] getFourCards(){
         Card[] returnVal = new Card[4];
         for(int i = 0;i < 4; i++ ){
+            //TODO: OR this may be the seg fault
             returnVal[i] = drawCard();
         }
+        this.setChanged();
+        this.notifyObservers();
         return returnVal;
+    }
+
+    public int size(){
+        return deck.size();
+    }
+    public Card peekCard(int index){
+        if(index < 0 || index >= deck.size()){
+            return null;
+        }
+        return deck.get(index);
     }
 
 }

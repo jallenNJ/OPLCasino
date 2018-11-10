@@ -77,6 +77,10 @@ public class Round {
         return table;
     }
 
+    public Deck getDeck(){
+        return deck;
+    }
+
 
     private void fillMoveQueue(PlayerID start){
         PlayerID other;

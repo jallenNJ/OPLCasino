@@ -168,9 +168,13 @@ public class Round {
 
 
         if(players[humanID].getHandSize() == 0 && players[compID].getHandSize() == 0){
-            //TODO: check deck size and don't deal if empty
-            players[humanID].addCardsToHand(deck.getFourCards());
-            players[compID].addCardsToHand(deck.getFourCards());
+           if(deck.size() >=8){
+               players[humanID].addCardsToHand(deck.getFourCards());
+               players[compID].addCardsToHand(deck.getFourCards());
+           } else{
+               return false;
+           }
+
         }
 
         if(moveQueue.size() > 0){

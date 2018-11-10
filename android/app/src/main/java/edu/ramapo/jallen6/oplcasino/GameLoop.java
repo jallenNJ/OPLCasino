@@ -552,7 +552,7 @@ public class GameLoop extends AppCompatActivity {
 
 
             } else{
-                // invalid move
+                // invalid move or round over;
 
 
                 updateHandButtons(true, false);

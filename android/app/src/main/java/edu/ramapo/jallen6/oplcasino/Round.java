@@ -100,6 +100,15 @@ public class Round {
         playerViews[1].getHand().createViewsFromModel();
     }
 
+    public void updatePileViews(){
+        playerViews[0].getPile().createViewsFromModel();
+        playerViews[1].getPile().createViewsFromModel();
+    }
+
+    public HandView getHumanPileHandler(){
+        return playerViews[0].getPile();
+    }
+
     public boolean isRoundOver(){
         return roundOver;
     }

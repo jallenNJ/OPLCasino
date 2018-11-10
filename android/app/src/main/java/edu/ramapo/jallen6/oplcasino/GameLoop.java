@@ -350,7 +350,8 @@ public class GameLoop extends AppCompatActivity {
 
         }
         if(currentRound.getSelectedTableSize() > 0){
-            ((RadioButton) findViewById(R.id.captureRadio)).setChecked(true);
+          //  ((RadioButton) findViewById(R.id.captureRadio)).setChecked(true);
+            ((RadioGroup) findViewById(R.id.actionRadio)).check(R.id.captureRadio);
             ((RadioButton) findViewById(R.id.trailRadio)).setClickable(false);
         }
     }

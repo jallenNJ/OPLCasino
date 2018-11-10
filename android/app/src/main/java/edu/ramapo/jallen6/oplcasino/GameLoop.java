@@ -3,14 +3,11 @@ package edu.ramapo.jallen6.oplcasino;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -152,29 +149,37 @@ public class GameLoop extends AppCompatActivity {
         Collections.sort(targets, Collections.<Integer>reverseOrder());
         LinearLayout view = findViewById(R.id.tableScroll);
         for(int i =0; i < targets.size(); i++){
-            //+1 is to skip over the label
-            view.removeViewAt(i+1);
-            tableButtonIds.remove(i);
+
+            ImageButton current = findViewById(tableButtonIds.get(targets.get(i)));
+            view.removeView(current);
+            tableButtonIds.remove(new Integer(current.getId()));
+            addCardToPile(true);
         }
     }
 
-  /*  private void addCardToPile(ImageButton ref, boolean forHuman){
-        if(ref == null){
-            return;
-        }
+    private void addCardToPile(boolean forHuman){
         LinearLayout view;
+        HandView pile;
         if(forHuman){
             view = (LinearLayout)findViewById(R.id.humanPileLayout);
+            pile = currentRound.getHumanPileHandler();
         } else{
             //computer here
+            view = null;
+            pile = null;
         }
 
+        pile.createViewsFromModel();
+       // ref.setClickable(false);
+        int startingIndex = view.getChildCount() - 1;
+        for(int i = startingIndex; i < pile.size(); i++){
+            ImageButton newCard = generateButton();
+            newCard.setClickable(false);
+            pile.displayCard(newCard, i);
+            view.addView(newCard);
+        }
 
-
-
-
-
-    }*/
+    }
 
 
     public void onRadioButtonChange(int id){

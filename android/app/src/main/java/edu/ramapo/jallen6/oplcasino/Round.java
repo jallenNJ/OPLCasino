@@ -6,11 +6,12 @@ public class Round {
     private int roundNum = 0;
     private PlayerID startingPlayer;
     private Deck deck;
-    private HandView tableView;
+
     private Hand table;
     private Player[] players;
-    private PlayerView[] playerViews;
+
     private Vector<PlayerID> moveQueue;
+
     private PlayerMove lastMove;
 
     final int humanID = PlayerID.humanPlayer.ordinal();
@@ -45,20 +46,21 @@ public class Round {
     private void initRound(){
         roundOver = false;
         players = new Player[2];
-        playerViews = new PlayerView[2];
+
         deck = new Deck();
+
 
         players[humanID]= new Human();
         players[humanID].addCardsToHand(deck.getFourCards());
-        playerViews[humanID] = new PlayerView(players[humanID]);
+
 
         players[compID]= new Computer();
         players[compID].addCardsToHand(deck.getFourCards());
-        playerViews[compID] = new PlayerView(players[compID]);
+
 
         table = new Hand(false);
         deck.dealFourCardsToHand(table);
-        tableView = new HandView(table, false);
+
 
         moveQueue = new Vector<PlayerID>(2,1);
         lastCapturer = PlayerID.humanPlayer;
@@ -66,6 +68,16 @@ public class Round {
         lastMove = null;
         fillMoveQueue(startingPlayer);
     }
+
+    public Player[] getPlayers(){
+        return players;
+    }
+
+    public Hand getTable(){
+        return table;
+    }
+
+
     private void fillMoveQueue(PlayerID start){
         PlayerID other;
         if(start == PlayerID.humanPlayer){
@@ -83,31 +95,10 @@ public class Round {
         }
     }
 
-    public HandView getHumanHandHandler(){
-        return playerViews[0].getHand();
-    }
 
-    public HandView getComputerHandHandler(){
-       return playerViews[1].getHand();
-    }
 
-    public HandView getTableHandHandler(){
-        return tableView;
-    }
 
-    public void updateViews(){
-        playerViews[0].getHand().createViewsFromModel();
-        playerViews[1].getHand().createViewsFromModel();
-    }
 
-    public void updatePileViews(){
-        playerViews[0].getPile().createViewsFromModel();
-        playerViews[1].getPile().createViewsFromModel();
-    }
-
-    public HandView getHumanPileHandler(){
-        return playerViews[0].getPile();
-    }
 
     public boolean isRoundOver(){
         return roundOver;

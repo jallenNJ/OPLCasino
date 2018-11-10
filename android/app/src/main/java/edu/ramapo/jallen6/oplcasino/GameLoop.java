@@ -22,7 +22,8 @@ import static edu.ramapo.jallen6.oplcasino.PlayerActions.Invalid;
 import static edu.ramapo.jallen6.oplcasino.PlayerActions.Trail;
 
 public class GameLoop extends AppCompatActivity {
-    Round currentRound;
+    RoundView currentRoundView;
+    Round   currentRound;
     final int selectedColor = Color.CYAN;
     final int normalColor = Color.WHITE;
     private Vector<Integer> humanHandIds;
@@ -42,6 +43,7 @@ public class GameLoop extends AppCompatActivity {
         Intent intent = getIntent();
         boolean humanStarting = intent.getBooleanExtra("humanFirst", true);
         currentRound = new Round(0, humanStarting);
+        currentRoundView = new RoundView(currentRound);
         ActionLog.init();
         ActionLog.addLog("New game started!");
         updateLogButton();
@@ -162,7 +164,7 @@ public class GameLoop extends AppCompatActivity {
         HandView pile;
         if(forHuman){
             view = (LinearLayout)findViewById(R.id.humanPileLayout);
-            pile = currentRound.getHumanPileHandler();
+            pile = currentRoundView.getHumanPileHandler();
         } else{
             //computer here
             view = null;
@@ -208,10 +210,10 @@ public class GameLoop extends AppCompatActivity {
         HandView handler;
         Vector<ImageButton> buttons;
         if (forHuman) {
-            handler = currentRound.getHumanHandHandler();
+            handler = currentRoundView.getHumanHandHandler();
             buttons = humanHandButtons;
         } else {
-            handler = currentRound.getComputerHandHandler();
+            handler = currentRoundView.getComputerHandHandler();
             buttons = compHandButtons;
         }
 
@@ -252,7 +254,7 @@ public class GameLoop extends AppCompatActivity {
     }
 
     private void initDisplayCards(){
-        HandView handler = currentRound.getHumanHandHandler();
+        HandView handler = currentRoundView.getHumanHandHandler();
         humanHandIds = new Vector<Integer>(4,1);
         humanHandIds.add(R.id.hcard1);
         humanHandIds.add(R.id.hcard2);
@@ -270,7 +272,7 @@ public class GameLoop extends AppCompatActivity {
         handler.displayCard((ImageButton) findViewById(R.id.hcard3), 2);
         handler.displayCard((ImageButton) findViewById(R.id.hcard4), 3);
 
-        handler = currentRound.getComputerHandHandler();
+        handler = currentRoundView.getComputerHandHandler();
         compHandIds = new Vector<Integer>(4,1);
         compHandIds.add(R.id.ccard1);
         compHandIds.add(R.id.ccard2);
@@ -290,7 +292,7 @@ public class GameLoop extends AppCompatActivity {
         handler.displayCard((ImageButton) findViewById(R.id.ccard4), 3);
         setClickableForVector(compHandIds, false);
 
-        handler = currentRound.getTableHandHandler();
+        handler = currentRoundView.getTableHandHandler();
         tableButtonIds = new Vector<Integer>(4,4);
         for(int i =0; i < 4; i++){
             handler.displayCard(addButtonToTable(), i);
@@ -300,7 +302,7 @@ public class GameLoop extends AppCompatActivity {
     }
 
     private void clearTableSelection(){
-        currentRound.getTableHandHandler().unSelectAllCards();
+        currentRoundView.getTableHandHandler().unSelectAllCards();
         LinearLayout table = findViewById(R.id.tableScroll);
         for(int i =0; i < tableButtonIds.size(); i++){
             ImageButton current = findViewById(tableButtonIds.get(i));
@@ -311,7 +313,7 @@ public class GameLoop extends AppCompatActivity {
 
     private void selectRequiredCards(){
         Vector<Integer> targetCards = currentRound.findMatchingIndexOnTable();
-        HandView handler = currentRound.getTableHandHandler();
+        HandView handler = currentRoundView.getTableHandHandler();
         for(int i =0; i < targetCards.size(); i++){
             ImageButton current = findViewById(tableButtonIds.get(targetCards.get(i)));
             current.setBackgroundColor(selectedColor);
@@ -326,10 +328,10 @@ public class GameLoop extends AppCompatActivity {
 
         boolean isHuman = false;
         if((view.getTag()).toString().equals("Human")){
-            viewHandler = currentRound.getHumanHandHandler();
+            viewHandler = currentRoundView.getHumanHandHandler();
             isHuman = true;
         }else{
-            viewHandler = currentRound.getComputerHandHandler();
+            viewHandler = currentRoundView.getComputerHandHandler();
         }
 
         if (viewHandler == null) {
@@ -386,7 +388,7 @@ public class GameLoop extends AppCompatActivity {
         toggleButtonColor(chosen);
         int index = tableButtonIds.indexOf(view.getId());
         if(isSelected(chosen)){
-            currentRound.getTableHandHandler().selectCard(index);
+            currentRoundView.getTableHandHandler().selectCard(index);
         }else{
             //currentRound.getTableHandHandler().
         }
@@ -488,7 +490,7 @@ public class GameLoop extends AppCompatActivity {
                 //Todo:Check for round over
 
                 if(currentRound.getLastAction() == PlayerActions.Trail){
-                    currentRound.getTableHandHandler().displaySelected(addButtonToTable());
+                    currentRoundView.getTableHandHandler().displaySelected(addButtonToTable());
                 } else if(currentRound.getLastAction() == Build){
                     //Handle builds here
                 } else{
@@ -506,13 +508,13 @@ public class GameLoop extends AppCompatActivity {
 
                 }
 
-                if(currentRound.getHumanHandHandler().size() == 4 && currentRound.getComputerHandHandler().size() ==4){
-                    currentRound.updateViews();
+                if(currentRoundView.getHumanHandHandler().size() == 4 && currentRoundView.getComputerHandHandler().size() ==4){
+                    currentRoundView.updateViews();
                     updateHandButtons(true, true);
                     updateHandButtons(false, true);
 
-                    HandView human = currentRound.getHumanHandHandler();
-                    HandView comp = currentRound.getComputerHandHandler();
+                    HandView human = currentRoundView.getHumanHandHandler();
+                    HandView comp = currentRoundView.getComputerHandHandler();
                     for(int i=0; i < 4; i++){
                         human.displayCard(humanHandButtons.get(i), i);
                         comp.displayCard(compHandButtons.get(i), i);

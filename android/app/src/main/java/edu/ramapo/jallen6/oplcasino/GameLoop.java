@@ -12,6 +12,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -329,12 +330,13 @@ public class GameLoop extends AppCompatActivity {
 
     private void clearTableSelection(){
         currentRoundView.getTableHandHandler().unSelectAllCards();
-        LinearLayout table = findViewById(R.id.tableScroll);
+      //  LinearLayout table = findViewById(R.id.tableScroll);
         for(int i =0; i < tableButtonIds.size(); i++){
             ImageButton current = findViewById(tableButtonIds.get(i));
             current.setBackgroundColor(normalColor);
             current.setClickable(true);
         }
+        ((RadioButton) findViewById(R.id.trailRadio)).setClickable(true);
     }
 
     private void selectRequiredCards(){
@@ -346,6 +348,10 @@ public class GameLoop extends AppCompatActivity {
             current.setClickable(false);
             handler.selectCard(targetCards.get(i));
 
+        }
+        if(currentRound.getSelectedTableSize() > 0){
+            ((RadioButton) findViewById(R.id.captureRadio)).setChecked(true);
+            ((RadioButton) findViewById(R.id.trailRadio)).setClickable(false);
         }
     }
 

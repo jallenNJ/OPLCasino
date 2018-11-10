@@ -130,6 +130,9 @@ public class Round {
         players[moveQueue.get(0).ordinal()].setMoveToUse(pass);
     }
 
+    public int getSelectedTableSize(){
+        return table.getAmountSelect();
+    }
     public boolean doNextPlayerMove() {
         if (moveQueue.size() == 0) {
             fillMoveQueue(startingPlayer);

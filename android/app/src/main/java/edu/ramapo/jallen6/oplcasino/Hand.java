@@ -66,6 +66,10 @@ public class Hand extends Observable {
         selectedIndices.remove(index);
     }
 
+    public int getAmountSelect(){
+        return selectedIndices.size();
+    }
+
     public void unSelectAllCards(){
 
         selectedIndices.clear();

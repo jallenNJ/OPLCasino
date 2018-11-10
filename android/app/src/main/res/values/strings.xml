@@ -18,4 +18,5 @@
     <string name="caputreAction">Capture</string>
     <string name="buildAction">Build</string>
     <string name="trailAction">Trail</string>
+    <string name="topPlayerPileLabel"> Computer Pile </string>
 </resources>

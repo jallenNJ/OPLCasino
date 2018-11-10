@@ -87,7 +87,9 @@ public class GameLoop extends AppCompatActivity {
         label.setText("Deck: "+ deckHandler.size() + "Cards");
 
         //TODO: Find a way to clear or update the view
-      //  view.removeAllViewsInLayout();
+        deckHandler.createViewsFromModel();
+        view.removeAllViewsInLayout();
+        view.addView(label);
         for(int i =0; i < deckHandler.size(); i++){
             ImageButton current = generateButton();
             current.setClickable(false);
@@ -545,6 +547,7 @@ public class GameLoop extends AppCompatActivity {
 
                 setUpButtonsForNextPlayer();
                 clearTableSelection();
+                updateDeckScroll();
                // setSubmitButton(false. false);
 
 

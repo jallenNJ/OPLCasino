@@ -32,5 +32,15 @@ public class Build extends CardType {
         return returnVal;
     }
 
+    public String toString(){
+        String formatted = "[ ";
+        for(int i=0; i < cards.size(); i++){
+            formatted += cards.get(i).toString() + " ";
+        }
+        formatted += "]";
+        return formatted;
+
+
+    }
 
 }

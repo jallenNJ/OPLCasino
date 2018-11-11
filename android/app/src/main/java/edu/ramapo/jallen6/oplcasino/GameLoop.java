@@ -200,7 +200,7 @@ public class GameLoop extends AppCompatActivity {
         LinearLayout view = findViewById(R.id.tableScroll);
         for(int i =0; i < targets.size(); i++){
 
-            ImageButton current = findViewById(tableButtonIds.get(targets.get(i)));
+            View current = findViewById(tableButtonIds.get(targets.get(i)));
             view.removeView(current);
             tableButtonIds.remove(new Integer(current.getId()));
             if(currentRound.getLastCapturer() == PlayerID.humanPlayer){
@@ -358,7 +358,8 @@ public class GameLoop extends AppCompatActivity {
         currentRoundView.getTableHandHandler().unSelectAllCards();
       //  LinearLayout table = findViewById(R.id.tableScroll);
         for(int i =0; i < tableButtonIds.size(); i++){
-            ImageButton current = findViewById(tableButtonIds.get(i));
+            //TODO, add better handling than parent view
+            View current = findViewById(tableButtonIds.get(i));
             current.setBackgroundColor(normalColor);
             current.setClickable(true);
         }
@@ -369,7 +370,8 @@ public class GameLoop extends AppCompatActivity {
         Vector<Integer> targetCards = currentRound.findMatchingIndexOnTable();
         HandView handler = currentRoundView.getTableHandHandler();
         for(int i =0; i < targetCards.size(); i++){
-            ImageButton current = findViewById(tableButtonIds.get(targetCards.get(i)));
+            //TODO: Add better handling than parent view
+            View current = findViewById(tableButtonIds.get(targetCards.get(i)));
             current.setBackgroundColor(selectedColor);
             current.setClickable(false);
             handler.selectCard(targetCards.get(i));
@@ -498,8 +500,9 @@ public class GameLoop extends AppCompatActivity {
     }
 
     private void setClickableForVector(Vector<Integer> buttonIds, boolean value){
+        //TODO: Add better handling for Builds than treating as view
         for(int i =0; i < buttonIds.size(); i++){
-            ImageButton current = findViewById(buttonIds.get(i));
+            View current = findViewById(buttonIds.get(i));
             current.setClickable(value);
         }
     }
@@ -561,6 +564,7 @@ public class GameLoop extends AppCompatActivity {
 
                     table.displayBuild(newBuild, index);
                     ((LinearLayout) findViewById(R.id.tableScroll)).addView(newBuild);
+                    tableButtonIds.add(newBuild.getId());
 
                  //   ((LinearLayout) findViewById(R.id.tableScroll)).addView
                    //         (currentRoundView.getTableHandHandler().displayBuild(generateBuildLayout(currentRoundView.getTableHandHandler().getNeededButtonForIndex()))  )

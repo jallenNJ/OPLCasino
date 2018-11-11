@@ -155,22 +155,42 @@ public class Round {
         moveQueue.remove(0);
 
         players[index].addMoveToLog(result, table);
-        if (result.getAction() == PlayerActions.Trail) {
-            table.addCard(players[index].removeCardFromHand(result.getHandCardIndex()));
-        } else {
+        Vector<Integer> indices = result.getTableCardIndices();
+        switch (result.getAction()){
 
-            if (result.getAction() == PlayerActions.Capture) {
+            case Trail:
+                table.addCard(players[index].removeCardFromHand(result.getHandCardIndex()));
+                break;
+
+            case Capture:
                 lastCapturer = currentId;
-            }
+                players[index].addCardToPile(players[index].removeCardFromHand(result.getHandCardIndex()));
+                //Player move indices are sorted descending, therefore can iterate normally
 
-            players[index].addCardToPile(players[index].removeCardFromHand(result.getHandCardIndex()));
-            //Player move indices are sorted descending, therefore can iterate normally
-            Vector<Integer> indices = result.getTableCardIndices();
-            for (int i = 0; i < result.getTableCardIndiciesSize(); i++) {
-                //TODO: Check cast option when builds are added
-                players[index].addCardToPile((Card) table.removeCard(indices.get(i)));
-            }
+                for (int i = 0; i < result.getTableCardIndiciesSize(); i++) {
+                    //TODO: Check cast option when builds are added
+                    players[index].addCardToPile((Card) table.removeCard(indices.get(i)));
+                }
+                break;
+            case Build:
+                Vector<Card> buildCards = new Vector<Card>(5,1);
+                buildCards.add((Card)players[index].getHand().removeCard(result.getHandCardIndex()));
+                for(int i =0; i < indices.size(); i++){
+                    buildCards.add((Card)table.removeCard(indices.get(i)));
+                }
+                table.addCard(new Build(buildCards));
+
+
+
+
+
+
+             break;
+
+
+
         }
+
 
 
         lastMove = new PlayerMove(result);

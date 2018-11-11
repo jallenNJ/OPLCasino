@@ -3,14 +3,11 @@ package edu.ramapo.jallen6.oplcasino;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
-import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -328,42 +325,6 @@ public class GameLoop extends AppCompatActivity {
         }
 
         setSubmitButton(false, false);
-
-        //Test build code
-        Button newButton = new Button(this);
-        newButton.setId(View.generateViewId());
-        newButton.setText("9");
-
-
-        ImageButton testImage = generateButton();
-        testImage.setImageResource(R.drawable.s3);
-        ImageButton testImage2 = generateButton();
-        testImage2.setImageResource(R.drawable.h6);
-        /*ImageButton testImage = new ImageButton(this);
-        testImage.setId(View.generateViewId());
-        testImage.setImageResource(R.drawable.s3);
-        testImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
-        ImageButton testImage2 = new ImageButton(this);
-        testImage2.setId(View.generateViewId());
-        testImage2.setImageResource(R.drawable.d6);
-        testImage2.setScaleType(ImageView.ScaleType.CENTER_CROP);*/
-
-
-        LinearLayout test = new LinearLayout(this);
-        test.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        test.setOrientation(LinearLayout.HORIZONTAL);
-        test.addView(newButton);
-        test.addView(testImage);
-        test.addView(testImage2);
-        ((LinearLayout) findViewById(R.id.tableScroll)).addView(test);
-
-        GradientDrawable border = new GradientDrawable();
-        border.setColor(Color.BLUE); //white background
-        border.setStroke(15, 0xFF000000); //black border with full opacity
-        test.setBackground(border);
-
-
 
     }
 

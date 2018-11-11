@@ -169,7 +169,13 @@ public class Round {
 
                 for (int i = 0; i < result.getTableCardIndiciesSize(); i++) {
                     //TODO: Check cast option when builds are added
-                    players[index].addCardToPile((Card) table.removeCard(indices.get(i)));
+                    if(table.peekCard((indices.get(i))).getSuit() == CardSuit.build){
+                     //   players[index].addCardsToPile((Card[]) (((Build)table.removeCard(indices.get(i))).getCards().toArray()));
+                        players[index].addCardsToPile( (((Build)table.removeCard(indices.get(i))).getCardsAsArray()));
+                    } else{
+                        players[index].addCardToPile((Card) table.removeCard(indices.get(i)));
+                    }
+
                 }
                 break;
             case Build:

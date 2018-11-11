@@ -24,6 +24,13 @@ public class Build extends CardType {
     public Vector<Card> getCards(){
         return new Vector<Card>(cards);
     }
+    public Card[] getCardsAsArray(){
+        Card[] returnVal = new Card[cards.size()];
+        for(int i =0; i < cards.size(); i++){
+            returnVal [i] = new Card(cards.get(i));
+        }
+        return returnVal;
+    }
 
 
 }

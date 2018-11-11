@@ -44,6 +44,21 @@ public abstract class Player {
         return true;
     }
 
+    public boolean doesHandContain(int val){
+        if(val < 0 || val > 14){
+            return false;
+        }
+        if(val == 14 ){
+            val = 1;
+        }
+        for(int i =0; i < hand.size(); i++){
+            if(hand.peekCard(i).getValue() == val){
+                return true;
+            }
+        }
+        return  false;
+    }
+
     public boolean addCardsToPile(Card[] add){
         for(int i =0; i < add.length; i++){
             addCardToPile(add[i]);

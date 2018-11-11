@@ -220,7 +220,7 @@ public class Round {
         if (action == PlayerActions.Capture) {
             return checkCapture(move, playerID);
         } else if (action == PlayerActions.Build) {
-            return false;
+            return checkBuild(move, playerID);
         } else if (action == PlayerActions.Trail) {
             return checkTrail(move, playerID);
         } else {
@@ -240,6 +240,24 @@ public class Round {
             }
         }
         return true;
+    }
+
+    private boolean checkBuild(PlayerMove move, int playerID){
+        int playedValue = players[playerID].getHand().peekCard(move.getHandCardIndex()).getValue();
+        Vector<Integer> selected = move.getTableCardIndices();
+        if (selected.size() == 0) {
+            return false;
+        }
+
+        int sum = playedValue;
+        for (int i = 0; i < selected.size(); i++) {
+            sum += table.peekCard(selected.get(i)).getValue();
+        }
+        if(sum > 14){
+            return false;
+        }
+        return players[playerID].doesHandContain(sum);
+
     }
 
     private boolean checkTrail(PlayerMove move, int playerID) {

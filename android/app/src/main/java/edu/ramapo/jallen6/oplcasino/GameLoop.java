@@ -3,6 +3,7 @@ package edu.ramapo.jallen6.oplcasino;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -144,6 +145,31 @@ public class GameLoop extends AppCompatActivity {
         newButton.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         return newButton;
+
+    }
+
+    public LinearLayout generateBuildLayout(int buttonAmount){
+        LinearLayout buildLayout = new LinearLayout(this);
+        buildLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        buildLayout.setOrientation(LinearLayout.HORIZONTAL);
+        buildLayout.setId(View.generateViewId());
+
+        Button valueButton = new Button(this);
+        valueButton.setId(View.generateViewId());
+        buildLayout.addView(valueButton);
+
+        for(int i =0; i < buttonAmount; i++){
+            ImageButton current = generateButton();
+            current.setClickable(false);
+            buildLayout.addView(current);
+
+        }
+        GradientDrawable border = new GradientDrawable();
+        border.setColor(Color.BLUE); //white background
+        border.setStroke(15, 0xFF000000); //black border with full opacity
+        buildLayout.setBackground(border);
+        return buildLayout;
+
 
     }
 
@@ -526,6 +552,19 @@ public class GameLoop extends AppCompatActivity {
                     currentRoundView.getTableHandHandler().displaySelected(addButtonToTable());
                 } else if(currentRound.getLastAction() == Build){
                     //Handle builds here
+                    removeButtonsFromTable(currentRound.getLastPlayerMove().getTableCardIndices());
+
+                    HandView table = currentRoundView.getTableHandHandler();
+                    int index = table.size()-1;
+                    int cardsNeeded = table.getNeededButtonForIndex(index);
+                    LinearLayout newBuild = generateBuildLayout(cardsNeeded);
+
+                    table.displayBuild(newBuild, index);
+                    ((LinearLayout) findViewById(R.id.tableScroll)).addView(newBuild);
+
+                 //   ((LinearLayout) findViewById(R.id.tableScroll)).addView
+                   //         (currentRoundView.getTableHandHandler().displayBuild(generateBuildLayout(currentRoundView.getTableHandHandler().getNeededButtonForIndex()))  )
+                   // ((LinearLayout) findViewById(R.id.tableScroll)).addView(generateBuildLayout(2));
                 } else{
                     //Capture
                     removeButtonsFromTable(currentRound.getLastPlayerMove().getTableCardIndices());

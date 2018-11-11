@@ -180,4 +180,8 @@ public class CardView extends BaseView {
         }
 
     }
+
+   public  int getRequiredButtons(){
+        return 1;
+    }
 }

@@ -1,10 +1,37 @@
 package edu.ramapo.jallen6.oplcasino;
 
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-public class BuildView extends CardView {
+import java.util.Vector;
 
-    BuildView(){
+public class BuildView extends CardView {
+    Build model;
+    Vector<CardView> cards;
+
+    BuildView(Build master){
+        model = master;
+        cards = new Vector<CardView>(4,1);
+        Vector<Card> models = model.getCards();
+        for(int i =0; i < models.size(); i++){
+            cards.add(new CardView(models.get(i)));
+        }
+    }
+
+    public int getRequiredButtons(){
+        return cards.size();
+    }
+
+    public void drawBuild(LinearLayout layout){
+        if(layout.getChildCount() != cards.size() +1){
+            return;
+        }
+        ((Button)layout.getChildAt(0)).setText(Integer.toString(model.getValue()));
+        for(int i =0; i < cards.size(); i++){
+            cards.get(i).setButton(((ImageButton) layout.getChildAt(i+1)));
+        }
+
 
     }
 }

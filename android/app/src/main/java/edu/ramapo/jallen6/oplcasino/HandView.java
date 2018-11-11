@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 ;import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
@@ -64,6 +65,29 @@ public class HandView extends BaseView implements Observer {
         hand.get(cardIndex).setButton(button);
     }
 
+    public void displayBuild(LinearLayout layout, int index){
+        if(layout == null || index < 0 || index >= hand.size() ) {
+            return;
+        }
+        ((BuildView)hand.get(index)).drawBuild(layout);
+    }
+
+   /* public boolean isBuildAt(int index){
+        if(index < 0 || index >+ hand.size()){
+            return false;
+        }
+
+        return hand.get(index).getModelSuit() == CardSuit.build;
+    }*/
+
+    public int getNeededButtonForIndex(int index){
+        if(index< 0 || index >= hand.size()){
+            return 0;
+        }
+
+        return hand.get(index).getRequiredButtons();
+    }
+
     public void displaySelected(ImageButton button){
         if(button == null || displayPool == null){
             return;
@@ -73,6 +97,8 @@ public class HandView extends BaseView implements Observer {
         displayPool = null;
 
     }
+
+
 
    /* public void addCard(Card add){
         model.addCard(add);
@@ -103,7 +129,13 @@ public class HandView extends BaseView implements Observer {
             if(current == null){
                 return;
             }
-            hand.add(new CardView((Card) current));
+
+            if(current.getSuit() == CardSuit.build){
+                hand.add(new BuildView((Build)current));
+            } else{
+                hand.add(new CardView((Card) current));
+            }
+
             index++;
         }
 

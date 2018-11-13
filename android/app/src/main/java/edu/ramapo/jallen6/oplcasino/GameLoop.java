@@ -168,6 +168,14 @@ public class GameLoop extends AppCompatActivity {
         border.setColor(Color.BLUE); //white background
         border.setStroke(15, 0xFF000000); //black border with full opacity
         buildLayout.setBackground(border);
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tableCardClick(view);
+            }
+        };
+
+        buildLayout.setOnClickListener(clickListener);
         return buildLayout;
 
 
@@ -444,7 +452,7 @@ public class GameLoop extends AppCompatActivity {
     }
 
     public void tableCardClick(View view){
-        ImageButton chosen = findViewById(view.getId());
+        View chosen = findViewById(view.getId());
 
         toggleButtonColor(chosen);
         int index = tableButtonIds.indexOf(view.getId());
@@ -465,7 +473,7 @@ public class GameLoop extends AppCompatActivity {
         return background.getColor();
     }
 
-    private boolean isSelected (ImageButton ref){
+    private boolean isSelected (View ref){
         if(ref == null){
             return false;
         }
@@ -473,7 +481,7 @@ public class GameLoop extends AppCompatActivity {
         //int bgID = background.getColor();
         return getBackgroundColorID(ref) == selectedColor;
     }
-    private void toggleButtonColor(ImageButton ref){
+    private void toggleButtonColor(View ref){
         if(ref == null){
             return;
         }

@@ -90,13 +90,25 @@ public abstract class Player {
         return true;
     }
 
-    public boolean reserveBuildValue(Card res){
+    public boolean reserveBuildValue(Build res){
         reservedValues.add(res.getValue());
         return true;
     }
-    public boolean releaseBuildValue(Card res){
-        reservedValues.remove(res.getValue());
+    public boolean releaseBuildValue(CardType res){
+        reservedValues.removeElement(res.getValue());
         return true;
+    }
+
+    public boolean hasReservedValue(){
+        return reservedValues.size() > 0;
+    }
+    public boolean isReservedValue(int val){
+        for(int i =0; i < reservedValues.size(); i++){
+            if(reservedValues.get(i) == val){
+                return true;
+            }
+        }
+        return false;
     }
 
    public void addMoveToLog(PlayerMove move, Hand table){

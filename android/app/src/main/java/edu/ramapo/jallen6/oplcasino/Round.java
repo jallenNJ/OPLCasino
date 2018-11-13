@@ -164,11 +164,18 @@ public class Round {
 
             case Capture:
                 lastCapturer = currentId;
+                if(players[index].hasReservedValue()){
+
+                    players[index].releaseBuildValue(players[index].getHand().
+                                peekCard(result.getHandCardIndex()));
+                }
                 players[index].addCardToPile(players[index].removeCardFromHand(result.getHandCardIndex()));
                 //Player move indices are sorted descending, therefore can iterate normally
 
                 for (int i = 0; i < result.getTableCardIndiciesSize(); i++) {
                     //TODO: Check cast option when builds are added
+                    //TODO: FIX NULL POINTER; something to do with reserved build values and move being rejected
+                    //  possibly not being cleared
                     if(table.peekCard((indices.get(i))).getSuit() == CardSuit.build){
                      //   players[index].addCardsToPile((Card[]) (((Build)table.removeCard(indices.get(i))).getCards().toArray()));
                         players[index].addCardsToPile( (((Build)table.removeCard(indices.get(i))).getCardsAsArray()));
@@ -184,7 +191,9 @@ public class Round {
                 for(int i =0; i < indices.size(); i++){
                     buildCards.add((Card)table.removeCard(indices.get(i)));
                 }
-                table.addCard(new Build(buildCards));
+                Build newBuild = new Build(buildCards);
+                table.addCard(newBuild);
+                players[index].reserveBuildValue(newBuild);
 
 
 
@@ -270,6 +279,9 @@ public class Round {
 
     private boolean checkBuild(PlayerMove move, int playerID){
         int playedValue = players[playerID].getHand().peekCard(move.getHandCardIndex()).getValue();
+        if(players[playerID].isReservedValue(playedValue)){
+            return false;
+        }
         Vector<Integer> selected = move.getTableCardIndices();
         if (selected.size() == 0) {
             return false;
@@ -287,7 +299,8 @@ public class Round {
     }
 
     private boolean checkTrail(PlayerMove move, int playerID) {
-        return true;
+        return !players[playerID].hasReservedValue();
+        //return true;
     }
 
 

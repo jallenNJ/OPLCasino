@@ -1,9 +1,14 @@
 package edu.ramapo.jallen6.oplcasino;
 
 
+import android.graphics.Color;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import java.io.File;
 import java.util.Vector;
@@ -21,7 +26,7 @@ public class LoadScreen extends AppCompatActivity {
         Vector<String> result = new Vector<String>();
 
         File folder =Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        File[] filesInFolder = folder.listFiles(); 
+        File[] filesInFolder = folder.listFiles();
         if(filesInFolder == null){
             return;
         }
@@ -39,9 +44,40 @@ public class LoadScreen extends AppCompatActivity {
             }
         }
 
+        LinearLayout layout = findViewById(R.id.saveButtonLayout);
+        for(String res : result){
+            layout.addView(generateButton(res));
+        }
 
 
+    }
 
+    private Button generateButton(String displayText){
+        //Generate the button and give it an ID
+        Button newButton = new Button(this);
+        newButton.setId(View.generateViewId());
+
+        //Give it a default image
+        newButton.setText(displayText);
+
+        //Set the margins and size
+        LinearLayout.LayoutParams lp = new
+                LinearLayout.LayoutParams(intAsDP(250), intAsDP(50));
+        lp.setMargins(20, 20, 20, 20);
+        newButton.setLayoutParams(lp);
+
+        //Ensure the background is the normal color and the crop is correct
+        newButton.setBackgroundColor(Color.LTGRAY);
+
+        return newButton;
+
+    }
+
+
+    //Copied from the gameLoop file
+    private int intAsDP(int target){
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, target,
+                getResources().getDisplayMetrics());
     }
 
 

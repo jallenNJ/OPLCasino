@@ -13,8 +13,7 @@ public class LoadScreen extends AppCompatActivity {
         setContentView(R.layout.activity_load_screen);
 
 
-
-
+    }
 
 
 }

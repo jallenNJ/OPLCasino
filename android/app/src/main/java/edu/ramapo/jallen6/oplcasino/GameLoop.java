@@ -228,7 +228,7 @@ public class GameLoop extends AppCompatActivity {
         } else{
             //computer here
             view = (LinearLayout)findViewById(R.id.compPileLayout);
-            pile = currentRoundView.getComputerHandHandler();
+            pile = currentRoundView.getComputerPileHandler();
         }
 
         pile.createViewsFromModel();

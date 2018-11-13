@@ -54,6 +54,7 @@ public class RoundView extends BaseView {
     public HandView getHumanPileHandler(){
         return playerViews[0].getPile();
     }
+    public HandView getComputerPileHandler(){return playerViews[1].getPile();}
 
 
 

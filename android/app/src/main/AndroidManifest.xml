@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.ramapo.jallen6.oplcasino">
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -38,7 +39,8 @@
         <activity
             android:name=".ActionLogPopup"
             android:screenOrientation="portrait" />
-        <activity android:name=".LoadScreen"></activity>
+        <activity android:name=".LoadScreen" />
+        <activity android:name=".TurnMenu"></activity>
     </application>
 
 </manifest>

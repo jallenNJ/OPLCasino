@@ -19,4 +19,9 @@
     <string name="buildAction">Build</string>
     <string name="trailAction">Trail</string>
     <string name="topPlayerPileLabel"> Computer Pile </string>
+    <string name="turnMenuTitle">What action would you like to do?</string>
+    <string name="titleMenuSave">Save Game</string>
+    <string name="titleMenuHelp">Ask for Help</string>
+    <string name="titleMenuCancel">Close Menu</string>
+    <string name="turnMenuQuit">Quit the game without saving</string>
 </resources>

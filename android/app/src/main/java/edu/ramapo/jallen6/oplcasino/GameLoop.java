@@ -80,6 +80,11 @@ public class GameLoop extends AppCompatActivity {
 
     }
 
+    public void openTurnMenu(View view){
+        Intent intent = new Intent(this, TurnMenu.class);
+        startActivityForResult(intent,RESULT_CANCELED);
+    }
+
 
     public void updateDeckScroll(){
         DeckView deckHandler = currentRoundView.getDeckViewHandler();
@@ -534,11 +539,25 @@ public class GameLoop extends AppCompatActivity {
             }else{
                 actionGroup.setVisibility(View.INVISIBLE);
             }
+            View.OnClickListener clickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    handleSubmitClick(view);
+                }
+            };
+            submit.setOnClickListener(clickListener);
 
         } else{
             submit.setBackgroundColor(Color.LTGRAY);
             submit.setText(R.string.menuButtonText);
             actionGroup.setVisibility(View.INVISIBLE);
+            View.OnClickListener clickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openTurnMenu(view);
+                }
+            };
+            submit.setOnClickListener(clickListener);
         }
     }
 

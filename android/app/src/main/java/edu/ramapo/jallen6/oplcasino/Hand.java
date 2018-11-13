@@ -57,7 +57,10 @@ public class Hand extends Observable {
             }
 
         } else{
-            selectedIndices.add(index);
+            if(!selectedIndices.contains(index)){
+                selectedIndices.add(index);
+            }
+
             return -1;
         }
     }

@@ -248,12 +248,15 @@ public class GameLoop extends AppCompatActivity {
 
         switch (id){
             case R.id.captureRadio:
+                selectRequiredCards();
                 currentRound.setMoveActionForCurrentPlayer(Capture);
                 break;
             case R.id.buildRadio:
+                clearTableSelection();
                 currentRound.setMoveActionForCurrentPlayer(Build);
                 break;
             case R.id.trailRadio:
+                clearTableSelection();
                 currentRound.setMoveActionForCurrentPlayer(Trail);
                 break;
             default:

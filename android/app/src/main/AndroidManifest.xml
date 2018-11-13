@@ -34,9 +34,10 @@
         <activity
             android:name=".GameLoop"
             android:screenOrientation="portrait" />
-        <activity android:name=".ActionLogPopup"
-            android:screenOrientation="portrait"
-            ></activity>
+        <activity
+            android:name=".ActionLogPopup"
+            android:screenOrientation="portrait" />
+        <activity android:name=".LoadScreen"></activity>
     </application>
 
 </manifest>

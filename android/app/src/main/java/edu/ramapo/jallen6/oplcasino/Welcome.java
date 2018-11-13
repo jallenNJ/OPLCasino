@@ -13,14 +13,18 @@ public class Welcome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        Serializer.init();
     }
 
     /** Called when the user taps the Send button */
     public void newGame(View view) {
         Intent intent = new Intent(this, CoinFlip.class);
-       // EditText editText = (EditText) findViewById(R.id.editText);
-     //   String message = editText.getText().toString();
-       // intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
+        finish();
+    }
+
+    public void loadGame(View view){
+        Intent intent = new Intent(this, LoadScreen.class);
         startActivity(intent);
         finish();
     }

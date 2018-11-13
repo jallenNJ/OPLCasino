@@ -24,6 +24,13 @@ public class Hand extends Observable {
         selectedIndices = new Vector<Integer>(4,4);
     }
 
+    Hand(Hand copy){
+        hand = new Vector<CardType>(copy.hand);
+        selectedIndices = new Vector<Integer>(copy.selectedIndices);
+        selectionLimitedToOne = copy.selectionLimitedToOne;
+        removedIndex = copy.removedIndex;
+    }
+
     public int size(){
         return hand.size();
     }

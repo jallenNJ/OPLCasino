@@ -112,7 +112,13 @@ public abstract class Player {
     }
 
    public void addMoveToLog(PlayerMove move, Hand table){
-        String entry = name + " ";
+        String entry = "";
+        if(name.equals("Advisor")){
+            entry = "Move recommendation: ";
+        }else{
+            entry = name + " ";
+        }
+
         switch (move.getAction()){
             case Capture:
                 entry += "is capturing with " + hand.peekCard(move.getHandCardIndex()).toString() +

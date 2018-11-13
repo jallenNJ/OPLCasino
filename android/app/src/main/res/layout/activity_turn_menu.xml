@@ -37,15 +37,10 @@
             android:text="@string/titleMenuSave" />
 
         <Button
-            android:id="@+id/turnMenuHelp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/titleMenuHelp" />
-
-        <Button
             android:id="@+id/turnMenuCancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="cancelMenu"
             android:text="@string/titleMenuCancel" />
 
         <Button

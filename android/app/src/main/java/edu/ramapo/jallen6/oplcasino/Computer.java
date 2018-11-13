@@ -9,6 +9,14 @@ public class Computer extends Player {
         name = "Computer";
     }
 
+    Computer(Player advisee){
+        //super();
+        name = "Advisor";
+        hand = new Hand(advisee.getHand());
+        pile = new Hand(advisee.getPile());
+
+    }
+
 
     private PlayerMove checkCaptureOptions(final Hand table){
         Vector<Integer> options = new Vector<>(4,1);

@@ -13,6 +13,12 @@ public class TurnMenu extends AppCompatActivity {
     }
 
 
+
+
+    public void cancelMenu (View view){
+        finish();
+    }
+
     public void quitGame (View view){
         finishAffinity();
         System.exit(0);

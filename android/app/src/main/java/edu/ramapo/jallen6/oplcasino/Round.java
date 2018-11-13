@@ -87,6 +87,13 @@ public class Round {
     }
 
 
+    public void generateHelpTip(){
+        Computer advisor = new Computer(players[humanID]);
+        PlayerMove advice = advisor.doMove(table);
+        advisor.addMoveToLog(advice, table);
+    }
+
+
     private void fillMoveQueue(PlayerID start) {
         PlayerID other;
         if (start == PlayerID.humanPlayer) {

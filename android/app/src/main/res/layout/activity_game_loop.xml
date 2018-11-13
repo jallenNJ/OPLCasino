@@ -298,14 +298,14 @@
 
     <Button
         android:id="@+id/roundAskForHelp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="30dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="8dp"
         android:onClick="generateHumanHelp"
-        android:text="Button"
+        android:text="@string/titleMenuHelp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/actionRadio"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/logButton"
+        app:layout_constraintTop_toTopOf="@+id/logTag" />
 
 </android.support.constraint.ConstraintLayout>

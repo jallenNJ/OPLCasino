@@ -45,6 +45,9 @@ public class GameLoop extends AppCompatActivity {
 
         Intent intent = getIntent();
         boolean humanStarting = intent.getBooleanExtra("humanFirst", true);
+        if(humanStarting){
+            findViewById(R.id.roundAskForHelp).setVisibility(View.VISIBLE);
+        }
         currentRound = new Round(0, humanStarting);
         currentRoundView = new RoundView(currentRound);
         ActionLog.init();
@@ -127,6 +130,13 @@ public class GameLoop extends AppCompatActivity {
 
     private void setUpButtonsForNextPlayer() {
         setClickabilityForMove(!humanButtonsAreClickable);
+        Button helpButton = findViewById(R.id.roundAskForHelp);
+        if(humanButtonsAreClickable){
+
+            helpButton.setVisibility(View.VISIBLE);
+        } else{
+            helpButton.setVisibility(View.INVISIBLE);
+        }
     }
 
 
@@ -536,16 +546,14 @@ public class GameLoop extends AppCompatActivity {
         //NOTE: Some functions that call asConfirm as false, always pass false for humanMove
         Button submit = findViewById(R.id.submitButton);
         RadioGroup actionGroup = findViewById(R.id.actionRadio);
-        Button helpButton = findViewById(R.id.roundAskForHelp);
+
         if(asConfirm){
             submit.setBackgroundColor(Color.GREEN);
             submit.setText(R.string.confirmButtonText);
             if(humanMove){
                 actionGroup.setVisibility(View.VISIBLE);
-                helpButton.setVisibility(View.VISIBLE);
             }else{
-                actionGroup.setVisibility(View.INVISIBLE);
-                helpButton.setVisibility(View.INVISIBLE);
+
             }
             View.OnClickListener clickListener = new View.OnClickListener() {
                 @Override
@@ -559,7 +567,6 @@ public class GameLoop extends AppCompatActivity {
             submit.setBackgroundColor(Color.LTGRAY);
             submit.setText(R.string.menuButtonText);
             actionGroup.setVisibility(View.INVISIBLE);
-            helpButton.setVisibility(View.INVISIBLE);
             View.OnClickListener clickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

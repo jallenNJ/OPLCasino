@@ -156,12 +156,6 @@ public class GameLoop extends AppCompatActivity {
     }
 
 
-    private int getTableCardCount() {
-        LinearLayout view = findViewById(R.id.tableScroll);
-        return view.getChildCount();
-    }
-
-
     private ImageButton generateButton(){
         //Generate the button and give it an ID
         ImageButton newButton = new ImageButton(this);
@@ -519,8 +513,7 @@ public class GameLoop extends AppCompatActivity {
         if(ref == null){
             return false;
         }
-       // ColorDrawable background = (ColorDrawable)ref.getBackground();
-        //int bgID = background.getColor();
+
         return getBackgroundColorID(ref) == selectedColor;
     }
     private void toggleButtonColor(View ref){
@@ -625,16 +618,11 @@ public class GameLoop extends AppCompatActivity {
         if(getBackgroundColorID(submit) == Color.GREEN){
             //Do move
 
-           // RadioGroup radioGroup = findViewById(R.id.actionRadio);
-            //radioGroup.
-            //currentRound.setMoveActionForCurrentPlayer(radioGroup.se);
             boolean moveResultState = currentRound.doNextPlayerMove();
             updateLogButton();
             if(moveResultState){
                 //Valid move
-
-
-
+                
                 //Todo:Check for round over
 
                 if(currentRound.getLastAction() == PlayerActions.Trail){
@@ -652,9 +640,6 @@ public class GameLoop extends AppCompatActivity {
                     ((LinearLayout) findViewById(R.id.tableScroll)).addView(newBuild);
                     tableButtonIds.add(newBuild.getId());
 
-                 //   ((LinearLayout) findViewById(R.id.tableScroll)).addView
-                   //         (currentRoundView.getTableHandHandler().displayBuild(generateBuildLayout(currentRoundView.getTableHandHandler().getNeededButtonForIndex()))  )
-                   // ((LinearLayout) findViewById(R.id.tableScroll)).addView(generateBuildLayout(2));
                 } else{
                     //Capture
                     removeButtonsFromTable(currentRound.getLastPlayerMove().getTableCardIndices());
@@ -700,9 +685,6 @@ public class GameLoop extends AppCompatActivity {
                     setSubmitButton(false, false);
                     clearTableSelection();
                 }
-
-
-
 
             }
 

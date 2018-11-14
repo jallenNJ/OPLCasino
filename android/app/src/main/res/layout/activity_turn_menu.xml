@@ -34,6 +34,7 @@
             android:id="@+id/turnMenuSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="saveGame"
             android:text="@string/titleMenuSave" />
 
         <Button

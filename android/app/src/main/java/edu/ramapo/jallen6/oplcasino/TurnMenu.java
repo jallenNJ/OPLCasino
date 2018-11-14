@@ -14,6 +14,10 @@ public class TurnMenu extends AppCompatActivity {
 
 
 
+    public void saveGame(View view){
+        setResult(RESULT_OK);
+        finish();
+    }
 
     public void cancelMenu (View view){
         finish();

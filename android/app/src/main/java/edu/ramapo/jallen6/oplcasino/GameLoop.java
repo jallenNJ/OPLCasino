@@ -46,6 +46,7 @@ public class GameLoop extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_loop);
 
+
         Intent intent = getIntent();
         boolean humanStarting = intent.getBooleanExtra("humanFirst", true);
         if(humanStarting){
@@ -58,6 +59,7 @@ public class GameLoop extends AppCompatActivity {
         ActionLog.init();
         ActionLog.addLog("New game started!");
         updateLogButton();
+
 
         RadioGroup radio = findViewById(R.id.actionRadio);
 
@@ -85,6 +87,7 @@ public class GameLoop extends AppCompatActivity {
     }
 
 
+
     private void updateLogButton(){
         ((Button)findViewById(R.id.logButton)).setText(ActionLog.getLast());
     }
@@ -98,13 +101,25 @@ public class GameLoop extends AppCompatActivity {
 
     public void openTurnMenu(View view){
         Intent intent = new Intent(this, TurnMenu.class);
-        startActivityForResult(intent,RESULT_CANCELED);
+        startActivityForResult(intent, RESULT_FIRST_USER);
+
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == RESULT_FIRST_USER) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                currentRound.serializeRoundState();
+            }
+        }
     }
 
     public void generateHumanHelp(View view){
         currentRound.generateHelpTip();
         updateLogButton();
     }
+
 
 
     public void updateDeckScroll(){
@@ -622,7 +637,7 @@ public class GameLoop extends AppCompatActivity {
             updateLogButton();
             if(moveResultState){
                 //Valid move
-                
+
                 //Todo:Check for round over
 
                 if(currentRound.getLastAction() == PlayerActions.Trail){

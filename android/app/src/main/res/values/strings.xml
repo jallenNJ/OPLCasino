@@ -24,4 +24,6 @@
     <string name="titleMenuHelp">Ask for Help</string>
     <string name="titleMenuCancel">Close Menu</string>
     <string name="turnMenuQuit">Quit the game without saving</string>
+    <string name="bottomPlayerNameCurrent">Human Hand (Current Player)</string>
+    <string name="topPlayerNameCurrent">Computer Hand (Current Player)</string>
 </resources>

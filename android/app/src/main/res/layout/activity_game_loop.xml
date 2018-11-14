@@ -98,10 +98,10 @@
         android:layout_width="50dp"
         android:layout_height="80dp"
         android:layout_marginBottom="8dp"
+        android:tag="Human"
         android:text="@string/bottomPlayerName"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:tag="Human" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <ImageButton
         android:id="@+id/hcard1"

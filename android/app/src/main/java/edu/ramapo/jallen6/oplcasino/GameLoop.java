@@ -16,6 +16,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.Collections;
 import java.util.Vector;
 
@@ -47,6 +49,7 @@ public class GameLoop extends AppCompatActivity {
         boolean humanStarting = intent.getBooleanExtra("humanFirst", true);
         if(humanStarting){
             findViewById(R.id.roundAskForHelp).setVisibility(View.VISIBLE);
+            setPlayerLabel(humanStarting);
         }
         currentRound = new Round(0, humanStarting);
         currentRoundView = new RoundView(currentRound);
@@ -130,6 +133,7 @@ public class GameLoop extends AppCompatActivity {
 
     private void setUpButtonsForNextPlayer() {
         setClickabilityForMove(!humanButtonsAreClickable);
+        setPlayerLabel(humanButtonsAreClickable);
         Button helpButton = findViewById(R.id.roundAskForHelp);
         if(humanButtonsAreClickable){
 
@@ -577,6 +581,25 @@ public class GameLoop extends AppCompatActivity {
         }
     }
 
+    private void setPlayerLabel (boolean humanMove){
+        TextView humanLabel = findViewById(R.id.hHand);
+        TextView compLabel = findViewById(R.id.cHand);
+
+        if(humanMove){
+            humanLabel.setText(R.string.bottomPlayerNameCurrent);
+            compLabel.setText(R.string.topPlayer);
+            humanLabel.setBackgroundColor(Color.YELLOW);
+            compLabel.setBackgroundColor(Color.TRANSPARENT);
+        }else{
+            humanLabel.setText(R.string.bottomPlayerName);
+            compLabel.setText(R.string.topPlayerNameCurrent);
+            humanLabel.setBackgroundColor(Color.TRANSPARENT);
+            compLabel.setBackgroundColor(Color.YELLOW);
+        }
+
+
+
+    }
 
     public void handleSubmitClick(View view){
         if(view.getId() != R.id.submitButton){

@@ -40,8 +40,10 @@
         <activity
             android:name=".ActionLogPopup"
             android:screenOrientation="portrait" />
-        <activity android:name=".LoadScreen" />
-        <activity android:name=".TurnMenu"></activity>
+        <activity android:name=".LoadScreen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".TurnMenu"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -117,8 +117,8 @@ public class GameLoop extends AppCompatActivity {
                 //Request code doesn't matter, as its never being checked to see if we get it.
                 requestPermissions(permissions, 1);
                 Serializer.writeToSaveFile();
-                finishAffinity();
-                System.exit(0);
+           //     finishAffinity();
+            //    System.exit(0);
             }
         }
     }

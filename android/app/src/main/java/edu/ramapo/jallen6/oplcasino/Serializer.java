@@ -15,6 +15,8 @@ public class Serializer {
     private static String table;
     private static String deck;
     private static Vector<String> buildOwners;
+    private static String lastCapturer;
+    private static String nextPlayer;
 
 
     public static void init(){
@@ -25,6 +27,7 @@ public class Serializer {
         table = "";
         deck = "";
         buildOwners = new Vector<String>(4,1);
+        lastCapturer = "";
 
     }
 
@@ -47,6 +50,15 @@ public class Serializer {
         deck = d;
     }
 
+    public static void setLastCapturer(String l){
+        lastCapturer = l;
+    }
+
+    public static void setNextPlayer(String s){
+        nextPlayer = s;
+    }
+
+
 
 
     public static void writeToSaveFile(){
@@ -54,12 +66,27 @@ public class Serializer {
         //File save = new File(directory, "Save.csav");
         try{
             FileWriter outputStream = new FileWriter(new File(directory, "Save.csav"));
-            outputStream.write("Hello World!");
-            outputStream.write("More text");
+            outputStream.write("Round: " +Integer.toString(roundNum)+"\n");
+
+            for(int i =1; i >=0; i--){
+                PlayerSaveData current = players[i];
+                outputStream.write(current.getName() +":\n");
+                outputStream.write("\t Hand: " + current.getHand());
+                outputStream.write("\n\t Pile: " + current.getPile());
+                outputStream.write("\n\n");
+            }
+
+            outputStream.write("Table: " + table);
+            outputStream.write("\n\nLast Capturer: "+ lastCapturer);
+            outputStream.write("\n\nDeck: " + deck);
+            outputStream.write("\n\nNext Player: " + nextPlayer);
+
+            outputStream.flush();
             outputStream.close();
         } catch (Exception e){
             return;
         }
+
 
     }
 

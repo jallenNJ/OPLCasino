@@ -29,6 +29,8 @@ public abstract class Player {
         return pile;
     }
 
+    public String getName(){return name;}
+
     public boolean addCardToHand(Card add){
         hand.addCard(add);
         return true;

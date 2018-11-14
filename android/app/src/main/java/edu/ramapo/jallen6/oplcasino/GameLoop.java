@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -50,6 +51,7 @@ public class GameLoop extends AppCompatActivity {
         if(humanStarting){
             findViewById(R.id.roundAskForHelp).setVisibility(View.VISIBLE);
             setPlayerLabel(humanStarting);
+            findViewById(R.id.compSwitchScroll);
         }
         currentRound = new Round(0, humanStarting);
         currentRoundView = new RoundView(currentRound);
@@ -70,7 +72,15 @@ public class GameLoop extends AppCompatActivity {
         initDisplayCards();
         updateDeckScroll();
         setClickabilityForMove(humanStarting);
+        View.OnClickListener compSwitch = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setSubmitButton(((Switch)(findViewById(R.id.compMoveSwitch))).isChecked(), false);
 
+            }
+        };
+
+        findViewById(R.id.compMoveSwitch).setOnClickListener(compSwitch);
 
     }
 
@@ -138,8 +148,10 @@ public class GameLoop extends AppCompatActivity {
         if(humanButtonsAreClickable){
 
             helpButton.setVisibility(View.VISIBLE);
+            findViewById(R.id.compSwitchScroll).setVisibility(View.INVISIBLE);
         } else{
             helpButton.setVisibility(View.INVISIBLE);
+            findViewById(R.id.compSwitchScroll).setVisibility(View.VISIBLE);
         }
     }
 
@@ -550,8 +562,10 @@ public class GameLoop extends AppCompatActivity {
         //NOTE: Some functions that call asConfirm as false, always pass false for humanMove
         Button submit = findViewById(R.id.submitButton);
         RadioGroup actionGroup = findViewById(R.id.actionRadio);
+        Switch compSwitch = findViewById(R.id.compMoveSwitch);
 
-        if(asConfirm){
+
+        if((asConfirm && humanMove) || (asConfirm && compSwitch.isChecked())){
             submit.setBackgroundColor(Color.GREEN);
             submit.setText(R.string.confirmButtonText);
             if(humanMove){

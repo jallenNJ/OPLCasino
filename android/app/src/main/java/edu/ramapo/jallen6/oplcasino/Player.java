@@ -158,5 +158,9 @@ public abstract class Player {
         moveToUse = move;
     }
 
+    public PlayerSaveData toSaveData(){
+        return new PlayerSaveData(name, 0, hand.toString(), pile.toString());
+    }
+
     public abstract PlayerMove doMove(final Hand table);
 }

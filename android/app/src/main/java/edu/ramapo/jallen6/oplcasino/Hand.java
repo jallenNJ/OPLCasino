@@ -117,4 +117,12 @@ public  int fetchRemovedIndex(){
         return removed;
     }
 
+    public String toString(){
+        String formatted = "";
+        for(int i =0; i < hand.size(); i++){
+            formatted += hand.get(i).toString() + " ";
+        }
+        return formatted;
+    }
+
 }

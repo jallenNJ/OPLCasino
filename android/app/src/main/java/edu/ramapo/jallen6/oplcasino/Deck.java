@@ -67,5 +67,12 @@ public class Deck extends Observable {
         }
         return deck.get(index);
     }
+    public String toString(){
+        String formatted = "";
+        for(int i =0; i < deck.size(); i++){
+            formatted += deck.get(i).toString() + " ";
+        }
+        return formatted;
+    }
 
 }

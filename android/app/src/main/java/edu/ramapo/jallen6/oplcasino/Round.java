@@ -320,7 +320,11 @@ public class Round {
 
 
     public void serializeRoundState(){
-
+        Serializer.setRoundNum(0);
+        //Serializer.setComputerPlayer(p);
+        Serializer.setPlayers(players);
+        Serializer.setDeck(deck.toString());
+        Serializer.setTable(table.toString());
     }
 
 }

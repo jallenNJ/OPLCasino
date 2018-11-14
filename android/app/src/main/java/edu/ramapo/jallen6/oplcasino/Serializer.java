@@ -1,5 +1,9 @@
 package edu.ramapo.jallen6.oplcasino;
 
+import android.os.Environment;
+
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Vector;
 
 public class Serializer {
@@ -24,13 +28,16 @@ public class Serializer {
 
     }
 
+    public static void setRoundNum(int round){
+        roundNum = round;
+    }
 
-    public static void setHumanPlayer(String name, int score, String Hand, String Pile){
-        players[0] = new PlayerSaveData(name, score, Hand, Pile);
+    public static void setPlayers(Player[] rawPlayers){
+        players[0] = rawPlayers[0].toSaveData();
+        players[1] = rawPlayers[1].toSaveData();
     }
-    public static void setComputerPlayer(String name, int score, String Hand, String Pile){
-        players[1] = new PlayerSaveData(name, score, Hand, Pile);
-    }
+
+
 
     public static void setTable(String t){
         table = t;
@@ -41,6 +48,20 @@ public class Serializer {
     }
 
 
+
+    public static void writeToSaveFile(){
+        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        //File save = new File(directory, "Save.csav");
+        try{
+            FileWriter outputStream = new FileWriter(new File(directory, "Save.csav"));
+            outputStream.write("Hello World!");
+            outputStream.write("More text");
+            outputStream.close();
+        } catch (Exception e){
+            return;
+        }
+
+    }
 
 
 }

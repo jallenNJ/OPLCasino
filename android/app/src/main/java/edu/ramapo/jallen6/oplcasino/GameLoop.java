@@ -1,5 +1,6 @@
 package edu.ramapo.jallen6.oplcasino;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -111,6 +112,13 @@ public class GameLoop extends AppCompatActivity {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 currentRound.serializeRoundState();
+                //This is needed to activate the permission from the manifest
+                String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                //Request code doesn't matter, as its never being checked to see if we get it.
+                requestPermissions(permissions, 1);
+                Serializer.writeToSaveFile();
+                finishAffinity();
+                System.exit(0);
             }
         }
     }

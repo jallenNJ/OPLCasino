@@ -322,16 +322,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <CheckBox
+                android:id="@+id/compMovecheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Comp Move Allowed" />
 
-            <Switch
-                android:id="@+id/compMoveSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 

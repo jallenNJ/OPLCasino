@@ -10,12 +10,12 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -50,11 +50,13 @@ public class GameLoop extends AppCompatActivity {
 
         Intent intent = getIntent();
         boolean humanStarting = intent.getBooleanExtra("humanFirst", true);
+
         if(humanStarting){
             findViewById(R.id.roundAskForHelp).setVisibility(View.VISIBLE);
-            setPlayerLabel(humanStarting);
-            findViewById(R.id.compSwitchScroll);
+
+            findViewById(R.id.compSwitchScroll).setVisibility(View.INVISIBLE);
         }
+        setPlayerLabel(humanStarting);
         currentRound = new Round(0, humanStarting);
         currentRoundView = new RoundView(currentRound);
         ActionLog.init();
@@ -74,16 +76,18 @@ public class GameLoop extends AppCompatActivity {
 
         initDisplayCards();
         updateDeckScroll();
+
         setClickabilityForMove(humanStarting);
-        View.OnClickListener compSwitch = new View.OnClickListener() {
+
+        View.OnClickListener compMovecheckBox = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setSubmitButton(((Switch)(findViewById(R.id.compMoveSwitch))).isChecked(), false);
+                setSubmitButton(((CheckBox)(findViewById(R.id.compMovecheckBox))).isChecked(), false);
 
             }
         };
 
-        findViewById(R.id.compMoveSwitch).setOnClickListener(compSwitch);
+        findViewById(R.id.compMovecheckBox).setOnClickListener(compMovecheckBox);
 
     }
 
@@ -578,10 +582,10 @@ public class GameLoop extends AppCompatActivity {
         //NOTE: Some functions that call asConfirm as false, always pass false for humanMove
         Button submit = findViewById(R.id.submitButton);
         RadioGroup actionGroup = findViewById(R.id.actionRadio);
-        Switch compSwitch = findViewById(R.id.compMoveSwitch);
+        CheckBox compCheck = findViewById(R.id.compMovecheckBox);
 
 
-        if((asConfirm && humanMove) || (asConfirm && compSwitch.isChecked())){
+        if((asConfirm && humanMove) || (asConfirm && compCheck.isChecked())){
             submit.setBackgroundColor(Color.GREEN);
             submit.setText(R.string.confirmButtonText);
             if(humanMove){

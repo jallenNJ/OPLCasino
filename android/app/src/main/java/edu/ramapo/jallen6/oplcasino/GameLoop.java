@@ -53,7 +53,18 @@ public class GameLoop extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        boolean humanStarting = intent.getBooleanExtra("humanFirst", true);
+        boolean humanStarting = intent.getBooleanExtra(humanFirstExtra, true);
+        boolean loadedSaveFile = intent.getBooleanExtra(fromSaveGameExtra, false);
+
+
+        ActionLog.init();
+        if(loadedSaveFile){
+            loadSavedData(humanStarting);
+        } else{
+            startFreshGame(humanStarting);
+        }
+
+
 
         if(humanStarting){
             findViewById(R.id.roundAskForHelp).setVisibility(View.VISIBLE);
@@ -61,10 +72,6 @@ public class GameLoop extends AppCompatActivity {
             findViewById(R.id.compSwitchScroll).setVisibility(View.INVISIBLE);
         }
         setPlayerLabel(humanStarting);
-        currentRound = new Round(0, humanStarting);
-        currentRoundView = new RoundView(currentRound);
-        ActionLog.init();
-        ActionLog.addLog("New game started!");
         updateLogButton();
 
 
@@ -76,7 +83,6 @@ public class GameLoop extends AppCompatActivity {
                 onRadioButtonChange(id);
             }
         });
-
 
         initDisplayCards();
         updateDeckScroll();
@@ -95,7 +101,21 @@ public class GameLoop extends AppCompatActivity {
 
     }
 
+    private void startFreshGame(boolean humanStarting){
+        currentRound = new Round(0, humanStarting);
+        currentRoundView = new RoundView(currentRound);
 
+        ActionLog.addLog("New game started!");
+    }
+
+    private void loadSavedData(boolean humanStarting){
+        currentRound = new Round(Serializer.getRoundNum(), humanStarting);
+
+
+        ActionLog.addLog("Save game Loaded!");
+        Serializer.clearLoadedFile();
+
+    }
 
     private void updateLogButton(){
         ((Button)findViewById(R.id.logButton)).setText(ActionLog.getLast());

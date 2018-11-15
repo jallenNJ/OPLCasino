@@ -80,10 +80,8 @@ public class Serializer {
             return;
         }
 
-        for(int i =0; i < fileData.size();i++){
-            String current = fileData.get(i);
-
-        }
+        //Convert to vector and remove blank lines
+        Vector<String> data = removeBlankLines(fileData);
     }
 
     public static void writeToSaveFile(){
@@ -112,6 +110,23 @@ public class Serializer {
             return;
         }
 
+
+    }
+
+    private static Vector<String> removeBlankLines(List<String> input){
+        if(input == null){
+            return new Vector<>(1,1);
+        }
+
+        Vector <String> vector = new Vector<String>(input.size(), 1);
+        for(int i =0; i < input.size(); i++){
+            String current = input.get(i);
+            if(!current.equals("") || current.trim().length() > 0){
+                vector.add(current);
+            }
+        }
+
+        return vector;
 
     }
 

@@ -63,7 +63,7 @@ public class GameLoop extends AppCompatActivity {
         } else{
             startFreshGame(humanStarting);
         }
-
+        currentRoundView = new RoundView(currentRound);
 
 
         if(humanStarting){
@@ -103,15 +103,13 @@ public class GameLoop extends AppCompatActivity {
 
     private void startFreshGame(boolean humanStarting){
         currentRound = new Round(0, humanStarting);
-        currentRoundView = new RoundView(currentRound);
+
 
         ActionLog.addLog("New game started!");
     }
 
     private void loadSavedData(boolean humanStarting){
         currentRound = new Round(Serializer.getRoundNum(), humanStarting);
-
-
         ActionLog.addLog("Save game Loaded!");
         Serializer.clearLoadedFile();
 

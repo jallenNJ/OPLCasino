@@ -24,6 +24,22 @@ public class Hand extends Observable {
         selectedIndices = new Vector<Integer>(4,4);
     }
 
+    Hand(boolean limitSelection, String data){
+        hand = new Vector<CardType>(4,1);
+        selectionLimitedToOne = limitSelection;
+        selectedIndices = new Vector<Integer>(4,4);
+
+        String[] tokens = data.split(" ");
+        for(String token:tokens){
+            //TODO, HANDLE BUILDS
+            if(token.length() != 2){
+                continue;
+            }
+            hand.add(new Card(token));
+        }
+
+    }
+
     Hand(Hand copy){
         hand = new Vector<CardType>(copy.hand);
         selectedIndices = new Vector<Integer>(copy.selectedIndices);

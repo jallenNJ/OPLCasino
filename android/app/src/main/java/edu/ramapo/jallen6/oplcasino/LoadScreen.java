@@ -1,6 +1,7 @@
 package edu.ramapo.jallen6.oplcasino;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -74,6 +75,9 @@ public class LoadScreen extends AppCompatActivity {
             public void onClick(View view) {
                 Serializer.setFileName(((Button) view).getText().toString());
                 Serializer.readInSaveFile();
+                if(Serializer.isFileLoaded()){
+                    swapToGameActivity();
+                }
             }
         };
         newButton.setOnClickListener(clickListener);
@@ -89,5 +93,12 @@ public class LoadScreen extends AppCompatActivity {
                 getResources().getDisplayMetrics());
     }
 
+    private void swapToGameActivity(){
+        Intent intent = new Intent(this, GameLoop.class);
+        intent.putExtra(GameLoop.humanFirstExtra, Serializer.isHumanFirst());
+        intent.putExtra(GameLoop.fromSaveGameExtra, true );
+        startActivity(intent);
+        finish();
+    }
 
 }

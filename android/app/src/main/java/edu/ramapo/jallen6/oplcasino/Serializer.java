@@ -71,6 +71,14 @@ public class Serializer {
         fileName = name;
     }
 
+    public static boolean isHumanFirst(){
+        return nextPlayer.equals("Human");
+    }
+
+
+    public static boolean isFileLoaded(){
+        return fileLoaded;
+    }
 
     public static void readInSaveFile(){
         File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
@@ -113,9 +121,10 @@ public class Serializer {
 
         //Build owners loop is here
 
-        lastCapturer = parsedData.get(parsedData.size()-3);
+        lastCapturer = parsedData.get(parsedData.size()-3).trim();
         deck = parsedData.get(parsedData.size()-2);
-        nextPlayer = parsedData.lastElement();
+        nextPlayer = parsedData.lastElement().trim();
+        fileLoaded = true;
     }
 
     public static void writeToSaveFile(){

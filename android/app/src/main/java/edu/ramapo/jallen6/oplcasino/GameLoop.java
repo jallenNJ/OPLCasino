@@ -29,6 +29,10 @@ import static edu.ramapo.jallen6.oplcasino.PlayerActions.Invalid;
 import static edu.ramapo.jallen6.oplcasino.PlayerActions.Trail;
 
 public class GameLoop extends AppCompatActivity {
+    public static final String humanFirstExtra = "humanFirst";
+    public static final String fromSaveGameExtra = "fromSaveGame";
+
+
     RoundView currentRoundView;
     Round   currentRound;
     final int selectedColor = Color.CYAN;

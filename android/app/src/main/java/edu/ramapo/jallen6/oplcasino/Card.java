@@ -17,6 +17,18 @@ public class Card extends CardType {
         suit = copy.getSuit();
         numericValue = copy.getValue();
     }
+
+    Card(String strCard){
+        if(strCard.length() != 2){
+            suit = CardSuit.invalid;
+            numericValue = 0;
+            return;
+        }
+        char suitChar = strCard.charAt(0);
+        char suitSym = strCard.charAt(1);
+        suit = charToSuit(suitChar);
+        numericValue = symbolToValue(suitSym);
+    }
     //@androidx.annotation.NonNull
     @Override
     public String toString() {

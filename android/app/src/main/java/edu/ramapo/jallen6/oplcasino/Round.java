@@ -4,7 +4,8 @@ package edu.ramapo.jallen6.oplcasino;
 import java.util.Vector;
 
 public class Round {
-    private int roundNum = 0;
+    private final int amountOfPlayers = 2;
+    private int roundNum;
     private PlayerID startingPlayer;
     private Deck deck;
 
@@ -15,8 +16,8 @@ public class Round {
 
     private PlayerMove lastMove;
 
-    final int humanID = PlayerID.humanPlayer.ordinal();
-    final int compID = PlayerID.computerPlayer.ordinal();
+    private final int humanID = PlayerID.humanPlayer.ordinal();
+    private final int compID = PlayerID.computerPlayer.ordinal();
 
     private PlayerID lastPlayerMove;
     private PlayerID lastCapturer;
@@ -48,7 +49,7 @@ public class Round {
 
     private void initRound() {
         roundOver = false;
-        players = new Player[2];
+        players = new Player[amountOfPlayers];
 
         deck = new Deck();
 
@@ -180,17 +181,26 @@ public class Round {
 
             case Capture:
                 lastCapturer = currentId;
-                if(players[index].hasReservedValue()){
+
+                for(int i=0; i < players.length ; i++) {
+                    if (players[i].hasReservedValue()) {
+
+                        players[i].releaseBuildValue(players[i].getHand().
+                                peekCard(result.getHandCardIndex()));
+                    }
+                }
+                /*if(players[index].hasReservedValue()){
 
                     players[index].releaseBuildValue(players[index].getHand().
                                 peekCard(result.getHandCardIndex()));
-                }
+                }*/
                 players[index].addCardToPile(players[index].removeCardFromHand(result.getHandCardIndex()));
                 //Player move indices are sorted descending, therefore can iterate normally
 
                 for (int i = 0; i < result.getTableCardIndiciesSize(); i++) {
                     //TODO: Check cast option when builds are added
                     //TODO: FIX NULL POINTER; something to do with reserved build values and move being rejected
+                    //TODO: Also check to make sure capturing other builds releases correctly
                     //  possibly not being cleared
                     if(table.peekCard((indices.get(i))).getSuit() == CardSuit.build){
                      //   players[index].addCardsToPile((Card[]) (((Build)table.removeCard(indices.get(i))).getCards().toArray()));
@@ -207,7 +217,7 @@ public class Round {
                 for(int i =0; i < indices.size(); i++){
                     buildCards.add((Card)table.removeCard(indices.get(i)));
                 }
-                Build newBuild = new Build(buildCards);
+                Build newBuild = new Build(buildCards, players[index].getName());
                 table.addCard(newBuild);
                 players[index].reserveBuildValue(newBuild);
 
@@ -342,7 +352,6 @@ public class Round {
 
     public void serializeRoundState(){
         Serializer.setRoundNum(0);
-        //Serializer.setComputerPlayer(p);
         Serializer.setPlayers(players);
         Serializer.setDeck(deck.toString());
         Serializer.setTable(table.toString());

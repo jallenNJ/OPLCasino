@@ -2,6 +2,8 @@ package edu.ramapo.jallen6.oplcasino;
 
 public abstract class CardType {
 
+    protected String owner;
+
     public boolean setValue(int val){
         if(val < 1 || val > 14){
             return false;
@@ -17,6 +19,14 @@ public abstract class CardType {
         suit = su;
         return true;
 
+    }
+
+    public void setOwner(String o){
+        owner = o;
+    }
+
+    public String getOwner(){
+        return owner;
     }
 
     public int getValue(){

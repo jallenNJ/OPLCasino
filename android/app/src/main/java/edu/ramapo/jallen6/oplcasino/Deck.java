@@ -1,6 +1,7 @@
 package edu.ramapo.jallen6.oplcasino;
 
 
+import java.lang.ref.SoftReference;
 import java.util.Collections;
 import java.util.Observable;
 import java.util.Vector;
@@ -11,6 +12,19 @@ public class Deck extends Observable {
 
     Deck(){
         deck = new Vector<Card>(52, 5);
+
+        if(Serializer.isFileLoaded()){
+            loadSavedDeck();
+        } else{
+            makeNewDeck();
+        }
+
+
+
+    }
+
+    private void makeNewDeck(){
+        deck.clear();
         for(CardSuit i : CardSuit.values() ){
             if(i == CardSuit.invalid || i == CardSuit.build){
                 continue;
@@ -21,6 +35,18 @@ public class Deck extends Observable {
         }
         Collections.shuffle(deck);
 
+    }
+
+    private void loadSavedDeck(){
+        String deckStr = Serializer.getDeck();
+        String[] tokens = deckStr.split(" ");
+
+        for(String token:tokens){
+            if (token.length() != 2){
+                continue;
+            }
+            deck.add(new Card(token));
+        }
 
     }
 

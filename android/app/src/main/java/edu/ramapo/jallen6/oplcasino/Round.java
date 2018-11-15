@@ -34,6 +34,7 @@ public class Round {
         } else {
             startingPlayer = PlayerID.computerPlayer;
         }
+
         initRound();
     }
 

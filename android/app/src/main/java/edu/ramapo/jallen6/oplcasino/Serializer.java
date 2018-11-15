@@ -31,6 +31,8 @@ public class Serializer {
 
         roundNum = 0;
         players = new PlayerSaveData[2];
+        players[0] = new PlayerSaveData();
+        players[1] = new PlayerSaveData();
         table = "";
         deck = "";
         buildOwners = new Vector<String>(4,1);
@@ -84,13 +86,36 @@ public class Serializer {
         Vector<String> data = removeBlankLines(fileData);
 
         //11 is the minimum amount for a valid file
-        if(data == null || data.size() <11){
+        if(data == null || data.size() <13){
             //TODO: Add better handling
             return;
         }
 
         Vector<String> parsedData = removeHeaders(data);
 
+
+        if(parsedData.size() < 10){
+            return;
+        }
+        roundNum = Integer.parseInt(parsedData.get(0).trim());
+
+        players[1].setName("Computer");
+        players[1].setScore(Integer.parseInt(parsedData.get(1).trim()));
+        players[1].setHand(parsedData.get(2));
+        players[1].setPile(parsedData.get(3));
+
+        players[0].setName("Human");
+        players[0].setScore(Integer.parseInt(parsedData.get(4).trim()));
+        players[0].setHand(parsedData.get(5));
+        players[0].setPile(parsedData.get(6));
+
+        table = parsedData.get(7);
+
+        //Build owners loop is here
+
+        lastCapturer = parsedData.get(parsedData.size()-3);
+        deck = parsedData.get(parsedData.size()-2);
+        nextPlayer = parsedData.lastElement();
     }
 
     public static void writeToSaveFile(){
@@ -103,7 +128,8 @@ public class Serializer {
             for(int i =1; i >=0; i--){
                 PlayerSaveData current = players[i];
                 outputStream.write(current.getName() +":\n");
-                outputStream.write("\t Hand: " + current.getHand());
+                outputStream.write("\t Score: "+ Integer.toString(current.getScore()));
+                outputStream.write("\n\t Hand: " + current.getHand());
                 outputStream.write("\n\t Pile: " + current.getPile());
                 outputStream.write("\n\n");
             }

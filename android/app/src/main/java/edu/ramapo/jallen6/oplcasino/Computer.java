@@ -7,6 +7,13 @@ public class Computer extends Player {
     Computer(){
         super();
         name = "Computer";
+
+        if(Serializer.isFileLoaded()){
+            PlayerSaveData saveData = Serializer.getComputerSaveData();
+            score = saveData.getScore();
+            hand = new Hand(true, saveData.getHand());
+            pile = new Hand(false, saveData.getPile());
+        }
     }
 
     Computer(Player advisee){

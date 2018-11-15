@@ -12,6 +12,12 @@ public class Human extends Player {
         super();
         moveToUse = Trail;
         name = "Human";
+        if(Serializer.isFileLoaded()){
+            PlayerSaveData saveData = Serializer.getHumanSaveData();
+            score = saveData.getScore();
+            hand = new Hand(true, saveData.getHand());
+            pile = new Hand(false, saveData.getPile());
+        }
     }
     @Override
     public PlayerMove doMove(final Hand table) {

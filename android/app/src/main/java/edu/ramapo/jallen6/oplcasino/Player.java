@@ -5,6 +5,7 @@ import java.util.Vector;
 public abstract class Player {
 
     protected Hand hand;
+    protected int score;
     protected int selectedIndex;
     protected Hand pile;
     protected Vector<Integer> reservedValues;
@@ -12,8 +13,11 @@ public abstract class Player {
     protected PlayerActions moveToUse;
 
     Player(){
+
+
         hand = new Hand();
         pile = new Hand();
+        score = 0;
         selectedIndex = -1;
         reservedValues = new Vector<Integer>(2,1);
         moveToUse = PlayerActions.Invalid;

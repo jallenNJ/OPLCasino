@@ -16,7 +16,7 @@ public class Welcome extends AppCompatActivity {
         Serializer.init();
     }
 
-    /** Called when the user taps the Send button */
+
     public void newGame(View view) {
         Intent intent = new Intent(this, CoinFlip.class);
         startActivity(intent);

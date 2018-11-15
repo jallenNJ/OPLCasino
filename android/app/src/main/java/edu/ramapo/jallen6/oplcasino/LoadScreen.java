@@ -38,7 +38,7 @@ public class LoadScreen extends AppCompatActivity {
                     continue;
                 }
                 String extension =  file.getAbsolutePath().substring(extensionLocated);
-                if(extension.equals(".csav")){
+                if(extension.equals(Serializer.fileExtension)){
                     result.add(new String(file.getName()));
                 }
             }
@@ -68,6 +68,15 @@ public class LoadScreen extends AppCompatActivity {
 
         //Ensure the background is the normal color and the crop is correct
         newButton.setBackgroundColor(Color.LTGRAY);
+
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Serializer.setFileName(((Button) view).getText().toString());
+                Serializer.readInSaveFile();
+            }
+        };
+        newButton.setOnClickListener(clickListener);
 
         return newButton;
 

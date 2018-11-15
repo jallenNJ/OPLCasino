@@ -4,10 +4,15 @@ import android.os.Environment;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Vector;
 
 public class Serializer {
 
+    public static final String fileExtension = ".csav";
     private static boolean fileLoaded;
 
     private static int roundNum;
@@ -17,6 +22,8 @@ public class Serializer {
     private static Vector<String> buildOwners;
     private static String lastCapturer;
     private static String nextPlayer;
+
+    private static String fileName = "";
 
 
     public static void init(){
@@ -58,8 +65,26 @@ public class Serializer {
         nextPlayer = s;
     }
 
+    public static void setFileName(String name){
+        fileName = name;
+    }
 
 
+    public static void readInSaveFile(){
+        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+
+        List<String> fileData;
+        try{
+            fileData = Files.readAllLines(Paths.get(directory+File.separator+fileName), Charset.defaultCharset());
+        } catch (Exception e){
+            return;
+        }
+
+        for(int i =0; i < fileData.size();i++){
+            String current = fileData.get(i);
+
+        }
+    }
 
     public static void writeToSaveFile(){
         File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);

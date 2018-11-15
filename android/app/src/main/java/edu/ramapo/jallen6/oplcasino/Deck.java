@@ -1,7 +1,7 @@
 package edu.ramapo.jallen6.oplcasino;
 
 
-import java.lang.ref.SoftReference;
+
 import java.util.Collections;
 import java.util.Observable;
 import java.util.Vector;
@@ -65,7 +65,6 @@ public class Deck extends Observable {
 
     public void dealFourCardsToHand(Hand target){
         for(int i = 0; i < 4; i++){
-            //TODO: Here is probably where the seg fault at end of came is from
             target.addCard(drawCard());
         }
         this.setChanged();
@@ -76,7 +75,6 @@ public class Deck extends Observable {
     public Card[] getFourCards(){
         Card[] returnVal = new Card[4];
         for(int i = 0;i < 4; i++ ){
-            //TODO: OR this may be the seg fault
             returnVal[i] = drawCard();
         }
         this.setChanged();

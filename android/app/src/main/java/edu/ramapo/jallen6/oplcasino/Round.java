@@ -270,18 +270,30 @@ public class Round {
         }
     }
 
+    //Worked with AW
     private boolean checkCapture(PlayerMove move, int playerID) {
         int playedValue = players[playerID].getHand().peekCard(move.getHandCardIndex()).getValue();
+        if(playedValue == 1){
+            playedValue = 14;
+        }
         Vector<Integer> selected = move.getTableCardIndices();
         if (selected.size() == 0) {
             return false;
         }
+
+        int sum =0;
+        for(int i =0; i < selected.size();i++){
+            sum += table.peekCard(selected.get(i)).getValue();
+        }
+
+        return sum % playedValue == 0;
+        /*
         for (int i = 0; i < selected.size(); i++) {
             if (table.peekCard(selected.get(i)).getValue() != playedValue) {
                 return false;
             }
         }
-        return true;
+        return true;*/
     }
 
     private boolean checkBuild(PlayerMove move, int playerID){

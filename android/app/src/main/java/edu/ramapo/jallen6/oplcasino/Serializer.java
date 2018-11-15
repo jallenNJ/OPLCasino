@@ -82,6 +82,15 @@ public class Serializer {
 
         //Convert to vector and remove blank lines
         Vector<String> data = removeBlankLines(fileData);
+
+        //11 is the minimum amount for a valid file
+        if(data == null || data.size() <11){
+            //TODO: Add better handling
+            return;
+        }
+
+        Vector<String> parsedData = removeHeaders(data);
+
     }
 
     public static void writeToSaveFile(){
@@ -113,6 +122,37 @@ public class Serializer {
 
     }
 
+
+
+    private static String removeHeader(String raw){
+        if(raw == null){
+            return "";
+        }
+
+        int index = raw.indexOf(":");
+        if(index >= 0){
+            return raw.substring(index+1);
+        }else{
+            return raw;
+        }
+    }
+
+    private static Vector<String> removeHeaders(Vector<String> raw){
+        if(raw == null){
+            return new Vector <String>(1,1);
+        }
+        Vector<String> result = new Vector<String>(raw.size(), 1);
+
+        for(int i = 0; i < raw.size(); i++){
+            String parsed = removeHeader(raw.get(i));
+            if(checkIfNonBlank(parsed)){
+                result.add(parsed);
+            }
+        }
+
+        return result;
+    }
+
     private static Vector<String> removeBlankLines(List<String> input){
         if(input == null){
             return new Vector<>(1,1);
@@ -121,13 +161,21 @@ public class Serializer {
         Vector <String> vector = new Vector<String>(input.size(), 1);
         for(int i =0; i < input.size(); i++){
             String current = input.get(i);
-            if(!current.equals("") || current.trim().length() > 0){
+            if(checkIfNonBlank(current)){
                 vector.add(current);
             }
         }
 
         return vector;
 
+    }
+
+    private static boolean checkIfNonBlank (String line){
+        if(line == null){
+            return false;
+        }
+
+        return !line.equals("") || line.trim().length() > 0;
     }
 
 

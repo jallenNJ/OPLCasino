@@ -80,6 +80,20 @@ public class Serializer {
         return fileLoaded;
     }
 
+    public static int getRoundNum(){
+        return roundNum;
+    }
+
+    public static String getDeck(){
+        return deck;
+    }
+
+
+    public static void clearLoadedFile(){
+        fileLoaded = false;
+        init();
+    }
+
     public static void readInSaveFile(){
         File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 

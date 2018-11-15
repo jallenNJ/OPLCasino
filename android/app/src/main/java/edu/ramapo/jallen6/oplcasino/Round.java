@@ -1,5 +1,6 @@
 package edu.ramapo.jallen6.oplcasino;
 
+
 import java.util.Vector;
 
 public class Round {
@@ -53,20 +54,27 @@ public class Round {
 
 
         players[humanID] = new Human();
-        players[humanID].addCardsToHand(deck.getFourCards());
-
-
         players[compID] = new Computer();
-        players[compID].addCardsToHand(deck.getFourCards());
 
-
-        table = new Hand(false);
-        deck.dealFourCardsToHand(table);
+        if(!Serializer.isFileLoaded()){
+            players[humanID].addCardsToHand(deck.getFourCards());
+            players[compID].addCardsToHand(deck.getFourCards());
+            table = new Hand(false);
+            deck.dealFourCardsToHand(table);
+            lastCapturer = PlayerID.humanPlayer;
+            lastPlayerMove = PlayerID.computerPlayer;
+        }else{
+            table = new Hand(false, Serializer.getTable());
+            if(Serializer.isLastCapturerHuman()){
+                lastCapturer = PlayerID.humanPlayer;
+            } else{
+                lastCapturer = PlayerID.computerPlayer;
+            }
+        }
 
 
         moveQueue = new Vector<PlayerID>(2, 1);
-        lastCapturer = PlayerID.humanPlayer;
-        lastPlayerMove = PlayerID.computerPlayer;
+
         lastMove = null;
         fillMoveQueue(startingPlayer);
     }

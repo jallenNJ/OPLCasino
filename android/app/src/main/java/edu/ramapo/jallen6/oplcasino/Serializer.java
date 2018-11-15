@@ -72,7 +72,7 @@ public class Serializer {
     }
 
     public static boolean isHumanFirst(){
-        return nextPlayer.equals("Human");
+        return nextPlayer.trim().equals("Human");
     }
 
 
@@ -86,6 +86,25 @@ public class Serializer {
 
     public static String getDeck(){
         return deck;
+    }
+
+    public static PlayerSaveData getHumanSaveData(){
+        return players[0];
+    }
+
+    public static PlayerSaveData getComputerSaveData(){
+        return players[1];
+    }
+
+    public static String getTable(){
+        return table;
+    }
+
+    public static boolean isLastCapturerHuman(){
+        return lastCapturer.trim().equals("Human");
+    }
+    public static boolean isNextPlayerHuman(){
+        return nextPlayer.trim().equals("Human");
     }
 
 

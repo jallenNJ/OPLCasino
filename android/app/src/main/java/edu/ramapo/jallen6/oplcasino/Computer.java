@@ -49,9 +49,11 @@ public class Computer extends Player {
         PlayerMove potentialMove;
         potentialMove = checkCaptureOptions(table);
         if(potentialMove.getAction() == PlayerActions.Capture){
+            actionReason = "As it was an opportunity to capture.";
             return potentialMove;
         }
 
+        actionReason = "As there are no other moves.";
         return  new PlayerMove(PlayerActions.Trail, 0, new Vector<Integer>(1,1));
 
 

@@ -11,6 +11,7 @@ public abstract class Player {
     protected Vector<Integer> reservedValues;
     protected String name;
     protected PlayerActions moveToUse;
+    protected String actionReason;
 
     Player(){
 
@@ -22,6 +23,7 @@ public abstract class Player {
         reservedValues = new Vector<Integer>(2,1);
         moveToUse = PlayerActions.Invalid;
         name = "Player";
+        actionReason = "";
 
     }
 
@@ -161,6 +163,9 @@ public abstract class Player {
             entry += ".";
         }
 
+        if(!actionReason.equals("")){
+            entry += "\n" + actionReason;
+        }
         ActionLog.addLog(entry);
 
 

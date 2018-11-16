@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
@@ -322,8 +324,6 @@ public class GameLoop extends AppCompatActivity {
 
         displayPile(view, pile);
 
-
-
     }
 
     private void displayPile(LinearLayout layout, HandView pile){
@@ -336,6 +336,19 @@ public class GameLoop extends AppCompatActivity {
             pile.displayCard(newCard, i);
             layout.addView(newCard);
         }
+    }
+
+    private void displayPile (boolean humanPile){
+
+        if(humanPile){
+            displayPile((LinearLayout) findViewById(R.id.humanPileLayout),
+                    currentRoundView.getHumanPileHandler());
+        } else{
+            displayPile((LinearLayout) findViewById(R.id.compPileLayout),
+                    currentRoundView.getComputerPileHandler());
+        }
+
+
     }
 
 
@@ -742,7 +755,6 @@ public class GameLoop extends AppCompatActivity {
             if(moveResultState){
                 //Valid move
 
-                //Todo:Check for round over
 
                 if(currentRound.getLastAction() == PlayerActions.Trail){
                     currentRoundView.getTableHandHandler().displaySelected(addButtonToTable());
@@ -789,6 +801,11 @@ public class GameLoop extends AppCompatActivity {
 
                 }
 
+                if(currentRound.isRoundOver()){
+                    endRound();
+                    return;
+                }
+
                 setUpButtonsForNextPlayer();
                 clearTableSelection();
                 updateDeckScroll();
@@ -796,14 +813,11 @@ public class GameLoop extends AppCompatActivity {
 
 
             } else{
-                // invalid move or round over;
-                if(currentRound.isRoundOver()){
+                // invalid move
+                updateHandButtons(true, false);
+                setSubmitButton(false, false);
+                clearTableSelection();
 
-                } else{
-                    updateHandButtons(true, false);
-                    setSubmitButton(false, false);
-                    clearTableSelection();
-                }
 
             }
 
@@ -813,4 +827,41 @@ public class GameLoop extends AppCompatActivity {
         }
     }
 
+
+    private void endRound(){
+       /* updateHandButtons(false, false);
+        updateHandButtons(true, false);
+        displayPile(true);
+        displayPile(false);*/
+
+       LinearLayout tableLayout = findViewById(R.id.tableScroll);
+       tableLayout.removeAllViewsInLayout();
+
+       findViewById(R.id.hHand).setVisibility(View.INVISIBLE);
+       findViewById(R.id.cHand).setVisibility(View.INVISIBLE);
+       findViewById(R.id.compSwitchScroll).setVisibility(View.INVISIBLE);
+       findViewById(R.id.submitButton).setVisibility(View.INVISIBLE);
+       //new LayoutPa
+        //ConstraintLayout.LayoutParams lp = new LayoutParams(intAsDP(800), intAsDP(90));
+
+        //findViewById(R.id.bottomPileScroll).setLayoutParams(lp);
+        //findViewById(R.id.topPileScroll).setLayoutParams(lp);
+
+        Button scoreButton = new Button(this);
+        scoreButton.setId(View.generateViewId());
+        scoreButton.setText("Score Game!");
+        tableLayout.addView(scoreButton);
+        tableLayout.setGravity(View.TEXT_ALIGNMENT_CENTER);
+
+        View.OnClickListener scoreGame = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setBackgroundColor(selectedColor);
+            }
+        };
+        scoreButton.setOnClickListener(scoreGame);
+
+
+
+    }
 }

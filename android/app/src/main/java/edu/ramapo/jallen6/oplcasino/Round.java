@@ -212,6 +212,7 @@ public class Round {
                 }
                 break;
             case Build:
+                //TODO: Change this to make multibuilds
                 Vector<Card> buildCards = new Vector<Card>(5,1);
                 buildCards.add((Card)players[index].getHand().removeCard(result.getHandCardIndex()));
                 for(int i =0; i < indices.size(); i++){
@@ -234,6 +235,7 @@ public class Round {
                 players[compID].addCardsToHand(deck.getFourCards());
             } else {
                 giveCardsToLastCapturer();
+                roundOver = true;
                 return true;
             }
 
@@ -337,6 +339,8 @@ public class Round {
 
 
     private void giveCardsToLastCapturer() {
+
+        ActionLog.addLog("Remaining table cards went to " + players[lastCapturer.ordinal()].getName());
         for (int i = table.size() - 1; i >= 0; i--) {
             //TODO: Check case works with builds;
             players[lastCapturer.ordinal()].addCardToPile((Card) table.removeCard(i));

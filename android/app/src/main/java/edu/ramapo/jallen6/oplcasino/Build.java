@@ -2,8 +2,8 @@ package edu.ramapo.jallen6.oplcasino;
 
 import java.util.Vector;
 
-public class Build extends CardType {
-    Vector<Card> cards;
+public class Build extends BuildType {
+    private Vector<Card> cards;
 
     Build(Vector<Card> inputCards, String ownerName){
         cards = new Vector<Card>(4,1);

@@ -33,7 +33,14 @@ public abstract class Player {
         return pile;
     }
 
+    public int getPileSize(){
+        return pile.size();
+    }
+
     public String getName(){return name;}
+    public int getScore(){
+        return score;
+    }
 
     public boolean addCardToHand(Card add){
         hand.addCard(add);
@@ -166,6 +173,18 @@ public abstract class Player {
 
     public PlayerSaveData toSaveData(){
         return new PlayerSaveData(name, 0, hand.toString(), pile.toString());
+    }
+
+    public int countSpadesInPile(){
+        return pile.countSuit(CardSuit.spade);
+    }
+
+    public boolean containsCardInPile(Card check){
+        return pile.containsCard(check);
+    }
+
+    public int countAcesInPile(){
+        return pile.countValue(1);
     }
 
     public abstract PlayerMove doMove(final Hand table);

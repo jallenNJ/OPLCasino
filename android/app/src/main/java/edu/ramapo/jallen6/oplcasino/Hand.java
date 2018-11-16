@@ -198,4 +198,28 @@ public  int fetchRemovedIndex(){
         return formatted;
     }
 
+    public int countSuit (CardSuit target){
+        int amount = 0;
+        for(int i=0; i < hand.size(); i++){
+            if(hand.get(i).getSuit() == target){
+                amount++;
+            }
+        }
+        return amount;
+    }
+
+    public boolean containsCard (Card check){
+        return hand.contains(check);
+    }
+
+    public int countValue (int target){
+        int amount = 0;
+        for(int i=0; i < hand.size(); i++){
+            if(hand.get(i).getValue() == target){
+                amount++;
+            }
+        }
+        return amount;
+    }
+
 }

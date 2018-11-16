@@ -63,7 +63,7 @@ public class GameLoop extends AppCompatActivity {
         } else{
             startFreshGame(humanStarting);
         }
-        currentRoundView = new RoundView(currentRound);
+
 
 
         if(humanStarting){
@@ -103,6 +103,7 @@ public class GameLoop extends AppCompatActivity {
 
     private void startFreshGame(boolean humanStarting){
         currentRound = new Round(0, humanStarting);
+        currentRoundView = new RoundView(currentRound);
 
 
         ActionLog.addLog("New game started!");
@@ -110,8 +111,15 @@ public class GameLoop extends AppCompatActivity {
 
     private void loadSavedData(boolean humanStarting){
         currentRound = new Round(Serializer.getRoundNum(), humanStarting);
+        currentRoundView = new RoundView(currentRound);
         ActionLog.addLog("Save game Loaded!");
         Serializer.clearLoadedFile();
+
+        displayPile((LinearLayout) findViewById(R.id.humanPileLayout),
+                    currentRoundView.getHumanPileHandler());
+
+        displayPile((LinearLayout) findViewById(R.id.compPileLayout),
+                currentRoundView.getComputerPileHandler());
 
     }
 
@@ -310,16 +318,22 @@ public class GameLoop extends AppCompatActivity {
             pile = currentRoundView.getComputerPileHandler();
         }
 
+        displayPile(view, pile);
+
+
+
+    }
+
+    private void displayPile(LinearLayout layout, HandView pile){
         pile.createViewsFromModel();
-       // ref.setClickable(false);
-        int startingIndex = view.getChildCount() - 1;
+        // ref.setClickable(false);
+        int startingIndex = layout.getChildCount() - 1;
         for(int i = startingIndex; i < pile.size(); i++){
             ImageButton newCard = generateButton();
             newCard.setClickable(false);
             pile.displayCard(newCard, i);
-            view.addView(newCard);
+            layout.addView(newCard);
         }
-
     }
 
 

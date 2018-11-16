@@ -52,4 +52,15 @@ public class MultiBuild extends BuildType {
         return cards;
 
     }
+
+    public String toString(){
+       String formatted = "[ ";
+        for(int i=0; i < builds.size();i++){
+            formatted += builds.get(i).toString();
+        }
+        formatted +="]";
+        return formatted;
+
+
+    }
 }

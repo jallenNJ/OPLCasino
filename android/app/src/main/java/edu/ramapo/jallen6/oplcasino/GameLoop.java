@@ -58,6 +58,7 @@ public class GameLoop extends AppCompatActivity {
 
 
         ActionLog.init();
+        initDisplayCardVariables();
         if(loadedSaveFile){
             loadSavedData(humanStarting);
         } else{
@@ -84,7 +85,7 @@ public class GameLoop extends AppCompatActivity {
             }
         });
 
-        initDisplayCards();
+
         updateDeckScroll();
 
         setClickabilityForMove(humanStarting);
@@ -104,7 +105,7 @@ public class GameLoop extends AppCompatActivity {
     private void startFreshGame(boolean humanStarting){
         currentRound = new Round(0, humanStarting);
         currentRoundView = new RoundView(currentRound);
-
+        initNewGameDisplayCards();
 
         ActionLog.addLog("New game started!");
     }
@@ -114,6 +115,7 @@ public class GameLoop extends AppCompatActivity {
         currentRoundView = new RoundView(currentRound);
         ActionLog.addLog("Save game Loaded!");
         Serializer.clearLoadedFile();
+        initSaveGameCards();
 
         displayPile((LinearLayout) findViewById(R.id.humanPileLayout),
                     currentRoundView.getHumanPileHandler());
@@ -409,8 +411,9 @@ public class GameLoop extends AppCompatActivity {
 
     }
 
-    private void initDisplayCards(){
-        HandView handler = currentRoundView.getHumanHandHandler();
+
+    private void initDisplayCardVariables(){
+
         humanHandIds = new Vector<Integer>(4,1);
         humanHandIds.add(R.id.hcard1);
         humanHandIds.add(R.id.hcard2);
@@ -423,12 +426,6 @@ public class GameLoop extends AppCompatActivity {
         humanHandButtons.add((ImageButton) findViewById(R.id.hcard3));
         humanHandButtons.add((ImageButton) findViewById(R.id.hcard4));
 
-        handler.displayCard((ImageButton) findViewById(R.id.hcard1), 0);
-        handler.displayCard((ImageButton) findViewById(R.id.hcard2), 1);
-        handler.displayCard((ImageButton) findViewById(R.id.hcard3), 2);
-        handler.displayCard((ImageButton) findViewById(R.id.hcard4), 3);
-
-        handler = currentRoundView.getComputerHandHandler();
         compHandIds = new Vector<Integer>(4,1);
         compHandIds.add(R.id.ccard1);
         compHandIds.add(R.id.ccard2);
@@ -441,6 +438,20 @@ public class GameLoop extends AppCompatActivity {
         compHandButtons.add((ImageButton) findViewById(R.id.ccard3));
         compHandButtons.add((ImageButton) findViewById(R.id.ccard4));
 
+        tableButtonIds = new Vector<Integer>(4,4);
+
+
+    }
+
+    private void initNewGameDisplayCards(){
+        HandView handler = currentRoundView.getHumanHandHandler();
+
+        handler.displayCard((ImageButton) findViewById(R.id.hcard1), 0);
+        handler.displayCard((ImageButton) findViewById(R.id.hcard2), 1);
+        handler.displayCard((ImageButton) findViewById(R.id.hcard3), 2);
+        handler.displayCard((ImageButton) findViewById(R.id.hcard4), 3);
+
+        handler = currentRoundView.getComputerHandHandler();
 
         handler.displayCard((ImageButton) findViewById(R.id.ccard1), 0);
         handler.displayCard((ImageButton) findViewById(R.id.ccard2), 1);
@@ -449,14 +460,59 @@ public class GameLoop extends AppCompatActivity {
         setClickableForVector(compHandIds, false);
 
         handler = currentRoundView.getTableHandHandler();
-        tableButtonIds = new Vector<Integer>(4,4);
         for(int i =0; i < 4; i++){
             handler.displayCard(addButtonToTable(), i);
         }
 
         setSubmitButton(false, false);
 
+
     }
+
+    private void initSaveGameCards(){
+
+        HandView handler = currentRoundView.getHumanHandHandler();
+
+        for(int i =0; i < handler.size(); i++){
+            handler.displayCard(humanHandButtons.get(i), i);
+        }
+        for(int i = handler.size(); i < humanHandButtons.size(); i++){
+            humanHandButtons.get(i).setVisibility(View.INVISIBLE);
+        }
+
+        handler = currentRoundView.getComputerHandHandler();
+        for(int i =0; i < handler.size();i++){
+            handler.displayCard(compHandButtons.get(i), i);
+        }
+
+        for(int i = handler.size(); i < compHandButtons.size(); i++){
+            compHandButtons.get(i).setVisibility(View.INVISIBLE);
+        }
+
+
+        handler = currentRoundView.getTableHandHandler();
+        for(int i =0; i < handler.size();i++){
+            int requireButtons = handler.getNeededButtonForIndex(i);
+
+            if(requireButtons == 1){
+                handler.displayCard(addButtonToTable(), i);
+            } else{
+               // handler.displayBuild(generateBuildLayout(requireButtons), i);
+                LinearLayout newBuild = generateBuildLayout(requireButtons);
+
+                handler.displayBuild(newBuild, i);
+                ((LinearLayout) findViewById(R.id.tableScroll)).addView(newBuild);
+                tableButtonIds.add(newBuild.getId());
+            }
+        }
+
+
+
+    }
+
+
+
+
 
     private void clearTableSelection(){
         currentRoundView.getTableHandHandler().unSelectAllCards();

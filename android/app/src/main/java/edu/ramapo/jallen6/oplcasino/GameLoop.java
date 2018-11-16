@@ -866,6 +866,8 @@ public class GameLoop extends AppCompatActivity {
     }
 
     private  void startScoreScreen(){
+        ScoreScreen.setPlayers(currentRound.getPlayers());
+        ScoreScreen.setLastCap(currentRound.getLastCapturer());
         Intent intent = new Intent(this, ScoreScreen.class);
         startActivity(intent);
         finish();

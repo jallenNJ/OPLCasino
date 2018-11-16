@@ -3,19 +3,63 @@ package edu.ramapo.jallen6.oplcasino;
 public class Tournament {
 
 
+    private  int[] roundScores;
+    private  int[] tourScores;
+
+    private String[] names;
+    private int[] startingScores;
+    private int[] pendingScores;
+    private int[] pileSizes ;
+    private int[] spadeAmounts ;
+    private boolean[] hasDX ;
+    private boolean[] hasS2;
+    private int[] aceAmount;
 
 
-    public static int[] scoreRound(Player[] players){
-        int[] startingScores = new int [2];
-        int[] pendingScores = new int[2];
-        int[] pileSizes = new int[2];
-        int[] spadeAmounts = new int[2];
-        boolean[] hasDX = new boolean[2];
-        boolean[] hasS2 = new boolean[2];
-        int[] aceAmount = new int[2];
+    Tournament(){
+        initVars();
+    }
+
+    Tournament(Player[] players){
+        initVars();
+        scoreRound(players);
+    }
+
+    private void initVars(){
+
+        roundScores = new int[2];
+        tourScores = new int [2];
+
+        names = new String[2];
+        startingScores = new int [2];
+        pendingScores = new int[2];
+        pileSizes = new int[2];
+        spadeAmounts = new int[2];
+        hasDX = new boolean[2];
+        hasS2 = new boolean[2];
+        aceAmount = new int[2];
+
+    }
+
+
+    public int [] getRoundScores(){
+        return roundScores;
+    }
+
+    public int[] getTourScores(){
+        return tourScores;
+    }
+
+    public int[] getPileSizesScore(){
+        return pileSizes;
+    }
+
+
+    public  void scoreRound(Player[] players){
 
 
         for(int i=0; i < 2; i++){
+            names[i] = players[i].getName();
             startingScores[i] = players[i].getScore();
             pendingScores[i] = 0;
             pileSizes[i] = players[i].getPileSize();
@@ -55,13 +99,64 @@ public class Tournament {
         pendingScores[1] += aceAmount[1];
 
 
+        roundScores = pendingScores;
 
-        int[] returnArr = new int[2];
-
-        returnArr[0] = pendingScores[0] + startingScores[0];
-        returnArr[1] = pendingScores[1] + startingScores[1];
-
-        return returnArr;
+        tourScores[0] = roundScores[0] + startingScores[0];
+        tourScores[1] = roundScores[1] + startingScores[1];
     }
 
+
+    public TourScoreCode getWinner(){
+        if(tourScores[0] > 20 && tourScores[0] > tourScores[1]){
+            return TourScoreCode.HumanWon;
+        } else if(tourScores[1] > 20 && tourScores[0] < tourScores[1]){
+            return TourScoreCode.ComputerWon;
+        } else if(tourScores[0] > 20 && tourScores[0] == tourScores[1]){
+            return TourScoreCode.Tie;
+        } else{
+            return TourScoreCode.NoWinner;
+        }
+    }
+
+    public String toString(){
+        String formatted = "Raw Score dump:\n\n";
+
+
+        if(pileSizes[0] > pileSizes[1]){
+           formatted += names[0] + " had more cards ";
+        } else if(pileSizes[0] < pileSizes[1]){
+            formatted += names[1] + " had more cards ";
+        }
+
+        formatted += "( " + names[0] + ": " + Integer.toString(pileSizes[0])
+                +  " | " + names[1] + ": " + Integer.toString(pileSizes[0]) + "\n\n";
+
+        if(spadeAmounts[0] > spadeAmounts[1]){
+            formatted += names[0] + " had more spades ";
+        } else if(spadeAmounts[0] < spadeAmounts[1]){
+            formatted += names[1] + " had more spades ";
+        }
+
+        formatted += "( " + names[0] + ": " + Integer.toString(spadeAmounts[0])
+                +  " | " + names[1] + ": " + Integer.toString(spadeAmounts[1]) + "\n\n";
+
+        if(hasDX[0]){
+           formatted += names[0] + " had the ten of Diamonds\n\n";
+        } else{
+            formatted += names[1] + " had the ten of Diamonds\n\n";
+        }
+
+        if(hasS2[0]){
+            formatted += names[0] + " had the two of Spades\n\n";
+        }else{
+            formatted += names[1] + " had the two of Spades\n\n";
+        }
+
+        formatted += names[0] + " had " + Integer.toString(aceAmount[0]) + " aces\n";
+        formatted += names[1] + " had " + Integer.toString(aceAmount[1]) + " aces\n";
+
+
+
+        return formatted;
+    }
 }

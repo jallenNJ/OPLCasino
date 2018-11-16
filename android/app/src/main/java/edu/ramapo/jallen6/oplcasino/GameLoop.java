@@ -856,12 +856,18 @@ public class GameLoop extends AppCompatActivity {
         View.OnClickListener scoreGame = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.setBackgroundColor(selectedColor);
+                startScoreScreen();
             }
         };
         scoreButton.setOnClickListener(scoreGame);
 
 
 
+    }
+
+    private  void startScoreScreen(){
+        Intent intent = new Intent(this, ScoreScreen.class);
+        startActivity(intent);
+        finish();
     }
 }

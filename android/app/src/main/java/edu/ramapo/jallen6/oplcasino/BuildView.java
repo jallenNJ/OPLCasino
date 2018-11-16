@@ -23,11 +23,13 @@ public class BuildView extends CardView {
         return cards.size();
     }
 
+
+    //BQ for strings on buttons
     public void drawBuild(LinearLayout layout){
         if(layout.getChildCount() != cards.size() +1){
             return;
         }
-        ((Button)layout.getChildAt(0)).setText(Integer.toString(model.getValue()));
+        ((Button)layout.getChildAt(0)).setText(Integer.toString(model.getValue())+"\n" + model.toString());
         for(int i =0; i < cards.size(); i++){
             cards.get(i).setButton(((ImageButton) layout.getChildAt(i+1)));
         }

@@ -65,7 +65,7 @@ public class Round {
             lastCapturer = PlayerID.humanPlayer;
             lastPlayerMove = PlayerID.computerPlayer;
         }else{
-            table = new Hand(false, Serializer.getTable());
+            table = new Hand( Serializer.getTable());
             if(Serializer.isLastCapturerHuman()){
                 lastCapturer = PlayerID.humanPlayer;
             } else{
@@ -204,7 +204,7 @@ public class Round {
                     //  possibly not being cleared
                     if(table.peekCard((indices.get(i))).getSuit() == CardSuit.build){
                      //   players[index].addCardsToPile((Card[]) (((Build)table.removeCard(indices.get(i))).getCards().toArray()));
-                        players[index].addCardsToPile( (((Build)table.removeCard(indices.get(i))).getCardsAsArray()));
+                        players[index].addCardsToPile( (((BuildType)table.removeCard(indices.get(i))).getCardsAsArray()));
                     } else{
                         players[index].addCardToPile((Card) table.removeCard(indices.get(i)));
                     }
@@ -221,18 +221,9 @@ public class Round {
                 table.addCard(newBuild);
                 players[index].reserveBuildValue(newBuild);
 
-
-
-
-
-
              break;
 
-
-
         }
-
-
 
         lastMove = new PlayerMove(result);
 
@@ -271,7 +262,6 @@ public class Round {
             return result;
         }
 
-
     }
 
 
@@ -302,7 +292,11 @@ public class Round {
 
         int sum =0;
         for(int i =0; i < selected.size();i++){
-            sum += table.peekCard(selected.get(i)).getValue();
+            CardType current = table.peekCard(selected.get(i));
+            sum += current.getValue();
+            if(current.getSuit() == CardSuit.build && current.getValue() != playedValue){
+                return false;
+            }
         }
 
         return sum % playedValue == 0;

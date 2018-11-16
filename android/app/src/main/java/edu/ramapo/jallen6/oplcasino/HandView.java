@@ -131,7 +131,7 @@ public class HandView extends BaseView implements Observer {
             }
 
             if(current.getSuit() == CardSuit.build){
-                hand.add(new BuildView((Build)current));
+                hand.add(new BuildView((BuildType)current));
             } else{
                 hand.add(new CardView((Card) current));
             }

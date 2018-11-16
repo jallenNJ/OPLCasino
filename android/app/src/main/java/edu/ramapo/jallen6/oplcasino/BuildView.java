@@ -7,10 +7,10 @@ import android.widget.LinearLayout;
 import java.util.Vector;
 
 public class BuildView extends CardView {
-    Build model;
+    BuildType model;
     Vector<CardView> cards;
 
-    BuildView(Build master){
+    BuildView(BuildType master){
         model = master;
         cards = new Vector<CardView>(4,1);
         Vector<Card> models = model.getCards();

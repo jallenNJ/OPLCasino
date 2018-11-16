@@ -2,6 +2,7 @@ package edu.ramapo.jallen6.oplcasino;
 
 
 import java.util.Observable;
+import java.util.Stack;
 import java.util.Vector;
 
 public class Hand extends Observable {
@@ -31,7 +32,6 @@ public class Hand extends Observable {
 
         String[] tokens = data.split(" ");
         for(String token:tokens){
-            //TODO, HANDLE BUILDS
             if(token.length() != 2){
                 continue;
             }
@@ -39,6 +39,63 @@ public class Hand extends Observable {
         }
 
     }
+
+    Hand(String data){
+        hand = new Vector<CardType>(4,1);
+        selectionLimitedToOne = false;
+        selectedIndices = new Vector<Integer>(4,4);
+
+        String[] tokens = data.split(" ");
+
+        String spacesRemoved = "";
+        for(String token:tokens){
+            if(token.length() == 0){
+                continue;
+            }
+            spacesRemoved += token;
+        }
+
+        //Stack<Build> pendingBuilds = new Stack<Build>();
+        int buildsCount = 0;
+
+        int i =0;
+        Vector<Card> cardBuffer = new Vector<Card>(4,1);
+        Vector<Build> buildBuffer = new Vector<Build>(4,1);
+        while(i< spacesRemoved.length()){
+            char current = spacesRemoved.charAt(i);
+            if(current == '['){
+                buildsCount++;
+                i++;
+                continue;
+            }else if(current ==']'){
+                if(cardBuffer.size() > 0){
+                    buildBuffer.add(new Build(new Vector<Card>(cardBuffer), "ADD OWNER"));
+                    cardBuffer.clear();
+                }
+
+                buildsCount--;
+                i++;
+                if(buildsCount == 0){
+                    MultiBuild multiBuild = new MultiBuild(new Vector<Build>(buildBuffer), "ADD OWNER");
+                    buildBuffer.clear();
+                    hand.add(multiBuild);
+                }
+                continue;
+
+            }
+            String cardStr = "" + current + spacesRemoved.charAt(i+1);
+            Card newCard = new Card(cardStr);
+            if(buildsCount > 0){
+                cardBuffer.add(newCard);
+            }else{
+                hand.add(newCard);
+            }
+            i+=2;
+        }
+
+
+    }
+
 
     Hand(Hand copy){
         hand = new Vector<CardType>(copy.hand);

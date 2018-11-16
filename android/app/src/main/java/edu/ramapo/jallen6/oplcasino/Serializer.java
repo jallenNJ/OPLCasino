@@ -243,7 +243,7 @@ public class Serializer {
             return false;
         }
 
-        return !line.equals("") || line.trim().length() > 0;
+        return !line.equals("") && line.trim().length() > 0 ;
     }
 
 

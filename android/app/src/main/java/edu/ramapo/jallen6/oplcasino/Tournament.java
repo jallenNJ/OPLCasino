@@ -129,7 +129,7 @@ public class Tournament {
         }
 
         formatted += "( " + names[0] + ": " + Integer.toString(pileSizes[0])
-                +  " | " + names[1] + ": " + Integer.toString(pileSizes[0]) + "\n\n";
+                +  " | " + names[1] + ": " + Integer.toString(pileSizes[1]) + "\n\n";
 
         if(spadeAmounts[0] > spadeAmounts[1]){
             formatted += names[0] + " had more spades ";

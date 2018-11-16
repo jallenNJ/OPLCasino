@@ -18,9 +18,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/scoreTopLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical" />
+            android:orientation="horizontal" />
     </HorizontalScrollView>
 
     <HorizontalScrollView
@@ -35,9 +36,10 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
+            android:id="@+id/scoreBottomLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical" />
+            android:orientation="horizontal" />
     </HorizontalScrollView>
 
     <TextView

@@ -24,11 +24,38 @@ public class Computer extends Player {
 
     }
 
+    private PlayerMove checkBuildOptions(final Hand table){
+        for(int i = 0; i < hand.size(); i ++){
+            Card sumTo = (Card)hand.peekCard(i);
+            for(int j =0; j < hand.size(); j++){
+                if(i==j){
+                    continue;
+                }
+                Card played = (Card)hand.peekCard(j);
+                if(played.getValue() < sumTo.getValue()){
+                    continue;
+                }
+                Vector<Integer> indices = findSetThatSum(table, sumTo.getValue() - played.getValue(), true);
+                if(indices.size() > 0){
+                    actionReason = "Saw an opportunity to make a build";
+                    return new PlayerMove(PlayerActions.Build, j, indices);
+                }
+            }
+        }
+
+        return new PlayerMove(PlayerActions.Invalid, 0, new Vector<Integer>(1,1));
+    }
 
     private PlayerMove checkCaptureOptions(final Hand table){
 
         for(int i =0; i < hand.size(); i++){
-            Vector<Integer> result = findSetThatSum(table, hand.peekCard(i).getValue());
+            Vector<Integer> result;
+            if(hand.peekCard(i).getValue() != 1){
+               result = findSetThatSum(table, hand.peekCard(i).getValue(), false);
+            } else{
+                result = findSetThatSum(table, 14, false);
+            }
+
             if(result.size() != 0){
                 actionReason = "As it was an opportunity to capture a set.";
                 for(int j =0; j < table.size(); j++){
@@ -67,6 +94,10 @@ public class Computer extends Player {
 
 
         PlayerMove potentialMove;
+        potentialMove = checkBuildOptions(table);
+        if(potentialMove.getAction() == PlayerActions.Build){
+            return potentialMove;
+        }
         potentialMove = checkCaptureOptions(table);
         if(potentialMove.getAction() == PlayerActions.Capture){
             return potentialMove;
@@ -79,21 +110,41 @@ public class Computer extends Player {
     }
 
 
-    private Vector<Integer> findSetThatSum(final Hand table, int target){
+    private Vector<Integer> findSetThatSum(final Hand table, int target, boolean forBuild){
 
         Vector<Integer> indices = new Vector<Integer>(4,1);
+        if(target < 1 || target > 14) {
+            return indices;
+        }
         for(int i =0; i < table.size(); i++){
             indices.clear();
-            Card start = (Card)table.peekCard(i);
+            CardType start = table.peekCard(i);
+            if(!forBuild){
+                if(start.getSuit() == CardSuit.build){
+                    continue;
+                }
+            }
             int remaining = target - start.getValue();
-            if(remaining <= 0){
+            if(remaining < 0){
                 continue;
             }
             indices.add(i);
+            if(remaining == 0){
+                if(forBuild){
+                    return indices;
+                } else{
+                    continue;
+                }
+            }
             int remainingCache = remaining;
             for(int j = i+1; j < table.size(); j++){
                 remaining = remainingCache;
-                Card firstCard = (Card)table.peekCard(j);
+                CardType firstCard = table.peekCard(j);
+                if(!forBuild){
+                    if(firstCard.getSuit() == CardSuit.build){
+                        continue;
+                    }
+                }
                 if(remaining - firstCard.getValue() == 0){
                     indices.add(j);
                     return indices;
@@ -102,7 +153,12 @@ public class Computer extends Player {
                 }
                 remaining -= firstCard.getValue();
                 for(int k = j+1; k < table.size(); k++){
-                    Card current = (Card)table.peekCard(k);
+                    CardType current = table.peekCard(k);
+                    if(!forBuild){
+                        if(current.getSuit() == CardSuit.build){
+                            continue;
+                        }
+                    }
                     if(remaining - current.getValue() == 0){
                         indices.add(k);
                         return indices;

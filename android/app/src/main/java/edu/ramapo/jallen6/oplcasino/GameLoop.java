@@ -524,9 +524,6 @@ public class GameLoop extends AppCompatActivity {
     }
 
 
-
-
-
     private void clearTableSelection(){
         currentRoundView.getTableHandHandler().unSelectAllCards();
       //  LinearLayout table = findViewById(R.id.tableScroll);

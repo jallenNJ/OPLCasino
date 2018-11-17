@@ -215,9 +215,18 @@ public class Round {
                 //TODO: Change this to make multibuilds
                 Vector<Card> buildCards = new Vector<Card>(5,1);
                 buildCards.add((Card)players[index].getHand().removeCard(result.getHandCardIndex()));
-                for(int i =0; i < indices.size(); i++){
-                    buildCards.add((Card)table.removeCard(indices.get(i)));
+                if(result.getTableCardIndices().size() == 1 &&
+                        table.peekCard(result.getTableCardIndices().get(0)).getSuit() == CardSuit.build){
+                    //TODO: unreserve card
+                    Vector<Card> extendedCards= ((Build) table.peekCard(result.getTableCardIndices().get(0))).getCards();
+                    buildCards.addAll(extendedCards);
+
+                } else{
+                    for(int i =0; i < indices.size(); i++){
+                        buildCards.add((Card)table.removeCard(indices.get(i)));
+                    }
                 }
+
                 Build newBuild = new Build(buildCards, players[index].getName());
                 table.addCard(newBuild);
                 players[index].reserveBuildValue(newBuild);
@@ -292,16 +301,37 @@ public class Round {
             return false;
         }
 
+        int aceCount = 0;
         int sum =0;
         for(int i =0; i < selected.size();i++){
             CardType current = table.peekCard(selected.get(i));
             sum += current.getValue();
+            if(current.getValue() == 1){
+                aceCount++;
+            }
             if(current.getSuit() == CardSuit.build && current.getValue() != playedValue){
                 return false;
             }
         }
 
-        return sum % playedValue == 0;
+        //If played card is ace, check all combinations of aces are
+        // in sets or being captured for being identical
+        boolean aceSetsCheck = false;
+        int aceSumCheck = sum;
+        if(playedValue == 14){ // If ace
+            for(int i =0; i < aceCount; i++){
+                //Add thirteen as that is the difference between Ace High and Low
+                aceSumCheck += 13;
+                aceSetsCheck = aceSumCheck % playedValue == 0;
+                if(aceSetsCheck){
+                    break;
+                }
+
+            }
+        }
+
+
+        return sum % playedValue == 0 || aceSetsCheck;
         /*
         for (int i = 0; i < selected.size(); i++) {
             if (table.peekCard(selected.get(i)).getValue() != playedValue) {

@@ -76,9 +76,15 @@ public class Hand extends Observable {
                 buildsCount--;
                 i++;
                 if(buildsCount == 0){
-                    MultiBuild multiBuild = new MultiBuild(new Vector<Build>(buildBuffer), "ADD OWNER");
-                    buildBuffer.clear();
-                    hand.add(multiBuild);
+                    if(buildBuffer.size() >1){
+                        MultiBuild multiBuild = new MultiBuild(new Vector<Build>(buildBuffer), "ADD OWNER");
+                        buildBuffer.clear();
+                        hand.add(multiBuild);
+                    } else{
+                        hand.add(buildBuffer.get(0));
+                        buildBuffer.clear();
+                    }
+
                 }
                 continue;
 

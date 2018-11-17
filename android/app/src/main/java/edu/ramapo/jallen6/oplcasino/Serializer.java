@@ -135,22 +135,22 @@ public class Serializer {
         Vector<String> parsedData = removeHeaders(data);
 
 
-        if(parsedData.size() < 10){
+        if(parsedData.size() < 12){
             return;
         }
         roundNum = Integer.parseInt(parsedData.get(0).trim());
 
-        players[1].setName("Computer");
-        players[1].setScore(Integer.parseInt(parsedData.get(1).trim()));
-        players[1].setHand(parsedData.get(2));
-        players[1].setPile(parsedData.get(3));
+        players[1].setName(parsedData.get(1));
+        players[1].setScore(Integer.parseInt(parsedData.get(2).trim()));
+        players[1].setHand(parsedData.get(3));
+        players[1].setPile(parsedData.get(4));
 
-        players[0].setName("Human");
-        players[0].setScore(Integer.parseInt(parsedData.get(4).trim()));
-        players[0].setHand(parsedData.get(5));
-        players[0].setPile(parsedData.get(6));
+        players[0].setName(parsedData.get(5));
+        players[0].setScore(Integer.parseInt(parsedData.get(6).trim()));
+        players[0].setHand(parsedData.get(7));
+        players[0].setPile(parsedData.get(8));
 
-        table = parsedData.get(7);
+        table = parsedData.get(9);
 
         //Build owners loop is here
 
@@ -215,6 +215,8 @@ public class Serializer {
             String parsed = removeHeader(raw.get(i));
             if(checkIfNonBlank(parsed)){
                 result.add(parsed);
+            } else{
+                result.add(raw.get(i).substring(0, raw.get(i).length()-1));
             }
         }
 

@@ -71,8 +71,14 @@ public class GameLoop extends AppCompatActivity {
 
         if(humanStarting){
             findViewById(R.id.roundAskForHelp).setVisibility(View.VISIBLE);
-
             findViewById(R.id.compSwitchScroll).setVisibility(View.INVISIBLE);
+            setClickableForVector(humanHandIds, true);
+            setClickableForVector(tableButtonIds, true);
+            humanButtonsAreClickable = true;
+        }else{
+            setClickableForVector(humanHandIds, false);
+            setClickableForVector(tableButtonIds, false);
+            humanButtonsAreClickable = false;
         }
         setPlayerLabel(humanStarting);
         updateLogButton();
@@ -209,9 +215,11 @@ public class GameLoop extends AppCompatActivity {
         if(humanButtonsAreClickable){
 
             helpButton.setVisibility(View.VISIBLE);
+            //Action radio stays hidden by default when entering player. so no entry
             findViewById(R.id.compSwitchScroll).setVisibility(View.INVISIBLE);
         } else{
             helpButton.setVisibility(View.INVISIBLE);
+            findViewById(R.id.actionRadio).setVisibility(View.INVISIBLE);
             findViewById(R.id.compSwitchScroll).setVisibility(View.VISIBLE);
         }
     }
@@ -519,7 +527,7 @@ public class GameLoop extends AppCompatActivity {
             }
         }
 
-
+        setClickableForVector(compHandIds, false);
 
     }
 
@@ -777,6 +785,7 @@ public class GameLoop extends AppCompatActivity {
                 if(humanButtonsAreClickable){
                     findViewById(humanHandIds.get(playedCardIndex)).setVisibility(View.INVISIBLE);
                     updateHandButtons(true, false);
+                    //TODO: RADIOGROUP AND COMP SWITCH TOGGLE HERE?
                 } else{
                     findViewById(compHandIds.get(playedCardIndex)).setVisibility(View.INVISIBLE);
                     updateHandButtons(false, false);

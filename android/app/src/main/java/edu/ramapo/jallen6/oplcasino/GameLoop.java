@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.media.Image;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,10 +42,11 @@ public class GameLoop extends AppCompatActivity {
     final int normalColor = Color.WHITE;
     private Vector<Integer> humanHandIds;
     private Vector<Integer> compHandIds;
-    private Vector<Integer> tableButtonIds;
+   // private Vector<Integer> tableButtonIds;
 
     private Vector<ImageButton> humanHandButtons;
     private Vector<ImageButton> compHandButtons;
+    private Vector<View>        tableButtons;
 
     private boolean humanButtonsAreClickable;
 
@@ -72,12 +74,12 @@ public class GameLoop extends AppCompatActivity {
         if(humanStarting){
             findViewById(R.id.roundAskForHelp).setVisibility(View.VISIBLE);
             findViewById(R.id.compSwitchScroll).setVisibility(View.INVISIBLE);
-            setClickableForVector(humanHandIds, true);
-            setClickableForVector(tableButtonIds, true);
+            setClickableForVector(humanHandButtons, true);
+            setClickableForVector(tableButtons, true);
             humanButtonsAreClickable = true;
         }else{
-            setClickableForVector(humanHandIds, false);
-            setClickableForVector(tableButtonIds, false);
+            setClickableForVector(humanHandButtons, false);
+            setClickableForVector(tableButtons, false);
             humanButtonsAreClickable = false;
         }
         setPlayerLabel(humanStarting);
@@ -194,14 +196,14 @@ public class GameLoop extends AppCompatActivity {
 
     private void setClickabilityForMove(boolean humanTurn) {
         if (humanTurn) {
-            setClickableForVector(humanHandIds, true);
-            setClickableForVector(tableButtonIds, true);
+            setClickableForVector(humanHandButtons, true);
+            setClickableForVector(tableButtons, true);
             humanButtonsAreClickable = true;
             setSubmitButton(false, true);
         } else {
             //For computer
-            setClickableForVector(humanHandIds, false);
-            setClickableForVector(tableButtonIds, false);
+            setClickableForVector(humanHandButtons, false);
+            setClickableForVector(tableButtons, false);
             humanButtonsAreClickable = false;
             setSubmitButton(true, false);
         }
@@ -217,10 +219,12 @@ public class GameLoop extends AppCompatActivity {
             helpButton.setVisibility(View.VISIBLE);
             //Action radio stays hidden by default when entering player. so no entry
             findViewById(R.id.compSwitchScroll).setVisibility(View.INVISIBLE);
+           // setClickableForVector(tableButtonIds, true);
         } else{
             helpButton.setVisibility(View.INVISIBLE);
             findViewById(R.id.actionRadio).setVisibility(View.INVISIBLE);
             findViewById(R.id.compSwitchScroll).setVisibility(View.VISIBLE);
+            //setClickableForVector(tableButtonIds, false);
         }
     }
 
@@ -264,8 +268,8 @@ public class GameLoop extends AppCompatActivity {
 
         }
         GradientDrawable border = new GradientDrawable();
-        border.setColor(Color.BLUE); //white background
-        border.setStroke(15, 0xFF000000); //black border with full opacity
+        border.setColor(normalColor);
+        border.setStroke(30, 0xFF000000); //black border with full opacity
         buildLayout.setBackground(border);
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
@@ -291,7 +295,8 @@ public class GameLoop extends AppCompatActivity {
             }
         };
         newButton.setOnClickListener(clickListener);
-        tableButtonIds.add(newButton.getId());
+        //tableButtonIds.add(newButton.getId());
+        tableButtons.add(newButton);
 
         LinearLayout view = findViewById(R.id.tableScroll);
         view.addView(newButton);
@@ -307,9 +312,11 @@ public class GameLoop extends AppCompatActivity {
         LinearLayout view = findViewById(R.id.tableScroll);
         for(int i =0; i < targets.size(); i++){
 
-            View current = findViewById(tableButtonIds.get(targets.get(i)));
+           // View current = findViewById(tableButtonIds.get(targets.get(i)));
+            View current = tableButtons.get(targets.get(i));
             view.removeView(current);
-            tableButtonIds.remove(new Integer(current.getId()));
+            //tableButtonIds.remove(new Integer(current.getId()));
+            tableButtons.remove(current);
             if(currentRound.getLastCapturer() == PlayerID.humanPlayer){
                 addCardToPile(true);
             } else{
@@ -459,8 +466,8 @@ public class GameLoop extends AppCompatActivity {
         compHandButtons.add((ImageButton) findViewById(R.id.ccard3));
         compHandButtons.add((ImageButton) findViewById(R.id.ccard4));
 
-        tableButtonIds = new Vector<Integer>(4,4);
-
+        //tableButtonIds = new Vector<Integer>(4,4);
+        tableButtons = new Vector<View>(4,4);
 
     }
 
@@ -478,7 +485,7 @@ public class GameLoop extends AppCompatActivity {
         handler.displayCard((ImageButton) findViewById(R.id.ccard2), 1);
         handler.displayCard((ImageButton) findViewById(R.id.ccard3), 2);
         handler.displayCard((ImageButton) findViewById(R.id.ccard4), 3);
-        setClickableForVector(compHandIds, false);
+        setClickableForVector(compHandButtons, false);
 
         handler = currentRoundView.getTableHandHandler();
         for(int i =0; i < 4; i++){
@@ -523,11 +530,11 @@ public class GameLoop extends AppCompatActivity {
 
                 handler.displayBuild(newBuild, i);
                 ((LinearLayout) findViewById(R.id.tableScroll)).addView(newBuild);
-                tableButtonIds.add(newBuild.getId());
+                tableButtons.add(newBuild);
             }
         }
 
-        setClickableForVector(compHandIds, false);
+        setClickableForVector(compHandButtons, false);
 
     }
 
@@ -535,9 +542,9 @@ public class GameLoop extends AppCompatActivity {
     private void clearTableSelection(){
         currentRoundView.getTableHandHandler().unSelectAllCards();
       //  LinearLayout table = findViewById(R.id.tableScroll);
-        for(int i =0; i < tableButtonIds.size(); i++){
+        for(int i =0; i < tableButtons.size(); i++){
             //TODO, add better handling than parent view
-            View current = findViewById(tableButtonIds.get(i));
+            View current = tableButtons.get(i);
             current.setBackgroundColor(normalColor);
             current.setClickable(true);
         }
@@ -549,7 +556,7 @@ public class GameLoop extends AppCompatActivity {
         HandView handler = currentRoundView.getTableHandHandler();
         for(int i =0; i < targetCards.size(); i++){
             //TODO: Add better handling than parent view
-            View current = findViewById(tableButtonIds.get(targetCards.get(i)));
+            View current = tableButtons.get(targetCards.get(i));
             current.setBackgroundColor(selectedColor);
             current.setClickable(false);
             handler.selectCard(targetCards.get(i));
@@ -628,7 +635,7 @@ public class GameLoop extends AppCompatActivity {
         View chosen = findViewById(view.getId());
 
         toggleButtonColor(chosen);
-        int index = tableButtonIds.indexOf(view.getId());
+        int index = tableButtons.indexOf(view);
         if(isSelected(chosen)){
             currentRoundView.getTableHandHandler().selectCard(index);
         }else{
@@ -679,10 +686,18 @@ public class GameLoop extends AppCompatActivity {
         return findViewById(listOfIds.get(index));
     }
 
-    private void setClickableForVector(Vector<Integer> buttonIds, boolean value){
+  /*  private void setClickableForVector(Vector<Integer> buttonIds, boolean value){
         //TODO: Add better handling for Builds than treating as view
         for(int i =0; i < buttonIds.size(); i++){
             View current = findViewById(buttonIds.get(i));
+            current.setClickable(value);
+        }
+    }*/
+
+    private void setClickableForVector(Vector<? extends View> buttons, boolean value){
+        //TODO: Add better handling for Builds than treating as view
+        for(int i =0; i < buttons.size(); i++){
+            View current = buttons.get(i);
             current.setClickable(value);
         }
     }
@@ -774,7 +789,7 @@ public class GameLoop extends AppCompatActivity {
 
                     table.displayBuild(newBuild, index);
                     ((LinearLayout) findViewById(R.id.tableScroll)).addView(newBuild);
-                    tableButtonIds.add(newBuild.getId());
+                    tableButtons.add(newBuild);
 
                 } else{
                     //Capture

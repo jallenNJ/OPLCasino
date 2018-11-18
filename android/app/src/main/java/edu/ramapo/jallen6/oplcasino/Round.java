@@ -299,7 +299,7 @@ public class Round {
         MultiBuild newMulti = new MultiBuild(matchingBuilds, matchingBuilds.get(0).getOwner());
         Collections.sort(matchingIndices, Collections.<Integer>reverseOrder());
         for(int i =0; i < matchingIndices.size(); i++){
-            table.removeCard(i);
+            table.removeCard(matchingIndices.get(i));
         }
         table.addCard(newMulti);
         return matchingIndices;

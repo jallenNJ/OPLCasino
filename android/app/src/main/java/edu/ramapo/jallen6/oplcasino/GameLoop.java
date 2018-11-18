@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.media.Image;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -164,8 +165,19 @@ public class GameLoop extends AppCompatActivity {
                 //Request code doesn't matter, as its never being checked to see if we get it.
                 requestPermissions(permissions, 1);
                 Serializer.writeToSaveFile();
-           //     finishAffinity();
-            //    System.exit(0);
+
+
+                //Add a delay to closing the app to give time for the save
+                // file to write
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        finishAffinity();
+                        System.exit(0);
+                    }
+                }, 1000);
+
+
             }
         }
     }

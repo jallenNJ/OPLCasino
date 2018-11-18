@@ -161,15 +161,22 @@ public abstract class Player {
         }
 
         Vector<Integer> tableIndices = move.getTableCardIndices();
+       int sum = hand.peekCard(move.getHandCardIndex()).getValue();
         for(int i =0; i < move.getTableCardIndiciesSize(); i++){
             entry += table.peekCard(tableIndices.get(i)).toString() + " ";
+            sum += table.peekCard(tableIndices.get(i)).getValue();
         }
+
         if(move.getAction() != PlayerActions.Trail){
             entry = entry.substring(0, entry.length() -1) + ".";
+
         }else{
             entry += ".";
         }
 
+        if(move.getAction() == PlayerActions.Build){
+            entry += "(Sums to " + sum +")";
+        }
         if(!actionReason.equals("")){
             entry += "\n" + actionReason;
         }

@@ -59,7 +59,7 @@ public class HandView implements Observer {
         return hand.size();
     }
     public int getLastIndex(){
-        return hand.size();
+        return hand.size()-1;
     }
     public void displayCard(ImageButton button, int cardIndex){
         if(button == null || cardIndex < 0 || cardIndex >= hand.size() ) {

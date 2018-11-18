@@ -11,7 +11,10 @@ public class BuildView extends CardView {
     Vector<CardView> cards;
 
     BuildView(BuildType master){
+        // Save the model
         model = master;
+
+        //Pull every card out of it, and make them into views
         cards = new Vector<CardView>(4,1);
         Vector<Card> models = model.getCards();
         for(int i =0; i < models.size(); i++){
@@ -26,10 +29,15 @@ public class BuildView extends CardView {
 
     //BQ for strings on buttons
     public void drawBuild(LinearLayout layout){
+
+        //Ensure the layout has enough buttons
         if(layout.getChildCount() != cards.size() +1){
             return;
         }
+        //Put the sum of build and its toString onto the button
         ((Button)layout.getChildAt(0)).setText(Integer.toString(model.getValue())+"\n" + model.toString());
+
+        //For every card, have it draw its image onto the correct button
         for(int i =0; i < cards.size(); i++){
             cards.get(i).setButton(((ImageButton) layout.getChildAt(i+1)));
         }
@@ -37,31 +45,3 @@ public class BuildView extends CardView {
 
     }
 }
-
-
-/*
-        //Test build code
-        Button newButton = new Button(this);
-        newButton.setId(View.generateViewId());
-        newButton.setText("9");
-
-
-        ImageButton testImage = generateButton();
-        testImage.setImageResource(R.drawable.s3);
-        ImageButton testImage2 = generateButton();
-        testImage2.setImageResource(R.drawable.h6);
-
-
-      LinearLayout test = new LinearLayout(this);
-        test.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                test.setOrientation(LinearLayout.HORIZONTAL);
-                test.addView(newButton);
-                test.addView(testImage);
-                test.addView(testImage2);
-                ((LinearLayout) findViewById(R.id.tableScroll)).addView(test);
-
-                GradientDrawable border = new GradientDrawable();
-                border.setColor(Color.BLUE); //white background
-                border.setStroke(15, 0xFF000000); //black border with full opacity
-                test.setBackground(border);
- */

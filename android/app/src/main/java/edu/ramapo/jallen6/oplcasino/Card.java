@@ -27,10 +27,15 @@ public class Card extends CardType {
             numericValue = 0;
             return;
         }
+        //Get the chars from the string
         char suitChar = strCard.charAt(0);
         char suitSym = strCard.charAt(1);
+
+        //Convert to the enums
         suit = charToSuit(suitChar);
         numericValue = symbolToValue(suitSym);
+
+        //No owner as its a card
         owner = "";
     }
     //@androidx.annotation.NonNull

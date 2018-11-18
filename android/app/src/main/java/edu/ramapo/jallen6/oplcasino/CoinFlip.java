@@ -18,9 +18,13 @@ public class CoinFlip extends AppCompatActivity {
     }
 
     public void setText(View view){
+
+        //Generate a random number and multiply by 10 so its on the interval [0, 10)
          double randNumRaw = Math.random();
          randNumRaw *= 10;
          int randNum = (int) randNumRaw;
+
+         //Get if the coin landed on heads
          boolean flipIsHeads = false;
         if(randNum % 2 == 0){
             flipIsHeads = true;
@@ -28,6 +32,8 @@ public class CoinFlip extends AppCompatActivity {
 
          TextView textView = findViewById(R.id.result);
          if(view.getId() == R.id.headsButton){
+
+             //If guess is heads
              if(flipIsHeads){
                  textView.setText("Heads! Human goes first");
                  humanFirst = true;
@@ -36,7 +42,8 @@ public class CoinFlip extends AppCompatActivity {
              }
 
 
-         } else{
+         } else{ //If guess is tails
+
              if(flipIsHeads){
                  textView.setText("Heads! Computer goes first");
              } else{
@@ -45,9 +52,11 @@ public class CoinFlip extends AppCompatActivity {
              }
          }
 
+         //Make the next screen button visible so the user can proceed
         Button startButton = findViewById( R.id.startButton);
          startButton.setVisibility(View.VISIBLE);
 
+         //Make the call buttons faded and unclickable
          Button headsButton = findViewById(R.id.headsButton);
          headsButton.setAlpha(.5f);
          headsButton.setClickable(false);
@@ -59,8 +68,11 @@ public class CoinFlip extends AppCompatActivity {
 
     public void startGame (View view){
         Intent intent = new Intent(this, GameLoop.class);
+        //Store who won the cointoss and declare this is a new game
         intent.putExtra(GameLoop.humanFirstExtra, humanFirst );
         intent.putExtra(GameLoop.fromSaveGameExtra, false );
+
+        //Start the new scene and finish this one so the user can back into it
         startActivity(intent);
         finish();
     }

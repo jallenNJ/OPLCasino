@@ -12,15 +12,6 @@ public abstract class CardType {
         return true;
     }
 
-    public boolean setSuit(CardSuit su){
-        if(su == CardSuit.invalid){
-            return false;
-        }
-        suit = su;
-        return true;
-
-    }
-
     public void setOwner(String o){
         owner = o;
     }

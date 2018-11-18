@@ -9,6 +9,7 @@ public class Computer extends Player {
         name = "Computer";
 
         if(Serializer.isFileLoaded()){
+            //If a save, get the save data and pass to all the member objects
             PlayerSaveData saveData = Serializer.getComputerSaveData();
             score = saveData.getScore();
             hand = new Hand(true, saveData.getHand());
@@ -18,6 +19,7 @@ public class Computer extends Player {
 
     Computer(Player advisee){
         //super();
+        //If the advisor to the human, copy their data
         name = "Advisor";
         hand = new Hand(advisee.getHand());
         pile = new Hand(advisee.getPile());
@@ -32,7 +34,7 @@ public class Computer extends Player {
                     continue;
                 }
                 Card played = (Card)hand.peekCard(j);
-                if(played.getValue() < sumTo.getValue()){
+                if(played.getValue() >= sumTo.getValue()){
                     continue;
                 }
                 Vector<Integer> indices = findSetThatSum(table, sumTo.getValue() - played.getValue(), true);
@@ -48,6 +50,7 @@ public class Computer extends Player {
 
     private PlayerMove checkCaptureOptions(final Hand table){
 
+        //For every card
         for(int i =0; i < hand.size(); i++){
             Vector<Integer> result;
             if(hand.peekCard(i).getValue() != 1){

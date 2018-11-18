@@ -56,6 +56,9 @@ public class Serializer {
     public static void setTable(String t){
         table = t;
     }
+    public static void setBuildOwners (Vector<String> b){
+        buildOwners = new Vector<String>(b);
+    }
 
     public static void setDeck (String d){
         deck = d;
@@ -206,6 +209,9 @@ public class Serializer {
             }
 
             outputStream.write("Table: " + table);
+            for(int i =0; i < buildOwners.size(); i++){
+                outputStream.write("\n\nBuild Owner: "+ buildOwners.get(i));
+            }
             outputStream.write("\n\nLast Capturer: "+ lastCapturer);
             outputStream.write("\n\nDeck: " + deck);
             outputStream.write("\n\nNext Player: " + nextPlayer);

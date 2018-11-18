@@ -231,4 +231,20 @@ public  int fetchRemovedIndex(){
         return amount;
     }
 
+    public Vector<String> serilizeBuilds(){
+       Vector<String> buildStrings = new Vector<String>(2,1);
+
+       for(int i = 0; i < hand.size(); i++){
+           CardType current = hand.get(i);
+           if(current.getSuit() == CardSuit.build){
+               buildStrings.add(current.toString() + current.getOwner());
+           }
+       }
+
+       return buildStrings;
+
+
+
+    }
+
 }

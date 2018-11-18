@@ -437,6 +437,7 @@ public class Round {
         Serializer.setPlayers(players);
         Serializer.setDeck(deck.toString());
         Serializer.setTable(table.toString());
+        Serializer.setBuildOwners(table.serilizeBuilds());
         Serializer.setLastCapturer(players[lastCapturer.ordinal()].getName());
         Serializer.setNextPlayer(players[moveQueue.get(0).ordinal()].getName());
     }

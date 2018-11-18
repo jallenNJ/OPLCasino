@@ -116,6 +116,9 @@ public abstract class Player {
         return true;
     }
     public boolean releaseBuildValue(CardType res){
+        if(res == null){
+            return false;
+        }
         reservedValues.removeElement(res.getValue());
         return true;
     }

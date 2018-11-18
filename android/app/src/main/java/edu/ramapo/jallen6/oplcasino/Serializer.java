@@ -107,6 +107,26 @@ public class Serializer {
         return table;
     }
 
+    public static String getOwnerOfBuild (String build){
+        build = removeWhiteSpace(build);
+        String buildForComp = build + "Computer";
+        String buildForHuman = build + "Human";
+
+
+        for(int i =0; i < buildOwners.size(); i++){
+            String current = removeWhiteSpace(buildOwners.get(i));
+            if(current.equals(buildForComp)){
+                return "Computer";
+            } else if(current.equals(buildForHuman)){
+                return "Human";
+            }
+        }
+
+        return "Owner not found";
+        //throw new RuntimeException("No build owner found");
+
+    }
+
     public static boolean isLastCapturerHuman(){
         return lastCapturer.trim().equals("Human");
     }
@@ -159,7 +179,9 @@ public class Serializer {
 
         table = parsedData.get(9);
 
-        //Build owners loop is here
+        for(int i = 10; i < parsedData.size()-3; i++){
+            buildOwners.add(parsedData.get(i));
+        }
 
         lastCapturer = parsedData.get(parsedData.size()-3).trim();
         deck = parsedData.get(parsedData.size()-2);
@@ -197,6 +219,18 @@ public class Serializer {
 
     }
 
+    public static String removeWhiteSpace(String input){
+        String[] tokens = input.split(" ");
+        String spacesRemoved = "";
+        for(String token:tokens){
+            if(token.length() == 0){
+                continue;
+            }
+            spacesRemoved += token;
+        }
+
+        return spacesRemoved;
+    }
 
 
     private static String removeHeader(String raw){

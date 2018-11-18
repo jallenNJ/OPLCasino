@@ -2,7 +2,6 @@ package edu.ramapo.jallen6.oplcasino;
 
 
 import java.util.Observable;
-import java.util.Stack;
 import java.util.Vector;
 
 public class Hand extends Observable {
@@ -78,10 +77,13 @@ public class Hand extends Observable {
                 if(buildsCount == 0){
                     if(buildBuffer.size() >1){
                         MultiBuild multiBuild = new MultiBuild(new Vector<Build>(buildBuffer), "ADD OWNER");
+                        multiBuild.setOwner(Serializer.getOwnerOfBuild(multiBuild.toString()));
                         buildBuffer.clear();
                         hand.add(multiBuild);
                     } else{
                         hand.add(buildBuffer.get(0));
+                        buildBuffer.get(0).setOwner(
+                                Serializer.getOwnerOfBuild(buildBuffer.get(0).toString()));
                         buildBuffer.clear();
                     }
 

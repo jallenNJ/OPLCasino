@@ -35,7 +35,9 @@ public class BuildView extends CardView {
             return;
         }
         //Put the sum of build and its toString onto the button
-        ((Button)layout.getChildAt(0)).setText(Integer.toString(model.getValue())+"\n" + model.toString());
+        ((Button)layout.getChildAt(0)).setText(Integer.toString(model.getValue())+
+                "\n" + model.toString()+
+                "\n" + model.getOwner());
 
         //For every card, have it draw its image onto the correct button
         for(int i =0; i < cards.size(); i++){

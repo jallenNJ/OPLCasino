@@ -34,6 +34,9 @@ public class Computer extends Player {
                     continue;
                 }
                 Card played = (Card)hand.peekCard(j);
+                if(reservedValues.contains(played.getValue())){
+                    continue;
+                }
                 if(played.getValue() >= sumTo.getValue()){
                     continue;
                 }

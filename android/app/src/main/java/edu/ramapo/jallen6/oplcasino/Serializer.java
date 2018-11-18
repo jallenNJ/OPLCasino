@@ -38,6 +38,8 @@ public class Serializer {
         buildOwners = new Vector<String>(4,1);
         lastCapturer = "";
 
+        setFileName("Save", false);
+
     }
 
     public static void setRoundNum(int round){
@@ -67,8 +69,13 @@ public class Serializer {
         nextPlayer = s;
     }
 
-    public static void setFileName(String name){
-        fileName = name;
+    public static void setFileName(String name, boolean hasExtension){
+
+        if(hasExtension){
+            fileName = name;
+        } else{
+            fileName = name + fileExtension;
+        }
     }
 
     public static boolean isHumanFirst(){
@@ -164,7 +171,7 @@ public class Serializer {
         File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         //File save = new File(directory, "Save.csav");
         try{
-            FileWriter outputStream = new FileWriter(new File(directory, "Save.csav"));
+            FileWriter outputStream = new FileWriter(new File(directory, fileName));
             outputStream.write("Round: " +Integer.toString(roundNum)+"\n");
 
             for(int i =1; i >=0; i--){

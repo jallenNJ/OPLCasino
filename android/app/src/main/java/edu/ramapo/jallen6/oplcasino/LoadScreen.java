@@ -73,7 +73,7 @@ public class LoadScreen extends AppCompatActivity {
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Serializer.setFileName(((Button) view).getText().toString());
+                Serializer.setFileName(((Button) view).getText().toString(), true);
                 Serializer.readInSaveFile();
                 if(Serializer.isFileLoaded()){
                     swapToGameActivity();

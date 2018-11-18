@@ -30,6 +30,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <EditText
+            android:id="@+id/saveTextName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Enter File Name (No Extension)"
+            android:inputType="textUri"
+            android:singleLine="true" />
+
         <Button
             android:id="@+id/turnMenuSave"
             android:layout_width="match_parent"

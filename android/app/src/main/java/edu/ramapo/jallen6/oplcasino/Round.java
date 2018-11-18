@@ -299,6 +299,7 @@ public class Round {
         }
         Vector<Integer> selected = move.getTableCardIndices();
         if (selected.size() == 0) {
+            players[playerID].setRejectionReason("Did not select cards to capture");
             return false;
         }
 
@@ -311,6 +312,7 @@ public class Round {
                 aceCount++;
             }
             if(current.getSuit() == CardSuit.build && current.getValue() != playedValue){
+                players[playerID].setRejectionReason("Trying to use a build as part of a set");
                 return false;
             }
         }
@@ -332,7 +334,12 @@ public class Round {
         }
 
 
-        return sum % playedValue == 0 || aceSetsCheck;
+        boolean moveValidity =  sum % playedValue == 0 || aceSetsCheck;
+        if(!moveValidity){
+            players[playerID].setRejectionReason("Not all selected cards are a matching symbol" +
+                    " or a set that sum to target value");
+        }
+        return moveValidity;
         /*
         for (int i = 0; i < selected.size(); i++) {
             if (table.peekCard(selected.get(i)).getValue() != playedValue) {
@@ -345,10 +352,12 @@ public class Round {
     private boolean checkBuild(PlayerMove move, int playerID){
         int playedValue = players[playerID].getHand().peekCard(move.getHandCardIndex()).getValue();
         if(players[playerID].isReservedValue(playedValue)){
+            players[playerID].setRejectionReason("Tried to use a card that a build sums to");
             return false;
         }
         Vector<Integer> selected = move.getTableCardIndices();
         if (selected.size() == 0) {
+            players[playerID].setRejectionReason("Did not select any cards to build with");
             return false;
         }
 
@@ -357,15 +366,29 @@ public class Round {
             sum += table.peekCard(selected.get(i)).getValue();
         }
         if(sum > 14){
+            players[playerID].setRejectionReason("Selected cards sum over 14");
             return false;
         }
-        return players[playerID].doesHandContain(sum);
+
+
+        boolean moveValidity = players[playerID].doesHandContain(sum);
+
+        if(!moveValidity){
+            players[playerID].setRejectionReason("Build sum to" + Integer.toString(sum)
+                    + " which is not a value in the hand");
+        }
+        return moveValidity;
 
     }
 
     private boolean checkTrail(PlayerMove move, int playerID) {
-        return !players[playerID].hasReservedValue();
-        //return true;
+        //TODO: Check identical
+        boolean moveValidity =  !players[playerID].hasReservedValue();
+
+        if(!moveValidity){
+            players[playerID].setRejectionReason("Trying to trail while having a build");
+        }
+        return moveValidity;
     }
 
 

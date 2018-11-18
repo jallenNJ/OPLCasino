@@ -12,6 +12,7 @@ public abstract class Player {
     protected String name;
     protected PlayerActions moveToUse;
     protected String actionReason;
+    protected String rejectionReason;
 
     Player(){
 
@@ -24,6 +25,7 @@ public abstract class Player {
         moveToUse = PlayerActions.Invalid;
         name = "Player";
         actionReason = "";
+        rejectionReason = "";
 
     }
 
@@ -105,6 +107,10 @@ public abstract class Player {
         return true;
     }
 
+    public void setRejectionReason(String rejection) {
+        rejectionReason = "Reason: " + rejection;
+    }
+
     public boolean reserveBuildValue(Build res){
         reservedValues.add(res.getValue());
         return true;
@@ -148,7 +154,7 @@ public abstract class Player {
                 break;
             case Invalid:
                 default:
-                entry += " tried an invalid move.";
+                entry += " tried an invalid move." + rejectionReason;
                 ActionLog.addLog(entry);
                 return;
         }

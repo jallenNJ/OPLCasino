@@ -305,7 +305,7 @@ public class GameLoop extends AppCompatActivity {
     }
 
 
-    private void removeButtonsFromTable(Vector<Integer> targets){
+    private void removeButtonsFromTable(Vector<Integer> targets, boolean addToPile){
         if(targets == null){
             return;
         }
@@ -323,11 +323,14 @@ public class GameLoop extends AppCompatActivity {
             //+1 is to skip over the label
             view.removeViewAt(currentIndex+1);
             tableButtons.removeElementAt(currentIndex);
-            if(currentRound.getLastCapturer() == PlayerID.humanPlayer){
-                addCardToPile(true);
-            } else{
-                addCardToPile(false);
+            if(addToPile){
+                if(currentRound.getLastCapturer() == PlayerID.humanPlayer){
+                    addCardToPile(true);
+                } else{
+                    addCardToPile(false);
+                }
             }
+
         }
     }
 
@@ -786,7 +789,7 @@ public class GameLoop extends AppCompatActivity {
                     currentRoundView.getTableHandHandler().displaySelected(addButtonToTable());
                 } else if(currentRound.getLastAction() == Build){
                     //Handle builds here
-                    removeButtonsFromTable(currentRound.getLastPlayerMove().getTableCardIndices());
+                    removeButtonsFromTable(currentRound.getLastPlayerMove().getTableCardIndices(), false);
 
                     HandView table = currentRoundView.getTableHandHandler();
                     int cardsNeeded = table.getNeededButtonForIndex(table.getLastIndex());
@@ -795,13 +798,10 @@ public class GameLoop extends AppCompatActivity {
                     table.displayBuild(newBuild, table.getLastIndex());
                     ((LinearLayout) findViewById(R.id.tableScroll)).addView(newBuild);
                     tableButtons.add(newBuild);
-                    if(tableButtons.size() != table.size()){
-                        throw new RuntimeException("View desync:" + Integer.toString(tableButtons.size()) + " | " + Integer.toString(table.size()));
-                    }
 
                 } else{
                     //Capture
-                    removeButtonsFromTable(currentRound.getLastPlayerMove().getTableCardIndices());
+                    removeButtonsFromTable(currentRound.getLastPlayerMove().getTableCardIndices(),true);
                 }
 
                 int playedCardIndex = currentRound.getLastPlayerMove().getHandCardIndex();

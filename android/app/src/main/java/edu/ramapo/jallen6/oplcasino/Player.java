@@ -194,7 +194,14 @@ public abstract class Player {
     }
 
     public boolean containsCardInPile(Card check){
-        return pile.containsCard(check);
+        for(int i =0; i < pile.size(); i++){
+            Card current = (Card)pile.peekCard(i);
+            if(current.getSuit() == check.getSuit() &&
+                    current.getValue() == check.getValue()){
+                return true;
+            }
+        }
+        return false;
     }
 
     public int countAcesInPile(){

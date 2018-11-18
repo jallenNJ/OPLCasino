@@ -1,7 +1,10 @@
 package edu.ramapo.jallen6.oplcasino;
 
 
+import java.util.Collections;
 import java.util.Vector;
+
+import static edu.ramapo.jallen6.oplcasino.CardSuit.build;
 
 public class Round {
     private final int amountOfPlayers = 2;
@@ -202,7 +205,7 @@ public class Round {
                     //TODO: FIX NULL POINTER; something to do with reserved build values and move being rejected
                     //TODO: Also check to make sure capturing other builds releases correctly
                     //  possibly not being cleared
-                    if(table.peekCard((indices.get(i))).getSuit() == CardSuit.build){
+                    if(table.peekCard((indices.get(i))).getSuit() == build){
                      //   players[index].addCardsToPile((Card[]) (((Build)table.removeCard(indices.get(i))).getCards().toArray()));
                         players[index].addCardsToPile( (((BuildType)table.removeCard(indices.get(i))).getCardsAsArray()));
                     } else{
@@ -216,7 +219,7 @@ public class Round {
                 Vector<Card> buildCards = new Vector<Card>(5,1);
                 buildCards.add((Card)players[index].getHand().removeCard(result.getHandCardIndex()));
                 if(result.getTableCardIndices().size() == 1 &&
-                        table.peekCard(result.getTableCardIndices().get(0)).getSuit() == CardSuit.build){
+                        table.peekCard(result.getTableCardIndices().get(0)).getSuit() == build){
                     //TODO: unreserve card
                     Vector<Card> extendedCards= ((Build) table.removeCard(result.getTableCardIndices().get(0))).getCards();
                     buildCards.addAll(extendedCards);
@@ -277,6 +280,33 @@ public class Round {
     }
 
 
+    public Vector<Integer> condenseBuilds(int targetVal){
+        Vector<Build> matchingBuilds = new Vector<Build>(2,1);
+        Vector<Integer> matchingIndices = new Vector<Integer>(2,1);
+
+        for(int i =0; i < table.size(); i++){
+            if(table.peekCard(i).getSuit() == build &&table.peekCard(i).getValue() == targetVal){
+                matchingBuilds.addElement((Build) table.peekCard(i));
+                matchingIndices.add(i);
+            }
+        }
+
+        if(matchingBuilds.size() < 2){
+            matchingIndices.clear();
+            return matchingIndices;
+        }
+
+        MultiBuild newMulti = new MultiBuild(matchingBuilds, matchingBuilds.get(0).getOwner());
+        Collections.sort(matchingIndices, Collections.<Integer>reverseOrder());
+        for(int i =0; i < matchingIndices.size(); i++){
+            table.removeCard(i);
+        }
+        table.addCard(newMulti);
+        return matchingIndices;
+
+    }
+
+
     private boolean validateMove(PlayerMove move, int playerID) {
         PlayerActions action = move.getAction();
 
@@ -311,7 +341,7 @@ public class Round {
             if(current.getValue() == 1){
                 aceCount++;
             }
-            if(current.getSuit() == CardSuit.build && current.getValue() != playedValue){
+            if(current.getSuit() == build && current.getValue() != playedValue){
                 players[playerID].setRejectionReason("Trying to use a build as part of a set");
                 return false;
             }

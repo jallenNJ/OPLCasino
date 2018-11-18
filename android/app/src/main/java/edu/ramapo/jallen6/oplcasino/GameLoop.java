@@ -799,6 +799,20 @@ public class GameLoop extends AppCompatActivity {
                     ((LinearLayout) findViewById(R.id.tableScroll)).addView(newBuild);
                     tableButtons.add(newBuild);
 
+                    Vector<Integer> removedInCondense = currentRound.condenseBuilds(
+                            currentRound.getTable().peekCard(
+                                    currentRound.getTable().size()-1).getValue());
+
+                    if(removedInCondense.size() > 0){
+                        removeButtonsFromTable(removedInCondense, false);
+                        cardsNeeded = table.getNeededButtonForIndex(table.getLastIndex());
+                        newBuild = generateBuildLayout(cardsNeeded);
+
+                        table.displayBuild(newBuild, table.getLastIndex());
+                        ((LinearLayout) findViewById(R.id.tableScroll)).addView(newBuild);
+                        tableButtons.add(newBuild);
+                    }
+
                 } else{
                     //Capture
                     removeButtonsFromTable(currentRound.getLastPlayerMove().getTableCardIndices(),true);

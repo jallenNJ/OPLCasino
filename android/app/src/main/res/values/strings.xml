@@ -26,4 +26,5 @@
     <string name="turnMenuQuit">Quit the game without saving</string>
     <string name="bottomPlayerNameCurrent">Human Hand (Current Player)</string>
     <string name="topPlayerNameCurrent">Computer Hand (Current Player)</string>
+    <string name="mainMenu">Main Menu</string>
 </resources>

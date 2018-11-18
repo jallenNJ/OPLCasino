@@ -6,7 +6,6 @@ public abstract class Player {
 
     protected Hand hand;
     protected int score;
-    protected int selectedIndex;
     protected Hand pile;
     protected Vector<Integer> reservedValues;
     protected String name;
@@ -20,7 +19,6 @@ public abstract class Player {
         hand = new Hand();
         pile = new Hand();
         score = 0;
-        selectedIndex = -1;
         reservedValues = new Vector<Integer>(2,1);
         moveToUse = PlayerActions.Invalid;
         name = "Player";
@@ -91,21 +89,12 @@ public abstract class Player {
     }
 
     public int getSelectedIndex() {
+        if(hand.getSelectedIndices().size() == 0){
+            return -1;
+        }
         return hand.getSelectedIndices().get(0);
     }
 
-    public boolean selectCard(int index){
-        if(index < 0 || index >= hand.size()){
-            return false;
-        }
-        selectedIndex = index;
-        return true;
-    }
-
-    public boolean unselectCard(){
-        selectedIndex = -1;
-        return true;
-    }
 
     public void setRejectionReason(String rejection) {
         rejectionReason = "Reason: " + rejection;

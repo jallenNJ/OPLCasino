@@ -113,6 +113,7 @@ public class Hand extends Observable {
     public int size(){
         return hand.size();
     }
+
     public boolean isEmpty(){
         return hand.size() == 0;
     }

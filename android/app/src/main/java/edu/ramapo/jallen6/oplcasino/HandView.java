@@ -58,6 +58,9 @@ public class HandView extends BaseView implements Observer {
     public int size(){
         return hand.size();
     }
+    public int getLastIndex(){
+        return hand.size();
+    }
     public void displayCard(ImageButton button, int cardIndex){
         if(button == null || cardIndex < 0 || cardIndex >= hand.size() ) {
             return;

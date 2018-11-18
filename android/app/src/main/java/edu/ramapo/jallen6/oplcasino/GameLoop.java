@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.security.spec.InvalidParameterSpecException;
 import java.util.Collections;
 import java.util.Vector;
 
@@ -313,10 +314,15 @@ public class GameLoop extends AppCompatActivity {
         for(int i =0; i < targets.size(); i++){
 
            // View current = findViewById(tableButtonIds.get(targets.get(i)));
-            View current = tableButtons.get(targets.get(i));
-            view.removeView(current);
+           // View current = tableButtons.get(targets.get(i));
+           // view.removeView(current);
             //tableButtonIds.remove(new Integer(current.getId()));
-            tableButtons.remove(current);
+            //tableButtons.remove(current);
+
+            int currentIndex = targets.get(i);
+            //+1 is to skip over the label
+            view.removeViewAt(currentIndex+1);
+            tableButtons.removeElementAt(currentIndex);
             if(currentRound.getLastCapturer() == PlayerID.humanPlayer){
                 addCardToPile(true);
             } else{
@@ -783,13 +789,15 @@ public class GameLoop extends AppCompatActivity {
                     removeButtonsFromTable(currentRound.getLastPlayerMove().getTableCardIndices());
 
                     HandView table = currentRoundView.getTableHandHandler();
-                    int index = table.size()-1;
-                    int cardsNeeded = table.getNeededButtonForIndex(index);
+                    int cardsNeeded = table.getNeededButtonForIndex(table.getLastIndex());
                     LinearLayout newBuild = generateBuildLayout(cardsNeeded);
 
-                    table.displayBuild(newBuild, index);
+                    table.displayBuild(newBuild, table.getLastIndex());
                     ((LinearLayout) findViewById(R.id.tableScroll)).addView(newBuild);
                     tableButtons.add(newBuild);
+                    if(tableButtons.size() != table.size()){
+                        throw new RuntimeException("View desync:" + Integer.toString(tableButtons.size()) + " | " + Integer.toString(table.size()));
+                    }
 
                 } else{
                     //Capture

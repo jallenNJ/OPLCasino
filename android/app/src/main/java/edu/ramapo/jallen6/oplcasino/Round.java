@@ -218,8 +218,9 @@ public class Round {
                 if(result.getTableCardIndices().size() == 1 &&
                         table.peekCard(result.getTableCardIndices().get(0)).getSuit() == CardSuit.build){
                     //TODO: unreserve card
-                    Vector<Card> extendedCards= ((Build) table.peekCard(result.getTableCardIndices().get(0))).getCards();
+                    Vector<Card> extendedCards= ((Build) table.removeCard(result.getTableCardIndices().get(0))).getCards();
                     buildCards.addAll(extendedCards);
+
 
                 } else{
                     for(int i =0; i < indices.size(); i++){

@@ -257,7 +257,7 @@ public class Round {
         if (moveQueue.size() > 0) {
             return true;
         } else {
-            fillMoveQueue(startingPlayer);
+            fillMoveQueue(getOtherPlayerId(currentId));
             return true;
         }
 
@@ -440,6 +440,14 @@ public class Round {
         Serializer.setBuildOwners(table.serilizeBuilds());
         Serializer.setLastCapturer(players[lastCapturer.ordinal()].getName());
         Serializer.setNextPlayer(players[moveQueue.get(0).ordinal()].getName());
+    }
+
+    private PlayerID getOtherPlayerId(PlayerID current){
+        if(current == PlayerID.humanPlayer){
+            return PlayerID.computerPlayer;
+        }else{
+            return PlayerID.humanPlayer;
+        }
     }
 
 }

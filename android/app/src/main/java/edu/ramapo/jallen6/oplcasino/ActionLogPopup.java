@@ -17,13 +17,25 @@ public class ActionLogPopup extends AppCompatActivity {
         setContentView(R.layout.activity_action_log_popup);
 
 
+        //Get the linear layout
         LinearLayout linear = findViewById(R.id.logPopUpLinear);
+
+        //For every element in the log, starting at the end
         for(int i =ActionLog.getLogSize()-1; i >= 0; i--){
+            //Make a new text view, and set the text to the value
             TextView text = new TextView(this);
             text.setText(ActionLog.getLogEntry(i));
+
+            //Format the text to be centered and size 20 to meet style desire
             text.setTextSize(20);
             text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            text.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            //Set the bounds of the textview to take up its entire allocated space, and to flow
+            // onto next line if needed
+            text.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            //Set the background and add to the layout
             text.setBackgroundColor(Color.LTGRAY);
             linear.addView(text);
         }

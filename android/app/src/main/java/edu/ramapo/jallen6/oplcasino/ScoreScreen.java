@@ -164,6 +164,9 @@ public class ScoreScreen extends AppCompatActivity {
         boolean humanCappedLast = lastCap == PlayerID.humanPlayer;
         intent.putExtra(GameLoop.humanFirstExtra, humanCappedLast );
         intent.putExtra(GameLoop.fromSaveGameExtra, false );
+        intent.putExtra(GameLoop.humanPlayerStartScore, players[0].getScore());
+        intent.putExtra(GameLoop.compPlayerStartScore, players[1].getScore());
+
         startActivity(intent);
         clearData();
         finish();

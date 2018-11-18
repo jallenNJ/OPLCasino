@@ -2,7 +2,6 @@ package edu.ramapo.jallen6.oplcasino;
 
 public class Tournament {
 
-
     private  int[] roundScores;
     private  int[] tourScores;
 
@@ -103,6 +102,10 @@ public class Tournament {
 
         tourScores[0] = roundScores[0] + startingScores[0];
         tourScores[1] = roundScores[1] + startingScores[1];
+
+        for(int i =0; i < players.length; i++){
+            players[i].setScore(tourScores[i]);
+        }
     }
 
 
@@ -121,6 +124,8 @@ public class Tournament {
     public String toString(){
         String formatted = "Raw Score dump:\n\n";
 
+        formatted += "Starting Scores: \n"+ names[0] + " " + startingScores[0] +
+                "\n "+names[1] + " " + startingScores[1] + "\n\n";
 
         if(pileSizes[0] > pileSizes[1]){
            formatted += names[0] + " had more cards ";

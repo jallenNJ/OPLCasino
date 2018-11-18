@@ -29,10 +29,11 @@ public class Round {
     Round() {
         roundNum = 0;
         startingPlayer = PlayerID.humanPlayer;
-        initRound();
+        int[] scores = {0,0};
+        initRound(scores);
     }
 
-    Round(int round, boolean humanFirst) {
+    Round(int round, boolean humanFirst, int[] scores) {
         roundNum = round;
         if (humanFirst) {
             startingPlayer = PlayerID.humanPlayer;
@@ -40,7 +41,7 @@ public class Round {
             startingPlayer = PlayerID.computerPlayer;
         }
 
-        initRound();
+        initRound(scores);
     }
 
     public PlayerActions getLastAction() {
@@ -50,7 +51,7 @@ public class Round {
         return lastMove.getAction();
     }
 
-    private void initRound() {
+    private void initRound(int[] scores) {
         roundOver = false;
         players = new Player[amountOfPlayers];
 
@@ -59,6 +60,8 @@ public class Round {
 
         players[humanID] = new Human();
         players[compID] = new Computer();
+        players[humanID].setScore(scores[humanID]);
+        players[compID].setScore(scores[compID]);
 
         if(!Serializer.isFileLoaded()){
             players[humanID].addCardsToHand(deck.getFourCards());
@@ -335,15 +338,21 @@ public class Round {
 
         int aceCount = 0;
         int sum =0;
+        Vector<Integer> valuesToRelease = new Vector<Integer>(1,1);
         for(int i =0; i < selected.size();i++){
             CardType current = table.peekCard(selected.get(i));
             sum += current.getValue();
             if(current.getValue() == 1){
                 aceCount++;
             }
-            if(current.getSuit() == build && current.getValue() != playedValue){
-                players[playerID].setRejectionReason("Trying to use a build as part of a set");
-                return false;
+            if(current.getSuit() == build){
+                if(current.getValue() != playedValue){
+                    players[playerID].setRejectionReason("Trying to use a build as part of a set");
+                    return false;
+                } else{
+                    valuesToRelease.add(current.getValue());
+                }
+
             }
         }
 
@@ -368,6 +377,12 @@ public class Round {
         if(!moveValidity){
             players[playerID].setRejectionReason("Not all selected cards are a matching symbol" +
                     " or a set that sum to target value");
+        }else{
+            for(int i =0; i < valuesToRelease.size(); i++){
+                for(int j = 0; j < players.length; j++){
+                    players[j].releaseBuildValue(valuesToRelease.get(i));
+                }
+            }
         }
         return moveValidity;
         /*

@@ -96,6 +96,10 @@ public abstract class Player {
     }
 
 
+
+    public void setScore(int s){
+        score = s;
+    }
     public void setRejectionReason(String rejection) {
         rejectionReason = "Reason: " + rejection;
     }
@@ -109,6 +113,11 @@ public abstract class Player {
             return false;
         }
         reservedValues.removeElement(res.getValue());
+        return true;
+    }
+
+    public boolean releaseBuildValue(int val){
+        reservedValues.removeElement(val);
         return true;
     }
 

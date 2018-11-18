@@ -71,6 +71,8 @@ public class CoinFlip extends AppCompatActivity {
         //Store who won the cointoss and declare this is a new game
         intent.putExtra(GameLoop.humanFirstExtra, humanFirst );
         intent.putExtra(GameLoop.fromSaveGameExtra, false );
+        intent.putExtra(GameLoop.humanPlayerStartScore, 0);
+        intent.putExtra(GameLoop.compPlayerStartScore, 0);
 
         //Start the new scene and finish this one so the user can back into it
         startActivity(intent);

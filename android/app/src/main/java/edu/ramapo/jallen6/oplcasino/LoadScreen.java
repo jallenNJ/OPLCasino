@@ -97,6 +97,8 @@ public class LoadScreen extends AppCompatActivity {
         Intent intent = new Intent(this, GameLoop.class);
         intent.putExtra(GameLoop.humanFirstExtra, Serializer.isHumanFirst());
         intent.putExtra(GameLoop.fromSaveGameExtra, true );
+        intent.putExtra(GameLoop.humanPlayerStartScore, Serializer.getHumanSaveData().getScore());
+        intent.putExtra(GameLoop.compPlayerStartScore, Serializer.getComputerSaveData().getScore());
         startActivity(intent);
         finish();
     }

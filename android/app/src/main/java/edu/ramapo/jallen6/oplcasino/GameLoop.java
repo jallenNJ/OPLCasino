@@ -36,6 +36,8 @@ import static edu.ramapo.jallen6.oplcasino.PlayerActions.Trail;
 public class GameLoop extends AppCompatActivity {
     public static final String humanFirstExtra = "humanFirst";
     public static final String fromSaveGameExtra = "fromSaveGame";
+    public static final String humanPlayerStartScore = "humanScoreStart";
+    public static final String compPlayerStartScore = "compScoreStart";
 
 
     RoundView currentRoundView;
@@ -61,14 +63,17 @@ public class GameLoop extends AppCompatActivity {
         Intent intent = getIntent();
         boolean humanStarting = intent.getBooleanExtra(humanFirstExtra, true);
         boolean loadedSaveFile = intent.getBooleanExtra(fromSaveGameExtra, false);
+        int[] startScores = new int[2];
+        startScores[0] = intent.getIntExtra(humanPlayerStartScore, 0);
+        startScores[1] = intent.getIntExtra(compPlayerStartScore, 0);
 
 
         ActionLog.init();
         initDisplayCardVariables();
         if(loadedSaveFile){
-            loadSavedData(humanStarting);
+            loadSavedData(humanStarting, startScores);
         } else{
-            startFreshGame(humanStarting);
+            startFreshGame(humanStarting, startScores);
         }
 
 
@@ -114,16 +119,16 @@ public class GameLoop extends AppCompatActivity {
 
     }
 
-    private void startFreshGame(boolean humanStarting){
-        currentRound = new Round(0, humanStarting);
+    private void startFreshGame(boolean humanStarting, int[] scores){
+        currentRound = new Round(0, humanStarting, scores);
         currentRoundView = new RoundView(currentRound);
         initNewGameDisplayCards();
 
         ActionLog.addLog("New game started!");
     }
 
-    private void loadSavedData(boolean humanStarting){
-        currentRound = new Round(Serializer.getRoundNum(), humanStarting);
+    private void loadSavedData(boolean humanStarting, int[] scores){
+        currentRound = new Round(Serializer.getRoundNum(), humanStarting, scores);
         currentRoundView = new RoundView(currentRound);
         ActionLog.addLog("Save game Loaded!");
         Serializer.clearLoadedFile();

@@ -1,7 +1,7 @@
 package edu.ramapo.jallen6.oplcasino;
 
 
-public class RoundView extends BaseView {
+public class RoundView  {
     private Round model;
 
     private HandView tableView;

@@ -6,7 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
 
-public class DeckView extends BaseView implements Observer {
+public class DeckView implements Observer {
     Deck model;
     Vector<CardView> deck;
 

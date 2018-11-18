@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import java.util.Observer;
 import java.util.Vector;
 
-public class HandView extends BaseView implements Observer {
+public class HandView implements Observer {
 
     private Hand model;
     private Vector<CardView> hand;

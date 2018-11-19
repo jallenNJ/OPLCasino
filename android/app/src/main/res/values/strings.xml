@@ -27,4 +27,5 @@
     <string name="bottomPlayerNameCurrent">Human Hand (Current Player)</string>
     <string name="topPlayerNameCurrent">Computer Hand (Current Player)</string>
     <string name="mainMenu">Main Menu</string>
+    <string name="loadScreenTitle">Tap a save file to load it:</string>
 </resources>

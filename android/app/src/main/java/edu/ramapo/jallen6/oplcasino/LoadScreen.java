@@ -50,7 +50,6 @@ public class LoadScreen extends AppCompatActivity {
             layout.addView(generateButton(res));
         }
 
-
     }
 
     private Button generateButton(String displayText){
@@ -81,6 +80,7 @@ public class LoadScreen extends AppCompatActivity {
             }
         };
         newButton.setOnClickListener(clickListener);
+        newButton.setBackgroundResource(R.drawable.rounded_rectangle);
 
         return newButton;
 

@@ -198,7 +198,7 @@ public class GameLoop extends AppCompatActivity {
         DeckView deckHandler = currentRoundView.getDeckViewHandler();
         LinearLayout view = findViewById(R.id.deckLayout);
         TextView label = findViewById(R.id.deckLabel);
-        label.setText("Deck: "+ deckHandler.size() + "Cards");
+        label.setText("Deck:\n"+ deckHandler.size() + "Cards");
 
         //TODO: Find a way to clear or update the view
         deckHandler.createViewsFromModel();
@@ -370,6 +370,17 @@ public class GameLoop extends AppCompatActivity {
     private void displayPile(LinearLayout layout, HandView pile){
         pile.createViewsFromModel();
         // ref.setClickable(false);
+        TextView label = (TextView) layout.getChildAt(0);
+        String currentLabel = label.getText().toString();
+        int parenPoint = currentLabel.indexOf('(');
+        if(parenPoint < 0){
+            label.setText(currentLabel + "\n("+Integer.toString(pile.size())+" cards)");
+        }else{
+            label.setText(currentLabel.substring(0,parenPoint -1) +
+                    "\n("+Integer.toString(pile.size())+" cards)");
+        }
+
+
         int startingIndex = layout.getChildCount() - 1;
         for(int i = startingIndex; i < pile.size(); i++){
             ImageButton newCard = generateButton();

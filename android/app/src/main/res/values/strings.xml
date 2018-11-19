@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">OPLCasino</string>
     <string name="edit_message">Enter a message</string>
-    <string name="welcomeTitle">\"Welcome to jallen6\'s Casino App! :D</string>
+    <string name="welcomeTitle">Welcome to jallen6\'s Casino App! :D</string>
     <string name="newGame">Start a new game!</string>
     <string name="loadIn">Load a Save Game</string>
     <string name="headsButtonText">Heads</string>
@@ -14,11 +14,11 @@
     <string name="menuButtonText">Menu</string>
     <string name="confirmButtonText">Confirm Move</string>
     <string name="logLabel">Last Move (Log)</string>
-    <string name="bottomPlayerPile">Human Pile</string>
+    <string name="bottomPlayerPile">Human\nPile</string>
     <string name="caputreAction">Capture</string>
     <string name="buildAction">Build</string>
     <string name="trailAction">Trail</string>
-    <string name="topPlayerPileLabel"> Computer Pile </string>
+    <string name="topPlayerPileLabel"> Computer\nPile </string>
     <string name="turnMenuTitle">What action would you like to do?</string>
     <string name="titleMenuSave">Save Game</string>
     <string name="titleMenuHelp">Ask for Help</string>

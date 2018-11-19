@@ -180,6 +180,12 @@
         android:layout_marginStart="4dp"
         android:layout_marginBottom="8dp"
         android:onClick="handleSubmitClick"
+        android:textSize="12sp"
+        android:textColor="@color/Gold"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/hcard4" />
 

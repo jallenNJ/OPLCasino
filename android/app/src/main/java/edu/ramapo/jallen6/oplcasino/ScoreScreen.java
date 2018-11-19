@@ -48,9 +48,9 @@ public class ScoreScreen extends AppCompatActivity {
         TourScoreCode winner = tour.getWinner();
 
         initPiles((LinearLayout) findViewById(R.id.scoreBottomLayout), players[0],
-                (TextView) findViewById(R.id.scoreTopPlayerName));
-        initPiles((LinearLayout) findViewById(R.id.scoreTopLayout), players[1],
                 (TextView) findViewById(R.id.scoreBottomPlayerName));
+        initPiles((LinearLayout) findViewById(R.id.scoreTopLayout), players[1],
+                (TextView) findViewById(R.id.scoreTopPlayerName));
 
         String roundScores;
         roundScores = "Human scored " + Integer.toString(roundscore[0]) + " points " +

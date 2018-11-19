@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundPurple"
     tools:context=".TurnMenu">
 
     <LinearLayout
@@ -26,6 +27,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:text="@string/turnMenuTitle"
+            android:textColor="@color/Gold"
+            android:shadowColor="#000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,6 +42,11 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Enter File Name (No Extension)"
+            android:textColor="@color/Gold"
+            android:shadowColor="#000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="5"
             android:inputType="textUri"
             android:singleLine="true" />
 
@@ -43,14 +54,27 @@
             android:id="@+id/turnMenuSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_rectangle"
             android:onClick="saveGame"
-            android:text="@string/titleMenuSave" />
+            android:shadowColor="#FFFFFF"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="5"
+            android:text="@string/titleMenuSave"
+            tools:layout_marginBottom="40do"
+            tools:layout_marginTop="20dp" />
 
         <Button
             android:id="@+id/turnMenuCancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_rectangle"
             android:onClick="cancelMenu"
+            android:shadowColor="#FFFFFF"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="5"
             android:text="@string/titleMenuCancel" />
 
         <Space
@@ -62,6 +86,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/holo_red_dark"
+            android:shadowColor="#FFFFFF"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="5"
             android:onClick="quitGame"
             android:text="@string/turnMenuQuit"
             tools:layout_marginTop="64dp" />

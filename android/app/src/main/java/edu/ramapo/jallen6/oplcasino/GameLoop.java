@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Space;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -922,9 +923,20 @@ public class GameLoop extends AppCompatActivity {
         //findViewById(R.id.bottomPileScroll).setLayoutParams(lp);
         //findViewById(R.id.topPileScroll).setLayoutParams(lp);
 
+        Space whiteSpace = new Space(this);
+        whiteSpace.setLayoutParams(new
+                LinearLayout.LayoutParams(intAsDP(125),
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        tableLayout.addView(whiteSpace);
         Button scoreButton = new Button(this);
         scoreButton.setId(View.generateViewId());
         scoreButton.setText("Score Game!");
+        scoreButton.setBackgroundResource(R.drawable.rounded_rectangle);
+        scoreButton.setLayoutParams(new
+                LinearLayout.LayoutParams(intAsDP(125),
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+
+
         tableLayout.addView(scoreButton);
         tableLayout.setGravity(View.TEXT_ALIGNMENT_CENTER);
 

@@ -47,8 +47,10 @@ public class ScoreScreen extends AppCompatActivity {
         int[] tourScore = tour.getTourScores();
         TourScoreCode winner = tour.getWinner();
 
-        initPiles((LinearLayout) findViewById(R.id.scoreBottomLayout), players[0]);
-        initPiles((LinearLayout) findViewById(R.id.scoreTopLayout), players[1]);
+        initPiles((LinearLayout) findViewById(R.id.scoreBottomLayout), players[0],
+                (TextView) findViewById(R.id.scoreTopPlayerName));
+        initPiles((LinearLayout) findViewById(R.id.scoreTopLayout), players[1],
+                (TextView) findViewById(R.id.scoreBottomPlayerName));
 
         String roundScores;
         roundScores = "Human scored " + Integer.toString(roundscore[0]) + " points " +
@@ -115,12 +117,9 @@ public class ScoreScreen extends AppCompatActivity {
 
     }
 
-    private void initPiles(LinearLayout layout, Player player){
-        TextView textView = new TextView(this);
-        textView.setId(View.generateViewId());
-        textView.setText(player.getName() + "\npile:");
+    private void initPiles(LinearLayout layout, Player player, TextView playerLabel){
 
-        layout.addView(textView);
+        playerLabel.setText(player.getName() + "\npile:");
 
 
 

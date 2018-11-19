@@ -774,12 +774,16 @@ public class GameLoop extends AppCompatActivity {
             humanLabel.setText(R.string.bottomPlayerNameCurrent);
             compLabel.setText(R.string.topPlayer);
             humanLabel.setBackgroundColor(Color.YELLOW);
+            humanLabel.setTextColor(Color.BLACK);
             compLabel.setBackgroundColor(Color.TRANSPARENT);
+            compLabel.setTextColor(getResources().getColor(R.color.Gold, null));
         }else{
             humanLabel.setText(R.string.bottomPlayerName);
             compLabel.setText(R.string.topPlayerNameCurrent);
             humanLabel.setBackgroundColor(Color.TRANSPARENT);
+            humanLabel.setTextColor(getResources().getColor(R.color.Gold, null));
             compLabel.setBackgroundColor(Color.YELLOW);
+            compLabel.setTextColor(Color.BLACK);
         }
 
 

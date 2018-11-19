@@ -24,6 +24,11 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/Gold"
+                android:shadowColor="#000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="5"
                 android:text="@string/tableIdentifer" />
         </LinearLayout>
     </HorizontalScrollView>
@@ -34,6 +39,11 @@
         android:layout_height="80dp"
         android:layout_marginTop="8dp"
         android:text="@string/topPlayer"
+        android:textColor="@color/Gold"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="5"
         android:textAppearance="@style/TextAppearance.AppCompat"
         app:layout_constraintTop_toTopOf="parent"
         android:tag="Computer" />
@@ -100,6 +110,11 @@
         android:layout_marginBottom="8dp"
         android:tag="Human"
         android:text="@string/bottomPlayerName"
+        android:textColor="@color/Gold"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="5"
         android:textAppearance="@style/TextAppearance.AppCompat"
         app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -170,22 +185,32 @@
 
     <TextView
         android:id="@+id/logTag"
-        android:layout_width="50dp"
+        android:layout_width="45dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="5"
         android:text="@string/logLabel"
+        android:textColor="@color/Gold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topPileScroll" />
 
     <Button
         android:id="@+id/logButton"
-        android:layout_width="235dp"
+        android:layout_width="225dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         android:background="@android:color/transparent"
         android:onClick="openActionLog"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="5"
         android:text="LOG "
+        android:textColor="@color/Gold"
         app:layout_constraintStart_toEndOf="@+id/logTag"
         app:layout_constraintTop_toTopOf="@+id/logTag" />
 
@@ -206,6 +231,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/caputreAction"
+            android:textColor="@color/Gold"
+            android:shadowColor="#000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="5"
             tools:text="@string/buildAction" />
 
         <RadioButton
@@ -213,6 +243,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/Gold"
+            android:shadowColor="#000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="5"
             android:text="@string/buildAction" />
 
         <RadioButton
@@ -220,6 +255,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/Gold"
+            android:shadowColor="#000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="5"
             android:text="@string/trailAction" />
     </RadioGroup>
 
@@ -243,6 +283,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@color/Gold"
+                android:shadowColor="#000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="5"
                 android:text="@string/bottomPlayerPile" />
 
         </LinearLayout>
@@ -268,6 +313,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@color/Gold"
+                android:shadowColor="#000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="5"
                 android:text="@string/topPlayerPileLabel" />
         </LinearLayout>
     </HorizontalScrollView>
@@ -292,6 +342,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@color/Gold"
+                android:shadowColor="#000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="5"
                 android:text="TextView" />
         </LinearLayout>
     </HorizontalScrollView>
@@ -300,8 +355,14 @@
         android:id="@+id/roundAskForHelp"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/rounded_rectangle"
         android:onClick="generateHumanHelp"
+        android:shadowColor="#FFFFFF"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="5"
         android:text="@string/titleMenuHelp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -332,6 +393,11 @@
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/Gold"
+                android:shadowColor="#000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="5"
                 android:text="Comp Move Allowed" />
 
         </LinearLayout>

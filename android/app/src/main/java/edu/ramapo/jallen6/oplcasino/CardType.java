@@ -2,8 +2,17 @@ package edu.ramapo.jallen6.oplcasino;
 
 public abstract class CardType {
 
+
+    protected int numericValue;
+    protected CardSuit suit;
     protected String owner;
 
+
+    /**
+     Set the value of the Card
+     @param val the value to set
+     @return True if valid, false if not
+     */
     public boolean setValue(int val){
         if(val < 1 || val > 14){
             return false;
@@ -12,9 +21,14 @@ public abstract class CardType {
         return true;
     }
 
+    /**
+     Set owner of card
+     @param o The string of the owner
+     */
     public void setOwner(String o){
         owner = o;
     }
+
 
     public String getOwner(){
         return owner;
@@ -23,6 +37,11 @@ public abstract class CardType {
     public int getValue(){
         return numericValue;
     }
+
+    /**
+     Gets the symbol on the card
+     @return The symbol 2-9 or A J Q K are valid
+     */
     public char getSymbol(){
         switch(numericValue){
             case 2:
@@ -56,6 +75,11 @@ public abstract class CardType {
     public CardSuit getSuit(){
         return suit;
     }
+
+    /**
+     Get a char representation of the suit
+     @return A char to represent the suit. Valid suits: H D S C B I
+     */
     public char suitToChar(){
 
         switch (suit){
@@ -75,6 +99,11 @@ public abstract class CardType {
 
     }
 
+    /**
+     Convert a char to its numeric value
+     @param val is the symbol to convert
+     @return 1-13 (Ace Low) Invalid is zero
+     */
     public int symbolToValue (char val){
         val = Character.toUpperCase(val);
         switch (val){
@@ -110,6 +139,11 @@ public abstract class CardType {
         }
     }
 
+    /**
+     Convert a char of a suit to its enum
+     @param val The char representation of a suit
+     @return Invalid suit if invalid char
+     */
     public CardSuit charToSuit(char val){
         val = Character.toUpperCase(val);
         switch (val){
@@ -128,6 +162,4 @@ public abstract class CardType {
         }
     }
 
-    protected int numericValue;
-    protected CardSuit suit;
 }

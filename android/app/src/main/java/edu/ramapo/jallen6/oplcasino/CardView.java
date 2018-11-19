@@ -28,6 +28,10 @@ public class CardView {
         return model.getValue();
     }
 
+    /**
+     Finds the drawable for the card
+     @return Id of the graphic. Cardbacks id if invalid
+     */
     private int cardToGraphic(){
         CardSuit suit = model.getSuit();
         switch(suit){
@@ -44,6 +48,10 @@ public class CardView {
         }
     }
 
+    /**
+     Returns the club card of valid
+     @return id of drawable, ace if invalid
+     */
     private int resolveClubSuit(){
         int cardVal = model.getValue();
         switch (cardVal){
@@ -77,7 +85,10 @@ public class CardView {
     }
 
 
-
+    /**
+     Gets drawable for diamond suit
+     @return id of card. Default is Ace
+     */
     private  int resolveDiamondSuit(){
         int cardVal = model.getValue();
         switch (cardVal){
@@ -110,6 +121,10 @@ public class CardView {
         }
     }
 
+    /**
+     Resolves the heart suit
+     @return id of Drawable, ace is invalid
+     */
     private  int resolveHeartSuit(){
         int cardVal = model.getValue();
         switch (cardVal){
@@ -142,6 +157,10 @@ public class CardView {
         }
     }
 
+    /**
+     Resolve the spade drawables
+     @return id of drawable, ace if invalid
+     */
     private  int resolveSpadeSuit(){
         int cardVal = model.getValue();
         switch (cardVal){
@@ -173,6 +192,11 @@ public class CardView {
                 return R.drawable.sa;
         }
     }
+
+    /**
+     Draws card image on passed button
+     @param ref The button to draw the image to
+     */
     void setButton (ImageButton ref){
         if(ref != null){
                 ref.setImageResource(cardToGraphic());

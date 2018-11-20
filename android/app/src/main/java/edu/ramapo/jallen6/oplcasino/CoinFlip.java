@@ -43,7 +43,7 @@ public class CoinFlip extends AppCompatActivity {
                  textView.setText("Heads! Human goes first");
                  humanFirst = true;
              }else{
-                 textView.setText("Heads! Computer goes first");
+                 textView.setText("Tails! Computer goes first");
              }
 
 

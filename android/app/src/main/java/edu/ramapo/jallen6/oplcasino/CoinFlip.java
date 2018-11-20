@@ -17,6 +17,11 @@ public class CoinFlip extends AppCompatActivity {
         setContentView(R.layout.activity_coin_flip);
     }
 
+
+    /**
+     Flips the coin and output the result
+     @param view The Heads / Tails
+     */
     public void setText(View view){
 
         //Generate a random number and multiply by 10 so its on the interval [0, 10)
@@ -66,8 +71,14 @@ public class CoinFlip extends AppCompatActivity {
     }
 
 
+    /**
+     Set the main game activity
+     @param view the button which was clicked
+     */
     public void startGame (View view){
         Intent intent = new Intent(this, GameLoop.class);
+
+        //Fill out the intent
         //Store who won the cointoss and declare this is a new game
         intent.putExtra(GameLoop.humanFirstExtra, humanFirst );
         intent.putExtra(GameLoop.fromSaveGameExtra, false );

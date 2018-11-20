@@ -1,5 +1,7 @@
 package edu.ramapo.jallen6.oplcasino;
 
+//UNUSED class and activity
+
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

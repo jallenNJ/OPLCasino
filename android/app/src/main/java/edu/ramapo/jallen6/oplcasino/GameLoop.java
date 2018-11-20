@@ -286,10 +286,7 @@ public class GameLoop extends AppCompatActivity {
             buildLayout.addView(current);
 
         }
-        GradientDrawable border = new GradientDrawable();
-        border.setColor(normalColor);
-        border.setStroke(30, 0xFF000000); //black border with full opacity
-        buildLayout.setBackground(border);
+        buildLayout.setBackgroundColor(normalColor);
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {

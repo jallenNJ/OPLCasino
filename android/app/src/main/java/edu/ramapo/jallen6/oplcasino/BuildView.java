@@ -1,5 +1,7 @@
 package edu.ramapo.jallen6.oplcasino;
 
+import android.graphics.Color;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -35,9 +37,14 @@ public class BuildView extends CardView {
             return;
         }
         //Put the sum of build and its toString onto the button
-        ((Button)layout.getChildAt(0)).setText(Integer.toString(model.getValue())+
+        Button labelButton = ((Button)layout.getChildAt(0));
+        labelButton.setText(Integer.toString(model.getValue())+
                 "\n" + model.toString()+
                 "\n" + model.getOwner());
+
+        labelButton.setTextColor(Color.BLACK);
+        labelButton.setBackgroundResource(R.drawable.rounded_rectangle);
+        labelButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
         //For every card, have it draw its image onto the correct button
         for(int i =0; i < cards.size(); i++){

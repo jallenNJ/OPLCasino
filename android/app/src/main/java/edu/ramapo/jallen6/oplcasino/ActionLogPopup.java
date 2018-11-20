@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.TextView;
 
 public class ActionLogPopup extends AppCompatActivity {
@@ -23,6 +24,10 @@ public class ActionLogPopup extends AppCompatActivity {
         //For every element in the log, starting at the end
         for(int i =ActionLog.getLogSize()-1; i >= 0; i--){
             //Make a new text view, and set the text to the value
+            Space whiteSpace = new Space(this);
+            whiteSpace.setLayoutParams(new LinearLayout.LayoutParams
+                    (ViewGroup.LayoutParams.MATCH_PARENT, 50));
+            linear.addView(whiteSpace);
             TextView text = new TextView(this);
             text.setText(ActionLog.getLogEntry(i));
 
@@ -35,8 +40,10 @@ public class ActionLogPopup extends AppCompatActivity {
             text.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT));
 
+
             //Set the background and add to the layout
-            text.setBackgroundColor(Color.LTGRAY);
+            text.setBackgroundResource(R.drawable.rounded_rectangle);
+            text.setTextColor(Color.BLACK);
             linear.addView(text);
         }
 

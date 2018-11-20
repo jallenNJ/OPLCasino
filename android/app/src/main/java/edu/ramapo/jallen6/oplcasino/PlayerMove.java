@@ -15,6 +15,15 @@ public class PlayerMove {
         handCardIndex = 0;
         tableCardIndices = new Vector<Integer>(1,1);
     }
+
+    /**
+     Create a Player move with all fields specified
+     @param ac The PlayerAction which was used
+     @param hand the index of the hand card
+     @param tableCI The index of the table cards which were selected
+
+     tableCard Indices gets stored in descending order
+     */
     PlayerMove(PlayerActions ac, int hand, Vector<Integer> tableCI){
         action = ac;
         handCardIndex = hand;
@@ -23,6 +32,10 @@ public class PlayerMove {
 
     }
 
+    /**
+     Copy constructor
+     @param copy The object to copy from
+     */
     PlayerMove(PlayerMove copy){
         action = copy.getAction();
         handCardIndex = copy.getHandCardIndex();

@@ -10,6 +10,10 @@ public class PlayerView {
     private Player model;
 
 
+    /**
+     Create the object and bind to the model
+     @param master The model to bind to
+     */
     PlayerView(Player master){
         model = master;
         hand = new HandView(model.getHand(), true);
@@ -26,24 +30,5 @@ public class PlayerView {
     public HandView getPile(){
         return pile;
     }
-
-   /* public boolean addCardToHand(Card add){
-        model.addCardToHand(add);
-        hand.createViewsFromModel();
-        return true;
-    }
-
-
-    public boolean addCardToPile(Card add){
-       // pile.addCard(add);
-        return true;
-    }
-
-    public CardView removeCardFromHand(int index){
-        return hand.removeCardFromHand(index);
-    }*/
-
-
-
 
 }

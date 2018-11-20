@@ -22,22 +22,29 @@ public class LoadScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load_screen);
 
-        //Enviroment.getExternalStroagePublicDirectory(Enviroment.DIRECTORY_DOWNLOAD
 
         Vector<String> result = new Vector<String>();
 
+        //Get all the files in the download folder
         File folder =Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File[] filesInFolder = folder.listFiles();
+
+        //If none, return
         if(filesInFolder == null){
             return;
         }
-        for (File file : filesInFolder) { //For each of the entries do:
-            if (file.isFile()) { //check that it's not a dir
-                //if(file.getAbsolutePath() )
+
+        //For every file
+        for (File file : filesInFolder) {
+            //Make sure it is a file and not a directory
+            if (file.isFile()) {
+                //Get its file extension
                 int extensionLocated = file.getAbsolutePath().lastIndexOf(".");
                 if(extensionLocated < 0 || extensionLocated >= file.getAbsolutePath().length()){
+                    //If none, skip over it
                     continue;
                 }
+                //If the file extension is the one for save files, add to result vector
                 String extension =  file.getAbsolutePath().substring(extensionLocated);
                 if(extension.equals(Serializer.fileExtension)){
                     result.add(new String(file.getName()));
@@ -45,6 +52,7 @@ public class LoadScreen extends AppCompatActivity {
             }
         }
 
+        //For every result, create and append button to the layout
         LinearLayout layout = findViewById(R.id.saveButtonLayout);
         for(String res : result){
             layout.addView(generateButton(res));
@@ -52,12 +60,17 @@ public class LoadScreen extends AppCompatActivity {
 
     }
 
+    /**
+     Generates a button for this activity's layout
+     @param displayText The text to display on the button
+     @return The button with the text
+     */
     private Button generateButton(String displayText){
         //Generate the button and give it an ID
         Button newButton = new Button(this);
         newButton.setId(View.generateViewId());
 
-        //Give it a default image
+        //Set the text to what was provided
         newButton.setText(displayText);
 
         //Set the margins and size
@@ -80,25 +93,38 @@ public class LoadScreen extends AppCompatActivity {
             }
         };
         newButton.setOnClickListener(clickListener);
+        //Set its background to the round rectangle
         newButton.setBackgroundResource(R.drawable.rounded_rectangle);
 
         return newButton;
 
     }
 
+    /**
+     Convert the integer (pixels) to the amount it is in dp
+     @param target the specified pixels
+     @return  The converted int
 
-    //Copied from the gameLoop file
+     Copied from the GameLoop File
+     */
     private int intAsDP(int target){
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, target,
                 getResources().getDisplayMetrics());
     }
 
+    /**
+     Swaps the scene to the game loop activity after a file is loaded
+     */
     private void swapToGameActivity(){
+        //Create the intent and put in all the extras
+        // Fill in details with information for the Serializer
         Intent intent = new Intent(this, GameLoop.class);
         intent.putExtra(GameLoop.humanFirstExtra, Serializer.isHumanFirst());
         intent.putExtra(GameLoop.fromSaveGameExtra, true );
         intent.putExtra(GameLoop.humanPlayerStartScore, Serializer.getHumanSaveData().getScore());
         intent.putExtra(GameLoop.compPlayerStartScore, Serializer.getComputerSaveData().getScore());
+
+        //Start the new activity and end the current one
         startActivity(intent);
         finish();
     }

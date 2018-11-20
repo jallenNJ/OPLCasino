@@ -13,6 +13,13 @@ public class PlayerSaveData {
         pile = "";
     }
 
+    /**
+     Create the object with all fields specified
+     @param playerName The name of the player
+     @param currentScore The score of the player
+     @param playerHand The player's hand
+     @param playerPile The player's pile
+     */
     PlayerSaveData(String playerName, int currentScore, String playerHand, String playerPile){
         name = playerName;
         score = currentScore;

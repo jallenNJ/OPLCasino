@@ -13,16 +13,25 @@ public class Welcome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        //Make sure the static class is initialized
         Serializer.init();
     }
 
 
+    /**
+     * Start a new game with a coin toss
+     * @param view The button that was clicked
+     */
     public void newGame(View view) {
         Intent intent = new Intent(this, CoinFlip.class);
         startActivity(intent);
         finish();
     }
 
+    /**
+     * Have the user choose the save game to load
+     * @param view The button that was clicked
+     */
     public void loadGame(View view){
         Intent intent = new Intent(this, LoadScreen.class);
         startActivity(intent);

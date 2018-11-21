@@ -18,6 +18,9 @@ public class RoundView  {
         initRound();
     }
 
+    /**
+     * Inits values which are shared between all files
+     */
     private  void initRound(){
         playerViews = new PlayerView[2];
         playerViews[humanID] = new PlayerView(model.getPlayers()[humanID]);
@@ -39,6 +42,9 @@ public class RoundView  {
         return tableView;
     }
 
+    /**
+     * Have both players and the deck update their hands view
+     */
     public void updateViews(){
         playerViews[0].getHand().createViewsFromModel();
         playerViews[1].getHand().createViewsFromModel();

@@ -1,5 +1,14 @@
 package edu.ramapo.jallen6.oplcasino;
 
+/*
+ ************************************************************
+ * Name:  Joseph Allen jallen6@ramapo.edu                   *
+ * Project:  Android / Java Casino Fa 18                    *
+ * Class:  CMPS 366-01 FA 18                                *
+ * Date:  2018-11-20                                        *
+ ************************************************************
+ */
+
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

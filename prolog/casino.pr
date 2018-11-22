@@ -1,6 +1,6 @@
 %Get all numbers from 0 to Num
 listAll(Num, []) :- 
-	Num=<0.
+	Num<0.
 	
 listAll(Num, Result):- 
 	NewNum is Num-1, 
@@ -29,6 +29,10 @@ createCard(Suit, Val, [Suit | Val]).
 
 displayCard([Suit|Card]) :- write(Suit), write(Card).
 
-%createCards(Suit, [RemainVals|CurrentVal], []) :-	CurrentVal = [].	
+createCardsForSuit(_, [_|CurrentVal], []) :-	CurrentVal = [].	
 
-%createCards(Suit, [RemainVals|CurrentVal], SuitCards) :-		
+createCardsForSuit(Suit, [Current|Rest], SuitCards) :- 
+	createCard(Suit, Current, CreatedCard), 
+	%displayCard(CreatedCard), 
+	createCardsForSuit(Suit, Rest, NewSuitCards), 	
+	SuitCards = [CreatedCard | NewSuitCards].

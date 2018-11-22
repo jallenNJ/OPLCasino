@@ -1,3 +1,4 @@
+%Get all numbers from 0 to Num
 listAll(Num, []) :- 
 	Num=<0.
 	
@@ -6,6 +7,7 @@ listAll(Num, Result):-
 	listAll(NewNum, NewResult),
 	Result=[Num|NewResult].
 	
+%Get all Suits	
 getSuits(Val, []) :-
 		Val >=4.
 		
@@ -16,8 +18,17 @@ getSuits(Val, Result) :-
 	Result=[Suit|NewResult].
 	
 	
-numToSuit(0, Output) :- Output = s.	
-numToSuit(1, Output) :- Output = c.	
-numToSuit(2, Output) :- Output = d.	
-numToSuit(3, Output) :- Output = h.	
-		
+%Suit to nums	
+numToSuit(0, Output) :- Output = "s".	
+numToSuit(1, Output) :- Output = "c".	
+numToSuit(2, Output) :- Output = "d".	
+numToSuit(3, Output) :- Output = "h".	
+
+
+createCard(Suit, Val, [Suit | Val]).
+
+displayCard([Suit|Card]) :- write(Suit), write(Card).
+
+%createCards(Suit, [RemainVals|CurrentVal], []) :-	CurrentVal = [].	
+
+%createCards(Suit, [RemainVals|CurrentVal], SuitCards) :-		

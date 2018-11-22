@@ -1,0 +1,5 @@
+listAll(Num, []) :- 
+	Num=<0.
+	
+listAll(Num, Result):- 
+	NewNum is Num-1, listAll(NewNum, NewResult), Result=[Num|NewResult].

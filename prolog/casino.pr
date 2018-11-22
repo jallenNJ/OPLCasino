@@ -2,4 +2,22 @@ listAll(Num, []) :-
 	Num=<0.
 	
 listAll(Num, Result):- 
-	NewNum is Num-1, listAll(NewNum, NewResult), Result=[Num|NewResult].
+	NewNum is Num-1, 
+	listAll(NewNum, NewResult),
+	Result=[Num|NewResult].
+	
+getSuits(Val, []) :-
+		Val >=4.
+		
+getSuits(Val, Result) :-
+	NewVal is Val+1, 
+	getSuits(NewVal, NewResult),
+	numToSuit(Val, Suit),
+	Result=[Suit|NewResult].
+	
+	
+numToSuit(0, Output) :- Output = s.	
+numToSuit(1, Output) :- Output = c.	
+numToSuit(2, Output) :- Output = d.	
+numToSuit(3, Output) :- Output = h.	
+		

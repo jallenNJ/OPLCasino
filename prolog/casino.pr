@@ -36,3 +36,16 @@ createCardsForSuit(Suit, [Current|Rest], SuitCards) :-
 	%displayCard(CreatedCard), 
 	createCardsForSuit(Suit, Rest, NewSuitCards), 	
 	SuitCards = [CreatedCard | NewSuitCards].
+	
+	
+mergeLists(ListOne, ListTwo, Result) :- append(ListOne, ListTwo, Result).
+
+createDeck(Result) :-
+		listAll(13, Nums),
+		createCardsForSuit("S", Nums, Spades),
+		createCardsForSuit("C", Nums, Clubs),
+		createCardsForSuit("D", Nums, Diamonds),
+		createCardsForSuit("H", Nums, Hearts),
+		mergeLists(Spades, Clubs, MergeOne),
+		mergeLists(MergeOne, Diamonds, MergeTwo),
+		mergeLists(MergeTwo, Hearts, Result).

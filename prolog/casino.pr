@@ -25,10 +25,13 @@ numToSuit(2, Output) :- Output = "d".
 numToSuit(3, Output) :- Output = "h".	
 
 
+%Creates card in form [SUIT SYMBOL]
 createCard(Suit, Val, [Suit | Val]).
 
+%Displays card to the screen 
 displayCard([Suit|Card]) :- write(Suit), write(Card).
 
+%Creates all cards for a suit, from K to A in a list
 createCardsForSuit(_, [_|CurrentVal], []) :-	CurrentVal = [].	
 
 createCardsForSuit(Suit, [Current|Rest], SuitCards) :- 
@@ -37,9 +40,10 @@ createCardsForSuit(Suit, [Current|Rest], SuitCards) :-
 	createCardsForSuit(Suit, Rest, NewSuitCards), 	
 	SuitCards = [CreatedCard | NewSuitCards].
 	
-	
+$Megers list in order [List one List two]
 mergeLists(ListOne, ListTwo, Result) :- append(ListOne, ListTwo, Result).
 
+$Converts all numeric values to symbol represntation
 allNumsToFaceLetters(Input, Output) :-
 	replace(Input, 13, "K", KAdded),
 	replace(KAdded, 12, "Q", QAdded),
@@ -56,7 +60,9 @@ createDeck(Result) :-
 		mergeLists(Spades, Clubs, MergeOne),
 		mergeLists(MergeOne, Diamonds, MergeTwo),
 		mergeLists(MergeTwo, Hearts, Result).
-		
+
+
+$Replaces first occurance of key with value		
 replace([], _, _, []).	
 replace([Key | Rest], Key, Value, [Value | Rest]).
 replace([First|Rest], Key, Value, [First | NewRest]) :- replace(Rest, Key,Value,NewRest).		

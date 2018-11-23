@@ -1,7 +1,7 @@
 %Get all numbers from 0 to Num
 listAll(Num, []) :- 
 	Num<0.
-	
+
 listAll(Num, Result):- 
 	NewNum is Num-1, 
 	listAll(NewNum, NewResult),
@@ -40,8 +40,15 @@ createCardsForSuit(Suit, [Current|Rest], SuitCards) :-
 	
 mergeLists(ListOne, ListTwo, Result) :- append(ListOne, ListTwo, Result).
 
+allNumsToFaceLetters(Input, Output) :-
+	replace(Input, 13, "K", KAdded),
+	replace(KAdded, 12, "Q", QAdded),
+	replace(QAdded, 11, "J", JAdded),
+	replace(JAdded, 1, "A", Output).
+
 createDeck(Result) :-
-		listAll(13, Nums),
+		listAll(13, RawNums),
+		allNumsToFaceLetters(RawNums, Nums),
 		createCardsForSuit("S", Nums, Spades),
 		createCardsForSuit("C", Nums, Clubs),
 		createCardsForSuit("D", Nums, Diamonds),
@@ -49,3 +56,7 @@ createDeck(Result) :-
 		mergeLists(Spades, Clubs, MergeOne),
 		mergeLists(MergeOne, Diamonds, MergeTwo),
 		mergeLists(MergeTwo, Hearts, Result).
+		
+replace([], _, _, []).	
+replace([Key | Rest], Key, Value, [Value | Rest]).
+replace([First|Rest], Key, Value, [First | NewRest]) :- replace(Rest, Key,Value,NewRest).		

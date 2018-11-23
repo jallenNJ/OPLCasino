@@ -40,10 +40,10 @@ createCardsForSuit(Suit, [Current|Rest], SuitCards) :-
 	createCardsForSuit(Suit, Rest, NewSuitCards), 	
 	SuitCards = [CreatedCard | NewSuitCards].
 	
-$Megers list in order [List one List two]
+%Megers list in order [List one List two]
 mergeLists(ListOne, ListTwo, Result) :- append(ListOne, ListTwo, Result).
 
-$Converts all numeric values to symbol represntation
+%Converts all numeric values to symbol represntation
 allNumsToFaceLetters(Input, Output) :-
 	replace(Input, 13, "K", KAdded),
 	replace(KAdded, 12, "Q", QAdded),
@@ -62,7 +62,7 @@ createDeck(Result) :-
 		mergeLists(MergeTwo, Hearts, Result).
 
 
-$Replaces first occurance of key with value		
+%Replaces first occurance of key with value		
 replace([], _, _, []).	
 replace([Key | Rest], Key, Value, [Value | Rest]).
 replace([First|Rest], Key, Value, [First | NewRest]) :- replace(Rest, Key,Value,NewRest).		

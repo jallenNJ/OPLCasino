@@ -59,7 +59,8 @@ createDeck(Result) :-
 		createCardsForSuit("H", Nums, Hearts),
 		mergeLists(Spades, Clubs, MergeOne),
 		mergeLists(MergeOne, Diamonds, MergeTwo),
-		mergeLists(MergeTwo, Hearts, Result).
+		mergeLists(MergeTwo, Hearts, RawDeck),
+		random_permutation(RawDeck, Result).
 
 
 %Replaces first occurance of key with value		

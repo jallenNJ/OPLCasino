@@ -48,7 +48,8 @@ allNumsToFaceLetters(Input, Output) :-
 	replace(Input, 13, "K", KAdded),
 	replace(KAdded, 12, "Q", QAdded),
 	replace(QAdded, 11, "J", JAdded),
-	replace(JAdded, 1, "A", Output).
+	replace(JAdded, 10, "X", XAdded),
+	replace(XAdded, 1, "A", Output).
 
 createDeck(Result) :-
 		listAll(13, RawNums),
@@ -102,11 +103,20 @@ removeNCards(Amount, InputList, Output) :-
 %Main loop
 %playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
 
+drawCards([]) :- writeln(" ").
+
+drawCards([Card | Rest]) :-
+	displayCard(Card),
+	write(" "),
+	drawCards(Rest).
+
 test() :-
 	createDeck(Deck),
 	drawFourCards(Deck, NewDeck, DrawnCards),
-	writeln(Deck),
+	%writeln(Deck),
+	drawCards(Deck),
 	writeln("-----"),
-	writeln(NewDeck),
+	drawCards(NewDeck),
 	writeln("-----"),
-	writeln(DrawnCards).
+	drawCards(DrawnCards).
+	%writeln(DrawnCards).

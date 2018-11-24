@@ -67,3 +67,46 @@ createDeck(Result) :-
 replace([], _, _, []).	
 replace([Key | Rest], Key, Value, [Value | Rest]).
 replace([First|Rest], Key, Value, [First | NewRest]) :- replace(Rest, Key,Value,NewRest).		
+
+
+
+drawFourCards(InputDeck, OutputDeck, DrawnCards):-
+	nth0(0, InputDeck, FirstCard),
+	nth0(1, InputDeck, SecondCard),
+	nth0(2, InputDeck, ThridCard),
+	nth0(3, InputDeck, FourthCard),
+	removeNCards(4, InputDeck, OutputDeck),
+	mergeLists([FirstCard], [SecondCard], TwoMerged),
+	mergeLists(TwoMerged, [ThridCard], ThreeMerged),
+	mergeLists(ThreeMerged,[FourthCard], DrawnCards).
+
+removeNCards(Amount, Rem, Out) :- Amount =< 0,
+									Out = Rem.
+
+removeNCards(Amount, InputList, Output) :-
+	NewAmount is Amount-1,
+	InputList = [_ | Rest],
+	removeNCards(NewAmount, Rest, NewOutput),
+	Output = NewOutput.
+
+
+%id, deck, table, p0Info, p1Info, retVal
+%playRound(FirstId,[],[],[],[],_):- 
+	%Call is params
+%		createDeck(RawDeck).
+
+
+%Round end rule, deck is empty, player infos have null hands
+%playRound(_,[])	
+
+%Main loop
+%playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
+
+test() :-
+	createDeck(Deck),
+	drawFourCards(Deck, NewDeck, DrawnCards),
+	writeln(Deck),
+	writeln("-----"),
+	writeln(NewDeck),
+	writeln("-----"),
+	writeln(DrawnCards).

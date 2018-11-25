@@ -101,6 +101,10 @@ createPlayer(Id, StartingCards, StartingPile, StartingReserved, CreatedPlayer) :
 	mergeLists(MergeTwo, [StartingReserved], CreatedPlayer).
 
 
+getHand(PlayerList, PlayerHand) :-
+	nth0(1, PlayerList, PlayerHand).
+
+
 startNewRound() :- playRound(0, [],[],[],[], _).
 
 
@@ -121,28 +125,30 @@ playRound(FirstId,[],[],[],[],_) :-
 
 %Main loop
 playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
-	writeln(FirstId),
-	writeln(Deck),
-	writeln(Table),
-	writeln(P0Info),
-	writeln(P1Info).	
+	getHand(P0Info, Hand),
+	printCards(Hand).
+%	writeln(FirstId),
+%	writeln(Deck),
+%	writeln(Table),
+%	writeln(P0Info),
+%	writeln(P1Info).	
 
-drawCards([]) :- writeln(" ").
+printCards([]) :- writeln(" ").
 
-drawCards([Card | Rest]) :-
+printCards([Card | Rest]) :-
 	displayCard(Card),
 	write(" "),
-	drawCards(Rest).
+	printCards(Rest).
 
 test() :-
 	createDeck(Deck),
 	drawFourCards(Deck, NewDeck, DrawnCards),
 	%writeln(Deck),
-	drawCards(Deck),
+	printCards(Deck),
 	writeln("-----"),
-	drawCards(NewDeck),
+	printCards(NewDeck),
 	writeln("-----"),
-	drawCards(DrawnCards),
+	printCards(DrawnCards),
 	createNewPlayer(0, DrawnCards, ThePlayer),
 	writeln(ThePlayer).
 	%writeln(DrawnCards).

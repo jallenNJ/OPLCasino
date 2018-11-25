@@ -96,7 +96,7 @@ createNewPlayer(Id, StartingCards, CreatedPlayer) :-
 
 %Creates a playerList from the given parameters
 createPlayer(Id, StartingCards, StartingPile, StartingReserved, CreatedPlayer) :-
-	mergeLists([[Id]], [StartingCards], MergeOne),
+	mergeLists([Id], [StartingCards], MergeOne),
 	mergeLists(MergeOne, [StartingPile],MergeTwo),
 	mergeLists(MergeTwo, [StartingReserved], CreatedPlayer).
 
@@ -104,6 +104,16 @@ createPlayer(Id, StartingCards, StartingPile, StartingReserved, CreatedPlayer) :
 getHand(PlayerList, PlayerHand) :-
 	nth0(1, PlayerList, PlayerHand).
 
+getId(PlayerList, PlayerId) :-
+	nth0(0, PlayerList, PlayerId).
+
+isHuman(PlayerList) :-
+	getId(PlayerList, Id),
+	Id = 0.
+
+printHand(PlayerList) :-
+	getHand(PlayerList, Hand),
+	printCards(Hand).
 
 startNewRound() :- playRound(0, [],[],[],[], _).
 
@@ -125,13 +135,14 @@ playRound(FirstId,[],[],[],[],_) :-
 
 %Main loop
 playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
-	getHand(P0Info, Hand),
-	printCards(Hand).
+	printFullTable(P0Info, Table, P1Info),
+	printFullTable(P1Info, Table, P0Info).
 %	writeln(FirstId),
 %	writeln(Deck),
 %	writeln(Table),
 %	writeln(P0Info),
 %	writeln(P1Info).	
+
 
 printCards([]) :- writeln(" ").
 
@@ -139,6 +150,22 @@ printCards([Card | Rest]) :-
 	displayCard(Card),
 	write(" "),
 	printCards(Rest).
+
+printFullTable(HumanPlayer, Table, ComputerPlayer) :-
+	isHuman(HumanPlayer),
+	write("Comp:  "),
+	printHand(ComputerPlayer),
+	writeln(" "),
+	write("Table: "),
+	printCards(Table),
+	writeln(" "),
+	write("Human: "),
+	printHand(HumanPlayer),
+	writeln(" ").
+
+printFullTable(ComputerPlayer, Table, HumanPlayer) :-
+	write("boune back"),
+	printFullTable(HumanPlayer, Table, ComputerPlayer).
 
 test() :-
 	createDeck(Deck),

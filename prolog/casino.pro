@@ -67,9 +67,21 @@ createDeck(Result) :-
 %Replaces first occurance of key with value		
 replace([], _, _, []).	
 replace([Key | Rest], Key, Value, [Value | Rest]).
-replace([First|Rest], Key, Value, [First | NewRest]) :- replace(Rest, Key,Value,NewRest).		
+replace([First|Rest], Key, Value, [First | NewRest]) :- replace(Rest, Key,Value,NewRest).	
 
+%removeAtIndex(InputList, Index, ResultingList) :-
+% End of list before finding target index
+removeAtIndex([], _, [], _).
+%
+removeAtIndex([Current | Rest], 0, ResultingList, RemovedElement) :-	
+	ResultingList = Rest,
+	RemovedElement = Current.
 
+removeAtIndex([Current | Rest], Index, ResultingList, RemovedElement) :-
+	Index > 0,
+	NewIndex is Index-1,
+	removeAtIndex(Rest, NewIndex, NewResultingList, RemovedElement),
+	ResultingList = [Current | NewResultingList].
 
 drawFourCards(InputDeck, OutputDeck, DrawnCards):-
 	nth0(0, InputDeck, FirstCard),
@@ -111,10 +123,6 @@ isHuman(PlayerList) :-
 	getId(PlayerList, Id),
 	Id = 0.
 
-printHand(PlayerList) :-
-	getHand(PlayerList, Hand),
-	printCards(Hand).
-
 startNewRound() :- playRound(0, [],[],[],[], _).
 
 
@@ -137,19 +145,24 @@ playRound(FirstId,[],[],[],[],_) :-
 playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
 	printFullTable(P0Info, Table, P1Info),
 	printFullTable(P1Info, Table, P0Info).
-%	writeln(FirstId),
-%	writeln(Deck),
-%	writeln(Table),
-%	writeln(P0Info),
-%	writeln(P1Info).	
 
 
+%Human Player
+doPlayerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
+	isHuman(PlayerList).
+
+	
 printCards([]) :- writeln(" ").
 
 printCards([Card | Rest]) :-
 	displayCard(Card),
 	write(" "),
 	printCards(Rest).
+
+	
+printHand(PlayerList) :-
+	getHand(PlayerList, Hand),
+	printCards(Hand).
 
 printFullTable(HumanPlayer, Table, ComputerPlayer) :-
 	isHuman(HumanPlayer),
@@ -163,8 +176,8 @@ printFullTable(HumanPlayer, Table, ComputerPlayer) :-
 	printHand(HumanPlayer),
 	writeln(" ").
 
+%Bound back function to swap orders
 printFullTable(ComputerPlayer, Table, HumanPlayer) :-
-	write("boune back"),
 	printFullTable(HumanPlayer, Table, ComputerPlayer).
 
 test() :-

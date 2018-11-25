@@ -90,18 +90,42 @@ removeNCards(Amount, InputList, Output) :-
 	removeNCards(NewAmount, Rest, NewOutput),
 	Output = NewOutput.
 
+%Wrapper to createPlayer
+createNewPlayer(Id, StartingCards, CreatedPlayer) :-
+	createPlayer(Id, StartingCards, [], [], CreatedPlayer).
+
+%Creates a playerList from the given parameters
+createPlayer(Id, StartingCards, StartingPile, StartingReserved, CreatedPlayer) :-
+	mergeLists([[Id]], [StartingCards], MergeOne),
+	mergeLists(MergeOne, [StartingPile],MergeTwo),
+	mergeLists(MergeTwo, [StartingReserved], CreatedPlayer).
+
+
+startNewRound() :- playRound(0, [],[],[],[], _).
+
 
 %id, deck, table, p0Info, p1Info, retVal
-%playRound(FirstId,[],[],[],[],_):- 
-	%Call is params
-%		createDeck(RawDeck).
+playRound(FirstId,[],[],[],[],_) :- 
+		createDeck(RawDeck),
+		drawFourCards(RawDeck, AfterOneDraw, HumanCards),
+		drawFourCards(AfterOneDraw, AfterTwoDraws, CompCards),
+		drawFourCards(AfterTwoDraws, Deck, TableCards),
+		createNewPlayer(0, HumanCards, HumanPlayer),
+		createNewPlayer(1, CompCards, ComputerPlayer),
+		playRound(0, Deck, TableCards, HumanPlayer, ComputerPlayer, _).
+
 
 
 %Round end rule, deck is empty, player infos have null hands
 %playRound(_,[])	
 
 %Main loop
-%playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
+playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
+	writeln(FirstId),
+	writeln(Deck),
+	writeln(Table),
+	writeln(P0Info),
+	writeln(P1Info).	
 
 drawCards([]) :- writeln(" ").
 
@@ -118,5 +142,7 @@ test() :-
 	writeln("-----"),
 	drawCards(NewDeck),
 	writeln("-----"),
-	drawCards(DrawnCards).
+	drawCards(DrawnCards),
+	createNewPlayer(0, DrawnCards, ThePlayer),
+	writeln(ThePlayer).
 	%writeln(DrawnCards).

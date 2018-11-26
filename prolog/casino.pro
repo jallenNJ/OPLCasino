@@ -72,11 +72,12 @@ replace([First|Rest], Key, Value, [First | NewRest]) :- replace(Rest, Key,Value,
 %removeAtIndex(InputList, Index, ResultingList) :-
 % End of list before finding target index
 removeAtIndex([], _, [], _).
-%
+%Current element is the one to be removed, end recursion
 removeAtIndex([Current | Rest], 0, ResultingList, RemovedElement) :-	
 	ResultingList = Rest,
 	RemovedElement = Current.
 
+%Recursive case
 removeAtIndex([Current | Rest], Index, ResultingList, RemovedElement) :-
 	Index > 0,
 	NewIndex is Index-1,
@@ -93,8 +94,9 @@ drawFourCards(InputDeck, OutputDeck, DrawnCards):-
 	mergeLists(TwoMerged, [ThridCard], ThreeMerged),
 	mergeLists(ThreeMerged,[FourthCard], DrawnCards).
 
-removeNCards(Amount, Rem, Out) :- Amount =< 0,
-									Out = Rem.
+removeNCards(Amount, Rem, Out) :- 
+	Amount =< 0,
+	Out = Rem.
 
 removeNCards(Amount, InputList, Output) :-
 	NewAmount is Amount-1,
@@ -144,13 +146,48 @@ playRound(FirstId,[],[],[],[],_) :-
 %Main loop
 playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
 	printFullTable(P0Info, Table, P1Info),
-	printFullTable(P1Info, Table, P0Info).
+	doPlayerMove(P0Info, Table, P0AfterMove, TableAfterP0),
+	printFullTable(P0AfterMove, TableAfterP0, P1Info).
 
 
 %Human Player
 doPlayerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
-	isHuman(PlayerList).
+	isHuman(PlayerList),
+	getHand(PlayerList, Hand),
+	getActionChoice(MoveChoice),
+	write("got move"),
+	write(MoveChoice).
 
+
+
+	%Hard coded trail
+	%removeAtIndex(Hand, 1 , NewHand, PlayedCard),
+	%mergeLists(Table, [PlayedCard], TableAfterMove),
+	%createNewPlayer(0, NewHand, PlayerAfterMove).
+
+getActionChoice(MoveChoice) :-
+	write("Would you like to (C)apture, (B)uild, or (T)rail: "),
+	getMoveChar(InputChar),
+	nl,
+	validateMoveChar(InputChar, Validated),
+	convertMoveCharToNum(Validated, OptionChoice),
+	MoveChoice = OptionChoice.
+	%Finish these functions
+
+getMoveChar(Input) :- read(Input).
+
+validateMoveChar(c, c).
+validateMoveChar(t, t).
+validateMoveChar(b, b).
+validateMoveChar(Input, Output) :-
+	writeln("Invalid move char."),
+	getMoveChar(RetryInput),
+	validateMoveChar(RetryInput, Validated),
+	Output = Validated.
+	
+convertMoveCharToNum(c, 0).
+convertMoveCharToNum(b, 1).
+convertMoveCharToNum(_, 2).	
 	
 printCards([]) :- writeln(" ").
 
@@ -179,16 +216,3 @@ printFullTable(HumanPlayer, Table, ComputerPlayer) :-
 %Bound back function to swap orders
 printFullTable(ComputerPlayer, Table, HumanPlayer) :-
 	printFullTable(HumanPlayer, Table, ComputerPlayer).
-
-test() :-
-	createDeck(Deck),
-	drawFourCards(Deck, NewDeck, DrawnCards),
-	%writeln(Deck),
-	printCards(Deck),
-	writeln("-----"),
-	printCards(NewDeck),
-	writeln("-----"),
-	printCards(DrawnCards),
-	createNewPlayer(0, DrawnCards, ThePlayer),
-	writeln(ThePlayer).
-	%writeln(DrawnCards).

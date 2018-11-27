@@ -172,10 +172,17 @@ doHumanMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	writeln("Which card would you like to trail?"),
 	length(Hand, CardsInHand),
 	getNumericInput(0, CardsInHand, TrailedCardIndex),
-	removeAtIndex(Hand, TrailedCardIndex, ResultingHand, TrailedCard),
+	doTrail(PlayerList, Table, TrailedCardIndex, PlayerAfterMove, TableAfterMove).
+
+
+
+
+
+doTrail(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :-
+	getHand(PlayerList, Hand),
+	removeAtIndex(Hand, PlayedCardIndex, ResultingHand, TrailedCard),
 	mergeLists(Table, [TrailedCard], TableAfterMove),
 	createNewPlayer(0, ResultingHand, PlayerAfterMove).
-
 
 
 getActionChoice(MoveChoice) :-

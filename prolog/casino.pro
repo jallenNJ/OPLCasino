@@ -115,11 +115,24 @@ createPlayer(Id, StartingCards, StartingPile, StartingReserved, CreatedPlayer) :
 	mergeLists(MergeTwo, [StartingReserved], CreatedPlayer).
 
 
+getId(PlayerList, PlayerId) :-
+	nth0(0, PlayerList, PlayerId).
+
 getHand(PlayerList, PlayerHand) :-
 	nth0(1, PlayerList, PlayerHand).
 
-getId(PlayerList, PlayerId) :-
-	nth0(0, PlayerList, PlayerId).
+getPile(PlayerList, PlayerPile) :-
+	nth0(2, PlayerList, PlayerPile).
+
+getReserved(PlayerList, PlayerReserved) :-
+	nth0(3, PlayerList, PlayerReserved).
+
+getPlayerComponents(PlayerList, Id, Hand, Pile, Reserved) :-
+	getId(PlayerList, Id),
+	getHand(PlayerList, Hand),
+	getPile(PlayerList, Pile),
+	getReserved(PlayerList, Reserved).
+
 
 isHuman(PlayerList) :-
 	getId(PlayerList, Id),
@@ -139,6 +152,21 @@ playRound(FirstId,[],[],[],[],_) :-
 		playRound(FirstId, Deck, TableCards, HumanPlayer, ComputerPlayer, _).
 
 
+playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
+	getHand(P0Info, P0Hand),
+	length(P0Hand, 0),
+	getHand(P1Info, P1Hand),
+	length(P1Hand, 0),
+	length(Deck, CardsInDeck),
+	CardsInDeck >= 8,
+	drawFourCards(Deck, AfterOneDraw, P0Cards),
+	drawFourCards(AfterOneDraw, AfterTwoDraws, P1Cards),
+	getPlayerComponents(P0Info, P0Id, _, P0Pile, P0Reserved),
+	createPlayer(P0Id, P0Cards, P0Pile, P0Reserved, NewP0),
+	getPlayerComponents(P1Info, P1Id, _, P1Pile, P1Reserved),
+	createPlayer(P1Id, P1Cards, P1Pile, P1Reserved, NewP1),
+	playRound(FirstId, AfterTwoDraws, Table, NewP0, NewP1, _).
+	
 
 %Round end rule, deck is empty, player infos have null hands
 %playRound(_,[])	
@@ -182,15 +210,14 @@ doComputerMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	doTrail(PlayerList, Table, 0, PlayerAfterMove, TableAfterMove).
 
 
-
-
-
 doTrail(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :-
 	getHand(PlayerList, Hand),
 	removeAtIndex(Hand, PlayedCardIndex, ResultingHand, TrailedCard),
 	mergeLists(Table, [TrailedCard], TableAfterMove),
 	getId(PlayerList, Id),
-	createNewPlayer(Id, ResultingHand, PlayerAfterMove).
+	getPile(PlayerList, Pile),
+	getReserved(PlayerList, Reserved),
+	createPlayer(Id, ResultingHand, Pile, Reserved, PlayerAfterMove).
 
 
 getActionChoice(MoveChoice) :-
@@ -253,13 +280,13 @@ printFullTable(HumanPlayer, Table, ComputerPlayer) :-
 	isHuman(HumanPlayer),
 	write("Comp:  "),
 	printHand(ComputerPlayer),
-	writeln(" "),
+	nl,
 	write("Table: "),
 	printCards(Table),
-	writeln(" "),
+	nl,
 	write("Human: "),
 	printHand(HumanPlayer),
-	writeln(" ").
+	nl.
 
 %Bound back function to swap orders
 printFullTable(ComputerPlayer, Table, HumanPlayer) :-

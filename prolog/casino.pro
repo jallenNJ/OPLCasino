@@ -153,17 +153,30 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
 %Human Player
 doPlayerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	isHuman(PlayerList),
-	getHand(PlayerList, Hand),
 	getActionChoice(MoveChoice),
-	write("got move"),
-	write(MoveChoice).
-
+	doHumanMove(MoveChoice, PlayerList, Table, PlayerAfterMove, TableAfterMove).
+	%TODO: Continue working from here
 
 
 	%Hard coded trail
 	%removeAtIndex(Hand, 1 , NewHand, PlayedCard),
 	%mergeLists(Table, [PlayedCard], TableAfterMove),
 	%createNewPlayer(0, NewHand, PlayerAfterMove).
+
+
+%doHumanMove(0, PlayerList, Table, PlayerAfterMove, TableAfterMove)
+%doHumanMove(1, PlayerList, Table, PlayerAfterMove, TableAfterMove)
+
+doHumanMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
+	getHand(PlayerList, Hand),
+	writeln("Which card would you like to trail?"),
+	length(Hand, CardsInHand),
+	getNumericInput(0, CardsInHand, TrailedCardIndex),
+	removeAtIndex(Hand, TrailedCardIndex, ResultingHand, TrailedCard),
+	mergeLists(Table, [TrailedCard], TableAfterMove),
+	createNewPlayer(0, ResultingHand, PlayerAfterMove).
+
+
 
 getActionChoice(MoveChoice) :-
 	write("Would you like to (C)apture, (B)uild, or (T)rail: "),
@@ -172,7 +185,7 @@ getActionChoice(MoveChoice) :-
 	validateMoveChar(InputChar, Validated),
 	convertMoveCharToNum(Validated, OptionChoice),
 	MoveChoice = OptionChoice.
-	%Finish these functions
+
 
 getMoveChar(Input) :- read(Input).
 
@@ -188,6 +201,26 @@ validateMoveChar(Input, Output) :-
 convertMoveCharToNum(c, 0).
 convertMoveCharToNum(b, 1).
 convertMoveCharToNum(_, 2).	
+
+
+getNumericInput(Lower, Upper, Result) :-
+	write("Enter a number between "),
+	write(Lower),
+	write(" and "),
+	write(Upper),
+	writeln(": "),
+	read(Input),
+	validateNumericInput(Lower, Upper, Input, Result).
+
+validateNumericInput(Lower, Upper, Check, Result) :-
+	integer(Check),
+	Check >= Lower,
+	Check =< Upper,
+	Result = Check.
+
+validateNumericInput(Lower, Upper, _, Result) :-
+	write("Invalid input, try again: "),
+	getNumericInput(Lower, Upper, Result).	
 	
 printCards([]) :- writeln(" ").
 

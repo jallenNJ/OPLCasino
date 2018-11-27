@@ -147,7 +147,9 @@ playRound(FirstId,[],[],[],[],_) :-
 playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
 	printFullTable(P0Info, Table, P1Info),
 	doPlayerMove(P0Info, Table, P0AfterMove, TableAfterP0),
-	printFullTable(P0AfterMove, TableAfterP0, P1Info).
+	printFullTable(P0AfterMove, TableAfterP0, P1Info),
+	doPlayerMove(P1Info, TableAfterP0, P1AfterMove, TableAfterP1),
+	printFullTable(P0AfterMove, TableAfterP1, P1AfterMove).
 
 
 %Human Player
@@ -155,13 +157,10 @@ doPlayerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	isHuman(PlayerList),
 	getActionChoice(MoveChoice),
 	doHumanMove(MoveChoice, PlayerList, Table, PlayerAfterMove, TableAfterMove).
-	%TODO: Continue working from here
 
-
-	%Hard coded trail
-	%removeAtIndex(Hand, 1 , NewHand, PlayedCard),
-	%mergeLists(Table, [PlayedCard], TableAfterMove),
-	%createNewPlayer(0, NewHand, PlayerAfterMove).
+%Comp
+doPlayerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
+	doComputerMove(MoveChoice, PlayerList, Table, PlayerAfterMove, TableAfterMove).
 
 
 %doHumanMove(0, PlayerList, Table, PlayerAfterMove, TableAfterMove)
@@ -170,9 +169,16 @@ doPlayerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 doHumanMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	getHand(PlayerList, Hand),
 	writeln("Which card would you like to trail?"),
-	length(Hand, CardsInHand),
+	length(Hand, CardsInHandPlusOne),
+	CardsInHand is CardsInHandPlusOne-1,
 	getNumericInput(0, CardsInHand, TrailedCardIndex),
 	doTrail(PlayerList, Table, TrailedCardIndex, PlayerAfterMove, TableAfterMove).
+
+
+%doComputerMove(0, PlayerList, Table, PlayerAfterMove, TableAfterMove)
+%doComputerMove(1, PlayerList, Table, PlayerAfterMove, TableAfterMove)
+doComputerMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
+	doTrail(PlayerList, Table, 0, PlayerAfterMove, TableAfterMove).
 
 
 
@@ -182,7 +188,8 @@ doTrail(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :-
 	getHand(PlayerList, Hand),
 	removeAtIndex(Hand, PlayedCardIndex, ResultingHand, TrailedCard),
 	mergeLists(Table, [TrailedCard], TableAfterMove),
-	createNewPlayer(0, ResultingHand, PlayerAfterMove).
+	getId(PlayerList, Id),
+	createNewPlayer(Id, ResultingHand, PlayerAfterMove).
 
 
 getActionChoice(MoveChoice) :-

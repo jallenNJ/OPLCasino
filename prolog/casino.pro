@@ -1,3 +1,8 @@
+
+%=======================
+%Functions to generate internal data
+%=======================
+
 %Get all numbers from 0 to Num
 listAll(Num, []) :- 
 	Num<0.
@@ -6,6 +11,11 @@ listAll(Num, Result):-
 	NewNum is Num-1, 
 	listAll(NewNum, NewResult),
 	Result=[Num|NewResult].
+
+%=======================
+%Functions to create and manipulate cards
+%=======================
+
 	
 %Get all Suits	
 getSuits(Val, []) :-
@@ -23,7 +33,6 @@ numToSuit(0, Output) :- Output = "s".
 numToSuit(1, Output) :- Output = "c".	
 numToSuit(2, Output) :- Output = "d".	
 numToSuit(3, Output) :- Output = "h".	
-
 
 %Creates card in form [SUIT SYMBOL]
 createCard(Suit, Val, [Suit | Val]).
@@ -151,7 +160,7 @@ playRound(FirstId,[],[],[],[],_) :-
 		createNewPlayer(1, CompCards, ComputerPlayer),
 		playRound(FirstId, Deck, TableCards, HumanPlayer, ComputerPlayer, _).
 
-
+%Deal new hands when hands are empty
 playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
 	getHand(P0Info, P0Hand),
 	length(P0Hand, 0),
@@ -246,11 +255,7 @@ convertMoveCharToNum(_, 2).
 
 
 getNumericInput(Lower, Upper, Result) :-
-	write("Enter a number between "),
-	write(Lower),
-	write(" and "),
-	write(Upper),
-	writeln(": "),
+	printLowerUpperBoundPrompt(Lower, Upper),
 	read(Input),
 	validateNumericInput(Lower, Upper, Input, Result).
 
@@ -263,7 +268,34 @@ validateNumericInput(Lower, Upper, Check, Result) :-
 validateNumericInput(Lower, Upper, _, Result) :-
 	write("Invalid input, try again: "),
 	getNumericInput(Lower, Upper, Result).	
+
+getNumericListInput(LowerBound, UpperBound, Result):-
+	printLowerUpperBoundPrompt(LowerBound, UpperBound),
+	read(Input),
+	validateNumericListInput(LowerBound, UpperBound, Input, Result).
+
+validateNumericListInput(_, _, [], []).
+
+validateNumericListInput(Lower, Upper, [Current | Rest], Validated) :-
+	validateNumericInput(Lower, Upper, Current, CurrentValidated),
+	validateNumericListInput(Lower, Upper, Rest, NewValidated),
+	Validated = [CurrentValidated | NewValidated].
+
+validateNumericListInput(Lower, Upper, _, Validated) :-
+	writeln("Invalid Input, try again: "), 
+	getNumericListInput(Lower, Upper, Validated).
 	
+
+
+
+
+printLowerUpperBoundPrompt(Lower, Upper) :-
+	write("Enter a number between "),
+	write(Lower),
+	write(" and "),
+	write(Upper),
+	writeln(": ").
+
 printCards([]) :- writeln(" ").
 
 printCards([Card | Rest]) :-

@@ -136,7 +136,7 @@ playRound(FirstId,[],[],[],[],_) :-
 		drawFourCards(AfterTwoDraws, Deck, TableCards),
 		createNewPlayer(0, HumanCards, HumanPlayer),
 		createNewPlayer(1, CompCards, ComputerPlayer),
-		playRound(0, Deck, TableCards, HumanPlayer, ComputerPlayer, _).
+		playRound(FirstId, Deck, TableCards, HumanPlayer, ComputerPlayer, _).
 
 
 
@@ -149,7 +149,8 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
 	doPlayerMove(P0Info, Table, P0AfterMove, TableAfterP0),
 	printFullTable(P0AfterMove, TableAfterP0, P1Info),
 	doPlayerMove(P1Info, TableAfterP0, P1AfterMove, TableAfterP1),
-	printFullTable(P0AfterMove, TableAfterP1, P1AfterMove).
+	printFullTable(P0AfterMove, TableAfterP1, P1AfterMove),
+	playRound(FirstId, Deck, TableAfterP1, P0AfterMove, P1AfterMove, _).
 
 
 %Human Player
@@ -160,7 +161,7 @@ doPlayerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 
 %Comp
 doPlayerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
-	doComputerMove(MoveChoice, PlayerList, Table, PlayerAfterMove, TableAfterMove).
+	doComputerMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove).
 
 
 %doHumanMove(0, PlayerList, Table, PlayerAfterMove, TableAfterMove)
@@ -206,7 +207,7 @@ getMoveChar(Input) :- read(Input).
 validateMoveChar(c, c).
 validateMoveChar(t, t).
 validateMoveChar(b, b).
-validateMoveChar(Input, Output) :-
+validateMoveChar(_, Output) :-
 	writeln("Invalid move char."),
 	getMoveChar(RetryInput),
 	validateMoveChar(RetryInput, Validated),

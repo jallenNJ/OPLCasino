@@ -40,7 +40,7 @@ createCard(Suit, Val, [Suit | Val]).
 %Displays card to the screen 
 displayCard([Suit|Card]) :- write(Suit), write(Card).
 
-getCardSymbol([_|Sym], Symbol) :- Sym = [Symbol | _].
+getCardSymbol([_|Sym], Sym).
 
 %Creates all cards for a suit, from K to A in a list
 createCardsForSuit(_, [_|CurrentVal], []) :-	CurrentVal = [].	
@@ -216,7 +216,14 @@ doPlayerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	doComputerMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove).
 
 
-%doHumanMove(0, PlayerList, Table, PlayerAfterMove, TableAfterMove)
+doHumanMove(0, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
+	getHand(PlayerList, Hand),
+	writeln("Which card would you like to Capture with?"),
+	length(Hand, CardsInHandPlusOne),
+	CardsInHand is CardsInHandPlusOne-1,
+	getNumericInput(0, CardsInHand, CaptureCardIndex),
+	doCapture(PlayerList, Table, CaptureCardIndex, PlayerAfterMove, TableAfterMove).
+
 %doHumanMove(1, PlayerList, Table, PlayerAfterMove, TableAfterMove)
 
 doHumanMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
@@ -233,6 +240,15 @@ doHumanMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 doComputerMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	doTrail(PlayerList, Table, 0, PlayerAfterMove, TableAfterMove).
 
+doCapture(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :-
+	getHand(PlayerList, Hand),
+	removeAtIndex(Hand, PlayedCardIndex, ResultingHand, CaptureCard),
+	getCardSymbol(CaptureCard, CaptureVal),
+	removeMatchingSymbols(Table, CaptureVal, TableAfterMove, PileCards),
+	getPlayerComponents(PlayerList, Id, _, StartingPile, Reserved),
+	mergeLists(StartingPile, [CaptureCard], PilewithCapCard),
+	mergeLists(PilewithCapCard, PileCards, AllPileCards),
+	createPlayer(Id, ResultingHand, AllPileCards, Reserved, PlayerAfterMove).
 
 doTrail(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :-
 	getHand(PlayerList, Hand),
@@ -275,10 +291,10 @@ getNumericInput(Lower, Upper, Result) :-
 	validateNumericInput(Lower, Upper, Input, Result).
 
 %No Reprompt	
-validateNumericInput(Lower, Upper, Check) :-
-	integer(Check),
-	Check >= Lower,
-	Check =< Upper.
+%validateNumericInput(Lower, Upper, Check) :-
+%	integer(Check),
+%	Check >= Lower,
+%	Check =< Upper.
 
 validateNumericInput(Lower, Upper, Check, Result) :-
 	integer(Check),

@@ -197,11 +197,11 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
 
 %Main loop
 playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
-	printFullTable(P0Info, Table, P1Info),
+	printFullTable(P0Info, Table, P1Info, Deck),
 	doPlayerMove(P0Info, Table, P0AfterMove, TableAfterP0),
-	printFullTable(P0AfterMove, TableAfterP0, P1Info),
+	printFullTable(P0AfterMove, TableAfterP0, P1Info, Deck),
 	doPlayerMove(P1Info, TableAfterP0, P1AfterMove, TableAfterP1),
-	printFullTable(P0AfterMove, TableAfterP1, P1AfterMove),
+	printFullTable(P0AfterMove, TableAfterP1, P1AfterMove, Deck),
 	playRound(FirstId, Deck, TableAfterP1, P0AfterMove, P1AfterMove, _).
 
 
@@ -349,18 +349,36 @@ printHand(PlayerList) :-
 	getHand(PlayerList, Hand),
 	printCards(Hand).
 
-printFullTable(HumanPlayer, Table, ComputerPlayer) :-
+printPile(PlayerList) :-
+	getPile(PlayerList, Pile),
+	printCards(Pile).
+
+printFullTable(HumanPlayer, Table, ComputerPlayer, Deck) :-
 	isHuman(HumanPlayer),
+	writeln("==========================="),
 	write("Comp:  "),
 	printHand(ComputerPlayer),
 	nl,
+	write("Pile: "),
+	printPile(ComputerPlayer),
+	nl,
+	writeln("-------------------------"),
 	write("Table: "),
 	printCards(Table),
 	nl,
+	writeln("-------------------------"),
 	write("Human: "),
 	printHand(HumanPlayer),
-	nl.
+	nl,
+	write("Pile: "),
+	printPile(HumanPlayer),
+	nl,
+	writeln("-------------------------"),
+	write("Deck: "),
+	printCards(Deck),
+	nl,
+	writeln("===========================").
 
 %Bound back function to swap orders
-printFullTable(ComputerPlayer, Table, HumanPlayer) :-
-	printFullTable(HumanPlayer, Table, ComputerPlayer).
+printFullTable(ComputerPlayer, Table, HumanPlayer, Deck) :-
+	printFullTable(HumanPlayer, Table, ComputerPlayer, Deck).

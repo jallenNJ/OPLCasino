@@ -248,6 +248,8 @@ doCapture(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :
 	removeAtIndex(Hand, PlayedCardIndex, ResultingHand, CaptureCard),
 	getCardSymbol(CaptureCard, CaptureVal),
 	removeMatchingSymbols(Table, CaptureVal, TableAfterMove, PileCards),
+	length(PileCards, CapturedAmounts),
+	CapturedAmounts > 0,
 	getPlayerComponents(PlayerList, Id, _, StartingPile, Reserved),
 	mergeLists(StartingPile, [CaptureCard], PilewithCapCard),
 	mergeLists(PilewithCapCard, PileCards, AllPileCards),
@@ -279,7 +281,7 @@ validateMoveChar(c, c).
 validateMoveChar(t, t).
 validateMoveChar(b, b).
 validateMoveChar(_, Output) :-
-	writeln("Invalid move char."),
+	writeln("Invalid Move, Try again."),
 	getMoveChar(RetryInput),
 	validateMoveChar(RetryInput, Validated),
 	Output = Validated.

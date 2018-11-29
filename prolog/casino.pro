@@ -209,6 +209,8 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
 doPlayerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	isHuman(PlayerList),
 	getActionChoice(MoveChoice),
+	integer(MoveChoice),
+	writeln(MoveChoice),
 	doHumanMove(MoveChoice, PlayerList, Table, PlayerAfterMove, TableAfterMove).
 
 %Comp
@@ -242,6 +244,7 @@ doComputerMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 
 doCapture(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :-
 	getHand(PlayerList, Hand),
+	integer(PlayedCardIndex),
 	removeAtIndex(Hand, PlayedCardIndex, ResultingHand, CaptureCard),
 	getCardSymbol(CaptureCard, CaptureVal),
 	removeMatchingSymbols(Table, CaptureVal, TableAfterMove, PileCards),
@@ -252,6 +255,7 @@ doCapture(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :
 
 doTrail(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :-
 	getHand(PlayerList, Hand),
+	integer(PlayedCardIndex),
 	removeAtIndex(Hand, PlayedCardIndex, ResultingHand, TrailedCard),
 	mergeLists(Table, [TrailedCard], TableAfterMove),
 	getId(PlayerList, Id),
@@ -282,7 +286,7 @@ validateMoveChar(_, Output) :-
 	
 convertMoveCharToNum(c, 0).
 convertMoveCharToNum(b, 1).
-convertMoveCharToNum(_, 2).	
+convertMoveCharToNum(t, 2).	
 
 
 getNumericInput(Lower, Upper, Result) :-
@@ -303,8 +307,8 @@ validateNumericInput(Lower, Upper, Check, Result) :-
 	Result = Check.
 
 validateNumericInput(Lower, Upper, _, Result) :-
-	write("Invalid input, try again: "),
-	getNumericInput(Lower, Upper, Result).	
+	write("Invalid input, try again: ").
+	%sgetNumericInput(Lower, Upper, Result).	
 
 %getNumericListInput(LowerBound, UpperBound, Result):-
 %	printLowerUpperBoundPrompt(LowerBound, UpperBound),

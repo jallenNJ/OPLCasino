@@ -262,7 +262,10 @@ doHumanMove(0, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	length(Hand, CardsInHandPlusOne),
 	CardsInHand is CardsInHandPlusOne-1,
 	getNumericInput(0, CardsInHand, CaptureCardIndex),
-	doCapture(PlayerList, Table, CaptureCardIndex, PlayerAfterMove, TableAfterMove).
+	length(Table, TableCardAmount),
+	TableAllowedIndices is TableCardAmount-1,
+	getMultipleNumericInput(TableAllowedIndices, SelectedCardIndicies),
+	doCapture(PlayerList, Table, CaptureCardIndex, SelectedCardIndices, PlayerAfterMove, TableAfterMove).
 
 %doHumanMove(1, PlayerList, Table, PlayerAfterMove, TableAfterMove)
 
@@ -278,26 +281,32 @@ doHumanMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 %doComputerMove(0, PlayerList, Table, PlayerAfterMove, TableAfterMove)
 %doComputerMove(1, PlayerList, Table, PlayerAfterMove, TableAfterMove)
 doComputerMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
-	doTrail(PlayerList, Table, 0, PlayerAfterMove, TableAfterMove).
+	doTrail(PlayerList, Table, 0, PlayerAfterMove, TableAfterMove),
+	displayComputerMove(PlayerList, 0).
+	
 
-doCapture(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :-
+doCapture(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMove, TableAfterMove) :-
+	%Get the hand and ensure the Played index is instaniated
 	getHand(PlayerList, Hand),
 	integer(PlayedCardIndex),
+	%Remove played card from the hand and get its value
 	removeAtIndex(Hand, PlayedCardIndex, ResultingHand, CaptureCard),
 	getCardVal(CaptureCard, CaptureVal),
-	length(Table, TableCardAmount),
-	TableAllowedIndices is TableCardAmount-1,
-	getMultipleNumericInput(TableAllowedIndices, SelectedCardIndicies),
+	%Sum all selected cards to make sure the capture is valid
 	sumSelectedCards(SelectedCardIndicies, Table, Sum),
 	ModResult is mod(Sum, CaptureVal),
 	ModResult = 0,
+	%Remove the cards
 	removeAllIndices(SelectedCardIndicies, Table, TableAfterMove, CaputuredCards),
+	%Ensure atleast one card is selected
 	length(CaputuredCards, CapturedAmounts),
 	CapturedAmounts > 0,
+	%Ensure all required cards are taken
 	getCardSymbol(CaptureCard, CaptureSym),
 	removeMatchingSymbols(TableAfterMove, CaptureSym, _, Matching),
 	length(Matching, MatchingSize),
 	MatchingSize =0,
+	%Make the updated player
 	getPlayerComponents(PlayerList, Id, _, StartingPile, Reserved),
 	mergeLists(StartingPile, [CaptureCard], PilewithCapCard),
 	mergeLists(PilewithCapCard, CaputuredCards, AllPileCards),
@@ -481,4 +490,10 @@ displayActionMenu(_) :-
 	writeln("2) Make a move (Computer)."),
 	writeln("3) Quit the game.").
 
+displayComputerMove(PlayerList, PlayedCardIndex) :-
+	getHand(PlayerList, Hand),
+	nth0(PlayedCardIndex, Hand, PlayedCard),
+	write("Computer trailed with "),
+	displayCard(PlayedCard),
+	writeln(" as there were no other moves available").
 

@@ -416,17 +416,6 @@ mapCompActionMenuToHuman(_, Input, FormattedInput) :-
 	FormattedInput = 4.
 
 mapCompActionMenuToHuman(_, Input, Input).		
-
-
-%addIfNotDuplicated is commented out. If sort isn't allowed, use this
-%addIfNotDuplicated(Input, [], [Input]).
-
-%addIfNotDuplicated(InputtedNumber, CurrentList, Result) :-
-%	not(member(InputtedNumber, CurrentList)),
-%	Result = [InputtedNumber | CurrentList].
-
-
-%addIfNotDuplicated(_, Result, Result).	
 	
 %=======================
 %Functions to print formatted data

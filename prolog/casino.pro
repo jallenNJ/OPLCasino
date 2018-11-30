@@ -329,14 +329,18 @@ getMultipleNumericInput(Upper, Result) :-
 	handleMultipleInputs( Upper,InputtedNumber, Result).
 
 handleMultipleInputs(_, InputtedNumber, []) :-
+	integer(InputtedNumber),
 	InputtedNumber < 0.	
 
 handleMultipleInputs( Upper, InputtedNumber, Result) :-
+	integer(InputtedNumber),
 	getMultipleNumericInput(Upper, PreviousResults),
 	UnsortedResult = [InputtedNumber | PreviousResults],
 	%@> Is descending, remove dupes
 	sort(0, @>, UnsortedResult, Result).
 
+handleMultipleInputs(_, -1, []).
+	
 
 %addIfNotDuplicated is commented out. If sort isn't allowed, use this
 %addIfNotDuplicated(Input, [], [Input]).

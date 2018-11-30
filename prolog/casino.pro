@@ -42,6 +42,17 @@ displayCard([Suit|Card]) :- write(Suit), write(Card).
 
 getCardSymbol([_|Sym], Sym).
 
+getCardVal(Card, Val) :-
+	getCardSymbol(Card, Sym),
+	convertSymbolToVal(Sym, Val).
+
+convertSymbolToVal("K", 13).
+convertSymbolToVal("Q", 12).
+convertSymbolToVal("J", 11).
+convertSymbolToVal("X", 10).
+convertSymbolToVal("A", 1).
+convertSymbolToVal(Val, Val).	
+
 %Creates all cards for a suit, from K to A in a list
 createCardsForSuit(_, [_|CurrentVal], []) :-	CurrentVal = [].	
 
@@ -94,6 +105,14 @@ removeAtIndex([Current | Rest], Index, ResultingList, RemovedElement) :-
 	NewIndex is Index-1,
 	removeAtIndex(Rest, NewIndex, NewResultingList, RemovedElement),
 	ResultingList = [Current | NewResultingList].
+
+%base case, remaining list is what is the resulting list
+removeAllIndices([], RemaingCards, RemaingCards, []).
+%Recursive Case
+removeAllIndices([CurrentIndex | Rest], InputList, ResultingList, RemovedElements) :-
+	removeAtIndex(InputList, CurrentIndex, RemainingCards, RemovedCard),
+	removeAllIndices(Rest, RemainingCards, ResultingList, RestRemovedCards),
+	RemovedElements = [RemovedCard | RestRemovedCards].
 
 drawFourCards(InputDeck, OutputDeck, DrawnCards):-
 	nth0(0, InputDeck, FirstCard),
@@ -248,13 +267,22 @@ doCapture(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :
 	getHand(PlayerList, Hand),
 	integer(PlayedCardIndex),
 	removeAtIndex(Hand, PlayedCardIndex, ResultingHand, CaptureCard),
-	getCardSymbol(CaptureCard, CaptureVal),
-	removeMatchingSymbols(Table, CaptureVal, TableAfterMove, PileCards),
-	length(PileCards, CapturedAmounts),
+	getCardVal(CaptureCard, CaptureVal),
+	length(Table, TableCardAmount),
+	TableAllowedIndices is TableCardAmount-1,
+	getMultipleNumericInput(TableAllowedIndices, SelectedCardIndicies),
+	sumSelectedCards(SelectedCardIndicies, Table, Sum),
+	0 is mod(Sum, CaptureVal),
+	removeAllIndices(SelectedCardIndicies, Table, TableAfterMove, CaputuredCards),
+	length(CaputuredCards, CapturedAmounts),
 	CapturedAmounts > 0,
+	getCardSymbol(CaptureCard, CaptureSym),
+	removeMatchingSymbols(TableAfterMove, CaptureSym, _, Matching),
+	length(Matching, MatchingSize),
+	MatchingSize =0,
 	getPlayerComponents(PlayerList, Id, _, StartingPile, Reserved),
 	mergeLists(StartingPile, [CaptureCard], PilewithCapCard),
-	mergeLists(PilewithCapCard, PileCards, AllPileCards),
+	mergeLists(PilewithCapCard, CaputuredCards, AllPileCards),
 	createPlayer(Id, ResultingHand, AllPileCards, Reserved, PlayerAfterMove).
 
 doTrail(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :-
@@ -266,6 +294,22 @@ doTrail(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :-
 	getPile(PlayerList, Pile),
 	getReserved(PlayerList, Reserved),
 	createPlayer(Id, ResultingHand, Pile, Reserved, PlayerAfterMove).
+
+sumSelectedCards([], _, 0).
+
+%Skip if invalid
+%sumSelectedCards([Current | Rest], Table, Sum) :-
+%	length(Table, TableSize),
+%	Current >= TableSize,
+%	sumSelectedCards(Rest, Table, Sum).
+
+sumSelectedCards([CurrentIndex | RestIndicies], Table, Sum) :-
+	nth0(CurrentIndex, Table, SelectedCard),
+	sumSelectedCards(RestIndicies, Table, RemainingSum),
+	getCardVal(SelectedCard, Val),
+	Sum is RemainingSum+Val.
+
+
 
 
 getActionChoice(MoveChoice) :-
@@ -338,8 +382,6 @@ handleMultipleInputs( Upper, InputtedNumber, Result) :-
 	UnsortedResult = [InputtedNumber | PreviousResults],
 	%@> Is descending, remove dupes
 	sort(0, @>, UnsortedResult, Result).
-
-handleMultipleInputs(_, -1, []).
 	
 
 %addIfNotDuplicated is commented out. If sort isn't allowed, use this
@@ -419,7 +461,6 @@ getActionMenuInput(CurrentPlayer, Input) :-
 	getNumericInput(1,4, Input).
 
 getActionMenuInput(CurrentPlayer, Input) :-
-	isHuman(CurrentPlayer),
 	getNumericInput(1,3, RawInput),
 	mapCompActionMenuToHuman(CurrentPlayer, RawInput, Input).	
 
@@ -445,3 +486,6 @@ mapCompActionMenuToHuman(_, Input, FormattedInput) :-
 	FormattedInput = 4.
 
 mapCompActionMenuToHuman(_, Input, Input).		
+
+
+

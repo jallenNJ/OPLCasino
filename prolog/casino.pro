@@ -269,7 +269,7 @@ doTrail(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :-
 
 
 getActionChoice(MoveChoice) :-
-	write("Would you like to (C)apture, (B)uild, or (T)rail: "),
+	prompt1("Would you like to (C)apture, (B)uild, or (T)rail: "),
 	getMoveChar(InputChar),
 	nl,
 	validateMoveChar(InputChar, Validated),
@@ -283,7 +283,7 @@ validateMoveChar(c, c).
 validateMoveChar(t, t).
 validateMoveChar(b, b).
 validateMoveChar(_, Output) :-
-	writeln("Invalid Move, Try again."),
+	prompt1("Invalid Move, Try again: "),
 	getMoveChar(RetryInput),
 	validateMoveChar(RetryInput, Validated),
 	Output = Validated.
@@ -333,11 +333,11 @@ validateNumericInput(Lower, Upper, _, Result) :-
 
 	
 printLowerUpperBoundPrompt(Lower, Upper) :-
-	write("Enter a number between "),
-	write(Lower),
-	write(" and "),
-	write(Upper),
-	writeln(": ").
+	concat("Enter a number between ", Lower, Str1),
+	concat(Str1, " and ", Str2),
+	concat(Str2, Upper, Str3),
+	concat(Str3, ": ", OutputStr),
+	prompt1(OutputStr).
 
 printCards([]) :- writeln(" ").
 

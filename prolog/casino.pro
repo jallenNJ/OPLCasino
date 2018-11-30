@@ -139,7 +139,6 @@ removeMatchingSymbols([], _, [],[]).
 
 removeMatchingSymbols([Currentcard | Rest], Value, RemainingCards, RemovedCards) :-
 	getCardSymbol(Currentcard, CurrentcardVal),
-	write(CurrentcardVal),
 	CurrentcardVal = Value,
 	removeMatchingSymbols(Rest, Value, RemainingCards, NewRemoved),
 	RemovedCards = [Currentcard | NewRemoved].
@@ -250,7 +249,6 @@ doPlayerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	isHuman(PlayerList),
 	getActionChoice(MoveChoice),
 	integer(MoveChoice),
-	writeln(MoveChoice),
 	doHumanMove(MoveChoice, PlayerList, Table, PlayerAfterMove, TableAfterMove).
 
 %Comp
@@ -260,7 +258,7 @@ doPlayerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 
 doHumanMove(0, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	getHand(PlayerList, Hand),
-	writeln("Which card would you like to Capture with?"),
+	prompt1("Which card would you like to Capture with?"),
 	length(Hand, CardsInHandPlusOne),
 	CardsInHand is CardsInHandPlusOne-1,
 	getNumericInput(0, CardsInHand, CaptureCardIndex),
@@ -270,7 +268,7 @@ doHumanMove(0, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 
 doHumanMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	getHand(PlayerList, Hand),
-	writeln("Which card would you like to trail?"),
+	prompt1("Which card would you like to trail?"),
 	length(Hand, CardsInHandPlusOne),
 	CardsInHand is CardsInHandPlusOne-1,
 	getNumericInput(0, CardsInHand, TrailedCardIndex),
@@ -292,10 +290,6 @@ doCapture(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :
 	getMultipleNumericInput(TableAllowedIndices, SelectedCardIndicies),
 	sumSelectedCards(SelectedCardIndicies, Table, Sum),
 	ModResult is mod(Sum, CaptureVal),
-	writeln("Checking Mod (Result, Sum, CaptureVal)"),
-	writeln(ModResult),
-	writeln(Sum),
-	writeln(CaptureVal),
 	ModResult = 0,
 	removeAllIndices(SelectedCardIndicies, Table, TableAfterMove, CaputuredCards),
 	length(CaputuredCards, CapturedAmounts),

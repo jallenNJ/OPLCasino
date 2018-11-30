@@ -314,23 +314,40 @@ validateNumericInput(Lower, Upper, _, Result) :-
 	write("Invalid input, try again: ").
 	%sgetNumericInput(Lower, Upper, Result).	
 
-%getNumericListInput(LowerBound, UpperBound, Result):-
-%	printLowerUpperBoundPrompt(LowerBound, UpperBound),
-%	read(Input),
-%	validateNumericListInput(LowerBound, UpperBound, Input, Result).
 
-%validateNumericListInput(_, _, [], []).
 
-%validateNumericListInput(Lower, Upper, [Current | Rest], Validated) :-
-%	validateNumericInput(Lower, Upper, Current),
-%	validateNumericListInput(Lower, Upper, Rest, NewValidated),
-%	Validated = [Current | NewValidated].
-%
-%validateNumericListInput(Lower, Upper, _, Validated) :-
-%	write("Invalid Input, try again: "), 
-%	getNumericListInput(Lower, Upper, Validated).
+promptForMultipleNumericInput(Lower, Upper) :-
+	concat("Enter a number between ", Lower, Str1),
+	concat(Str1, " and ", Str2),
+	concat(Str2, Upper, Str3),
+	concat(Str3, ". Enter a negative number to stop: ", OutputStr),
+	prompt1(OutputStr).
+
+getMultipleNumericInput(Upper, Result) :-
+	promptForMultipleNumericInput(-1, Upper),
+	getNumericInput(-1, Upper, InputtedNumber),
+	handleMultipleInputs( Upper,InputtedNumber, Result).
+
+handleMultipleInputs(_, InputtedNumber, []) :-
+	InputtedNumber < 0.	
+
+handleMultipleInputs( Upper, InputtedNumber, Result) :-
+	getMultipleNumericInput(Upper, PreviousResults),
+	UnsortedResult = [InputtedNumber | PreviousResults],
+	%@> Is descending, remove dupes
+	sort(0, @>, UnsortedResult, Result).
+
+
+%addIfNotDuplicated is commented out. If sort isn't allowed, use this
+%addIfNotDuplicated(Input, [], [Input]).
+
+%addIfNotDuplicated(InputtedNumber, CurrentList, Result) :-
+%	not(member(InputtedNumber, CurrentList)),
+%	Result = [InputtedNumber | CurrentList].
+
+
+%addIfNotDuplicated(_, Result, Result).	
 	
-
 	
 printLowerUpperBoundPrompt(Lower, Upper) :-
 	concat("Enter a number between ", Lower, Str1),

@@ -148,6 +148,20 @@ removeMatchingSymbols([Currentcard | Rest], Value, RemainingCards, RemovedCards)
 	removeMatchingSymbols(Rest, Value, NewRemainingCards, RemovedCards),
 	RemainingCards = [Currentcard | NewRemainingCards].
 
+
+sumSelectedCards([], _, 0).
+
+
+sumSelectedCards([CurrentIndex | RestIndicies], Table, Sum) :-
+	nth0(CurrentIndex, Table, SelectedCard),
+	sumSelectedCards(RestIndicies, Table, RemainingSum),
+	getCardVal(SelectedCard, Val),
+	Sum is RemainingSum+Val.
+
+
+%=======================
+%Functions to create and manipulate the player data structure
+%=======================
 %Wrapper to createPlayer
 createNewPlayer(Id, StartingCards, CreatedPlayer) :-
 	createPlayer(Id, StartingCards, [], [], CreatedPlayer).
@@ -182,6 +196,10 @@ isHuman(PlayerList) :-
 	getId(PlayerList, Id),
 	Id = 0.
 
+
+%=======================
+%Functions to run a round
+%=======================
 startNewRound() :- playRound(0, [],[],[],[], _).
 
 
@@ -301,26 +319,9 @@ doTrail(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :-
 	getReserved(PlayerList, Reserved),
 	createPlayer(Id, ResultingHand, Pile, Reserved, PlayerAfterMove).
 
-sumSelectedCards([], _, 0).
-
-%Skip if invalid
-%sumSelectedCards([Current | Rest], Table, Sum) :-
-%	length(Table, TableSize),
-%	Current >= TableSize,
-%	sumSelectedCards(Rest, Table, Sum).
-
-%sumSelectedCards([Current | Rest], Table, Sum) :-
-%	Current < 0,
-%	sumSelectedCards(Rest, Table, Sum).
-
-sumSelectedCards([CurrentIndex | RestIndicies], Table, Sum) :-
-	nth0(CurrentIndex, Table, SelectedCard),
-	sumSelectedCards(RestIndicies, Table, RemainingSum),
-	getCardVal(SelectedCard, Val),
-	Sum is RemainingSum+Val.
-
-
-
+%=======================
+%Functions to get and validate input from the user
+%=======================
 
 getActionChoice(MoveChoice) :-
 	prompt1("Would you like to (C)apture, (B)uild, or (T)rail: "),
@@ -393,6 +394,29 @@ handleMultipleInputs( Upper, InputtedNumber, Result) :-
 	%@> Is descending, remove dupes
 	sort(0, @>, UnsortedResult, Result).
 	
+	getActionMenuChoice(CurrentPlayer, UserInput) :-
+	displayActionMenu(CurrentPlayer),
+	getActionMenuInput(CurrentPlayer, Input),
+	integer(Input).
+
+
+getActionMenuInput(CurrentPlayer, Input) :-
+	isHuman(CurrentPlayer),
+	getNumericInput(1,4, Input).
+
+getActionMenuInput(CurrentPlayer, Input) :-
+	getNumericInput(1,3, RawInput),
+	mapCompActionMenuToHuman(CurrentPlayer, RawInput, Input).	
+
+mapCompActionMenuToHuman(CurrentPlayer, Input, Input) :-
+	isHuman(CurrentPlayer).
+
+mapCompActionMenuToHuman(_, Input, FormattedInput) :-
+	Input = 3,
+	FormattedInput = 4.
+
+mapCompActionMenuToHuman(_, Input, Input).		
+
 
 %addIfNotDuplicated is commented out. If sort isn't allowed, use this
 %addIfNotDuplicated(Input, [], [Input]).
@@ -404,7 +428,9 @@ handleMultipleInputs( Upper, InputtedNumber, Result) :-
 
 %addIfNotDuplicated(_, Result, Result).	
 	
-	
+%=======================
+%Functions to print formatted data
+%=======================	
 printLowerUpperBoundPrompt(Lower, Upper) :-
 	concat("Enter a number between ", Lower, Str1),
 	concat(Str1, " and ", Str2),
@@ -458,22 +484,6 @@ printFullTable(HumanPlayer, Table, ComputerPlayer, Deck) :-
 printFullTable(ComputerPlayer, Table, HumanPlayer, Deck) :-
 	printFullTable(HumanPlayer, Table, ComputerPlayer, Deck).
 
-
-
-getActionMenuChoice(CurrentPlayer, UserInput) :-
-	displayActionMenu(CurrentPlayer),
-	getActionMenuInput(CurrentPlayer, Input),
-	integer(Input).
-
-
-getActionMenuInput(CurrentPlayer, Input) :-
-	isHuman(CurrentPlayer),
-	getNumericInput(1,4, Input).
-
-getActionMenuInput(CurrentPlayer, Input) :-
-	getNumericInput(1,3, RawInput),
-	mapCompActionMenuToHuman(CurrentPlayer, RawInput, Input).	
-
 	
 displayActionMenu(CurrentPlayer) :-
 	isHuman(CurrentPlayer),
@@ -487,15 +497,5 @@ displayActionMenu(_) :-
 	writeln("1) Save the game."),
 	writeln("2) Make a move (Computer)."),
 	writeln("3) Quit the game.").
-
-mapCompActionMenuToHuman(CurrentPlayer, Input, Input) :-
-	isHuman(CurrentPlayer).
-
-mapCompActionMenuToHuman(_, Input, FormattedInput) :-
-	Input = 3,
-	FormattedInput = 4.
-
-mapCompActionMenuToHuman(_, Input, Input).		
-
 
 

@@ -198,8 +198,10 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
 %Main loop
 playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
 	printFullTable(P0Info, Table, P1Info, Deck),
+	getActionMenuChoice(P0Info, MenuChoice),
 	doPlayerMove(P0Info, Table, P0AfterMove, TableAfterP0),
 	printFullTable(P0AfterMove, TableAfterP0, P1Info, Deck),
+	getActionMenuChoice(P1Info, MenuChoice2),
 	doPlayerMove(P1Info, TableAfterP0, P1AfterMove, TableAfterP1),
 	printFullTable(P0AfterMove, TableAfterP1, P1AfterMove, Deck),
 	playRound(FirstId, Deck, TableAfterP1, P0AfterMove, P1AfterMove, _).
@@ -382,3 +384,43 @@ printFullTable(HumanPlayer, Table, ComputerPlayer, Deck) :-
 %Bound back function to swap orders
 printFullTable(ComputerPlayer, Table, HumanPlayer, Deck) :-
 	printFullTable(HumanPlayer, Table, ComputerPlayer, Deck).
+
+
+
+getActionMenuChoice(CurrentPlayer, UserInput) :-
+	displayActionMenu(CurrentPlayer),
+	getActionMenuInput(CurrentPlayer, Input),
+	integer(Input).
+
+
+getActionMenuInput(CurrentPlayer, Input) :-
+	isHuman(CurrentPlayer),
+	getNumericInput(1,4, Input).
+
+getActionMenuInput(CurrentPlayer, Input) :-
+	isHuman(CurrentPlayer),
+	getNumericInput(1,3, RawInput),
+	mapCompActionMenuToHuman(CurrentPlayer, RawInput, Input).	
+
+	
+displayActionMenu(CurrentPlayer) :-
+	isHuman(CurrentPlayer),
+	writeln("1) Save the game."),
+	writeln("2) Make a move (Human)."),
+	writeln("3) Ask for help."),
+	writeln("4) Quit the game.").
+
+%For computer		
+displayActionMenu(_) :-
+	writeln("1) Save the game."),
+	writeln("2) Make a move (Computer)."),
+	writeln("3) Quit the game.").
+
+mapCompActionMenuToHuman(CurrentPlayer, Input, Input) :-
+	isHuman(CurrentPlayer).
+
+mapCompActionMenuToHuman(_, Input, FormattedInput) :-
+	Input = 3,
+	FormattedInput = 4.
+
+mapCompActionMenuToHuman(_, Input, Input).		

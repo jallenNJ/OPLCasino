@@ -51,7 +51,8 @@ convertSymbolToVal("Q", 12).
 convertSymbolToVal("J", 11).
 convertSymbolToVal("X", 10).
 convertSymbolToVal("A", 1).
-convertSymbolToVal(Val, Val).	
+convertSymbolToVal(Val, Val) :-
+	integer(Val).	
 
 %Creates all cards for a suit, from K to A in a list
 createCardsForSuit(_, [_|CurrentVal], []) :-	CurrentVal = [].	
@@ -272,7 +273,12 @@ doCapture(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :
 	TableAllowedIndices is TableCardAmount-1,
 	getMultipleNumericInput(TableAllowedIndices, SelectedCardIndicies),
 	sumSelectedCards(SelectedCardIndicies, Table, Sum),
-	0 is mod(Sum, CaptureVal),
+	ModResult is mod(Sum, CaptureVal),
+	writeln("Checking Mod (Result, Sum, CaptureVal)"),
+	writeln(ModResult),
+	writeln(Sum),
+	writeln(CaptureVal),
+	ModResult = 0,
 	removeAllIndices(SelectedCardIndicies, Table, TableAfterMove, CaputuredCards),
 	length(CaputuredCards, CapturedAmounts),
 	CapturedAmounts > 0,
@@ -301,6 +307,10 @@ sumSelectedCards([], _, 0).
 %sumSelectedCards([Current | Rest], Table, Sum) :-
 %	length(Table, TableSize),
 %	Current >= TableSize,
+%	sumSelectedCards(Rest, Table, Sum).
+
+%sumSelectedCards([Current | Rest], Table, Sum) :-
+%	Current < 0,
 %	sumSelectedCards(Rest, Table, Sum).
 
 sumSelectedCards([CurrentIndex | RestIndicies], Table, Sum) :-

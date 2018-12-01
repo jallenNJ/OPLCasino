@@ -236,13 +236,29 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
 playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
 	printFullTable(P0Info, Table, P1Info, Deck),
 	getActionMenuChoice(P0Info, MenuChoice),
+	handleMenuChoice(MenuChoice),
 	doPlayerMove(P0Info, Table, P0AfterMove, TableAfterP0),
 	printFullTable(P0AfterMove, TableAfterP0, P1Info, Deck),
 	getActionMenuChoice(P1Info, MenuChoice2),
+	handleMenuChoice(MenuChoice2),
 	doPlayerMove(P1Info, TableAfterP0, P1AfterMove, TableAfterP1),
 	printFullTable(P0AfterMove, TableAfterP1, P1AfterMove, Deck),
 	playRound(FirstId, Deck, TableAfterP1, P0AfterMove, P1AfterMove, _).
 
+
+
+handleMenuChoice(1) :-
+	writeln("Implement Saving").
+
+%Do nothing.
+handleMenuChoice(2).
+
+handleMenuChoice(3) :-
+	writeln("Implement Help").
+
+handleMenuChoice(4) :-
+	writeln("Thanks for playing Casino in Prolog :D"),
+	halt(0).	
 
 %Human Player
 doPlayerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
@@ -264,7 +280,7 @@ doHumanMove(0, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	getNumericInput(0, CardsInHand, CaptureCardIndex),
 	length(Table, TableCardAmount),
 	TableAllowedIndices is TableCardAmount-1,
-	getMultipleNumericInput(TableAllowedIndices, SelectedCardIndicies),
+	getMultipleNumericInput(TableAllowedIndices, SelectedCardIndices),
 	doCapture(PlayerList, Table, CaptureCardIndex, SelectedCardIndices, PlayerAfterMove, TableAfterMove).
 
 %doHumanMove(1, PlayerList, Table, PlayerAfterMove, TableAfterMove)
@@ -293,11 +309,11 @@ doCapture(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMo
 	removeAtIndex(Hand, PlayedCardIndex, ResultingHand, CaptureCard),
 	getCardVal(CaptureCard, CaptureVal),
 	%Sum all selected cards to make sure the capture is valid
-	sumSelectedCards(SelectedCardIndicies, Table, Sum),
+	sumSelectedCards(SelectedCardIndices, Table, Sum),
 	ModResult is mod(Sum, CaptureVal),
 	ModResult = 0,
 	%Remove the cards
-	removeAllIndices(SelectedCardIndicies, Table, TableAfterMove, CaputuredCards),
+	removeAllIndices(SelectedCardIndices, Table, TableAfterMove, CaputuredCards),
 	%Ensure atleast one card is selected
 	length(CaputuredCards, CapturedAmounts),
 	CapturedAmounts > 0,
@@ -368,11 +384,9 @@ validateNumericInput(Lower, Upper, Check, Result) :-
 	Check =< Upper,
 	Result = Check.
 
-validateNumericInput(Lower, Upper, _, Result) :-
+validateNumericInput(_, _, _, _) :-
 	write("Invalid input, try again: ").
 	%sgetNumericInput(Lower, Upper, Result).	
-
-
 
 promptForMultipleNumericInput(Lower, Upper) :-
 	concat("Enter a number between ", Lower, Str1),
@@ -399,8 +413,8 @@ handleMultipleInputs( Upper, InputtedNumber, Result) :-
 	
 	getActionMenuChoice(CurrentPlayer, UserInput) :-
 	displayActionMenu(CurrentPlayer),
-	getActionMenuInput(CurrentPlayer, Input),
-	integer(Input).
+	getActionMenuInput(CurrentPlayer, UserInput),
+	integer(UserInput).
 
 
 getActionMenuInput(CurrentPlayer, Input) :-

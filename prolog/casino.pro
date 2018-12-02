@@ -148,6 +148,21 @@ removeMatchingSymbols([Currentcard | Rest], Value, RemainingCards, RemovedCards)
 	RemainingCards = [Currentcard | NewRemainingCards].
 
 
+findMatchingSymbolsIndices([], _, _,[]).
+
+findMatchingSymbolsIndices([Currentcard | Rest], Value, Index, Indices) :-
+	NextIndex is Index+1,
+	getCardSymbol(Currentcard, CurrentcardVal),
+	CurrentcardVal = Value,
+	findMatchingSymbolsIndices(Rest, Value, NextIndex,  NewIndices),
+	Indices = [Index | NewIndices].
+
+findMatchingSymbolsIndices([Currentcard | Rest], Value, Index, Indices) :-
+	NextIndex is Index+1,
+	findMatchingSymbolsIndices(Rest, Value, NextIndex, Indices).
+
+
+
 sumSelectedCards([], _, 0).
 
 
@@ -313,6 +328,8 @@ doComputerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove):-
 	not(MatchedCards=[]),
 	write("Capture found with "),
 	displayCard(CardWithMatches),
+	write(" with "),
+	write(MatchedCards),
 	nl,
 	fail.
 	
@@ -329,7 +346,7 @@ checkForMatchingCaptures([], _, [], []).
 
 checkForMatchingCaptures([CurrentCard | RestHand], Table, CardWithMatches, MatchedCards):-
 	getCardSymbol(CurrentCard, CardSym),
-	removeMatchingSymbols(Table, CardSym, _, MatchingCards),
+	findMatchingSymbolsIndices(Table, CardSym, 0, MatchingCards),
 	length(MatchingCards, CardsThatMatched),
 	CardsThatMatched > 0,
 	CardWithMatches = CurrentCard,

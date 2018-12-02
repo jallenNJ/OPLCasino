@@ -62,7 +62,13 @@ displayCard([Suit|Card]) :-
 	write(Suit), 
 	write(Card).	
 
+
 getCardSymbol([_|Sym], Sym).
+
+
+getCardVal(Build, Val):-
+	isBuild(Build),
+	sumCardList(Build, Val).
 
 getCardVal(Card, Val) :-
 	getCardSymbol(Card, Sym),
@@ -194,6 +200,13 @@ sumSelectedCards([CurrentIndex | RestIndicies], Table, Sum) :-
 	getCardVal(SelectedCard, Val),
 	Sum is RemainingSum+Val.
 
+
+sumCardList([], 0).
+sumCardList([Current | Rest], Sum) :-
+	getCardVal(Current, ThisVal),
+	sumCardList(Rest, RestVal),
+	Sum is ThisVal+RestVal.
+	
 
 makeBuild([], BuildCard, [BuildCard]).
 

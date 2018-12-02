@@ -324,14 +324,11 @@ doHumanMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 %=======================
 doComputerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove):-
 	getHand(PlayerList, Hand),
-	checkForMatchingCaptures(Hand, Table, CardWithMatches,MatchedCards),
-	not(MatchedCards=[]),
-	write("Capture found with "),
-	displayCard(CardWithMatches),
-	write(" with "),
-	write(MatchedCards),
-	nl,
-	fail.
+	checkForMatchingCaptures(Hand, Table, 0, PlayedCardIndex,MatchedCardsIndices),
+	not(MatchedCardsIndices=[]),
+	write("DEBEEEEEBUG AI CAPTURE"),
+	doCapture(PlayerList, Table, PlayedCardIndex, MatchedCardsIndices, PlayerAfterMove, TableAfterMove).
+
 	
 
 
@@ -344,17 +341,18 @@ doComputerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 
 checkForMatchingCaptures([], _, [], []).
 
-checkForMatchingCaptures([CurrentCard | RestHand], Table, CardWithMatches, MatchedCards):-
+checkForMatchingCaptures([CurrentCard | RestHand], Table, Index, CardWithMatches, MatchedCards):-
 	getCardSymbol(CurrentCard, CardSym),
 	findMatchingSymbolsIndices(Table, CardSym, 0, MatchingCards),
 	length(MatchingCards, CardsThatMatched),
 	CardsThatMatched > 0,
-	CardWithMatches = CurrentCard,
+	CardWithMatches = Index,
 	MatchedCards = MatchingCards.
 
 
-checkForMatchingCaptures([_ | RestHand], Table, CardWithMatches, MatchedCards) :-
-	checkForMatchingCaptures(RestHand, Table, CardWithMatches, MatchedCards).
+checkForMatchingCaptures([_ | RestHand], Table, Index, CardWithMatches, MatchedCards) :-
+	NextIndex is Index+1,
+	checkForMatchingCaptures(RestHand, Table, NextIndex, CardWithMatches, MatchedCards).
 
 
 %=======================

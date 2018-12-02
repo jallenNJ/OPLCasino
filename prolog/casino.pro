@@ -39,6 +39,7 @@ createCard(Suit, Val, [Suit | Val]).
 
 
 
+isBuild([_|_]).
 %Displays card to the screen 
 
 %End Build Recursion
@@ -47,7 +48,7 @@ displayCard([]).
 %If inputted card is a build, display every card enclosed in []
 displayCard([BuildCard|RestOfBuild]) :- 
 	
-	BuildCard= [_ | _],
+	isBuild(BuildCard),
 	write("["),
 	displayCard(BuildCard),
 	write(" "),

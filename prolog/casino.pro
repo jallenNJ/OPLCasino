@@ -50,6 +50,7 @@ isBuild([FirstCard|Rest]) :-
 displayCard([]).
 
 %If inputted card is a build, display every card enclosed in []
+%TODO: Fix builds with 3 cards
 displayCard([BuildCard|RestOfBuild]) :- 
 	
 	isBuild(BuildCard),
@@ -66,6 +67,22 @@ displayCard([Suit|Card]) :-
 	write(Suit), 
 	write(Card).	
 
+
+
+%getBuildCards(Build, CardOutput) :-
+%	isBuild(Build),
+%	flatten(Build, RawAtoms),
+%	rebuildAtomListToCards(RawAtoms, CardOutput)
+	
+
+
+%getBuildCards(Build, Build).
+
+%rebuildAtomListToCards([],[]).
+%rebuildAtomListToCards([[Suit | [Sym | RestAtoms]]], RebuiltCards) :-
+%	rebuildAtomListToCards(Restatoms, RestCards),
+%	createCard(Suit, Sym, ThisCard),
+%	RebuiltCards=[ThisCard | RestCards].
 
 
 %getCardSymbol(Build, Sym) :-

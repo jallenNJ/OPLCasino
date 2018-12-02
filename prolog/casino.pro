@@ -37,8 +37,29 @@ numToSuit(3, Output) :- Output = "h".
 %Creates card in form [SUIT SYMBOL]
 createCard(Suit, Val, [Suit | Val]).
 
+
+
 %Displays card to the screen 
-displayCard([Suit|Card]) :- write(Suit), write(Card).
+
+%End Build Recursion
+displayCard([]).
+
+%If inputted card is a build, display every card enclosed in []
+displayCard([BuildCard|RestOfBuild]) :- 
+	
+	BuildCard= [_ | _],
+	write("["),
+	displayCard(BuildCard),
+	write(" "),
+	RestOfBuild = [NextBuildCard | Others],
+	displayCard(NextBuildCard),
+	displayCard(Others),
+	write("]").
+
+%Display a single card
+displayCard([Suit|Card]) :-
+	write(Suit), 
+	write(Card).	
 
 getCardSymbol([_|Sym], Sym).
 

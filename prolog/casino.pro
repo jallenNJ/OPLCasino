@@ -173,6 +173,12 @@ sumSelectedCards([CurrentIndex | RestIndicies], Table, Sum) :-
 	Sum is RemainingSum+Val.
 
 
+makeBuild([], BuildCard, [BuildCard]).
+
+makeBuild([CurrentCard | Rest], BuildCard, Build) :-
+	makeBuild(Rest, BuildCard, NewBuild),
+	Build = [CurrentCard | NewBuild].
+
 %=======================
 %Functions to create and manipulate the player data structure
 %=======================
@@ -210,6 +216,16 @@ isHuman(PlayerList) :-
 	getId(PlayerList, Id),
 	Id = 0.
 
+listContainsValue([], _, _, -1).
+
+listContainsValue([CurrentCard|_], TargetVal, Index, FoundIndex) :-
+	getCardVal(CurrentCard, CardVal),
+	CardVal = TargetVal,
+	FoundIndex = Index.
+
+listContainsValue([_|Rest], TargetVal, Index, FoundIndex) :-
+	NextIndex is Index+1,
+	listContainsValue(Rest, TargetVal, NextIndex, FoundIndex).
 
 %=======================
 %Functions to run a round
@@ -308,7 +324,16 @@ doHumanMove(0, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	getMultipleNumericInput(TableAllowedIndices, SelectedCardIndices),
 	doCapture(PlayerList, Table, CaptureCardIndex, SelectedCardIndices, PlayerAfterMove, TableAfterMove).
 
-%doHumanMove(1, PlayerList, Table, PlayerAfterMove, TableAfterMove)
+doHumanMove(1, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
+	getHand(PlayerList, Hand),
+	prompt1("Which card would you like to Build with?"),
+	length(Hand, CardsInHandPlusOne),
+	CardsInHand is CardsInHandPlusOne-1,
+	getNumericInput(0, CardsInHand, PlayedCardIndex),
+	length(Table, TableCardAmount),
+	TableAllowedIndices is TableCardAmount-1,
+	getMultipleNumericInput(TableAllowedIndices, SelectedCardIndices),
+	doBuild(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMove, TableAfterMove).
 
 doHumanMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	getHand(PlayerList, Hand),
@@ -384,6 +409,26 @@ doCapture(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMo
 	mergeLists(StartingPile, [CaptureCard], PilewithCapCard),
 	mergeLists(PilewithCapCard, CaputuredCards, AllPileCards),
 	createPlayer(Id, ResultingHand, AllPileCards, Reserved, PlayerAfterMove).
+
+
+doBuild(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMove, TableAfterMove) :-	
+	getHand(PlayerList, Hand),
+	integer(PlayedCardIndex),
+	%Remove played card from the hand and get its value
+	removeAtIndex(Hand, PlayedCardIndex, ResultingHand, PlayedCard),
+	getCardVal(PlayedCard, PlayedVal),
+	sumSelectedCards(SelectedCardIndices, Table, Sum),
+	BuildValue is Sum+PlayedVal,
+	BuildValue =< 14,
+	listContainsValue(ResultingHand, BuildValue, 0, ReserveCardIndex),
+	ReserveCardIndex >=0,
+	getReserved(PlayerList, StartingReserved),
+	NewReserved = [BuildValue | StartingReserved],
+	removeAllIndices(SelectedCardIndices, Table, TableAfterCardsRemoved, TableBuildCards),
+	makeBuild(TableBuildCards, PlayedCard, NewBuild),
+	TableAfterMove = [NewBuild | TableAfterCardsRemoved],
+	getPlayerComponents(PlayerList, Id, _, Pile, _),
+	createPlayer(Id, ResultingHand, Pile, NewReserved, PlayerAfterMove).
 
 doTrail(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :-
 	getHand(PlayerList, Hand),

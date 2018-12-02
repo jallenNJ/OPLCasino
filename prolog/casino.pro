@@ -247,18 +247,25 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
 
 
 
+%Save and quit
 handleMenuChoice(1) :-
 	writeln("Implement Saving").
 
 %Do nothing.
 handleMenuChoice(2).
 
+%Ask for help
 handleMenuChoice(3) :-
 	writeln("Implement Help").
 
+%Quit without saving
 handleMenuChoice(4) :-
 	writeln("Thanks for playing Casino in Prolog :D"),
 	halt(0).	
+
+%=======================
+%Functions for round to call, resolves to human or computer
+%=======================
 
 %Human Player
 doPlayerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
@@ -269,9 +276,12 @@ doPlayerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 
 %Comp
 doPlayerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
-	doComputerMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove).
+	doComputerMove( PlayerList, Table, PlayerAfterMove, TableAfterMove).
 
 
+%=======================
+%Functions for human to make a move
+%=======================
 doHumanMove(0, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	getHand(PlayerList, Hand),
 	prompt1("Which card would you like to Capture with?"),
@@ -294,13 +304,45 @@ doHumanMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	doTrail(PlayerList, Table, TrailedCardIndex, PlayerAfterMove, TableAfterMove).
 
 
-%doComputerMove(0, PlayerList, Table, PlayerAfterMove, TableAfterMove)
+%=======================
+%Functions for computer to make a move
+%=======================
+doComputerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove):-
+	getHand(PlayerList, Hand),
+	checkForMatchingCaptures(Hand, Table, CardWithMatches,MatchedCards),
+	not(MatchedCards=[]),
+	write("Capture found with "),
+	displayCard(CardWithMatches),
+	nl,
+	fail.
+	
+
+
 %doComputerMove(1, PlayerList, Table, PlayerAfterMove, TableAfterMove)
-doComputerMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
+doComputerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	doTrail(PlayerList, Table, 0, PlayerAfterMove, TableAfterMove),
 	displayComputerMove(PlayerList, 0).
 	
 
+
+checkForMatchingCaptures([], _, [], []).
+
+checkForMatchingCaptures([CurrentCard | RestHand], Table, CardWithMatches, MatchedCards):-
+	getCardSymbol(CurrentCard, CardSym),
+	removeMatchingSymbols(Table, CardSym, _, MatchingCards),
+	length(MatchingCards, CardsThatMatched),
+	CardsThatMatched > 0,
+	CardWithMatches = CurrentCard,
+	MatchedCards = MatchingCards.
+
+
+checkForMatchingCaptures([_ | RestHand], Table, CardWithMatches, MatchedCards) :-
+	checkForMatchingCaptures(RestHand, Table, CardWithMatches, MatchedCards).
+
+
+%=======================
+%Functions to validate and execute the choosen move (for both players)
+%=======================
 doCapture(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMove, TableAfterMove) :-
 	%Get the hand and ensure the Played index is instaniated
 	getHand(PlayerList, Hand),

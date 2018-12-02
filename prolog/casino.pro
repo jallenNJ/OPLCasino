@@ -245,6 +245,7 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
 	
 
 %Round end rule, deck is empty, player infos have null hands
+%TODO, make sure to print table
 %playRound(_,[])	
 
 %Main loop
@@ -257,7 +258,6 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
 	getActionMenuChoice(P1Info, MenuChoice2),
 	handleMenuChoice(MenuChoice2),
 	doPlayerMove(P1Info, TableAfterP0, P1AfterMove, TableAfterP1),
-	printFullTable(P0AfterMove, TableAfterP1, P1AfterMove, Deck),
 	playRound(FirstId, Deck, TableAfterP1, P0AfterMove, P1AfterMove, _).
 
 
@@ -429,11 +429,6 @@ getNumericInput(Lower, Upper, Result) :-
 	read(Input),
 	validateNumericInput(Lower, Upper, Input, Result).
 
-%No Reprompt	
-%validateNumericInput(Lower, Upper, Check) :-
-%	integer(Check),
-%	Check >= Lower,
-%	Check =< Upper.
 
 validateNumericInput(Lower, Upper, Check, Result) :-
 	integer(Check),

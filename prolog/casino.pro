@@ -39,11 +39,11 @@ createCard(Suit, Val, [Suit | Val]).
 
 
 
-isBuild(([FirstCard|Rest]) :-
+isBuild([FirstCard|Rest]) :-
 	FirstCard = [Suit | Symbol],
 	not(Suit=[]),
 	not(Symbol=[]),
-	not(Rest=[]).)
+	not(Rest=[]).
 %Displays card to the screen 
 
 %End Build Recursion

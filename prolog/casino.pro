@@ -39,7 +39,11 @@ createCard(Suit, Val, [Suit | Val]).
 
 
 
-isBuild([_|_]).
+isBuild(([FirstCard|Rest]) :-
+	FirstCard = [Suit | Symbol],
+	not(Suit=[]),
+	not(Symbol=[]),
+	not(Rest=[]).)
 %Displays card to the screen 
 
 %End Build Recursion
@@ -62,6 +66,12 @@ displayCard([Suit|Card]) :-
 	write(Suit), 
 	write(Card).	
 
+
+
+%getCardSymbol(Build, Sym) :-
+%	isBuild(Build),
+%	getCardVal(Build, Val),
+%	allNumsToFaceLetters([Val], Sym),
 
 getCardSymbol([_|Sym], Sym).
 

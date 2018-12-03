@@ -47,20 +47,22 @@ isBuild([FirstCard|Rest]) :-
 %Displays card to the screen 
 
 %End Build Recursion
-displayCard([]).
+displayBuild([]).
 
-%If inputted card is a build, display every card enclosed in []
-%TODO: Fix builds with 3 cards
-displayCard([BuildCard|RestOfBuild]) :- 
-	
-	isBuild(BuildCard),
-	write("["),
+displayBuild(Build) :-
+	Build = [BuildCard | RestOfBuild],
 	displayCard(BuildCard),
 	write(" "),
-	RestOfBuild = [NextBuildCard | Others],
-	displayCard(NextBuildCard),
-	displayCard(Others),
+	displayBuild(RestOfBuild).
+
+%If inputted card is a build, display every card enclosed in []
+displayCard(Build) :- 
+	
+	isBuild(Build),
+	write("[ "),
+	displayBuild(Build),
 	write("]").
+
 
 %Display a single card
 displayCard([Suit|Card]) :-

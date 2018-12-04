@@ -276,9 +276,16 @@ getPlayerComponents(PlayerList, Id, Hand, Pile, Reserved) :-
 	getReserved(PlayerList, Reserved).
 
 
+
 isHuman(PlayerList) :-
 	getId(PlayerList, Id),
 	Id = 0.
+
+getPlayerName(PlayerList, Name) :-
+	isHuman(PlayerList),
+	Name = "Human".
+
+getPlayerName(_, "Computer").
 
 listContainsValue([], _, _, -1).
 
@@ -631,26 +638,34 @@ printHand(PlayerList) :-
 printPile(PlayerList) :-
 	getPile(PlayerList, Pile),
 	printCards(Pile).
+	
+printReserved(PlayerList) :-
+	getReserved(PlayerList, Reserved),
+	write(Reserved).
+
+printPlayer(PlayerList) :-
+	getPlayerName(PlayerList, Name),
+	write(Name),
+	write(": "),
+	printHand(PlayerList),
+	nl,
+	write("Pile: "),
+	printPile(PlayerList),
+	nl,
+	write("Build Sums: "),
+	printReserved(PlayerList).		
 
 printFullTable(HumanPlayer, Table, ComputerPlayer, Deck) :-
 	isHuman(HumanPlayer),
 	writeln("==========================="),
-	write("Comp:  "),
-	printHand(ComputerPlayer),
-	nl,
-	write("Pile: "),
-	printPile(ComputerPlayer),
+	printPlayer(ComputerPlayer),
 	nl,
 	writeln("-------------------------"),
 	write("Table: "),
 	printCards(Table),
 	nl,
 	writeln("-------------------------"),
-	write("Human: "),
-	printHand(HumanPlayer),
-	nl,
-	write("Pile: "),
-	printPile(HumanPlayer),
+	printPlayer(HumanPlayer),
 	nl,
 	writeln("-------------------------"),
 	write("Deck: "),
@@ -682,6 +697,7 @@ displayComputerMove(PlayerList, PlayedCardIndex) :-
 	write("Computer trailed with "),
 	displayCard(PlayedCard),
 	writeln(" as there were no other moves available").
+
 
 
 

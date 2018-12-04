@@ -82,7 +82,8 @@ displayCard([Suit|Card]) :-
 
 %rebuildAtomListToCards([],[]).
 %rebuildAtomListToCards([[Suit | [Sym | RestAtoms]]], RebuiltCards) :-
-%	rebuildAtomListToCards(Restatoms, RestCards),
+%	rebuildAtomListToCards(RestAtoms, RestCards),
+
 %	createCard(Suit, Sym, ThisCard),
 %	RebuiltCards=[ThisCard | RestCards].
 
@@ -671,4 +672,41 @@ displayComputerMove(PlayerList, PlayedCardIndex) :-
 	write("Computer trailed with "),
 	displayCard(PlayedCard),
 	writeln(" as there were no other moves available").
+
+
+
+%=======================
+%Functions to print formatted data
+%=======================	
+
+load :-
+	prompt1("What file would you like to load?"),
+	read(File),
+	readFile(File, Data),
+	parseSaveToRound(Data).
+
+readFile(FileName, FileData) :-
+	open(FileName, read, FileStream),
+	read(FileStream, FileData).
+
+parseSaveToRound(RawData) :-
+
+	nth0(2, RawData, CompHand),
+
+	nth0(3, RawData, CompPile),
+
+	nth0(5, RawData, HumanHand),
+	nth0(6, RawData,HumanPile),
+
+	nth0(7, RawData, Table),
+
+	length(RawData, Terms),
+	DeckIndex is Terms-2,
+	nth0(DeckIndex, RawData, Deck),
+
+
+	createPlayer(0, HumanHand, HumanPile, [], Human),
+	createPlayer(1, CompHand, CompPile, [], Comp),
+
+	playRound(0, Deck, Table, Human, Comp, _).
 

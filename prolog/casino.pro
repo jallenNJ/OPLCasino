@@ -214,7 +214,7 @@ findMatchingSymbolsIndices([Currentcard | Rest], Value, Index, Indices) :-
 	findMatchingSymbolsIndices(Rest, Value, NextIndex,  NewIndices),
 	Indices = [Index | NewIndices].
 
-findMatchingSymbolsIndices([Currentcard | Rest], Value, Index, Indices) :-
+findMatchingSymbolsIndices([ _ | Rest], Value, Index, Indices) :-
 	NextIndex is Index+1,
 	findMatchingSymbolsIndices(Rest, Value, NextIndex, Indices).
 
@@ -430,7 +430,7 @@ doComputerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 
 checkForMatchingCaptures([], _, [], []).
 
-checkForMatchingCaptures([CurrentCard | RestHand], Table, Index, CardWithMatches, MatchedCards):-
+checkForMatchingCaptures([CurrentCard | _], Table, Index, CardWithMatches, MatchedCards):-
 	getCardSymbol(CurrentCard, CardSym),
 	findMatchingSymbolsIndices(Table, CardSym, 0, MatchingCards),
 	length(MatchingCards, CardsThatMatched),

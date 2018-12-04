@@ -71,21 +71,20 @@ displayCard([Suit|Card]) :-
 
 
 
-%getBuildCards(Build, CardOutput) :-
-%	isBuild(Build),
-%	flatten(Build, RawAtoms),
-%	rebuildAtomListToCards(RawAtoms, CardOutput)
+getBuildCards(Build, CardOutput) :-
+	isBuild(Build),
+	flatten(Build, RawAtoms),
+	rebuildAtomListToCards(RawAtoms, CardOutput).
 	
 
 
-%getBuildCards(Build, Build).
+getBuildCards(Build, Build).
 
-%rebuildAtomListToCards([],[]).
-%rebuildAtomListToCards([[Suit | [Sym | RestAtoms]]], RebuiltCards) :-
-%	rebuildAtomListToCards(RestAtoms, RestCards),
-
-%	createCard(Suit, Sym, ThisCard),
-%	RebuiltCards=[ThisCard | RestCards].
+rebuildAtomListToCards([],[]).
+rebuildAtomListToCards([[Suit | [Sym | RestAtoms]]], RebuiltCards) :-
+	rebuildAtomListToCards(RestAtoms, RestCards),
+	createCard(Suit, Sym, ThisCard),
+	RebuiltCards=[ThisCard | RestCards].
 
 
 getCardSymbol(Build, Sym) :-
@@ -292,6 +291,17 @@ listContainsValue([_|Rest], TargetVal, Index, FoundIndex) :-
 	NextIndex is Index+1,
 	listContainsValue(Rest, TargetVal, NextIndex, FoundIndex).
 
+addToPile(StartingPile, [], StartingPile).
+
+addToPile(StartingPile, [FirstCard | Rest], PileWithAddedCards) :-	
+	isBuild(FirstCard),
+	getBuildCards(FirstCard, ListOfCards),
+	addToPile(StartingPile, Rest, RestPile),
+	mergeLists(RestPile, ListOfCards, PileWithAddedCards).
+
+addToPile(StartingPile, [Card| _], PileWithAddedCards) :-
+	PileWithAddedCards = [ Card | StartingPile].
+
 %=======================
 %Functions to run a round
 %=======================
@@ -472,7 +482,7 @@ doCapture(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMo
 	%Make the updated player
 	getPlayerComponents(PlayerList, Id, _, StartingPile, Reserved),
 	mergeLists(StartingPile, [CaptureCard], PilewithCapCard),
-	mergeLists(PilewithCapCard, CaputuredCards, AllPileCards),
+	addToPile(PilewithCapCard, CaputuredCards, AllPileCards),
 	createPlayer(Id, ResultingHand, AllPileCards, Reserved, PlayerAfterMove).
 
 

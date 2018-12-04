@@ -87,10 +87,10 @@ displayCard([Suit|Card]) :-
 %	RebuiltCards=[ThisCard | RestCards].
 
 
-%getCardSymbol(Build, Sym) :-
-%	isBuild(Build),
-%	getCardVal(Build, Val),
-%	allNumsToFaceLetters([Val], Sym),
+getCardSymbol(Build, Sym) :-
+	isBuild(Build),
+	sumCardList(Build, Val),
+	allNumsToFaceLetters([Val], Sym).
 
 getCardSymbol([_|Sym], Sym).
 

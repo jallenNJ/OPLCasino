@@ -298,16 +298,17 @@ listContainsValue([_|Rest], TargetVal, Index, FoundIndex) :-
 	NextIndex is Index+1,
 	listContainsValue(Rest, TargetVal, NextIndex, FoundIndex).
 
-addToPile(StartingPile, [], StartingPile).
+addToPile(NewCards, [], NewCards).
 
-addToPile(StartingPile, [FirstCard | Rest], PileWithAddedCards) :-	
+addToPile(NewCards, [FirstCard | Rest], PileWithAddedCards) :-	
 	isBuild(FirstCard),
 	getBuildCards(FirstCard, ListOfCards),
-	addToPile(StartingPile, Rest, RestPile),
+	addToPile(NewCards, Rest, RestPile),
 	mergeLists(RestPile, ListOfCards, PileWithAddedCards).
 
-addToPile(StartingPile, [Card| _], PileWithAddedCards) :-
-	PileWithAddedCards = [ Card | StartingPile].
+addToPile(NewCards, [Card| Rest], PileWithAddedCards) :-
+	addToPile(NewCards, Rest, NewPile),
+	PileWithAddedCards = [ Card | NewPile].
 
 %=======================
 %Functions to run a round
@@ -431,6 +432,23 @@ doHumanMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 %=======================
 doComputerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove):-
 	getHand(PlayerList, Hand),
+	checkSetCapture(Hand, Table, HandAfterMove, TableAfterMove,CapturedCards),
+	getPlayerComponents(PlayerList, Id, _, StartingPile, Reserved),
+	writeln("Compt got: "),
+	printCards(CapturedCards),
+	%addToPile(StartingPile, CapturedCards, NewPile),
+	addToPile(CapturedCards, StartingPile, NewPile),
+	createPlayer(Id, HandAfterMove, NewPile, Reserved, PlayerAfterMove).
+
+
+%	not(MatchedCardsIndices=[]),
+%	write("DEBEEEEEBUG AI CAPTURE"),
+	%doCapture(PlayerList, Table, PlayedCardIndex, MatchedCardsIndices, PlayerAfterMove, TableAfterMove).
+
+
+
+doComputerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove):-
+	getHand(PlayerList, Hand),
 	checkForMatchingCaptures(Hand, Table, 0, PlayedCardIndex,MatchedCardsIndices),
 	not(MatchedCardsIndices=[]),
 	write("DEBEEEEEBUG AI CAPTURE"),
@@ -489,7 +507,7 @@ doCapture(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMo
 	%Make the updated player
 	getPlayerComponents(PlayerList, Id, _, StartingPile, Reserved),
 	mergeLists(StartingPile, [CaptureCard], PilewithCapCard),
-	addToPile(PilewithCapCard, CaputuredCards, AllPileCards),
+	addToPile( CaputuredCards, PilewithCapCard,AllPileCards),
 	createPlayer(Id, ResultingHand, AllPileCards, Reserved, PlayerAfterMove).
 
 
@@ -736,3 +754,34 @@ parseSaveToRound(RawData) :-
 
 	playRound(0, Deck, Table, Human, Comp, _).
 
+
+
+
+checkSetCapture([], _, [], [],[]).
+
+checkSetCapture([Card|HandAfterMove], Table, HandAfterMove, TableAfterMove, CapturedCards) :-
+	getCardVal(Card, Target),
+	findSet(Table, Target, TableAfterMove, CapturedCardsFromTable),
+	length(CapturedCardsFromTable, AmountCapped),
+	AmountCapped > 1,
+	CapturedCards = [Card|CapturedCardsFromTable].
+
+checkSetCapture([_| Rest], Table, HandAfterMove, TableAfterMove, CapturedCards):-
+checkSetCapture(Rest, Table, HandAfterMove, TableAfterMove, CapturedCards).
+
+
+
+%findSet([], , [], []).
+findSet([FirstCard| Rest], Target, TableAfterMove, Captured) :-
+	getCardVal(FirstCard, ThisVal),
+	NextTarget is Target-ThisVal,
+	NextTarget >=0,
+	findSet(Rest, NextTarget, TableAfterMove, ThatCaptured),
+	Captured = [FirstCard | ThatCaptured].
+
+findSet(Table, 0, Table, []).
+
+
+findSet([First | Rest], Target, TableAfterMove, Captured) :-
+	findSet(Rest, Target, Table, Captured),
+	TableAfterMove=[First|Table].

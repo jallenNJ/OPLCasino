@@ -746,14 +746,64 @@ parseSaveToRound(RawData) :-
 	nth0(7, RawData, Table),
 
 	length(RawData, Terms),
+	LastCapIndex is Terms-3,
 	DeckIndex is Terms-2,
+	StartingIndex is Terms-1,
 	nth0(DeckIndex, RawData, Deck),
 
+	parseBuildOwnersFromRaw(RawData, Terms, HumanReserved, CompReserved),
 
-	createPlayer(0, HumanHand, HumanPile, [], Human),
-	createPlayer(1, CompHand, CompPile, [], Comp),
+
+	createPlayer(0, HumanHand, HumanPile, HumanReserved, Human),
+	createPlayer(1, CompHand, CompPile, CompReserved, Comp),
 
 	playRound(0, Deck, Table, Human, Comp, _).
+
+
+
+enumerateAtomId(AId, 0) :-
+	AId = human.
+
+enumerateAtomId(_, 1).
+
+
+parseBuildOwnersFromRaw(_, Terms, [], []) :-
+Terms =< 11.
+
+parseBuildOwnersFromRaw(RawData, Terms, HumanBuilds, CompBuilds) :-
+	Max is Terms-4,
+	getSlice(RawData, 7, Max, Slice),
+	parseOwnersFromSlice(Slice, HumanBuildsRaw, CompBuildsRaw),
+	sort(0, @<, HumanBuildsRaw, HumanBuilds),
+	sort(0, @<, CompBuildsRaw, CompBuilds).
+
+
+getSlice(_, Current, Max, []) :-
+	Current > Max.
+
+getSlice(RawData, Current, Max, Slice) :-
+	Next is Current+1,
+	getSlice(RawData, Next, Max, RestSlice),
+	nth0(Current, RawData, CurrentElement),
+	Slice = [CurrentElement | RestSlice].
+
+parseOwnersFromSlice([], [], []).
+
+parseOwnersFromSlice([Current| Rest], Human, Comp) :-
+	Current =[Build | Owner],
+	enumerateAtomId(Owner, Id),
+	Id = 0,
+	parseOwnersFromSlice(Rest, RestHuman, Comp),
+	sumCardList(Build, Val),
+	Human = [Val | RestHuman].
+
+parseOwnersFromSlice([Current| Rest], Human, Comp) :-
+	Current =[Build | Owner],
+	enumerateAtomId(Owner, Id),
+	Id = 1,
+	parseOwnersFromSlice(Rest, Human, RestComp),
+	sumCardList(Build, Val),
+	Comp = [Val | RestComp].
 
 
 

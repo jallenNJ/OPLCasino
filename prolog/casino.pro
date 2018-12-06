@@ -433,8 +433,9 @@ doHumanMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 doComputerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove):-
 	getHand(PlayerList, Hand),
 	checkSetCapture(Hand, Table, HandAfterMove, TableAfterMove,CapturedCards),
+	length(CapturedCards, AmountCapped),
+	AmountCapped > 1,
 	getPlayerComponents(PlayerList, Id, _, StartingPile, Reserved),
-	writeln("Compt got: "),
 	printCards(CapturedCards),
 	%addToPile(StartingPile, CapturedCards, NewPile),
 	addToPile(CapturedCards, StartingPile, NewPile),
@@ -766,8 +767,9 @@ checkSetCapture([Card|HandAfterMove], Table, HandAfterMove, TableAfterMove, Capt
 	AmountCapped > 1,
 	CapturedCards = [Card|CapturedCardsFromTable].
 
-checkSetCapture([_| Rest], Table, HandAfterMove, TableAfterMove, CapturedCards):-
-checkSetCapture(Rest, Table, HandAfterMove, TableAfterMove, CapturedCards).
+checkSetCapture([Skipped| Rest], Table, HandAfterMove, TableAfterMove, CapturedCards):-
+	checkSetCapture(Rest, Table, HandAfterCap, TableAfterMove, CapturedCards),
+	HandAfterMove=[Skipped | HandAfterCap].
 
 
 

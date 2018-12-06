@@ -465,6 +465,34 @@ doComputerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	
 
 
+checkSetCapture([], _, [], [],[]).
+
+checkSetCapture([Card|HandAfterMove], Table, HandAfterMove, TableAfterMove, CapturedCards) :-
+	getCardVal(Card, Target),
+	findSet(Table, Target, TableAfterMove, CapturedCardsFromTable),
+	length(CapturedCardsFromTable, AmountCapped),
+	AmountCapped > 1,
+	CapturedCards = [Card|CapturedCardsFromTable].
+
+checkSetCapture([Skipped| Rest], Table, HandAfterMove, TableAfterMove, CapturedCards):-
+	checkSetCapture(Rest, Table, HandAfterCap, TableAfterMove, CapturedCards),
+	HandAfterMove=[Skipped | HandAfterCap].
+
+	
+findSet([FirstCard| Rest], Target, TableAfterMove, Captured) :-
+	getCardVal(FirstCard, ThisVal),
+	NextTarget is Target-ThisVal,
+	NextTarget >=0,
+	findSet(Rest, NextTarget, TableAfterMove, ThatCaptured),
+	Captured = [FirstCard | ThatCaptured].
+
+findSet(Table, 0, Table, []).
+
+
+findSet([First | Rest], Target, TableAfterMove, Captured) :-
+	findSet(Rest, Target, Table, Captured),
+	TableAfterMove=[First|Table].
+
 checkForMatchingCaptures([], _, [], []).
 
 checkForMatchingCaptures([CurrentCard | _], Table, Index, CardWithMatches, MatchedCards):-
@@ -692,7 +720,7 @@ printFullTable(HumanPlayer, Table, ComputerPlayer, Deck) :-
 	nl,
 	writeln("===========================").
 
-%Bound back function to swap orders
+%Bounce back function to swap orders
 printFullTable(ComputerPlayer, Table, HumanPlayer, Deck) :-
 	printFullTable(HumanPlayer, Table, ComputerPlayer, Deck).
 
@@ -721,7 +749,7 @@ displayComputerMove(PlayerList, PlayedCardIndex) :-
 
 
 %=======================
-%Functions to print formatted data
+%Functions to load in serliazed data
 %=======================	
 
 load :-
@@ -760,11 +788,6 @@ parseSaveToRound(RawData) :-
 	playRound(0, Deck, Table, Human, Comp, _).
 
 
-
-enumerateAtomId(AId, 0) :-
-	AId = human.
-
-enumerateAtomId(_, 1).
 
 
 parseBuildOwnersFromRaw(_, Terms, [], []) :-
@@ -806,34 +829,10 @@ parseOwnersFromSlice([Current| Rest], Human, Comp) :-
 	Comp = [Val | RestComp].
 
 
+enumerateAtomId(AId, 0) :-
+	AId = human.
 
-
-checkSetCapture([], _, [], [],[]).
-
-checkSetCapture([Card|HandAfterMove], Table, HandAfterMove, TableAfterMove, CapturedCards) :-
-	getCardVal(Card, Target),
-	findSet(Table, Target, TableAfterMove, CapturedCardsFromTable),
-	length(CapturedCardsFromTable, AmountCapped),
-	AmountCapped > 1,
-	CapturedCards = [Card|CapturedCardsFromTable].
-
-checkSetCapture([Skipped| Rest], Table, HandAfterMove, TableAfterMove, CapturedCards):-
-	checkSetCapture(Rest, Table, HandAfterCap, TableAfterMove, CapturedCards),
-	HandAfterMove=[Skipped | HandAfterCap].
+enumerateAtomId(_, 1).
 
 
 
-%findSet([], , [], []).
-findSet([FirstCard| Rest], Target, TableAfterMove, Captured) :-
-	getCardVal(FirstCard, ThisVal),
-	NextTarget is Target-ThisVal,
-	NextTarget >=0,
-	findSet(Rest, NextTarget, TableAfterMove, ThatCaptured),
-	Captured = [FirstCard | ThatCaptured].
-
-findSet(Table, 0, Table, []).
-
-
-findSet([First | Rest], Target, TableAfterMove, Captured) :-
-	findSet(Rest, Target, Table, Captured),
-	TableAfterMove=[First|Table].

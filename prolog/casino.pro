@@ -789,6 +789,8 @@ parseSaveToRound(RawData) :-
 	DeckIndex is Terms-2,
 	StartingIndex is Terms-1,
 	nth0(DeckIndex, RawData, Deck),
+	nth0(StartingIndex, RawData, StartingPlayerAtom),
+	enumerateAtomId(StartingPlayerAtom, StartingPlayer),
 
 	parseBuildOwnersFromRaw(RawData, Terms, HumanReserved, CompReserved),
 
@@ -796,10 +798,17 @@ parseSaveToRound(RawData) :-
 	createPlayer(0, HumanHand, HumanPile, HumanReserved, Human),
 	createPlayer(1, CompHand, CompPile, CompReserved, Comp),
 
-	playRound(0, Deck, Table, Human, Comp, _).
+
+	startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp).
 
 
+startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp) :-
+	StartingPlayer = 0,
+	playRound(StartingPlayer, Deck, Table, Human, Comp, _).
 
+startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp) :-
+	StartingPlayer = 1,
+	playRound(StartingPlayer, Deck, Table, Comp, Human, _).
 
 parseBuildOwnersFromRaw(_, Terms, [], []) :-
 Terms =< 11.

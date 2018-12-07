@@ -555,7 +555,8 @@ doBuild(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMove
 	NewReserved = [BuildValue | StartingReserved],
 	removeAllIndices(SelectedCardIndices, Table, TableAfterCardsRemoved, TableBuildCards),
 	makeBuild(TableBuildCards, PlayedCard, NewBuild),
-	TableAfterMove = [NewBuild | TableAfterCardsRemoved],
+	%TableAfterNewBuild = [NewBuild | TableAfterCardsRemoved],
+	checkForMulti(NewBuild, BuildValue, TableAfterCardsRemoved, TableAfterMove),
 	getPlayerComponents(PlayerList, Id, _, Pile, _),
 	createPlayer(Id, ResultingHand, Pile, NewReserved, PlayerAfterMove).
 
@@ -568,6 +569,20 @@ doTrail(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :-
 	getPile(PlayerList, Pile),
 	getReserved(PlayerList, Reserved),
 	createPlayer(Id, ResultingHand, Pile, Reserved, PlayerAfterMove).
+
+
+
+checkForMulti(NewBuild, _, [], [NewBuild]).
+
+checkForMulti(NewBuild, BuildValue, [Current | RestCard],  TableAfterMove) :-
+	sumCardList(Current, CurrentVal),
+	BuildValue = CurrentVal,
+	NewMulti = [NewBuild | [Current]],
+	TableAfterMove = [NewMulti | RestCard].
+
+checkForMulti(NewBuild, BuildValue, [Current | RestCard],  TableAfterMove) :-
+	checkForMulti(NewBuild, BuildValue, RestCard, RestTable),
+	TableAfterMove = [Current | RestTable].
 
 %=======================
 %Functions to get and validate input from the user

@@ -72,16 +72,18 @@ displayCard([Suit|Card]) :-
 
 
 getBuildCards(Build, CardOutput) :-
-	isBuild(Build),
 	flatten(Build, RawAtoms),
 	rebuildAtomListToCards(RawAtoms, CardOutput).
 	
 
 
-getBuildCards(Build, Build).
+%getBuildCards(Build, Build).
 
 rebuildAtomListToCards([],[]).
-rebuildAtomListToCards([[Suit | [Sym | RestAtoms]]], RebuiltCards) :-
+rebuildAtomListToCards(AtomList, RebuiltCards) :-
+	AtomList = [Suit | Rest],
+	Rest = [Sym | RestAtoms],
+
 	rebuildAtomListToCards(RestAtoms, RestCards),
 	createCard(Suit, Sym, ThisCard),
 	RebuiltCards=[ThisCard | RestCards].
@@ -298,17 +300,10 @@ listContainsValue([_|Rest], TargetVal, Index, FoundIndex) :-
 	NextIndex is Index+1,
 	listContainsValue(Rest, TargetVal, NextIndex, FoundIndex).
 
-addToPile(NewCards, [], NewCards).
 
-addToPile(NewCards, [FirstCard | Rest], PileWithAddedCards) :-	
-	isBuild(FirstCard),
-	getBuildCards(FirstCard, ListOfCards),
-	addToPile(NewCards, Rest, RestPile),
-	mergeLists(RestPile, ListOfCards, PileWithAddedCards).
-
-addToPile(NewCards, [Card| Rest], PileWithAddedCards) :-
-	addToPile(NewCards, Rest, NewPile),
-	PileWithAddedCards = [ Card | NewPile].
+addToPile(NewCards, StartingPile, PileWithAddedCards) :-
+	getBuildCards(NewCards, ListOfCards),
+	mergeLists(StartingPile, ListOfCards, PileWithAddedCards).
 
 %=======================
 %Functions to run a round
@@ -552,7 +547,8 @@ doBuild(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMove
 	listContainsValue(ResultingHand, BuildValue, 0, ReserveCardIndex),
 	ReserveCardIndex >=0,
 	getReserved(PlayerList, StartingReserved),
-	NewReserved = [BuildValue | StartingReserved],
+	NewReservedUnsorted = [BuildValue | StartingReserved],
+	sort(0 ,@<, NewReservedUnsorted, NewReserved),
 	removeAllIndices(SelectedCardIndices, Table, TableAfterCardsRemoved, TableBuildCards),
 	makeBuild(TableBuildCards, PlayedCard, NewBuild),
 	%TableAfterNewBuild = [NewBuild | TableAfterCardsRemoved],

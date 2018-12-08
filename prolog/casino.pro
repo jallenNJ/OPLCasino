@@ -308,21 +308,21 @@ addToPile(NewCards, StartingPile, PileWithAddedCards) :-
 %=======================
 %Functions to run a round
 %=======================
-startNewRound() :- playRound(0, [],[],[],[], _).
+startNewRound() :- playRound(0, [],[],[],[], 0).
 
 
 %id, deck, table, p0Info, p1Info, retVal
-playRound(FirstId,[],[],[],[],_) :- 
+playRound(FirstId,[],[],[],[],LastCap) :- 
 		createDeck(RawDeck),
 		drawFourCards(RawDeck, AfterOneDraw, HumanCards),
 		drawFourCards(AfterOneDraw, AfterTwoDraws, CompCards),
 		drawFourCards(AfterTwoDraws, Deck, TableCards),
 		createNewPlayer(0, HumanCards, HumanPlayer),
 		createNewPlayer(1, CompCards, ComputerPlayer),
-		playRound(FirstId, Deck, TableCards, HumanPlayer, ComputerPlayer, _).
+		playRound(FirstId, Deck, TableCards, HumanPlayer, ComputerPlayer, LastCap).
 
 %Deal new hands when hands are empty
-playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
+playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap) :-
 	getHand(P0Info, P0Hand),
 	length(P0Hand, 0),
 	getHand(P1Info, P1Hand),
@@ -335,24 +335,32 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
 	createPlayer(P0Id, P0Cards, P0Pile, P0Reserved, NewP0),
 	getPlayerComponents(P1Info, P1Id, _, P1Pile, P1Reserved),
 	createPlayer(P1Id, P1Cards, P1Pile, P1Reserved, NewP1),
-	playRound(FirstId, AfterTwoDraws, Table, NewP0, NewP1, _).
+	playRound(FirstId, AfterTwoDraws, Table, NewP0, NewP1, LastCap).
 	
 
 %Round end rule, deck is empty, player infos have null hands
 %TODO, make sure to print table
-%playRound(_,[])	
+playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap)	:-
+	getHand(P0Info, P0Hand),
+	length(P0Hand, 0),
+	getHand(P1Info, P1Hand),
+	length(P1Hand, 0),
+	length(Deck, CardsInDeck),
+	CardsInDeck < 8,
+	writeln("THIS IS ROUND END"),
+	writeln(LastCap).
 
 %Main loop
-playRound(FirstId, Deck, Table, P0Info, P1Info, _) :-
+playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap) :-
 	printFullTable(P0Info, Table, P1Info, Deck),
 	getActionMenuChoice(P0Info, MenuChoice),
 	handleMenuChoice(MenuChoice),
-	doPlayerMove(P0Info, Table, P0AfterMove, TableAfterP0),
+	doPlayerMove(P0Info, Table, LastCap, P0AfterMove, TableAfterP0, LastCapAfterP0),
 	printFullTable(P0AfterMove, TableAfterP0, P1Info, Deck),
 	getActionMenuChoice(P1Info, MenuChoice2),
 	handleMenuChoice(MenuChoice2),
-	doPlayerMove(P1Info, TableAfterP0, P1AfterMove, TableAfterP1),
-	playRound(FirstId, Deck, TableAfterP1, P0AfterMove, P1AfterMove, _).
+	doPlayerMove(P1Info, TableAfterP0, LastCapAfterP0, P1AfterMove, TableAfterP1, LastCapAfterP1),
+	playRound(FirstId, Deck, TableAfterP1, P0AfterMove, P1AfterMove, LastCapAfterP1).
 
 
 
@@ -377,21 +385,21 @@ handleMenuChoice(4) :-
 %=======================
 
 %Human Player
-doPlayerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
+doPlayerMove(PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
 	isHuman(PlayerList),
 	getActionChoice(MoveChoice),
 	integer(MoveChoice),
-	doHumanMove(MoveChoice, PlayerList, Table, PlayerAfterMove, TableAfterMove).
+	doHumanMove(MoveChoice, PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, LastCapAfterMove).
 
 %Comp
-doPlayerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
-	doComputerMove( PlayerList, Table, PlayerAfterMove, TableAfterMove).
+doPlayerMove(PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
+	doComputerMove( PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, LastCapAfterMove).
 
 
 %=======================
 %Functions for human to make a move
 %=======================
-doHumanMove(0, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
+doHumanMove(0, PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
 	getHand(PlayerList, Hand),
 	prompt1("Which card would you like to Capture with?"),
 	length(Hand, CardsInHandPlusOne),
@@ -400,9 +408,9 @@ doHumanMove(0, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	length(Table, TableCardAmount),
 	TableAllowedIndices is TableCardAmount-1,
 	getMultipleNumericInput(TableAllowedIndices, SelectedCardIndices),
-	doCapture(PlayerList, Table, CaptureCardIndex, SelectedCardIndices, PlayerAfterMove, TableAfterMove).
+	doCapture(PlayerList, Table, CaptureCardIndex, LastCap, SelectedCardIndices, PlayerAfterMove, TableAfterMove, LastCapAfterMove).
 
-doHumanMove(1, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
+doHumanMove(1, PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
 	getHand(PlayerList, Hand),
 	prompt1("Which card would you like to Build with?"),
 	length(Hand, CardsInHandPlusOne),
@@ -411,21 +419,21 @@ doHumanMove(1, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
 	length(Table, TableCardAmount),
 	TableAllowedIndices is TableCardAmount-1,
 	getMultipleNumericInput(TableAllowedIndices, SelectedCardIndices),
-	doBuild(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMove, TableAfterMove).
+	doBuild(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, LastCap,PlayerAfterMove, TableAfterMove, LastCapAfterMove).
 
-doHumanMove(2, PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
+doHumanMove(2, PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
 	getHand(PlayerList, Hand),
 	prompt1("Which card would you like to trail?"),
 	length(Hand, CardsInHandPlusOne),
 	CardsInHand is CardsInHandPlusOne-1,
 	getNumericInput(0, CardsInHand, TrailedCardIndex),
-	doTrail(PlayerList, Table, TrailedCardIndex, PlayerAfterMove, TableAfterMove).
+	doTrail(PlayerList, Table, TrailedCardIndex, LastCap, PlayerAfterMove, TableAfterMove, LastCapAfterMove).
 
 
 %=======================
 %Functions for computer to make a move
 %=======================
-doComputerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove):-
+doComputerMove(PlayerList, Table, _, PlayerAfterMove, TableAfterMove, LastCapAfterMove):-
 	getHand(PlayerList, Hand),
 	checkSetCapture(Hand, Table, HandAfterMove, TableAfterMove,CapturedCards),
 	length(CapturedCards, AmountCapped),
@@ -434,6 +442,7 @@ doComputerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove):-
 	printCards(CapturedCards),
 	%addToPile(StartingPile, CapturedCards, NewPile),
 	addToPile(CapturedCards, StartingPile, NewPile),
+	LastCapAfterMove = Id,
 	createPlayer(Id, HandAfterMove, NewPile, Reserved, PlayerAfterMove).
 
 
@@ -443,19 +452,19 @@ doComputerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove):-
 
 
 
-doComputerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove):-
+doComputerMove(PlayerList, Table, _, PlayerAfterMove, TableAfterMove, LastCapAfterMove):-
 	getHand(PlayerList, Hand),
 	checkForMatchingCaptures(Hand, Table, 0, PlayedCardIndex,MatchedCardsIndices),
 	not(MatchedCardsIndices=[]),
 	write("DEBEEEEEBUG AI CAPTURE"),
-	doCapture(PlayerList, Table, PlayedCardIndex, MatchedCardsIndices, PlayerAfterMove, TableAfterMove).
+	doCapture(PlayerList, Table, PlayedCardIndex, MatchedCardsIndices, PlayerAfterMove, TableAfterMove, LastCapAfterMove).
 
 	
 
 
 %doComputerMove(1, PlayerList, Table, PlayerAfterMove, TableAfterMove)
-doComputerMove(PlayerList, Table, PlayerAfterMove, TableAfterMove) :-
-	doTrail(PlayerList, Table, 0, PlayerAfterMove, TableAfterMove),
+doComputerMove(PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
+	doTrail(PlayerList, Table, 0, LastCap, PlayerAfterMove, TableAfterMove, LastCapAfterMove),
 	displayComputerMove(PlayerList, 0).
 	
 
@@ -507,7 +516,7 @@ checkForMatchingCaptures([_ | RestHand], Table, Index, CardWithMatches, MatchedC
 %=======================
 %Functions to validate and execute the choosen move (for both players)
 %=======================
-doCapture(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMove, TableAfterMove) :-
+doCapture(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
 	%Get the hand and ensure the Played index is instaniated
 	getHand(PlayerList, Hand),
 	integer(PlayedCardIndex),
@@ -532,10 +541,11 @@ doCapture(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMo
 	getPlayerComponents(PlayerList, Id, _, StartingPile, Reserved),
 	mergeLists(StartingPile, [CaptureCard], PilewithCapCard),
 	addToPile( CaputuredCards, PilewithCapCard,AllPileCards),
+	LastCapAfterMove = Id,
 	createPlayer(Id, ResultingHand, AllPileCards, Reserved, PlayerAfterMove).
 
 
-doBuild(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMove, TableAfterMove) :-	
+doBuild(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, LastCap, PlayerAfterMove, TableAfterMove, LastCap) :-	
 	getHand(PlayerList, Hand),
 	integer(PlayedCardIndex),
 	%Remove played card from the hand and get its value
@@ -556,11 +566,16 @@ doBuild(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMove
 	getPlayerComponents(PlayerList, Id, _, Pile, _),
 	createPlayer(Id, ResultingHand, Pile, NewReserved, PlayerAfterMove).
 
-doTrail(PlayerList, Table, PlayedCardIndex, PlayerAfterMove, TableAfterMove) :-
+doTrail(PlayerList, Table, PlayedCardIndex, LastCap, PlayerAfterMove, TableAfterMove, LastCap) :-
+	writeln("InTrail"),
+	writeln(LastCap),
+	writeln(PlayedCardIndex),
 	getHand(PlayerList, Hand),
 	integer(PlayedCardIndex),
+		writeln("Passed int"),
 	removeAtIndex(Hand, PlayedCardIndex, ResultingHand, TrailedCard),
 	mergeLists(Table, [TrailedCard], TableAfterMove),
+		writeln("Did Move"),
 	getId(PlayerList, Id),
 	getPile(PlayerList, Pile),
 	getReserved(PlayerList, Reserved),
@@ -789,8 +804,10 @@ parseSaveToRound(RawData) :-
 	DeckIndex is Terms-2,
 	StartingIndex is Terms-1,
 	nth0(DeckIndex, RawData, Deck),
+	nth0(LastCapIndex, RawData, LastCapAtom),
 	nth0(StartingIndex, RawData, StartingPlayerAtom),
 	enumerateAtomId(StartingPlayerAtom, StartingPlayer),
+	enumerateAtomId(LastCapAtom, LastCap),
 
 	parseBuildOwnersFromRaw(RawData, Terms, HumanReserved, CompReserved),
 
@@ -799,16 +816,16 @@ parseSaveToRound(RawData) :-
 	createPlayer(1, CompHand, CompPile, CompReserved, Comp),
 
 
-	startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp).
+	startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp, LastCap).
 
 
-startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp) :-
+startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp, LastCap) :-
 	StartingPlayer = 0,
-	playRound(StartingPlayer, Deck, Table, Human, Comp, _).
+	playRound(StartingPlayer, Deck, Table, Human, Comp, LastCap).
 
-startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp) :-
+startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp, LastCap) :-
 	StartingPlayer = 1,
-	playRound(StartingPlayer, Deck, Table, Comp, Human, _).
+	playRound(StartingPlayer, Deck, Table, Comp, Human, LastCap).
 
 parseBuildOwnersFromRaw(_, Terms, [], []) :-
 Terms =< 11.

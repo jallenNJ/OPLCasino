@@ -347,8 +347,7 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap)	:-
 	length(P1Hand, 0),
 	length(Deck, CardsInDeck),
 	CardsInDeck < 8,
-	writeln("THIS IS ROUND END"),
-	writeln(LastCap).
+	scoreRound(Table, P0Info, P1Info, LastCap).
 
 %Main loop
 playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap) :-
@@ -873,3 +872,25 @@ enumerateAtomId(_, 1).
 
 
 
+scoreRound(Table, HumanStart, CompStart, LastCap) :-
+	isHuman(HumanStart),
+	addCardsToLastCap(Table, HumanStart, CompStart, LastCap, Human, Comp),
+	printPlayer(Human),
+	printPlayer(Comp).
+
+scoreRound(Table, Human, Comp, LastCap) :-
+	scoreRound(Table, Comp, Human, LastCap).	
+
+
+addCardsToLastCap(Table, HumanStart, Comp, LastCap, Human, Comp) :-
+	LastCap = 0,
+	getPlayerComponents(HumanStart, Id, _, BasePile, _),
+	addToPile(Table, BasePile, Pile),
+	createPlayer(Id, [], Pile, [], Human),
+	writeln("Table cards went to Human").
+
+addCardsToLastCap(Table, Human, CompStart, LastCap, Human, Comp)	:-
+	getPlayerComponents(CompStart, Id, _, BasePile, _),
+	addToPile(Table, BasePile, Pile),
+	createPlayer(Id, [], Pile, [], Comp),
+	writeln("Table cards went to Comp").

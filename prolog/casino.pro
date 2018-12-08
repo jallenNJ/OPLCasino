@@ -883,7 +883,19 @@ scoreRound(Table, HumanStart, CompStart, LastCap) :-
 	scoreBySize(3, HumanPileSize, CompPileSize, HumanSizeScore, CompSizeScore),
 	countSpades(HumanPile, HumanSpades),
 	countSpades(CompPile, CompSpades),
-	scoreBySize(1, HumanSpades, CompSpades, HumanSpadeScore, CompSpadeScore).
+	scoreBySize(1, HumanSpades, CompSpades, HumanSpadeScore, CompSpadeScore),
+	containsCardScore(2, "H", "X", HumanPile, HumanDXScore),
+	containsCardScore(2, "H", "X", CompPile, CompDXScore),	
+	containsCardScore(1, "S", 2, HumanPile, HumanS2Score),
+	containsCardScore(1, "S", 2, CompPile, CompS2Score),
+	countAceScore(HumanPile, HumanAceScore),
+	countAceScore(CompPile, CompAceScore),
+
+	HumanRoundScore is HumanSizeScore+HumanSpadeScore+HumanDXScore+HumanS2Score + HumanAceScore,
+	CompRoundScore is CompSizeScore+CompSizeScore+ CompDXScore+CompS2Score+CompAceScore,
+	writeln(HumanRoundScore),
+	writeln(CompRoundScore).
+
 
 
 scoreRound(Table, Human, Comp, LastCap) :-
@@ -898,13 +910,14 @@ scoreBySize(Points, HumanSize, CompSize, 0, Points) :-
 
 scoreBySize(_, _, _, 0, 0).
 
+countSpades([], 0).
 countSpades([Current | Rest], Count) :-
 	getSuit(Current, Suit),
 	Suit = "S",
 	countSpades(Rest, RestCount),
 	Count is RestCount+1.
 
-countSpades([Current | Rest], Count) :-
+countSpades([_ | Rest], Count) :-
 	countSpades(Rest, Count).
 
 containsCardScore(_, _, _, [], 0).	
@@ -916,6 +929,20 @@ containsCardScore(Points, TargetSuit, TargetSym, [Current|_], Points)	:-
 
 containsCardScore(Points, TargetSuit, TargetSym, [_|Rest], Score) :-
 	containsCardScore(Points, TargetSuit, TargetSym, Rest, Score).	
+
+countAceScore([], 0).
+
+countAceScore([Current| Rest], Score) :-
+
+	getCardVal(Current, Val),
+	Val =1,
+	countAceScore(Rest, RestScore),
+	Score is RestScore+1.
+
+countAceScore([_|Rest],Score):-
+	countAceScore(Rest, Score).		
+
+
 
 addCardsToLastCap(Table, HumanStart, Comp, LastCap, Human, Comp) :-
 	LastCap = 0,

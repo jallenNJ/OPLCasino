@@ -38,6 +38,7 @@ numToSuit(3, Output) :- Output = "h".
 createCard(Suit, Val, [Suit | Val]).
 
 
+getSuit([Suit|_], Suit).
 
 isBuild([FirstCard|Rest]) :-
 	FirstCard = [Suit | Symbol],
@@ -875,12 +876,46 @@ enumerateAtomId(_, 1).
 scoreRound(Table, HumanStart, CompStart, LastCap) :-
 	isHuman(HumanStart),
 	addCardsToLastCap(Table, HumanStart, CompStart, LastCap, Human, Comp),
-	printPlayer(Human),
-	printPlayer(Comp).
+	getPile(Human, HumanPile),
+	getPile(Comp, CompPile),
+	length(HumanPile, HumanPileSize),
+	length(CompPile, CompPileSize),
+	scoreBySize(3, HumanPileSize, CompPileSize, HumanSizeScore, CompSizeScore),
+	countSpades(HumanPile, HumanSpades),
+	countSpades(CompPile, CompSpades),
+	scoreBySize(1, HumanSpades, CompSpades, HumanSpadeScore, CompSpadeScore).
+
 
 scoreRound(Table, Human, Comp, LastCap) :-
 	scoreRound(Table, Comp, Human, LastCap).	
 
+
+scoreBySize(Points, HumanSize, CompSize, Points, 0) :-
+	HumanSize > CompSize.
+
+scoreBySize(Points, HumanSize, CompSize, 0, Points) :-
+	CompSize > HumanSize.
+
+scoreBySize(_, _, _, 0, 0).
+
+countSpades([Current | Rest], Count) :-
+	getSuit(Current, Suit),
+	Suit = "S",
+	countSpades(Rest, RestCount),
+	Count is RestCount+1.
+
+countSpades([Current | Rest], Count) :-
+	countSpades(Rest, Count).
+
+containsCardScore(_, _, _, [], 0).	
+containsCardScore(Points, TargetSuit, TargetSym, [Current|_], Points)	:-
+	getSuit(Current, Suit),
+	Suit = TargetSuit,
+	getCardSymbol(Current, Sym),
+	Sym = TargetSym.
+
+containsCardScore(Points, TargetSuit, TargetSym, [_|Rest], Score) :-
+	containsCardScore(Points, TargetSuit, TargetSym, Rest, Score).	
 
 addCardsToLastCap(Table, HumanStart, Comp, LastCap, Human, Comp) :-
 	LastCap = 0,
@@ -889,7 +924,7 @@ addCardsToLastCap(Table, HumanStart, Comp, LastCap, Human, Comp) :-
 	createPlayer(Id, [], Pile, [], Human),
 	writeln("Table cards went to Human").
 
-addCardsToLastCap(Table, Human, CompStart, LastCap, Human, Comp)	:-
+addCardsToLastCap(Table, Human, CompStart, _, Human, Comp)	:-
 	getPlayerComponents(CompStart, Id, _, BasePile, _),
 	addToPile(Table, BasePile, Pile),
 	createPlayer(Id, [], Pile, [], Comp),

@@ -254,10 +254,11 @@ createNewPlayer(Id, StartingCards, CreatedPlayer) :-
 	createPlayer(Id, StartingCards, [], [], CreatedPlayer).
 
 %Creates a playerList from the given parameters
-createPlayer(Id, StartingCards, StartingPile, StartingReserved, CreatedPlayer) :-
+createPlayer(Id, StartingCards, StartingPile, StartingReserved, Score, CreatedPlayer) :-
 	mergeLists([Id], [StartingCards], MergeOne),
 	mergeLists(MergeOne, [StartingPile],MergeTwo),
-	mergeLists(MergeTwo, [StartingReserved], CreatedPlayer).
+	mergeLists(MergeTwo, [StartingReserved], MergeThree),
+	mergeLists(MergeThree, [Score], CreatedPlayer).
 
 
 getId(PlayerList, PlayerId) :-
@@ -272,11 +273,15 @@ getPile(PlayerList, PlayerPile) :-
 getReserved(PlayerList, PlayerReserved) :-
 	nth0(3, PlayerList, PlayerReserved).
 
-getPlayerComponents(PlayerList, Id, Hand, Pile, Reserved) :-
+getScore(PlayerList, PlayerScore) :-
+	nth0(4, PlayerList, PlayerScore).
+
+getPlayerComponents(PlayerList, Id, Hand, Pile, Reserved, Score) :-
 	getId(PlayerList, Id),
 	getHand(PlayerList, Hand),
 	getPile(PlayerList, Pile),
-	getReserved(PlayerList, Reserved).
+	getReserved(PlayerList, Reserved),
+	getScore(PlayerList, Score).
 
 
 
@@ -332,10 +337,10 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap) :-
 	CardsInDeck >= 8,
 	drawFourCards(Deck, AfterOneDraw, P0Cards),
 	drawFourCards(AfterOneDraw, AfterTwoDraws, P1Cards),
-	getPlayerComponents(P0Info, P0Id, _, P0Pile, P0Reserved),
-	createPlayer(P0Id, P0Cards, P0Pile, P0Reserved, NewP0),
-	getPlayerComponents(P1Info, P1Id, _, P1Pile, P1Reserved),
-	createPlayer(P1Id, P1Cards, P1Pile, P1Reserved, NewP1),
+	getPlayerComponents(P0Info, P0Id, _, P0Pile, P0Reserved, P0Score),
+	createPlayer(P0Id, P0Cards, P0Pile, P0Reserved, P0Score, NewP0),
+	getPlayerComponents(P1Info, P1Id, _, P1Pile, P1Reserved, P1Score),
+	createPlayer(P1Id, P1Cards, P1Pile, P1Reserved, P1Score, NewP1),
 	playRound(FirstId, AfterTwoDraws, Table, NewP0, NewP1, LastCap).
 	
 
@@ -438,12 +443,12 @@ doComputerMove(PlayerList, Table, _, PlayerAfterMove, TableAfterMove, LastCapAft
 	checkSetCapture(Hand, Table, HandAfterMove, TableAfterMove,CapturedCards),
 	length(CapturedCards, AmountCapped),
 	AmountCapped > 1,
-	getPlayerComponents(PlayerList, Id, _, StartingPile, Reserved),
+	getPlayerComponents(PlayerList, Id, _, StartingPile, Reserved, Score),
 	printCards(CapturedCards),
 	%addToPile(StartingPile, CapturedCards, NewPile),
 	addToPile(CapturedCards, StartingPile, NewPile),
 	LastCapAfterMove = Id,
-	createPlayer(Id, HandAfterMove, NewPile, Reserved, PlayerAfterMove).
+	createPlayer(Id, HandAfterMove, NewPile, Reserved, Score, PlayerAfterMove).
 
 
 %	not(MatchedCardsIndices=[]),
@@ -538,11 +543,11 @@ doCapture(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMo
 	length(Matching, MatchingSize),
 	MatchingSize =0,
 	%Make the updated player
-	getPlayerComponents(PlayerList, Id, _, StartingPile, Reserved),
+	getPlayerComponents(PlayerList, Id, _, StartingPile, Reserved, Score),
 	mergeLists(StartingPile, [CaptureCard], PilewithCapCard),
 	addToPile( CaputuredCards, PilewithCapCard,AllPileCards),
 	LastCapAfterMove = Id,
-	createPlayer(Id, ResultingHand, AllPileCards, Reserved, PlayerAfterMove).
+	createPlayer(Id, ResultingHand, AllPileCards, Reserved, Score, PlayerAfterMove).
 
 
 doBuild(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, LastCap, PlayerAfterMove, TableAfterMove, LastCap) :-	
@@ -563,8 +568,8 @@ doBuild(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, LastCap, Player
 	makeBuild(TableBuildCards, PlayedCard, NewBuild),
 	%TableAfterNewBuild = [NewBuild | TableAfterCardsRemoved],
 	checkForMulti(NewBuild, BuildValue, TableAfterCardsRemoved, TableAfterMove),
-	getPlayerComponents(PlayerList, Id, _, Pile, _),
-	createPlayer(Id, ResultingHand, Pile, NewReserved, PlayerAfterMove).
+	getPlayerComponents(PlayerList, Id, _, Pile, _, Score),
+	createPlayer(Id, ResultingHand, Pile, NewReserved, Score, PlayerAfterMove).
 
 doTrail(PlayerList, Table, PlayedCardIndex, LastCap, PlayerAfterMove, TableAfterMove, LastCap) :-
 	writeln("InTrail"),
@@ -579,7 +584,8 @@ doTrail(PlayerList, Table, PlayedCardIndex, LastCap, PlayerAfterMove, TableAfter
 	getId(PlayerList, Id),
 	getPile(PlayerList, Pile),
 	getReserved(PlayerList, Reserved),
-	createPlayer(Id, ResultingHand, Pile, Reserved, PlayerAfterMove).
+	getScore(PlayerList, Score),
+	createPlayer(Id, ResultingHand, Pile, Reserved, Score,PlayerAfterMove).
 
 
 
@@ -790,10 +796,12 @@ readFile(FileName, FileData) :-
 
 parseSaveToRound(RawData) :-
 
+	nth0(1, RawData, CompScore),
 	nth0(2, RawData, CompHand),
 
 	nth0(3, RawData, CompPile),
 
+	nth0(4, RawData, HumanScore),
 	nth0(5, RawData, HumanHand),
 	nth0(6, RawData,HumanPile),
 
@@ -812,8 +820,8 @@ parseSaveToRound(RawData) :-
 	parseBuildOwnersFromRaw(RawData, Terms, HumanReserved, CompReserved),
 
 
-	createPlayer(0, HumanHand, HumanPile, HumanReserved, Human),
-	createPlayer(1, CompHand, CompPile, CompReserved, Comp),
+	createPlayer(0, HumanHand, HumanPile, HumanReserved, HumanScore, Human),
+	createPlayer(1, CompHand, CompPile, CompReserved, CompScore, Comp),
 
 
 	startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp, LastCap).
@@ -878,6 +886,8 @@ scoreRound(Table, HumanStart, CompStart, LastCap) :-
 	addCardsToLastCap(Table, HumanStart, CompStart, LastCap, Human, Comp),
 	getPile(Human, HumanPile),
 	getPile(Comp, CompPile),
+	getScore(Human, HumanStartScore),
+	getScore(Comp, CompStartScore),
 	length(HumanPile, HumanPileSize),
 	length(CompPile, CompPileSize),
 	scoreBySize(3, HumanPileSize, CompPileSize, HumanSizeScore, CompSizeScore),
@@ -885,16 +895,21 @@ scoreRound(Table, HumanStart, CompStart, LastCap) :-
 	countSpades(CompPile, CompSpades),
 	scoreBySize(1, HumanSpades, CompSpades, HumanSpadeScore, CompSpadeScore),
 	containsCardScore(2, "H", "X", HumanPile, HumanDXScore),
-	containsCardScore(2, "H", "X", CompPile, CompDXScore),	
+	containsCardScore(2, "H", "X", CompPile, CompDXScore),
 	containsCardScore(1, "S", 2, HumanPile, HumanS2Score),
 	containsCardScore(1, "S", 2, CompPile, CompS2Score),
 	countAceScore(HumanPile, HumanAceScore),
 	countAceScore(CompPile, CompAceScore),
 
 	HumanRoundScore is HumanSizeScore+HumanSpadeScore+HumanDXScore+HumanS2Score + HumanAceScore,
-	CompRoundScore is CompSizeScore+CompSizeScore+ CompDXScore+CompS2Score+CompAceScore,
+	CompRoundScore is CompSizeScore+CompSpadeScore+CompDXScore+CompS2Score+CompAceScore,
+	writeln("Round Scores:")
 	writeln(HumanRoundScore),
-	writeln(CompRoundScore).
+	writeln(CompRoundScore),
+	nl,
+	writeln("Tour Scores")
+	HumamTourScore is HumanStartScore+HumanRoundScore,
+	CompTourScore is CompStartScore+CompRoundScore.
 
 
 
@@ -946,13 +961,13 @@ countAceScore([_|Rest],Score):-
 
 addCardsToLastCap(Table, HumanStart, Comp, LastCap, Human, Comp) :-
 	LastCap = 0,
-	getPlayerComponents(HumanStart, Id, _, BasePile, _),
+	getPlayerComponents(HumanStart, Id, _, BasePile, _, Score),
 	addToPile(Table, BasePile, Pile),
-	createPlayer(Id, [], Pile, [], Human),
+	createPlayer(Id, [], Pile, [], Score, Human),
 	writeln("Table cards went to Human").
 
 addCardsToLastCap(Table, Human, CompStart, _, Human, Comp)	:-
-	getPlayerComponents(CompStart, Id, _, BasePile, _),
+	getPlayerComponents(CompStart, Id, _, BasePile, _, Score),
 	addToPile(Table, BasePile, Pile),
-	createPlayer(Id, [], Pile, [], Comp),
+	createPlayer(Id, [], Pile, [], Score, Comp),
 	writeln("Table cards went to Comp").

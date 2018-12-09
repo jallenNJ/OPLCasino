@@ -448,7 +448,7 @@ doPlayerMove(PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, LastCa
 %=======================
 %Functions for human to make a move
 %=======================
-doHumanMove(0, PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
+doHumanMove(0, PlayerList, Table, _, PlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
 	getHand(PlayerList, Hand),
 	prompt1("Which card would you like to Capture with?"),
 	length(Hand, CardsInHandPlusOne),
@@ -457,7 +457,7 @@ doHumanMove(0, PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, Last
 	length(Table, TableCardAmount),
 	TableAllowedIndices is TableCardAmount-1,
 	getMultipleNumericInput(TableAllowedIndices, SelectedCardIndices),
-	doCapture(PlayerList, Table, CaptureCardIndex, LastCap, SelectedCardIndices, PlayerAfterMove, TableAfterMove, LastCapAfterMove).
+	doCapture(PlayerList, Table, CaptureCardIndex, SelectedCardIndices, PlayerAfterMove, TableAfterMove, LastCapAfterMove).
 
 doHumanMove(1, PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
 	getHand(PlayerList, Hand),

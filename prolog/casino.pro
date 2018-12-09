@@ -479,7 +479,7 @@ doHumanMove(2, PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, Last
 checkBuild([SumCard | _], Hand, Table, HandAfterMove, TableAfterMove, BuildVal) :-
 	checkAsSumCard(SumCard, Hand,Table, HandAfterMove, TableAfterMove, BuildVal).
 
-checkBuild([Skipped|RestHand], Hand, Table,HandAfterMove, TableAfterMove, BuildVal) :-
+checkBuild([_|RestHand], Hand, Table,HandAfterMove, TableAfterMove, BuildVal) :-
 	checkBuild(RestHand, Hand, Table,HandAfterMove, TableAfterMove, BuildVal ).
 
 checkAsSumCard(SumCard, Hand, Table, HandAfterMove, TableAfterMove, BuildVal) :-
@@ -512,7 +512,8 @@ doComputerMove(PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, Last
 	getHand(PlayerList, Hand),
 	checkBuild(Hand, Hand, Table, HandAfterMove, TableAfterMove, BuildVal),
 	getPlayerComponents(PlayerList, Id, _, Pile, OldReserved, Score),
-	Reserved = [BuildVal | OldReserved],
+	ReservedUnsorted = [BuildVal | OldReserved],
+	sort(0, @<, ReservedUnsorted, Reserved),
 	createPlayer(Id, HandAfterMove, Pile, Reserved, Score, PlayerAfterMove).
 
 

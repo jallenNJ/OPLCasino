@@ -324,6 +324,7 @@ startNewRound(Starting, HumanScore, CompScore, LastCap, EndScores) :- playRound(
 
 
 playRound(FirstId, HumanScore, CompScore, LastCap, LastCapEnd, EndScores) :-
+		FirstId = 0,
 		createDeck(RawDeck),
 		drawFourCards(RawDeck, AfterOneDraw, HumanCards),
 		drawFourCards(AfterOneDraw, AfterTwoDraws, CompCards),
@@ -332,6 +333,14 @@ playRound(FirstId, HumanScore, CompScore, LastCap, LastCapEnd, EndScores) :-
 		createNewPlayer(1, CompCards, CompScore, ComputerPlayer),
 		playRound(FirstId, Deck, TableCards, HumanPlayer, ComputerPlayer, LastCap, LastCapEnd, EndScores).
 
+playRound(FirstId, HumanScore, CompScore, LastCap, LastCapEnd, EndScores) :-
+		createDeck(RawDeck),
+		drawFourCards(RawDeck, AfterOneDraw, HumanCards),
+		drawFourCards(AfterOneDraw, AfterTwoDraws, CompCards),
+		drawFourCards(AfterTwoDraws, Deck, TableCards),
+		createNewPlayer(0, HumanCards, HumanScore, HumanPlayer),
+		createNewPlayer(1, CompCards, CompScore, ComputerPlayer),
+		playRound(FirstId, Deck, TableCards, ComputerPlayer, HumanPlayer, LastCap, LastCapEnd, EndScores).
 
 playRound(FirstId,[],[],[],[],LastCap, LastCapEnd, EndScores) :- 
 		createDeck(RawDeck),

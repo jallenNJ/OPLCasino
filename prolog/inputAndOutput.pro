@@ -1,19 +1,35 @@
 
 %Save and quit
-handleMenuChoice(1) :-
-	writeln("Implement Saving").
+handleMenuChoice(1,FirstId, Deck, Table, Human, Computer, LastCap) :-
+	isHuman(Human),
+	denumerateId(FirstId, FirstIdAtom),
+	denumerateId(LastCap, LastCapAtom),
+	getPlayerComponents(Computer, _, CompHand, CompPile, CompReserved, CompScore),
+	getPlayerComponents(Human, _, HumanHand, HumanPile, HumanReserved, HumanScore),
+	formatSaveData(0, CompScore, CompHand, CompPile, HumanScore, HumanHand, HumanPile, Table, LastCapAtom, Deck, FirstIdAtom, Formatted),
+	writeln("Enter saveFile name"),
+	read(SaveFileName),
+	saveFile(SaveFileName, Formatted),
+	quitGame.
 
+handleMenuChoice(1,FirstId, Deck, Table, Human, Computer, LastCap) :-
+	handleMenuChoice(1,FirstId, Deck, Table, Computer, Human, LastCap).
 %Do nothing.
-handleMenuChoice(2).
+handleMenuChoice(2, _, _,_,_,_,_).
 
 %Ask for help
-handleMenuChoice(3) :-
+handleMenuChoice(3, _, _,_,_,_,_) :-
 	writeln("Implement Help").
 
 %Quit without saving
-handleMenuChoice(4) :-
+handleMenuChoice(4, _, _,_,_,_,_) :-
+	quitGame.
+
+
+
+quitGame() :-
 	writeln("Thanks for playing Casino in Prolog :D"),
-	halt(0).	
+	halt(0).
 
 %=======================
 %Functions to get and validate input from the user

@@ -80,7 +80,7 @@ playRound(_, Deck, Table, P0Info, P1Info, LastCap,LastCapEnd, EndScores)	:-
 playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) :-
 	printFullTable(P0Info, Table, P1Info, Deck),
 	getActionMenuChoice(P0Info, MenuChoice),
-	handleMenuChoice(MenuChoice),
+	handleMenuChoice(MenuChoice, FirstId, Deck, Table, P0Info, P1Info, LastCap),
 	doPlayerMove(P0Info, Table, LastCap, P0AfterMove, TableAfterP0, LastCapAfterP0),
 	printFullTable(P0AfterMove, TableAfterP0, P1Info, Deck),
 	getActionMenuChoice(P1Info, MenuChoice2),

@@ -1,8 +1,6 @@
-
 %=======================
 %Functions to load in serliazed data
 %=======================	
-
 load(LastCap, RoundScores) :-
 	prompt1("What file would you like to load?"),
 	read(File),
@@ -97,3 +95,42 @@ enumerateAtomId(AId, 0) :-
 	AId = human.
 
 enumerateAtomId(_, 1).
+
+denumerateId(0, human).
+denumerateId(_, computer).
+
+
+formatSaveData(0, CompScore, CompHand, CompPile, HumanScore, HumanHand, HumanPile, Table, LastCapAtom, Deck, FirstIdAtom, Formatted) :-
+	mergeLists([0], [CompScore], Merge1),
+	mergeLists(Merge1, [CompHand], Merge2),
+	mergeLists(Merge2, [CompPile], Merge3),
+	mergeLists(Merge3, [HumanScore], Merge4),
+	mergeLists(Merge4, [HumanHand], Merge5),
+	mergeLists(Merge5, [HumanPile], Merge6),
+	mergeLists(Merge6, [Table], Merge7),
+	mergeLists(Merge7, [LastCapAtom], Merge8),
+	mergeLists(Merge8, [Deck] , Merge9),
+	mergeLists(Merge9, [FirstIdAtom], Formatted).
+
+saveFile(FileName, SaveData):-
+	open(FileName, write, File),
+	write(File, "["),
+	writeSaveData(File, SaveData),
+	write(File,"]."),
+	close(File).
+
+
+writeSaveData(_, []).
+writeSaveData(File, [Line| []]) :-
+	write(File, " "),
+	writeq(File, Line).
+	%writeSaveData(File, Rest).
+
+writeSaveData(File, [Line | Rest]) :-
+	write(File, " "),
+	writeq(File, Line),
+	writeln(File, ","),
+	writeln(File, ""),
+	%This space is seperate from the beginning so first line only gets one
+	write(File, " "),
+	writeSaveData(File, Rest).

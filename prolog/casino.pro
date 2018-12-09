@@ -98,6 +98,14 @@ getCardSymbol(Build, Sym) :-
 getCardSymbol([_|Sym], Sym).
 
 
+
+getCardVal(MultiBuild , Val):-
+	nth0(0, MultiBuild, Build1),
+	isBuild(Build1),
+	nth0(1, MultiBuild, Build2),
+	isBuild(Build2),
+	getCardVal(Build1, Val).
+
 getCardVal(Build, Val):-
 	isBuild(Build),
 	sumCardList(Build, Val).
@@ -208,18 +216,18 @@ removeMatchingSymbols([Currentcard | Rest], Value, RemainingCards, RemovedCards)
 	RemainingCards = [Currentcard | NewRemainingCards].
 
 
-findMatchingSymbolsIndices([], _, _,[]).
+findMatchingValsIndices([], _, _,[]).
 
-findMatchingSymbolsIndices([Currentcard | Rest], Value, Index, Indices) :-
+findMatchingValsIndices([Currentcard | Rest], Value, Index, Indices) :-
 	NextIndex is Index+1,
-	getCardSymbol(Currentcard, CurrentcardVal),
+	getCardVal(Currentcard, CurrentcardVal),
 	CurrentcardVal = Value,
-	findMatchingSymbolsIndices(Rest, Value, NextIndex,  NewIndices),
+	findMatchingValsIndices(Rest, Value, NextIndex,  NewIndices),
 	Indices = [Index | NewIndices].
 
-findMatchingSymbolsIndices([ _ | Rest], Value, Index, Indices) :-
+findMatchingValsIndices([ _ | Rest], Value, Index, Indices) :-
 	NextIndex is Index+1,
-	findMatchingSymbolsIndices(Rest, Value, NextIndex, Indices).
+	findMatchingValsIndices(Rest, Value, NextIndex, Indices).
 
 
 
@@ -507,7 +515,7 @@ findPlayCard(SumVal, [Skipped | Rest], SumCard, HandWithoutPlay) :-
 	HandWithoutPlay=[Skipped | RestHand].
 
 
-%TODO: Condense builds
+
 doComputerMove(PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, LastCap) :-
 	getHand(PlayerList, Hand),
 	checkBuild(Hand, Hand, Table, HandAfterMove, TableAfterMove, BuildVal),
@@ -581,11 +589,11 @@ findSet([First | Rest], Target, TableAfterMove, Captured) :-
 	findSet(Rest, Target, Table, Captured),
 	TableAfterMove=[First|Table].
 
-checkForMatchingCaptures([], _, [], []).
+checkForMatchingCaptures([], _, _, [], []).
 
 checkForMatchingCaptures([CurrentCard | _], Table, Index, CardWithMatches, MatchedCards):-
-	getCardSymbol(CurrentCard, CardSym),
-	findMatchingSymbolsIndices(Table, CardSym, 0, MatchingCards),
+	getCardVal(CurrentCard, CardVal),
+	findMatchingValsIndices(Table, CardVal, 0, MatchingCards),
 	length(MatchingCards, CardsThatMatched),
 	CardsThatMatched > 0,
 	CardWithMatches = Index,

@@ -253,6 +253,9 @@ makeBuild([CurrentCard | Rest], BuildCard, Build) :-
 createNewPlayer(Id, StartingCards, CreatedPlayer) :-
 	createPlayer(Id, StartingCards, [], [], 0, CreatedPlayer).
 
+createNewPlayer(Id, StartingCards, StartingScore, CreatedPlayer) :-
+	createPlayer(Id, StartingCards, [], [], StartingScore, CreatedPlayer).	
+
 %Creates a playerList from the given parameters
 createPlayer(Id, StartingCards, StartingPile, StartingReserved, Score, CreatedPlayer) :-
 	mergeLists([Id], [StartingCards], MergeOne),
@@ -314,22 +317,44 @@ addToPile(NewCards, StartingPile, PileWithAddedCards) :-
 %=======================
 %Functions to run a round
 %=======================
-startNewRound(EndScores) :- playRound(0, [],[],[],[], 0, EndScores).
-startNewRound(Starting, EndScores) :- playRound(Starting, [],[],[],[], 0, EndScores).
+startNewRound(LastCap, EndScores) :- playRound(0, [],[],[],[], 0, LastCap,EndScores).
+startNewRound(Starting, LastCap, EndScores) :- playRound(Starting, [],[],[],[], 0, LastCap, EndScores).
+startNewRound(Starting, HumanScore, CompScore, LastCap, EndScores) :- playRound(Starting, HumanScore, CompScore, Starting, LastCap, EndScores).
 
 
-%id, deck, table, p0Info, p1Info, retVal
-playRound(FirstId,[],[],[],[],LastCap, EndScores) :- 
+
+playRound(FirstId, HumanScore, CompScore, LastCap, LastCapEnd, EndScores) :-
+		createDeck(RawDeck),
+		drawFourCards(RawDeck, AfterOneDraw, HumanCards),
+		drawFourCards(AfterOneDraw, AfterTwoDraws, CompCards),
+		drawFourCards(AfterTwoDraws, Deck, TableCards),
+		createNewPlayer(0, HumanCards, HumanScore, HumanPlayer),
+		createNewPlayer(1, CompCards, CompScore, ComputerPlayer),
+		playRound(FirstId, Deck, TableCards, HumanPlayer, ComputerPlayer, LastCap, LastCapEnd, EndScores).
+
+
+playRound(FirstId,[],[],[],[],LastCap, LastCapEnd, EndScores) :- 
 		createDeck(RawDeck),
 		drawFourCards(RawDeck, AfterOneDraw, HumanCards),
 		drawFourCards(AfterOneDraw, AfterTwoDraws, CompCards),
 		drawFourCards(AfterTwoDraws, Deck, TableCards),
 		createNewPlayer(0, HumanCards, HumanPlayer),
 		createNewPlayer(1, CompCards, ComputerPlayer),
-		playRound(FirstId, Deck, TableCards, HumanPlayer, ComputerPlayer, LastCap, EndScores).
+		playRound(FirstId, Deck, TableCards, HumanPlayer, ComputerPlayer, LastCap, LastCapEnd, EndScores).
+
+
+%id, deck, table, p0Info, p1Info, retVal
+playRound(FirstId,[],[],[],[],LastCap, LastCapEnd, EndScores) :- 
+		createDeck(RawDeck),
+		drawFourCards(RawDeck, AfterOneDraw, HumanCards),
+		drawFourCards(AfterOneDraw, AfterTwoDraws, CompCards),
+		drawFourCards(AfterTwoDraws, Deck, TableCards),
+		createNewPlayer(0, HumanCards, HumanPlayer),
+		createNewPlayer(1, CompCards, ComputerPlayer),
+		playRound(FirstId, Deck, TableCards, HumanPlayer, ComputerPlayer, LastCap, LastCapEnd,EndScores).
 
 %Deal new hands when hands are empty
-playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, EndScores) :-
+playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) :-
 	getHand(P0Info, P0Hand),
 	length(P0Hand, 0),
 	getHand(P1Info, P1Hand),
@@ -342,22 +367,23 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, EndScores) :-
 	createPlayer(P0Id, P0Cards, P0Pile, P0Reserved, P0Score, NewP0),
 	getPlayerComponents(P1Info, P1Id, _, P1Pile, P1Reserved, P1Score),
 	createPlayer(P1Id, P1Cards, P1Pile, P1Reserved, P1Score, NewP1),
-	playRound(FirstId, AfterTwoDraws, Table, NewP0, NewP1, LastCap, EndScores).
+	playRound(FirstId, AfterTwoDraws, Table, NewP0, NewP1, LastCap, LastCapEnd, EndScores).
 	
 
 %Round end rule, deck is empty, player infos have null hands
 %TODO, make sure to print table
-playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, EndScores)	:-
+playRound(_, Deck, Table, P0Info, P1Info, LastCap,LastCapEnd, EndScores)	:-
 	getHand(P0Info, P0Hand),
 	length(P0Hand, 0),
 	getHand(P1Info, P1Hand),
 	length(P1Hand, 0),
 	length(Deck, CardsInDeck),
 	CardsInDeck < 8,
+	LastCapEnd = LastCap,
 	scoreRound(Table, P0Info, P1Info, LastCap, EndScores).
 
 %Main loop
-playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, EndScores) :-
+playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) :-
 	printFullTable(P0Info, Table, P1Info, Deck),
 	getActionMenuChoice(P0Info, MenuChoice),
 	handleMenuChoice(MenuChoice),
@@ -366,7 +392,7 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, EndScores) :-
 	getActionMenuChoice(P1Info, MenuChoice2),
 	handleMenuChoice(MenuChoice2),
 	doPlayerMove(P1Info, TableAfterP0, LastCapAfterP0, P1AfterMove, TableAfterP1, LastCapAfterP1),
-	playRound(FirstId, Deck, TableAfterP1, P0AfterMove, P1AfterMove, LastCapAfterP1, EndScores).
+	playRound(FirstId, Deck, TableAfterP1, P0AfterMove, P1AfterMove, LastCapAfterP1, LastCapEnd, EndScores).
 
 
 
@@ -785,17 +811,17 @@ displayComputerMove(PlayerList, PlayedCardIndex) :-
 %Functions to load in serliazed data
 %=======================	
 
-load(RoundScores) :-
+load(LastCap, RoundScores) :-
 	prompt1("What file would you like to load?"),
 	read(File),
 	readFile(File, Data),
-	parseSaveToRound(Data, RoundScores).
+	parseSaveToRound(Data, LastCap, RoundScores).
 
 readFile(FileName, FileData) :-
 	open(FileName, read, FileStream),
 	read(FileStream, FileData).
 
-parseSaveToRound(RawData, RoundScores) :-
+parseSaveToRound(RawData, LastCapFromRound, RoundScores) :-
 
 	nth0(1, RawData, CompScore),
 	nth0(2, RawData, CompHand),
@@ -825,16 +851,16 @@ parseSaveToRound(RawData, RoundScores) :-
 	createPlayer(1, CompHand, CompPile, CompReserved, CompScore, Comp),
 
 
-	startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp, LastCap, RoundScores).
+	startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp, LastCap, LastCapFromRound, RoundScores).
 
 
-startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp, LastCap, RoundScores) :-
+startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp, LastCap, LastCapFromRound, RoundScores) :-
 	StartingPlayer = 0,
-	playRound(StartingPlayer, Deck, Table, Human, Comp, LastCap, RoundScores).
+	playRound(StartingPlayer, Deck, Table, Human, Comp, LastCap, LastCapFromRound, RoundScores).
 
-startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp, LastCap, RoundScores) :-
+startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp, LastCap, LastCapFromRound, RoundScores) :-
 	StartingPlayer = 1,
-	playRound(StartingPlayer, Deck, Table, Comp, Human, LastCap, RoundScores).
+	playRound(StartingPlayer, Deck, Table, Comp, Human, LastCap, LastCapFromRound, RoundScores).
 
 parseBuildOwnersFromRaw(_, Terms, [], []) :-
 Terms =< 11.
@@ -911,6 +937,8 @@ scoreRound(Table, HumanStart, CompStart, LastCap, EndScores) :-
 	writeln("Tour Scores"),
 	HumanTourScore is HumanStartScore+HumanRoundScore,
 	CompTourScore is CompStartScore+CompRoundScore,
+	writeln(HumanTourScore),
+	writeln(CompTourScore),
 	mergeLists([HumanTourScore], [CompTourScore], EndScores).
 
 
@@ -976,12 +1004,12 @@ addCardsToLastCap(Table, Human, CompStart, _, Human, Comp)	:-
 
 
 
-coinFlip(ReturnedScores) :-
-	prompt1("Heads(0) or Tails(1)"),
+coinFlip(LastCap, ReturnedScores) :-
+	writeln("Heads(0) or Tails(1)"),
 	getNumericInput(0, 1, Call),
 	random(0,2, CoinVal),
 	evalCoinToss(Call, CoinVal, Starting),
-	startNewRound(Starting).
+	startNewRound( Starting, LastCap,ReturnedScores).
 
 
 evalCoinToss(0, 0, 0) :-
@@ -994,16 +1022,39 @@ evalCoinToss(_, _, 1):-
 	writeln("Tails! Human goes first!").		
 
 runTournament() :-
-	prompt1("Would you like to start a new game(0), or load a save game(1)?"),
+	writeln("Would you like to start a new game(0), or load a save game(1)?"),
 	getNumericInput(0, 1, GameChoice),
-	handleTourChoice(GameChoice, ResultingScores),
-	writeln("Resulting Scores"),
-	writeln(ResultingScores).
+	handleTourChoice(GameChoice, LastCap, ResultingScores),
+	nth0(0, ResultingScores, HumanScore),
+	nth0(1, ResultingScores, CompScore),
+	processRoundResults(HumanScore, CompScore, LastCap).
 
-handleTourChoice(0, Scores) :-
-	coinFlip(Scores).
-handleTourChoice(1, Scores) :-
-	load(Scores).
+handleTourChoice(0,LastCap, Scores, _) :-
+	coinFlip(LastCap, Scores).
+handleTourChoice(1, LastCap, Scores) :-
+	load(LastCap, Scores).
+
+processRoundResults(HumanScore, CompScore, _ ) :-
+	HumanScore >= 21,
+	HumanScore > CompScore,
+	writeln("Human won the tour!").
+
+processRoundResults(HumanScore, CompScore, _ ) :-
+	HumanScore >= 21,
+	HumanScore = CompScore,
+	writeln("The tournamnet was a tie!").
+
+processRoundResults(_, CompScore, _ ) :-
+	CompScore >= 21,
+	writeln("Computer won the tour!").	
+
+processRoundResults(HumanScore, CompScore, LastCap) :-
+	startNewRound(LastCap, HumanScore, CompScore, LastCapRoundEnd, EndScores),
+	nth0(0, EndScores, HumanScore),
+	nth0(1, EndScores, CompScore),
+	processRoundResults(HumanScore, CompScore, LastCapRoundEnd).
+
+
 
 main() :-
 	runTournament().		

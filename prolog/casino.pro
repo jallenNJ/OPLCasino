@@ -251,7 +251,7 @@ makeBuild([CurrentCard | Rest], BuildCard, Build) :-
 %=======================
 %Wrapper to createPlayer
 createNewPlayer(Id, StartingCards, CreatedPlayer) :-
-	createPlayer(Id, StartingCards, [], [], CreatedPlayer).
+	createPlayer(Id, StartingCards, [], [], 0, CreatedPlayer).
 
 %Creates a playerList from the given parameters
 createPlayer(Id, StartingCards, StartingPile, StartingReserved, Score, CreatedPlayer) :-
@@ -315,6 +315,7 @@ addToPile(NewCards, StartingPile, PileWithAddedCards) :-
 %Functions to run a round
 %=======================
 startNewRound() :- playRound(0, [],[],[],[], 0).
+startNewRound(Starting) :- playRound(Starting, [],[],[],[], 0).
 
 
 %id, deck, table, p0Info, p1Info, retVal
@@ -903,12 +904,12 @@ scoreRound(Table, HumanStart, CompStart, LastCap) :-
 
 	HumanRoundScore is HumanSizeScore+HumanSpadeScore+HumanDXScore+HumanS2Score + HumanAceScore,
 	CompRoundScore is CompSizeScore+CompSpadeScore+CompDXScore+CompS2Score+CompAceScore,
-	writeln("Round Scores:")
+	writeln("Round Scores:"),
 	writeln(HumanRoundScore),
 	writeln(CompRoundScore),
 	nl,
-	writeln("Tour Scores")
-	HumamTourScore is HumanStartScore+HumanRoundScore,
+	writeln("Tour Scores"),
+	HumanTourScore is HumanStartScore+HumanRoundScore,
 	CompTourScore is CompStartScore+CompRoundScore.
 
 
@@ -971,3 +972,23 @@ addCardsToLastCap(Table, Human, CompStart, _, Human, Comp)	:-
 	addToPile(Table, BasePile, Pile),
 	createPlayer(Id, [], Pile, [], Score, Comp),
 	writeln("Table cards went to Comp").
+
+
+
+coinFlip() :-
+	prompt1("Heads(0) or Tails(1)"),
+	getNumericInput(0, 1, Call),
+	random(0,2, CoinVal),
+	evalCoinToss(Call, CoinVal, Starting),
+	startNewRound(Starting).
+
+
+
+evalCoinToss(0, 0, 0) :-
+	writeln("Heads! Human goes first!").
+evalCoinToss(0, 1, 1) :-
+	writeln("Tails! Computer goes first!").	
+evalCoinToss(1, 0, 1):-
+	writeln("Heads! Computer goes first!").	
+evalCoinToss(_, _, 1):-
+	writeln("Tails! Human goes first!").		

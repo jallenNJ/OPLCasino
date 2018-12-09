@@ -474,6 +474,48 @@ doHumanMove(2, PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, Last
 %=======================
 %Functions for computer to make a move
 %=======================
+
+
+checkBuild([SumCard | _], Hand, Table, HandAfterMove, TableAfterMove, BuildVal) :-
+	checkAsSumCard(SumCard, Hand,Table, HandAfterMove, TableAfterMove, BuildVal).
+
+checkBuild([Skipped|RestHand], Hand, Table,HandAfterMove, TableAfterMove, BuildVal) :-
+	checkBuild(RestHand, Hand, Table,HandAfterMove, TableAfterMove, BuildVal ).
+
+checkAsSumCard(SumCard, Hand, Table, HandAfterMove, TableAfterMove, BuildVal) :-
+	getCardVal(SumCard, SumVal),
+	findPlayCard(SumVal, Hand, PlayCard, HandAfterMove),
+	getCardVal(PlayCard, PlayVal),
+	TargetVal is SumVal-PlayVal,
+	findSet(Table, TargetVal, RemainingTableCards, NewBuildCards),
+	Build = [PlayCard | NewBuildCards],
+	%TableAfterAdding = [Build | RemainingTableCards],
+	
+	checkForMulti(Build, SumVal, RemainingTableCards, TableAfterMove),
+	BuildVal = SumVal.
+
+
+
+
+
+findPlayCard(SumVal, [First | Rest], First, Rest) :-
+	getCardVal(First, FirstVal),
+	FirstVal < SumVal.
+
+findPlayCard(SumVal, [Skipped | Rest], SumCard, HandWithoutPlay) :-
+	findPlayCard(SumVal, Rest, SumCard, RestHand),
+	HandWithoutPlay=[Skipped | RestHand].
+
+
+%TODO: Condense builds
+doComputerMove(PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, LastCap) :-
+	getHand(PlayerList, Hand),
+	checkBuild(Hand, Hand, Table, HandAfterMove, TableAfterMove, BuildVal),
+	getPlayerComponents(PlayerList, Id, _, Pile, OldReserved, Score),
+	Reserved = [BuildVal | OldReserved],
+	createPlayer(Id, HandAfterMove, Pile, Reserved, Score, PlayerAfterMove).
+
+
 doComputerMove(PlayerList, Table, _, PlayerAfterMove, TableAfterMove, LastCapAfterMove):-
 	getHand(PlayerList, Hand),
 	checkSetCapture(Hand, Table, HandAfterMove, TableAfterMove,CapturedCards),
@@ -926,9 +968,17 @@ scoreRound(Table, HumanStart, CompStart, LastCap, EndScores) :-
 	getScore(Comp, CompStartScore),
 	length(HumanPile, HumanPileSize),
 	length(CompPile, CompPileSize),
+	write("Human Pile Size: "),
+	writeln(HumanPileSize),
+	write("Computer Pile Size: "),
+	writeln(CompPileSize),
 	scoreBySize(3, HumanPileSize, CompPileSize, HumanSizeScore, CompSizeScore),
 	countSpades(HumanPile, HumanSpades),
 	countSpades(CompPile, CompSpades),
+	write("Human Spades: "),
+	writeln(HumanSpades),
+	write("Computer Spades: "),
+	writeln(CompSpades),
 	scoreBySize(1, HumanSpades, CompSpades, HumanSpadeScore, CompSpadeScore),
 	containsCardScore(2, "H", "X", HumanPile, HumanDXScore),
 	containsCardScore(2, "H", "X", CompPile, CompDXScore),
@@ -1038,7 +1088,7 @@ runTournament() :-
 	nth0(1, ResultingScores, CompScore),
 	processRoundResults(HumanScore, CompScore, LastCap).
 
-handleTourChoice(0,LastCap, Scores, _) :-
+handleTourChoice(0,LastCap, Scores) :-
 	coinFlip(LastCap, Scores).
 handleTourChoice(1, LastCap, Scores) :-
 	load(LastCap, Scores).

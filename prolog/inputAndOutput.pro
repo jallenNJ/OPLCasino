@@ -18,10 +18,10 @@ handleMenuChoice(1,FirstId, Deck, Table, Human, Computer, LastCap) :-
 handleMenuChoice(2, _, _,_,_,_,_).
 
 %Ask for help
-handleMenuChoice(3, _, _,Table,Human,_,LastCap) :-
+handleMenuChoice(3, _, _,Table,Human,Computer,LastCap) :-
 	isHuman(Human),
 	writeln("Move Recomenndation: "),
-	doComputerMove( Human, Table, LastCap, "recommending to play ", _, _, _).
+	doComputerMove( Human, Computer, Table, LastCap, "recommending to play ", _,_, _, _).
 
 handleMenuChoice(3, _, _,Table,Human,Comp,LastCap) :-
 	handleMenuChoice(3, _, _, Table, Comp, Human, LastCap).
@@ -223,7 +223,7 @@ displayComputerMove(PlayedCard, TableCards, MoveVerb, Action, Reason) :-
 	writeln("***************************").
 
 
-displayComputerMove(PlayerList, MoveVerb, layedCardIndex) :-
+displayComputerMove(PlayerList, MoveVerb, PlayedCardIndex) :-
 	getHand(PlayerList, Hand),
 	nth0(PlayedCardIndex, Hand, PlayedCard),
 	write("Computer "),

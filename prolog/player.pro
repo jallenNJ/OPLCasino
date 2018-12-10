@@ -1,3 +1,14 @@
+removeVal([], _, []).
+
+removeVal([Target | Rest], Target, Result) :-
+    removeVal(Rest, Target, Result).
+
+removeVal([First | Rest], Target, Result) :-
+    removeVal(Rest, Target, NewResult),
+    Result = [First|NewResult].
+
+
+
 %=======================
 %Functions to create and manipulate the player data structure
 %=======================

@@ -64,11 +64,14 @@ displayCard(Build) :-
 	displayBuild(Build),
 	write("]").
 
+displayCard([Card | []]) :-
+	displayCard(Card).
 
 %Display a single card
 displayCard([Suit|Card]) :-
 	write(Suit), 
 	write(Card).	
+
 
 
 

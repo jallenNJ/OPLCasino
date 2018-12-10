@@ -18,8 +18,13 @@ handleMenuChoice(1,FirstId, Deck, Table, Human, Computer, LastCap) :-
 handleMenuChoice(2, _, _,_,_,_,_).
 
 %Ask for help
-handleMenuChoice(3, _, _,_,_,_,_) :-
-	writeln("Implement Help").
+handleMenuChoice(3, _, _,Table,Human,_,LastCap) :-
+	isHuman(Human),
+	writeln("Move Recomenndation: "),
+	doComputerMove( Human, Table, LastCap, "recommending to play ", _, _, _).
+
+handleMenuChoice(3, _, _,Table,Human,Comp,LastCap) :-
+	handleMenuChoice(3, _, _, Table, Comp, Human, LastCap).
 
 %Quit without saving
 handleMenuChoice(4, _, _,_,_,_,_) :-
@@ -200,9 +205,29 @@ displayActionMenu(_) :-
 	writeln("2) Make a move (Computer)."),
 	writeln("3) Quit the game.").
 
-displayComputerMove(PlayerList, PlayedCardIndex) :-
+
+
+displayComputerMove(PlayedCard, TableCards, MoveVerb, Action, Reason) :-
+	writeln("***************************"),
+	write("Computer is "),
+	write(MoveVerb),
+	write(" "),
+	displayCard(PlayedCard),
+	write(" to "),
+	write(Action),
+	write( " on these cards: "),
+	displayCard(TableCards),
+	nl,
+	write("The AI Choose this action to: "),
+	writeln(Reason),
+	writeln("***************************").
+
+
+displayComputerMove(PlayerList, MoveVerb, layedCardIndex) :-
 	getHand(PlayerList, Hand),
 	nth0(PlayedCardIndex, Hand, PlayedCard),
-	write("Computer trailed with "),
+	write("Computer "),
+	write(MoveVerb),
+	write(" "),
 	displayCard(PlayedCard),
-	writeln(" as there were no other moves available").
+	writeln(" as a Trail as there were no other moves available").

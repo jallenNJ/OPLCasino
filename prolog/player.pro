@@ -80,7 +80,7 @@ doPlayerMove(PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, LastCa
 
 %Comp
 doPlayerMove(PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
-	doComputerMove( PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, LastCapAfterMove).
+	doComputerMove( PlayerList, Table, LastCap, "Playing", PlayerAfterMove, TableAfterMove, LastCapAfterMove).
 
 
 %=======================
@@ -122,19 +122,22 @@ doHumanMove(2, PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, Last
 %=======================
 
 
-checkBuild([SumCard | _], Hand, Table, HandAfterMove, TableAfterMove, BuildVal) :-
-	checkAsSumCard(SumCard, Hand,Table, HandAfterMove, TableAfterMove, BuildVal).
+checkBuild([SumCard | _], Hand, Table, Action, HandAfterMove, TableAfterMove, BuildVal) :-
+	checkAsSumCard(SumCard, Hand,Table, Action, HandAfterMove, TableAfterMove, BuildVal).
 
-checkBuild([_|RestHand], Hand, Table,HandAfterMove, TableAfterMove, BuildVal) :-
-	checkBuild(RestHand, Hand, Table,HandAfterMove, TableAfterMove, BuildVal ).
+checkBuild([_|RestHand], Hand, Table, Action, HandAfterMove, TableAfterMove, BuildVal) :-
+	checkBuild(RestHand, Hand, Table, Action, HandAfterMove, TableAfterMove, BuildVal ).
 
-checkAsSumCard(SumCard, Hand, Table, HandAfterMove, TableAfterMove, BuildVal) :-
+checkAsSumCard(SumCard, Hand, Table, Action, HandAfterMove, TableAfterMove, BuildVal) :-
 	getCardVal(SumCard, SumVal),
 	findPlayCard(SumVal, Hand, PlayCard, HandAfterMove),
 	getCardVal(PlayCard, PlayVal),
 	TargetVal is SumVal-PlayVal,
 	findSet(Table, TargetVal, RemainingTableCards, NewBuildCards),
 	Build = [PlayCard | NewBuildCards],
+    writeln("DEBUG"),
+    writeln(NewBuildCards),
+    displayComputerMove(PlayCard, NewBuildCards, Action, "Build", "Saw an oppertunity to make a build"),
 	%TableAfterAdding = [Build | RemainingTableCards],
 	
 	checkForMulti(Build, SumVal, RemainingTableCards, TableAfterMove),
@@ -154,62 +157,57 @@ findPlayCard(SumVal, [Skipped | Rest], SumCard, HandWithoutPlay) :-
 
 
 
-doComputerMove(PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, LastCap) :-
+doComputerMove(PlayerList, Table, LastCap, Action, PlayerAfterMove, TableAfterMove, LastCap) :-
 	getHand(PlayerList, Hand),
-	checkBuild(Hand, Hand, Table, HandAfterMove, TableAfterMove, BuildVal),
+	checkBuild(Hand, Hand, Table, Action, HandAfterMove, TableAfterMove, BuildVal),
 	getPlayerComponents(PlayerList, Id, _, Pile, OldReserved, Score),
 	ReservedUnsorted = [BuildVal | OldReserved],
 	sort(0, @<, ReservedUnsorted, Reserved),
 	createPlayer(Id, HandAfterMove, Pile, Reserved, Score, PlayerAfterMove).
 
 
-doComputerMove(PlayerList, Table, _, PlayerAfterMove, TableAfterMove, LastCapAfterMove):-
+doComputerMove(PlayerList, Table, _, Action, PlayerAfterMove, TableAfterMove, LastCapAfterMove):-
 	getHand(PlayerList, Hand),
-	checkSetCapture(Hand, Table, HandAfterMove, TableAfterMove,CapturedCards),
+	checkSetCapture(Hand, Table, Action, HandAfterMove, TableAfterMove,CapturedCards),
 	length(CapturedCards, AmountCapped),
 	AmountCapped > 1,
 	getPlayerComponents(PlayerList, Id, _, StartingPile, Reserved, Score),
-	printCards(CapturedCards),
-	%addToPile(StartingPile, CapturedCards, NewPile),
 	addToPile(CapturedCards, StartingPile, NewPile),
 	LastCapAfterMove = Id,
 	createPlayer(Id, HandAfterMove, NewPile, Reserved, Score, PlayerAfterMove).
 
 
-%	not(MatchedCardsIndices=[]),
-%	write("DEBEEEEEBUG AI CAPTURE"),
-	%doCapture(PlayerList, Table, PlayedCardIndex, MatchedCardsIndices, PlayerAfterMove, TableAfterMove).
-
-
-
-doComputerMove(PlayerList, Table, _, PlayerAfterMove, TableAfterMove, LastCapAfterMove):-
+doComputerMove(PlayerList, Table, _, Action, PlayerAfterMove, TableAfterMove, LastCapAfterMove):-
 	getHand(PlayerList, Hand),
 	checkForMatchingCaptures(Hand, Table, 0, PlayedCardIndex,MatchedCardsIndices),
 	not(MatchedCardsIndices=[]),
-	write("DEBEEEEEBUG AI CAPTURE"),
+    writeln("************* HOOK UP AI SYM CAPUTRE TO NEW OUTPUT"),
+    writeln(Action),
+	%displayComputerMove(PlayedCard, TableCards, Action, Reason)
 	doCapture(PlayerList, Table, PlayedCardIndex, MatchedCardsIndices, PlayerAfterMove, TableAfterMove, LastCapAfterMove).
 
 	
 
 
 %doComputerMove(1, PlayerList, Table, PlayerAfterMove, TableAfterMove)
-doComputerMove(PlayerList, Table, LastCap, PlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
+doComputerMove(PlayerList, Table, LastCap, Action, PlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
 	doTrail(PlayerList, Table, 0, LastCap, PlayerAfterMove, TableAfterMove, LastCapAfterMove),
-	displayComputerMove(PlayerList, 0).
+	displayComputerMove(PlayerList, Action, 0).
 	
 
 
 checkSetCapture([], _, [], [],[]).
 
-checkSetCapture([Card|HandAfterMove], Table, HandAfterMove, TableAfterMove, CapturedCards) :-
+checkSetCapture([Card|HandAfterMove], Table, Action, HandAfterMove, TableAfterMove, CapturedCards) :-
 	getCardVal(Card, Target),
 	findSet(Table, Target, TableAfterMove, CapturedCardsFromTable),
 	length(CapturedCardsFromTable, AmountCapped),
 	AmountCapped > 1,
-	CapturedCards = [Card|CapturedCardsFromTable].
+	CapturedCards = [Card|CapturedCardsFromTable],
+    displayComputerMove(Card, CapturedCardsFromTable, Action, "Capture", "Saw an oppertunity to capture a set").
 
-checkSetCapture([Skipped| Rest], Table, HandAfterMove, TableAfterMove, CapturedCards):-
-	checkSetCapture(Rest, Table, HandAfterCap, TableAfterMove, CapturedCards),
+checkSetCapture([Skipped| Rest], Table, Action, HandAfterMove, TableAfterMove, CapturedCards):-
+	checkSetCapture(Rest, Table, Action, HandAfterCap, TableAfterMove, CapturedCards),
 	HandAfterMove=[Skipped | HandAfterCap].
 
 	

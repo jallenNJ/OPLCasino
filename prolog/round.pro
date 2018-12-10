@@ -84,10 +84,14 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) 
 	doPlayerMove(P0Info, Table, LastCap, P0AfterMove, TableAfterP0, LastCapAfterP0),
 	printFullTable(P0AfterMove, TableAfterP0, P1Info, Deck),
 	getActionMenuChoice(P1Info, MenuChoice2),
-	handleMenuChoice(MenuChoice2),
+    findOtherId(FirstId, OtherId),
+	handleMenuChoice(MenuChoice2, OtherId, Deck, TableAfterP0, P0AfterMove, P1Info, LastCapAfterP0),
 	doPlayerMove(P1Info, TableAfterP0, LastCapAfterP0, P1AfterMove, TableAfterP1, LastCapAfterP1),
 	playRound(FirstId, Deck, TableAfterP1, P0AfterMove, P1AfterMove, LastCapAfterP1, LastCapEnd, EndScores).
 
+
+findOtherId(0,1).
+findOtherId(1,0).
 
 scoreRound(Table, HumanStart, CompStart, LastCap, EndScores) :-
 	isHuman(HumanStart),

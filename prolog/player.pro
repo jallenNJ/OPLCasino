@@ -179,12 +179,13 @@ doComputerMove(PlayerList, Table, LastCap, Action, PlayerAfterMove, TableAfterMo
 
 doComputerMove(PlayerList, Table, _, Action, PlayerAfterMove, TableAfterMove, LastCapAfterMove):-
 	getHand(PlayerList, Hand),
-	checkSetCapture(Hand, Table, Action, HandAfterMove, TableAfterMove,CapturedCards),
+	checkSetCapture(Hand, Table, Action, HandAfterMove, TableAfterMove,CapturedCards, PlayedVal),
 	length(CapturedCards, AmountCapped),
 	AmountCapped > 1,
-	getPlayerComponents(PlayerList, Id, _, StartingPile, Reserved, Score),
+	getPlayerComponents(PlayerList, Id, _, StartingPile, RawReserved, Score),
 	addToPile(CapturedCards, StartingPile, NewPile),
 	LastCapAfterMove = Id,
+    removeVal(RawReserved, PlayedVal, Reserved),
 	createPlayer(Id, HandAfterMove, NewPile, Reserved, Score, PlayerAfterMove).
 
 
@@ -207,18 +208,19 @@ doComputerMove(PlayerList, Table, LastCap, Action, PlayerAfterMove, TableAfterMo
 	
 
 
-checkSetCapture([], _, [], [],[]).
+checkSetCapture([], _, [], [],[], _).
 
-checkSetCapture([Card|HandAfterMove], Table, Action, HandAfterMove, TableAfterMove, CapturedCards) :-
+checkSetCapture([Card|HandAfterMove], Table, Action, HandAfterMove, TableAfterMove, CapturedCards, PlayedVal) :-
 	getCardVal(Card, Target),
 	findSet(Table, Target, TableAfterMove, CapturedCardsFromTable),
 	length(CapturedCardsFromTable, AmountCapped),
 	AmountCapped > 1,
 	CapturedCards = [Card|CapturedCardsFromTable],
+    PlayedVal = Target,
     displayComputerMove(Card, CapturedCardsFromTable, Action, "Capture", "Saw an oppertunity to capture a set").
 
-checkSetCapture([Skipped| Rest], Table, Action, HandAfterMove, TableAfterMove, CapturedCards):-
-	checkSetCapture(Rest, Table, Action, HandAfterCap, TableAfterMove, CapturedCards),
+checkSetCapture([Skipped| Rest], Table, Action, HandAfterMove, TableAfterMove, CapturedCards, PlayedVal):-
+	checkSetCapture(Rest, Table, Action, HandAfterCap, TableAfterMove, CapturedCards, PlayedVal),
 	HandAfterMove=[Skipped | HandAfterCap].
 
 	
@@ -277,10 +279,11 @@ doCapture(PlayerList, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMo
 	length(Matching, MatchingSize),
 	MatchingSize =0,
 	%Make the updated player
-	getPlayerComponents(PlayerList, Id, _, StartingPile, Reserved, Score),
+	getPlayerComponents(PlayerList, Id, _, StartingPile, RawReserved, Score),
 	mergeLists(StartingPile, [CaptureCard], PilewithCapCard),
 	addToPile( CaputuredCards, PilewithCapCard,AllPileCards),
 	LastCapAfterMove = Id,
+    removeVal(RawReserved, CaptureVal, Reserved),
 	createPlayer(Id, ResultingHand, AllPileCards, Reserved, Score, PlayerAfterMove).
 
 

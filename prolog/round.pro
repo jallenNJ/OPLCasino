@@ -199,10 +199,16 @@ addCardsToLastCap(Table, Human, CompStart, _, Human, Comp)	:-
 coinFlip(LastCap, ReturnedScores) :-
 	writeln("Heads(0) or Tails(1)"),
 	getNumericInput(0, 1, Call),
+    integer(Call),
+    Call =<1,
+    Call >=0,
 	random(0,2, CoinVal),
 	evalCoinToss(Call, CoinVal, Starting),
 	startNewRound( Starting, LastCap,ReturnedScores).
 
+coinFlip(LastCap, ReturnedScores) :-
+    writeln("Invalid coind toss"),
+    coinFlip(LastCap, ReturnedScores).
 
 evalCoinToss(0, 0, 0) :-
 	writeln("Heads! Human goes first!").

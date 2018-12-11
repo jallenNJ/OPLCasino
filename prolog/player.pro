@@ -327,6 +327,9 @@ doBuild(PlayerList, OtherPlayer, Table, _, _, LastCap, PlayerAfterMove, OtherPla
 
 
 doTrail(PlayerList, OtherPlayer, Table, PlayedCardIndex, LastCap, PlayerAfterMove, OtherPlayer, TableAfterMove, LastCap) :-
+    getReserved(PlayerList, Reserved),
+    length(Reserved, ReservedSize),
+    ReservedSize=0,
 	getHand(PlayerList, Hand),
 	integer(PlayedCardIndex),
 	removeAtIndex(Hand, PlayedCardIndex, ResultingHand, TrailedCard),

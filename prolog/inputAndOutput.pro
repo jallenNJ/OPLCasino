@@ -7,7 +7,7 @@ handleMenuChoice(1,FirstId, Deck, Table, Human, Computer, LastCap) :-
 	getPlayerComponents(Computer, _, CompHand, CompPile, CompReserved, CompScore),
 	getPlayerComponents(Human, _, HumanHand, HumanPile, HumanReserved, HumanScore),
 	formatSaveData(0, CompScore, CompHand, CompPile, HumanScore, HumanHand, HumanPile, Table, LastCapAtom, Deck, FirstIdAtom, Formatted),
-	writeln("Enter saveFile name"),
+	prompt1("Enter saveFile name"),
 	read(SaveFileName),
 	saveFile(SaveFileName, Formatted),
 	quitGame.

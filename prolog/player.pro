@@ -98,7 +98,7 @@ doPlayerMove(PlayerList, OtherPlayer, Table, LastCap, PlayerAfterMove,OtherPlaye
 %=======================
 doHumanMove(0, PlayerList, OtherPlayer, Table, LastCap, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
 	getHand(PlayerList, Hand),
-	prompt1("Which card would you like to Capture with?"),
+	writeln("Which card would you like to Capture with?"),
 	length(Hand, CardsInHandPlusOne),
 	CardsInHand is CardsInHandPlusOne-1,
 	getNumericInput(0, CardsInHand, CaptureCardIndex),
@@ -109,7 +109,7 @@ doHumanMove(0, PlayerList, OtherPlayer, Table, LastCap, PlayerAfterMove, OtherPl
 
 doHumanMove(1, PlayerList, OtherPlayer, Table, LastCap, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
 	getHand(PlayerList, Hand),
-	prompt1("Which card would you like to Build with?"),
+	writeln("Which card would you like to Build with?"),
 	length(Hand, CardsInHandPlusOne),
 	CardsInHand is CardsInHandPlusOne-1,
 	getNumericInput(0, CardsInHand, PlayedCardIndex),
@@ -120,7 +120,7 @@ doHumanMove(1, PlayerList, OtherPlayer, Table, LastCap, PlayerAfterMove, OtherPl
 
 doHumanMove(2, PlayerList, OtherPlayer, Table, LastCap, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
 	getHand(PlayerList, Hand),
-	prompt1("Which card would you like to trail?"),
+	writeln("Which card would you like to trail?"),
 	length(Hand, CardsInHandPlusOne),
 	CardsInHand is CardsInHandPlusOne-1,
 	getNumericInput(0, CardsInHand, TrailedCardIndex),

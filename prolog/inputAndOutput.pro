@@ -51,6 +51,12 @@ getActionChoice(MoveChoice) :-
 
 getMoveChar(Input) :- read(Input).
 
+validateMoveChar(RawInput, Input) :-
+	var(RawInput),
+	prompt1("Please enter move as lowercase: "),
+	getMoveChar(Raw),
+	validateMoveChar(Raw, Input).
+
 validateMoveChar(c, c).
 validateMoveChar(t, t).
 validateMoveChar(b, b).
@@ -82,11 +88,11 @@ validateNumericInput(_, _, _, _) :-
 	%sgetNumericInput(Lower, Upper, Result).	
 
 promptForMultipleNumericInput(Lower, Upper) :-
-	concat("Enter a number between ", Lower, Str1),
+	concat("Select table indices between ", Lower, Str1),
 	concat(Str1, " and ", Str2),
 	concat(Str2, Upper, Str3),
-	concat(Str3, ". Enter a negative number to stop: ", OutputStr),
-	prompt1(OutputStr).
+	concat(Str3, ". Enter a -1 to stop: ", OutputStr),
+	writeln(OutputStr).
 
 getMultipleNumericInput(Upper, Result) :-
 	promptForMultipleNumericInput(-1, Upper),

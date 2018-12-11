@@ -78,6 +78,12 @@ playRound(_, Deck, Table, P0Info, P1Info, LastCap,LastCapEnd, EndScores)	:-
 
 %Main loop
 playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) :-
+    getHand(P0Info, P0Hand),
+	length(P0Hand, P0HandLength),
+    P0HandLength > 0,
+	getHand(P1Info, P1Hand),
+	length(P1Hand, P1HandLength),
+    P1HandLength > 0,
 	printFullTable(P0Info, Table, P1Info, Deck),
 	getActionMenuChoice(P0Info, MenuChoice),
 	handleMenuChoice(MenuChoice, FirstId, Deck, Table, P0Info, P1Info, LastCap),
@@ -88,6 +94,33 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) 
 	handleMenuChoice(MenuChoice2, OtherId, Deck, TableAfterP0, P0AfterMove, P1AfterP0, LastCapAfterP0),
 	doPlayerMove(P1AfterP0, P0AfterMove, TableAfterP0, LastCapAfterP0, P1AfterMove, P0AfterP1, TableAfterP1, LastCapAfterP1),
 	playRound(FirstId, Deck, TableAfterP1, P0AfterP1, P1AfterMove, LastCapAfterP1, LastCapEnd, EndScores).
+
+
+playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) :-
+    getHand(P0Info, P0Hand),
+	length(P0Hand, P0HandLength),
+    P0HandLength > 0,
+	getHand(P1Info, P1Hand),
+	length(P1Hand, 0),
+
+	printFullTable(P0Info, Table, P1Info, Deck),
+	getActionMenuChoice(P0Info, MenuChoice),
+	handleMenuChoice(MenuChoice, FirstId, Deck, Table, P0Info, P1Info, LastCap),
+	doPlayerMove(P0Info, P1Info, Table, LastCap, P0AfterMove, P1AfterP0, TableAfterP0, LastCapAfterP0),
+	printFullTable(P0AfterMove, TableAfterP0, P1AfterP0, Deck),
+	playRound(FirstId, Deck, TableAfterP0, P0AfterMove, P1AfterP0, LastCapAfterP0, LastCapEnd, EndScores).
+
+
+
+playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) :-
+	getHand(P0Info, P0Hand),
+	length(P0Hand, 0),
+    getHand(P1Info, P1Hand),
+	length(P1Hand, P1HandLength),
+    P1HandLength > 0,
+
+	playRound(FirstId, Deck, Table, P1Info, P0Info, LastCap, LastCapEnd, EndScores).
+
 
 
 findOtherId(0,1).

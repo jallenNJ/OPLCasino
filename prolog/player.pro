@@ -92,12 +92,11 @@ doPlayerMove(PlayerList, OtherPlayer, Table, LastCap, PlayerAfterMove, OtherPlay
 %Comp
 doPlayerMove(PlayerList, OtherPlayer, Table, LastCap, PlayerAfterMove,OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
 	doComputerMove( PlayerList, OtherPlayer, Table, LastCap, "Playing", PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove).
-
-
+    
 %=======================
 %Functions for human to make a move
 %=======================
-doHumanMove(0, PlayerList, OtherPlayer, Table, _, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
+doHumanMove(0, PlayerList, OtherPlayer, Table, LastCap, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
 	getHand(PlayerList, Hand),
 	prompt1("Which card would you like to Capture with?"),
 	length(Hand, CardsInHandPlusOne),
@@ -106,7 +105,7 @@ doHumanMove(0, PlayerList, OtherPlayer, Table, _, PlayerAfterMove, OtherPlayerAf
 	length(Table, TableCardAmount),
 	TableAllowedIndices is TableCardAmount-1,
 	getMultipleNumericInput(TableAllowedIndices, SelectedCardIndices),
-	doCapture(PlayerList, OtherPlayer, Table, CaptureCardIndex, SelectedCardIndices, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove).
+	doCapture(PlayerList, OtherPlayer, Table, LastCap, CaptureCardIndex, SelectedCardIndices, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove).  
 
 doHumanMove(1, PlayerList, OtherPlayer, Table, LastCap, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
 	getHand(PlayerList, Hand),
@@ -119,13 +118,13 @@ doHumanMove(1, PlayerList, OtherPlayer, Table, LastCap, PlayerAfterMove, OtherPl
 	getMultipleNumericInput(TableAllowedIndices, SelectedCardIndices),
 	doBuild(PlayerList, OtherPlayer, Table, PlayedCardIndex, SelectedCardIndices, LastCap,PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove).
 
-doHumanMove(2, PlayerList, OtherPlayer, Table, LastCap, PlayerAfterMove, OtherPlayer, TableAfterMove, LastCapAfterMove) :-
+doHumanMove(2, PlayerList, OtherPlayer, Table, LastCap, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
 	getHand(PlayerList, Hand),
 	prompt1("Which card would you like to trail?"),
 	length(Hand, CardsInHandPlusOne),
 	CardsInHand is CardsInHandPlusOne-1,
 	getNumericInput(0, CardsInHand, TrailedCardIndex),
-	doTrail(PlayerList, Table, TrailedCardIndex, LastCap, PlayerAfterMove, TableAfterMove, LastCapAfterMove).
+	doTrail(PlayerList, OtherPlayer, Table, TrailedCardIndex, LastCap, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove).
 
 
 %=======================
@@ -150,12 +149,8 @@ checkAsSumCard(SumCard, Hand, Table, Action, HandAfterMove, TableAfterMove, Buil
     writeln(NewBuildCards),
     displayComputerMove(PlayCard, NewBuildCards, Action, "Build", "Saw an oppertunity to make a build"),
 	%TableAfterAdding = [Build | RemainingTableCards],
-	
 	checkForMulti(Build, SumVal, RemainingTableCards, TableAfterMove),
 	BuildVal = SumVal.
-
-
-
 
 
 findPlayCard(SumVal, [First | Rest], First, Rest) :-
@@ -193,7 +188,7 @@ doComputerMove(PlayerList, OtherPlayer, Table, _, Action, PlayerAfterMove, Other
     createPlayer(OId, OHand, OPile, OReserved, OScore, OtherPlayerAfterMove).
 
 
-doComputerMove(PlayerList, OtherPlayer, Table, _, Action, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove):-
+doComputerMove(PlayerList, OtherPlayer, Table, LastCap, Action, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove):-
 	getHand(PlayerList, Hand),
 	checkForMatchingCaptures(Hand, Table, 0, PlayedCardIndex,MatchedCardsIndices),
 	not(MatchedCardsIndices=[]),
@@ -202,14 +197,14 @@ doComputerMove(PlayerList, OtherPlayer, Table, _, Action, PlayerAfterMove, Other
     displayComputerMove(PlayedCard, CapturedCards, Action, "Capture", "To capture identical symbols"),
     writeln(Action),
 	%displayComputerMove(PlayedCard, TableCards, Action, Reason)
-	doCapture(PlayerList, OtherPlayer, Table, PlayedCardIndex, MatchedCardsIndices, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove).
+	doCapture(PlayerList, OtherPlayer, Table, LastCap,PlayedCardIndex, MatchedCardsIndices, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove).
 
 	
 
 
 %doComputerMove(1, PlayerList, Table, PlayerAfterMove, TableAfterMove)
-doComputerMove(PlayerList, OtherPlayer, Table, LastCap, Action, PlayerAfterMove, OtherPlayer, TableAfterMove, LastCapAfterMove) :-
-	doTrail(PlayerList, Table, 0, LastCap, PlayerAfterMove, TableAfterMove, LastCapAfterMove),
+doComputerMove(PlayerList, OtherPlayer, Table, LastCap, Action, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
+	doTrail(PlayerList, OtherPlayer, Table, 0, LastCap, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove),
 	displayComputerMove(PlayerList, Action, 0).
 	
 
@@ -263,7 +258,7 @@ checkForMatchingCaptures([_ | RestHand], Table, Index, CardWithMatches, MatchedC
 %=======================
 %Functions to validate and execute the choosen move (for both players)
 %=======================
-doCapture(PlayerList, OtherPlayer, Table, PlayedCardIndex, SelectedCardIndices, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
+doCapture(PlayerList, OtherPlayer, Table, _, PlayedCardIndex, SelectedCardIndices, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
 	%Get the hand and ensure the Played index is instaniated
 	getHand(PlayerList, Hand),
 	integer(PlayedCardIndex),
@@ -295,6 +290,11 @@ doCapture(PlayerList, OtherPlayer, Table, PlayedCardIndex, SelectedCardIndices, 
     removeVal(ORawReserved, CaptureVal, OReserved),
     createPlayer(OId, OHand, OPile, OReserved, OScore, OtherPlayerAfterMove).
 
+doCapture(PlayerList, OtherPlayer, Table, LastCap, _, _, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
+    isHuman(PlayerList),
+    writeln("Invalid Capture Selection, try again"),
+    doPlayerMove(PlayerList, OtherPlayer, Table, LastCap, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove).
+
 
 doBuild(PlayerList, OtherPlayer, Table, PlayedCardIndex, SelectedCardIndices, LastCap, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCap) :-	
 	getHand(PlayerList, Hand),
@@ -320,8 +320,13 @@ doBuild(PlayerList, OtherPlayer, Table, PlayedCardIndex, SelectedCardIndices, La
     removeVal(ORawReserved, Sum, OReserved),
     createPlayer(OId, OHand, OPile, OReserved, OScore, OtherPlayerAfterMove).
 
+doBuild(PlayerList, OtherPlayer, Table, _, _, LastCap, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
+    isHuman(PlayerList),
+    writeln("Invalid Build Selection, try again"),
+    doPlayerMove(PlayerList, OtherPlayer, Table, LastCap, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove).
 
-doTrail(PlayerList, Table, PlayedCardIndex, LastCap, PlayerAfterMove, TableAfterMove, LastCap) :-
+
+doTrail(PlayerList, OtherPlayer, Table, PlayedCardIndex, LastCap, PlayerAfterMove, OtherPlayer, TableAfterMove, LastCap) :-
 	getHand(PlayerList, Hand),
 	integer(PlayedCardIndex),
 	removeAtIndex(Hand, PlayedCardIndex, ResultingHand, TrailedCard),
@@ -332,7 +337,10 @@ doTrail(PlayerList, Table, PlayedCardIndex, LastCap, PlayerAfterMove, TableAfter
 	getScore(PlayerList, Score),
 	createPlayer(Id, ResultingHand, Pile, Reserved, Score,PlayerAfterMove).
 
-
+doTrail(PlayerList, OtherPlayer, Table, _, LastCap, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove) :-
+    isHuman(PlayerList),
+    writeln("Invalid Trail, try again"),
+    doPlayerMove(PlayerList, OtherPlayer, Table, LastCap, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove).
 
 checkForMulti(NewBuild, _, [], [NewBuild]).
 

@@ -2,9 +2,19 @@
 %=======================
 %Functions to run a round
 %=======================
-startNewRound(LastCap, EndScores) :- playRound(0, 0, [],[],[],[], 0, LastCap,EndScores).
-startNewRound(RoundNum, Starting, LastCap, EndScores) :- playRound(RoundNum, Starting, [],[],[],[], 0, LastCap, EndScores).
-startNewRound(RoundNum, Starting, HumanScore, CompScore, LastCap, EndScores) :- playRound(RoundNum, Starting, HumanScore, CompScore, Starting, LastCap, EndScores).
+startNewRound(LastCap, EndScores) :- 
+    writeln("New round started!"),
+    playRound(0, 0, [],[],[],[], 0, LastCap,EndScores).
+startNewRound(RoundNum, Starting, LastCap, EndScores) :-
+    write("Round "),
+    writeln(RoundNum),
+    writeln(" is starting!"),
+    playRound(RoundNum, Starting, [],[],[],[], 0, LastCap, EndScores).
+startNewRound(RoundNum, Starting, HumanScore, CompScore, LastCap, EndScores) :- 
+    write("Round "),
+    writeln(RoundNum),
+    writeln(" is starting!"),
+    playRound(RoundNum, Starting, HumanScore, CompScore, Starting, LastCap, EndScores).
 
 
 
@@ -243,7 +253,7 @@ coinFlip(LastCap, ReturnedScores) :-
     Call >=0,
 	random(0,2, CoinVal),
 	evalCoinToss(Call, CoinVal, Starting),
-	startNewRound( Starting, LastCap,ReturnedScores).
+	startNewRound(0,  Starting, LastCap,ReturnedScores).
 
 coinFlip(LastCap, ReturnedScores) :-
     writeln("Invalid coind toss"),
@@ -261,33 +271,34 @@ evalCoinToss(_, _, 1):-
 runTournament() :-
 	writeln("Would you like to start a new game(0), or load a save game(1)?"),
 	getNumericInput(0, 1, GameChoice),
-	handleTourChoice(GameChoice, LastCap, ResultingScores),
+	handleTourChoice(GameChoice, LastCap, ResultingScores, Round),
 	nth0(0, ResultingScores, HumanScore),
 	nth0(1, ResultingScores, CompScore),
-	processRoundResults(HumanScore, CompScore, LastCap).
+	processRoundResults(HumanScore, CompScore, LastCap, Round).
 
-handleTourChoice(0,LastCap, Scores) :-
+handleTourChoice(0,LastCap, Scores, 1) :-
 	coinFlip(LastCap, Scores).
-handleTourChoice(1, LastCap, Scores) :-
-	load(LastCap, Scores).
+handleTourChoice(1, LastCap, Scores, Round) :-
+	load(LastCap, Scores, Round).
 
-processRoundResults(HumanScore, CompScore, _ ) :-
+processRoundResults(HumanScore, CompScore, _ , _) :-
 	HumanScore >= 21,
 	HumanScore > CompScore,
 	writeln("Human won the tour!").
 
-processRoundResults(HumanScore, CompScore, _ ) :-
+processRoundResults(HumanScore, CompScore, _ , _ ) :-
 	HumanScore >= 21,
 	HumanScore = CompScore,
 	writeln("The tournamnet was a tie!").
 
-processRoundResults(_, CompScore, _ ) :-
+processRoundResults(_, CompScore, _ ,_) :-
 	CompScore >= 21,
 	writeln("Computer won the tour!").	
 
-processRoundResults(HumanScore, CompScore, LastCap) :-
-	startNewRound(LastCap, HumanScore, CompScore, LastCapRoundEnd, EndScores),
+processRoundResults(HumanScore, CompScore, LastCap, Round) :-
+    NextRound is Round+1,
+	startNewRound(NextRound, LastCap, HumanScore, CompScore, LastCapRoundEnd, EndScores),
 	nth0(0, EndScores, HumanScore),
 	nth0(1, EndScores, CompScore),
-	processRoundResults(HumanScore, CompScore, LastCapRoundEnd).
+	processRoundResults(HumanScore, CompScore, LastCapRoundEnd, NextRound).
 

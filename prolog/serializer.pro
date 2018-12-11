@@ -1,23 +1,23 @@
 %=======================
 %Functions to load in serliazed data
 %=======================	
-load(LastCap, RoundScores) :-
+load(LastCap, RoundScores, RoundNum) :-
 	prompt1("What file would you like to load?"),
 	read(File),
 	exists_file(File),
 	readFile(File, Data),
-	parseSaveToRound(Data, LastCap, RoundScores).
+	parseSaveToRound(Data, LastCap, RoundScores, RoundNum).
 
-load(LastCap, RoundScores) :-
+load(LastCap, RoundScores, RoundNum) :-
 	writeln("Invalid file name"),
-	load(LastCap, RoundScores).	
+	load(LastCap, RoundScores, RoundNum).	
 
 readFile(FileName, FileData) :-
 	open(FileName, read, FileStream),
 	read(FileStream, FileData),
 	close(FileStream).
 
-parseSaveToRound(RawData, LastCapFromRound, RoundScores) :-
+parseSaveToRound(RawData, LastCapFromRound, RoundScores, RoundNum) :-
 
 	nth0(0, RawData, RoundNum),
 	nth0(1, RawData, CompScore),
@@ -110,7 +110,7 @@ denumerateId(_, computer).
 
 
 formatSaveData(RoundNum, CompScore, CompHand, CompPile, HumanScore, HumanHand, HumanPile, Table,  CompReserved, HumanReserved, LastCapAtom, Deck, FirstIdAtom, Formatted) :-
-	mergeLists(RoundNum, [CompScore], Merge1),
+	mergeLists([RoundNum], [CompScore], Merge1),
 	mergeLists(Merge1, [CompHand], Merge2),
 	mergeLists(Merge2, [CompPile], Merge3),
 	mergeLists(Merge3, [HumanScore], Merge4),

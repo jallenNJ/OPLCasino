@@ -256,7 +256,7 @@ coinFlip(LastCap, ReturnedScores) :-
 	startNewRound(0,  Starting, LastCap,ReturnedScores).
 
 coinFlip(LastCap, ReturnedScores) :-
-    writeln("Invalid coind toss"),
+    writeln("Invalid coin toss"),
     coinFlip(LastCap, ReturnedScores).
 
 evalCoinToss(0, 0, 0) :-
@@ -271,10 +271,16 @@ evalCoinToss(_, _, 1):-
 runTournament() :-
 	writeln("Would you like to start a new game(0), or load a save game(1)?"),
 	getNumericInput(0, 1, GameChoice),
+    integer(GameChoice),
+    GameChoice>=0,
+    GameChoice =<1,
 	handleTourChoice(GameChoice, LastCap, ResultingScores, Round),
 	nth0(0, ResultingScores, HumanScore),
 	nth0(1, ResultingScores, CompScore),
 	processRoundResults(HumanScore, CompScore, LastCap, Round).
+
+runTournament() :-
+    runTournament.
 
 handleTourChoice(0,LastCap, Scores, 1) :-
 	coinFlip(LastCap, Scores).

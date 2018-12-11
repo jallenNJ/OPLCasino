@@ -197,7 +197,9 @@ doComputerMove(PlayerList, OtherPlayer, Table, _, Action, PlayerAfterMove, Other
 	getHand(PlayerList, Hand),
 	checkForMatchingCaptures(Hand, Table, 0, PlayedCardIndex,MatchedCardsIndices),
 	not(MatchedCardsIndices=[]),
-    writeln("************* HOOK UP AI SYM CAPUTRE TO NEW OUTPUT"),
+    getCardsAtIndicies(Hand, [PlayedCardIndex], PlayedCard),
+    getCardsAtIndicies(Table, MatchedCardsIndices, CapturedCards),
+    displayComputerMove(PlayedCard, CapturedCards, Action, "Capture", "To capture identical symbols"),
     writeln(Action),
 	%displayComputerMove(PlayedCard, TableCards, Action, Reason)
 	doCapture(PlayerList, OtherPlayer, Table, PlayedCardIndex, MatchedCardsIndices, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove).
@@ -294,7 +296,6 @@ doCapture(PlayerList, OtherPlayer, Table, PlayedCardIndex, SelectedCardIndices, 
     createPlayer(OId, OHand, OPile, OReserved, OScore, OtherPlayerAfterMove).
 
 
-%TODO: Check unreserving val (AFTER GETTING PLAY VAL)
 doBuild(PlayerList, OtherPlayer, Table, PlayedCardIndex, SelectedCardIndices, LastCap, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCap) :-	
 	getHand(PlayerList, Hand),
 	integer(PlayedCardIndex),
@@ -302,7 +303,7 @@ doBuild(PlayerList, OtherPlayer, Table, PlayedCardIndex, SelectedCardIndices, La
 	removeAtIndex(Hand, PlayedCardIndex, ResultingHand, PlayedCard),
 	getCardVal(PlayedCard, PlayedVal),
 	sumSelectedCards(SelectedCardIndices, Table, Sum),
-	BuildValue is Sum+,
+	BuildValue is Sum+PlayedVal,
 	BuildValue =< 14,
 	listContainsValue(ResultingHand, BuildValue, 0, ReserveCardIndex),
 	ReserveCardIndex >=0,

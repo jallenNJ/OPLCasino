@@ -256,3 +256,11 @@ makeBuild([], BuildCard, [BuildCard]).
 makeBuild([CurrentCard | Rest], BuildCard, Build) :-
 	makeBuild(Rest, BuildCard, NewBuild),
 	Build = [CurrentCard | NewBuild].
+
+
+getCardsAtIndicies(_, [], []).
+
+getCardsAtIndicies(CardList, [First|Rest], Result) :-
+	getCardsAtIndicies(CardList, Rest, NewResult),
+	nth0(First, CardList, Current),
+	Result = [Current|NewResult].

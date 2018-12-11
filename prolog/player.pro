@@ -278,7 +278,7 @@ doCapture(PlayerList, OtherPlayer, Table, _, PlayedCardIndex, SelectedCardIndice
 	getCardSymbol(CaptureCard, CaptureSym),
 	removeMatchingSymbols(TableAfterMove, CaptureSym, _, Matching),
 	length(Matching, MatchingSize),
-	MatchingSize =0,
+	MatchingSize = 0,
 	%Make the updated player
 	getPlayerComponents(PlayerList, Id, _, StartingPile, RawReserved, Score),
 	mergeLists(StartingPile, [CaptureCard], PilewithCapCard),

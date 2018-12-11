@@ -14,7 +14,8 @@ load(LastCap, RoundScores) :-
 
 readFile(FileName, FileData) :-
 	open(FileName, read, FileStream),
-	read(FileStream, FileData).
+	read(FileStream, FileData),
+	close(FileStream).
 
 parseSaveToRound(RawData, LastCapFromRound, RoundScores) :-
 
@@ -29,17 +30,17 @@ parseSaveToRound(RawData, LastCapFromRound, RoundScores) :-
 
 	nth0(7, RawData, Table),
 
-	length(RawData, Terms),
-	LastCapIndex is Terms-3,
-	DeckIndex is Terms-2,
-	StartingIndex is Terms-1,
-	nth0(DeckIndex, RawData, Deck),
-	nth0(LastCapIndex, RawData, LastCapAtom),
-	nth0(StartingIndex, RawData, StartingPlayerAtom),
+	nth0(8, RawData, LastCapAtom),
+
+	nth0(9, RawData, CompReserved),
+	nth0(10, RawData, HumanReserved),
+
+	nth0(11, RawData, Deck),
+	nth0(12, RawData, StartingPlayerAtom),
 	enumerateAtomId(StartingPlayerAtom, StartingPlayer),
 	enumerateAtomId(LastCapAtom, LastCap),
 
-	parseBuildOwnersFromRaw(RawData, Terms, HumanReserved, CompReserved),
+	%parseBuildOwnersFromRaw(RawData, Terms, HumanReserved, CompReserved),
 
 
 	createPlayer(0, HumanHand, HumanPile, HumanReserved, HumanScore, Human),
@@ -57,43 +58,43 @@ startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp, LastCap, LastCapFro
 	StartingPlayer = 1,
 	playRound(StartingPlayer, Deck, Table, Comp, Human, LastCap, LastCapFromRound, RoundScores).
 
-parseBuildOwnersFromRaw(_, Terms, [], []) :-
-Terms =< 11.
+%parseBuildOwnersFromRaw(_, Terms, [], []) :-
+%Terms =< 11.
 
-parseBuildOwnersFromRaw(RawData, Terms, HumanBuilds, CompBuilds) :-
-	Max is Terms-4,
-	getSlice(RawData, 7, Max, Slice),
-	parseOwnersFromSlice(Slice, HumanBuildsRaw, CompBuildsRaw),
-	sort(0, @<, HumanBuildsRaw, HumanBuilds),
-	sort(0, @<, CompBuildsRaw, CompBuilds).
+%parseBuildOwnersFromRaw(RawData, Terms, HumanBuilds, CompBuilds) :-
+%	Max is Terms-4,
+%	getSlice(RawData, 7, Max, Slice),
+%	parseOwnersFromSlice(Slice, HumanBuildsRaw, CompBuildsRaw),
+%	sort(0, @<, HumanBuildsRaw, HumanBuilds),
+%	sort(0, @<, CompBuildsRaw, CompBuilds).
 
 
-getSlice(_, Current, Max, []) :-
-	Current > Max.
+%getSlice(_, Current, Max, []) :-
+%	Current > Max.
 
-getSlice(RawData, Current, Max, Slice) :-
-	Next is Current+1,
-	getSlice(RawData, Next, Max, RestSlice),
-	nth0(Current, RawData, CurrentElement),
-	Slice = [CurrentElement | RestSlice].
+%getSlice(RawData, Current, Max, Slice) :-
+%	Next is Current+1,
+%	getSlice(RawData, Next, Max, RestSlice),
+%	nth0(Current, RawData, CurrentElement),
+%	Slice = [CurrentElement | RestSlice].
 
-parseOwnersFromSlice([], [], []).
+%parseOwnersFromSlice([], [], []).
 
-parseOwnersFromSlice([Current| Rest], Human, Comp) :-
-	Current =[Build | Owner],
-	enumerateAtomId(Owner, Id),
-	Id = 0,
-	parseOwnersFromSlice(Rest, RestHuman, Comp),
-	sumCardList(Build, Val),
-	Human = [Val | RestHuman].
+%parseOwnersFromSlice([Current| Rest], Human, Comp) :-
+%	Current =[Build | Owner],
+%	enumerateAtomId(Owner, Id),
+%	Id = 0,
+%	parseOwnersFromSlice(Rest, RestHuman, Comp),
+%	sumCardList(Build, Val),
+%	Human = [Val | RestHuman].
 
-parseOwnersFromSlice([Current| Rest], Human, Comp) :-
-	Current =[Build | Owner],
-	enumerateAtomId(Owner, Id),
-	Id = 1,
-	parseOwnersFromSlice(Rest, Human, RestComp),
-	sumCardList(Build, Val),
-	Comp = [Val | RestComp].
+%parseOwnersFromSlice([Current| Rest], Human, Comp) :-
+%	Current =[Build | Owner],
+%	enumerateAtomId(Owner, Id),
+%	Id = 1,
+%	parseOwnersFromSlice(Rest, Human, RestComp),
+%	sumCardList(Build, Val),
+%	Comp = [Val | RestComp].
 
 
 enumerateAtomId(AId, 0) :-
@@ -105,7 +106,7 @@ denumerateId(0, human).
 denumerateId(_, computer).
 
 
-formatSaveData(0, CompScore, CompHand, CompPile, HumanScore, HumanHand, HumanPile, Table, LastCapAtom, Deck, FirstIdAtom, Formatted) :-
+formatSaveData(0, CompScore, CompHand, CompPile, HumanScore, HumanHand, HumanPile, Table, LastCapAtom, CompReserved, HumanReserved,  Deck, FirstIdAtom, Formatted) :-
 	mergeLists([0], [CompScore], Merge1),
 	mergeLists(Merge1, [CompHand], Merge2),
 	mergeLists(Merge2, [CompPile], Merge3),
@@ -114,8 +115,10 @@ formatSaveData(0, CompScore, CompHand, CompPile, HumanScore, HumanHand, HumanPil
 	mergeLists(Merge5, [HumanPile], Merge6),
 	mergeLists(Merge6, [Table], Merge7),
 	mergeLists(Merge7, [LastCapAtom], Merge8),
-	mergeLists(Merge8, [Deck] , Merge9),
-	mergeLists(Merge9, [FirstIdAtom], Formatted).
+	mergeLists(Merge8, [CompReserved], Merge9),
+	mergeLists(Merge9, [HumanReserved], Merge10),
+	mergeLists(Merge10, [Deck] , Merge11),
+	mergeLists(Merge11, [FirstIdAtom], Formatted).
 
 saveFile(FileName, SaveData):-
 	open(FileName, write, File),

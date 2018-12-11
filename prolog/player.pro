@@ -266,9 +266,7 @@ doCapture(PlayerList, OtherPlayer, Table, _, PlayedCardIndex, SelectedCardIndice
 	removeAtIndex(Hand, PlayedCardIndex, ResultingHand, CaptureCard),
 	getCardVal(CaptureCard, CaptureVal),
 	%Sum all selected cards to make sure the capture is valid
-	sumSelectedCards(SelectedCardIndices, Table, Sum),
-	ModResult is mod(Sum, CaptureVal),
-	ModResult = 0,
+    validateCaptureSum(SelectedCardIndices, Table, CaptureVal),
 	%Remove the cards
 	removeAllIndices(SelectedCardIndices, Table, TableAfterMove, CaputuredCards),
 	%Ensure atleast one card is selected
@@ -284,6 +282,8 @@ doCapture(PlayerList, OtherPlayer, Table, _, PlayedCardIndex, SelectedCardIndice
 	mergeLists(StartingPile, [CaptureCard], PilewithCapCard),
 	addToPile( CaputuredCards, PilewithCapCard,AllPileCards),
 	LastCapAfterMove = Id,
+    writeln("RawReserved is "),
+    writeln(RawReserved),
     removeVal(RawReserved, CaptureVal, Reserved),
 	createPlayer(Id, ResultingHand, AllPileCards, Reserved, Score, PlayerAfterMove),
     getPlayerComponents(OtherPlayer, OId, OHand, OPile, ORawReserved, OScore),
@@ -344,6 +344,24 @@ doTrail(PlayerList, OtherPlayer, Table, _, LastCap, PlayerAfterMove, OtherPlayer
     isHuman(PlayerList),
     writeln("Invalid Trail, try again"),
     doPlayerMove(PlayerList, OtherPlayer, Table, LastCap, PlayerAfterMove, OtherPlayerAfterMove, TableAfterMove, LastCapAfterMove).
+
+
+validateCaptureSum(SelectedCardIndices, Table, 1) :-
+	sumSelectedCards(SelectedCardIndices, Table, Sum),
+	ModResult is mod(Sum, 14),
+	ModResult = 0.
+
+validateCaptureSum(SelectedCardIndices, Table, CaptureVal) :-
+    sumSelectedCards(SelectedCardIndices, Table, Sum),
+	ModResult is mod(Sum, CaptureVal),
+	ModResult = 0.
+
+validateCaptureSum(SelectedCardIndices, Table, 14) :-
+    sumSelectedCards(SelectedCardIndices, Table, Sum),
+    length(SelectedCardIndices, SelectedAmount),
+    Sum = SelectedAmount.
+
+
 
 checkForMulti(NewBuild, _, [], [NewBuild]).
 

@@ -301,9 +301,8 @@ doBuild(PlayerList, OtherPlayer, Table, PlayedCardIndex, SelectedCardIndices, La
 	%Remove played card from the hand and get its value
 	removeAtIndex(Hand, PlayedCardIndex, ResultingHand, PlayedCard),
 	getCardVal(PlayedCard, PlayedVal),
-    OtherPlayerAfterMove = OtherPlayer,
 	sumSelectedCards(SelectedCardIndices, Table, Sum),
-	BuildValue is Sum+PlayedVal,
+	BuildValue is Sum+,
 	BuildValue =< 14,
 	listContainsValue(ResultingHand, BuildValue, 0, ReserveCardIndex),
 	ReserveCardIndex >=0,
@@ -315,7 +314,11 @@ doBuild(PlayerList, OtherPlayer, Table, PlayedCardIndex, SelectedCardIndices, La
 	%TableAfterNewBuild = [NewBuild | TableAfterCardsRemoved],
 	checkForMulti(NewBuild, BuildValue, TableAfterCardsRemoved, TableAfterMove),
 	getPlayerComponents(PlayerList, Id, _, Pile, _, Score),
-	createPlayer(Id, ResultingHand, Pile, NewReserved, Score, PlayerAfterMove).
+	createPlayer(Id, ResultingHand, Pile, NewReserved, Score, PlayerAfterMove),
+    getPlayerComponents(OtherPlayer, OId, OHand, OPile, ORawReserved, OScore),
+    removeVal(ORawReserved, Sum, OReserved),
+    createPlayer(OId, OHand, OPile, OReserved, OScore, OtherPlayerAfterMove).
+
 
 doTrail(PlayerList, Table, PlayedCardIndex, LastCap, PlayerAfterMove, TableAfterMove, LastCap) :-
 	getHand(PlayerList, Hand),

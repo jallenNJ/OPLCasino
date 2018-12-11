@@ -4,8 +4,13 @@
 load(LastCap, RoundScores) :-
 	prompt1("What file would you like to load?"),
 	read(File),
+	exists_file(File),
 	readFile(File, Data),
 	parseSaveToRound(Data, LastCap, RoundScores).
+
+load(LastCap, RoundScores) :-
+	writeln("Invalid file name"),
+	load(LastCap, RoundScores).	
 
 readFile(FileName, FileData) :-
 	open(FileName, read, FileStream),

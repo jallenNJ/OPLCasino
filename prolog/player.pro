@@ -282,8 +282,6 @@ doCapture(PlayerList, OtherPlayer, Table, _, PlayedCardIndex, SelectedCardIndice
 	mergeLists(StartingPile, [CaptureCard], PilewithCapCard),
 	addToPile( CaputuredCards, PilewithCapCard,AllPileCards),
 	LastCapAfterMove = Id,
-    writeln("RawReserved is "),
-    writeln(RawReserved),
     removeVal(RawReserved, CaptureVal, Reserved),
 	createPlayer(Id, ResultingHand, AllPileCards, Reserved, Score, PlayerAfterMove),
     getPlayerComponents(OtherPlayer, OId, OHand, OPile, ORawReserved, OScore),

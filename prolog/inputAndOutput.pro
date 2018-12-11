@@ -1,33 +1,33 @@
 
 %Save and quit
-handleMenuChoice(1,FirstId, Deck, Table, Human, Computer, LastCap) :-
+handleMenuChoice(1,RoundNum, FirstId, Deck, Table, Human, Computer, LastCap) :-
 	isHuman(Human),
 	denumerateId(FirstId, FirstIdAtom),
 	denumerateId(LastCap, LastCapAtom),
 	getPlayerComponents(Computer, _, CompHand, CompPile, CompReserved, CompScore),
 	getPlayerComponents(Human, _, HumanHand, HumanPile, HumanReserved, HumanScore),
-	formatSaveData(0, CompScore, CompHand, CompPile, HumanScore, HumanHand, HumanPile, Table, CompReserved, HumanReserved,  LastCapAtom, Deck, FirstIdAtom, Formatted),
+	formatSaveData(RoundNum, CompScore, CompHand, CompPile, HumanScore, HumanHand, HumanPile, Table, CompReserved, HumanReserved,  LastCapAtom, Deck, FirstIdAtom, Formatted),
 	prompt1("Enter saveFile name"),
 	read(SaveFileName),
 	saveFile(SaveFileName, Formatted),
 	quitGame.
 
-handleMenuChoice(1,FirstId, Deck, Table, Human, Computer, LastCap) :-
-	handleMenuChoice(1,FirstId, Deck, Table, Computer, Human, LastCap).
+handleMenuChoice(1,RoundNum, FirstId, Deck, Table, Human, Computer, LastCap) :-
+	handleMenuChoice(1,RoundNum, FirstId, Deck, Table, Computer, Human, LastCap).
 %Do nothing.
-handleMenuChoice(2, _, _,_,_,_,_).
+handleMenuChoice(2,_, _, _,_,_,_,_).
 
 %Ask for help
-handleMenuChoice(3, _, _,Table,Human,Computer,LastCap) :-
+handleMenuChoice(3, _,_, _,Table,Human,Computer,LastCap) :-
 	isHuman(Human),
 	writeln("Move Recomenndation: "),
 	doComputerMove( Human, Computer, Table, LastCap, "recommending to play ", _,_, _, _).
 
-handleMenuChoice(3, _, _,Table,Human,Comp,LastCap) :-
+handleMenuChoice(3, _,_, _,Table,Human,Comp,LastCap) :-
 	handleMenuChoice(3, _, _, Table, Comp, Human, LastCap).
 
 %Quit without saving
-handleMenuChoice(4, _, _,_,_,_,_) :-
+handleMenuChoice(4, _,_, _,_,_,_,_) :-
 	quitGame.
 
 

@@ -19,6 +19,7 @@ readFile(FileName, FileData) :-
 
 parseSaveToRound(RawData, LastCapFromRound, RoundScores) :-
 
+	nth0(0, RawData, RoundNum),
 	nth0(1, RawData, CompScore),
 	nth0(2, RawData, CompHand),
 
@@ -49,16 +50,16 @@ parseSaveToRound(RawData, LastCapFromRound, RoundScores) :-
 	createPlayer(1, CompHand, CompPile, CompReserved, CompScore, Comp),
 
 
-	startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp, LastCap, LastCapFromRound, RoundScores).
+	startRoundFromLoad(RoundNum, StartingPlayer, Deck, Table, Human, Comp, LastCap, LastCapFromRound, RoundScores).
 
 
-startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp, LastCap, LastCapFromRound, RoundScores) :-
+startRoundFromLoad(RoundNum, StartingPlayer, Deck, Table, Human, Comp, LastCap, LastCapFromRound, RoundScores) :-
 	StartingPlayer = 0,
-	playRound(StartingPlayer, Deck, Table, Human, Comp, LastCap, LastCapFromRound, RoundScores).
+	playRound(RoundNum, StartingPlayer, Deck, Table, Human, Comp, LastCap, LastCapFromRound, RoundScores).
 
-startRoundFromLoad(StartingPlayer, Deck, Table, Human, Comp, LastCap, LastCapFromRound, RoundScores) :-
+startRoundFromLoad(RoundNum, StartingPlayer, Deck, Table, Human, Comp, LastCap, LastCapFromRound, RoundScores) :-
 	StartingPlayer = 1,
-	playRound(StartingPlayer, Deck, Table, Comp, Human, LastCap, LastCapFromRound, RoundScores).
+	playRound(RoundNum, StartingPlayer, Deck, Table, Comp, Human, LastCap, LastCapFromRound, RoundScores).
 
 %parseBuildOwnersFromRaw(_, Terms, [], []) :-
 %Terms =< 11.
@@ -108,8 +109,8 @@ denumerateId(0, human).
 denumerateId(_, computer).
 
 
-formatSaveData(0, CompScore, CompHand, CompPile, HumanScore, HumanHand, HumanPile, Table,  CompReserved, HumanReserved, LastCapAtom, Deck, FirstIdAtom, Formatted) :-
-	mergeLists([0], [CompScore], Merge1),
+formatSaveData(RoundNum, CompScore, CompHand, CompPile, HumanScore, HumanHand, HumanPile, Table,  CompReserved, HumanReserved, LastCapAtom, Deck, FirstIdAtom, Formatted) :-
+	mergeLists(RoundNum, [CompScore], Merge1),
 	mergeLists(Merge1, [CompHand], Merge2),
 	mergeLists(Merge2, [CompPile], Merge3),
 	mergeLists(Merge3, [HumanScore], Merge4),

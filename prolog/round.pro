@@ -2,13 +2,13 @@
 %=======================
 %Functions to run a round
 %=======================
-startNewRound(LastCap, EndScores) :- playRound(0, [],[],[],[], 0, LastCap,EndScores).
-startNewRound(Starting, LastCap, EndScores) :- playRound(Starting, [],[],[],[], 0, LastCap, EndScores).
-startNewRound(Starting, HumanScore, CompScore, LastCap, EndScores) :- playRound(Starting, HumanScore, CompScore, Starting, LastCap, EndScores).
+startNewRound(LastCap, EndScores) :- playRound(0, 0, [],[],[],[], 0, LastCap,EndScores).
+startNewRound(RoundNum, Starting, LastCap, EndScores) :- playRound(RoundNum, Starting, [],[],[],[], 0, LastCap, EndScores).
+startNewRound(RoundNum, Starting, HumanScore, CompScore, LastCap, EndScores) :- playRound(RoundNum, Starting, HumanScore, CompScore, Starting, LastCap, EndScores).
 
 
 
-playRound(FirstId, HumanScore, CompScore, LastCap, LastCapEnd, EndScores) :-
+playRound(Round, FirstId, HumanScore, CompScore, LastCap, LastCapEnd, EndScores) :-
 		FirstId = 0,
 		createDeck(RawDeck),
 		drawFourCards(RawDeck, AfterOneDraw, HumanCards),
@@ -16,39 +16,39 @@ playRound(FirstId, HumanScore, CompScore, LastCap, LastCapEnd, EndScores) :-
 		drawFourCards(AfterTwoDraws, Deck, TableCards),
 		createNewPlayer(0, HumanCards, HumanScore, HumanPlayer),
 		createNewPlayer(1, CompCards, CompScore, ComputerPlayer),
-		playRound(FirstId, Deck, TableCards, HumanPlayer, ComputerPlayer, LastCap, LastCapEnd, EndScores).
+		playRound(Round, FirstId, Deck, TableCards, HumanPlayer, ComputerPlayer, LastCap, LastCapEnd, EndScores).
 
-playRound(FirstId, HumanScore, CompScore, LastCap, LastCapEnd, EndScores) :-
+playRound(Round, FirstId, HumanScore, CompScore, LastCap, LastCapEnd, EndScores) :-
 		createDeck(RawDeck),
 		drawFourCards(RawDeck, AfterOneDraw, HumanCards),
 		drawFourCards(AfterOneDraw, AfterTwoDraws, CompCards),
 		drawFourCards(AfterTwoDraws, Deck, TableCards),
 		createNewPlayer(0, HumanCards, HumanScore, HumanPlayer),
 		createNewPlayer(1, CompCards, CompScore, ComputerPlayer),
-		playRound(FirstId, Deck, TableCards, ComputerPlayer, HumanPlayer, LastCap, LastCapEnd, EndScores).
+		playRound(Round, FirstId, Deck, TableCards, ComputerPlayer, HumanPlayer, LastCap, LastCapEnd, EndScores).
 
-playRound(FirstId,[],[],[],[],LastCap, LastCapEnd, EndScores) :- 
+playRound(Round, FirstId,[],[],[],[],LastCap, LastCapEnd, EndScores) :- 
 		createDeck(RawDeck),
 		drawFourCards(RawDeck, AfterOneDraw, HumanCards),
 		drawFourCards(AfterOneDraw, AfterTwoDraws, CompCards),
 		drawFourCards(AfterTwoDraws, Deck, TableCards),
 		createNewPlayer(0, HumanCards, HumanPlayer),
 		createNewPlayer(1, CompCards, ComputerPlayer),
-		playRound(FirstId, Deck, TableCards, HumanPlayer, ComputerPlayer, LastCap, LastCapEnd, EndScores).
+		playRound(Round, FirstId, Deck, TableCards, HumanPlayer, ComputerPlayer, LastCap, LastCapEnd, EndScores).
 
 
 %id, deck, table, p0Info, p1Info, retVal
-playRound(FirstId,[],[],[],[],LastCap, LastCapEnd, EndScores) :- 
+playRound(Round, FirstId,[],[],[],[],LastCap, LastCapEnd, EndScores) :- 
 		createDeck(RawDeck),
 		drawFourCards(RawDeck, AfterOneDraw, HumanCards),
 		drawFourCards(AfterOneDraw, AfterTwoDraws, CompCards),
 		drawFourCards(AfterTwoDraws, Deck, TableCards),
 		createNewPlayer(0, HumanCards, HumanPlayer),
 		createNewPlayer(1, CompCards, ComputerPlayer),
-		playRound(FirstId, Deck, TableCards, HumanPlayer, ComputerPlayer, LastCap, LastCapEnd,EndScores).
+		playRound(Round, FirstId, Deck, TableCards, HumanPlayer, ComputerPlayer, LastCap, LastCapEnd,EndScores).
 
 %Deal new hands when hands are empty
-playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) :-
+playRound(Round, FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) :-
 	getHand(P0Info, P0Hand),
 	length(P0Hand, 0),
 	getHand(P1Info, P1Hand),
@@ -61,12 +61,12 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) 
 	createPlayer(P0Id, P0Cards, P0Pile, P0Reserved, P0Score, NewP0),
 	getPlayerComponents(P1Info, P1Id, _, P1Pile, P1Reserved, P1Score),
 	createPlayer(P1Id, P1Cards, P1Pile, P1Reserved, P1Score, NewP1),
-	playRound(FirstId, AfterTwoDraws, Table, NewP0, NewP1, LastCap, LastCapEnd, EndScores).
+	playRound(Round, FirstId, AfterTwoDraws, Table, NewP0, NewP1, LastCap, LastCapEnd, EndScores).
 	
 
 %Round end rule, deck is empty, player infos have null hands
 %TODO, make sure to print table
-playRound(_, Deck, Table, P0Info, P1Info, LastCap,LastCapEnd, EndScores)	:-
+playRound(Round, _, Deck, Table, P0Info, P1Info, LastCap,LastCapEnd, EndScores)	:-
 	getHand(P0Info, P0Hand),
 	length(P0Hand, 0),
 	getHand(P1Info, P1Hand),
@@ -74,10 +74,10 @@ playRound(_, Deck, Table, P0Info, P1Info, LastCap,LastCapEnd, EndScores)	:-
 	length(Deck, CardsInDeck),
 	CardsInDeck < 8,
 	LastCapEnd = LastCap,
-	scoreRound(Table, P0Info, P1Info, LastCap, EndScores).
+	scoreRound(Round, Table, P0Info, P1Info, LastCap, EndScores).
 
 %Main loop
-playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) :-
+playRound(Round, FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) :-
     getHand(P0Info, P0Hand),
 	length(P0Hand, P0HandLength),
     P0HandLength > 0,
@@ -86,17 +86,17 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) 
     P1HandLength > 0,
 	printFullTable(P0Info, Table, P1Info, Deck),
 	getActionMenuChoice(P0Info, MenuChoice),
-	handleMenuChoice(MenuChoice, FirstId, Deck, Table, P0Info, P1Info, LastCap),
+	handleMenuChoice(MenuChoice, Round, FirstId, Deck, Table, P0Info, P1Info, LastCap),
 	doPlayerMove(P0Info, P1Info, Table, LastCap, P0AfterMove, P1AfterP0, TableAfterP0, LastCapAfterP0),
 	printFullTable(P0AfterMove, TableAfterP0, P1AfterP0, Deck),
 	getActionMenuChoice(P1Info, MenuChoice2),
     findOtherId(FirstId, OtherId),
-	handleMenuChoice(MenuChoice2, OtherId, Deck, TableAfterP0, P0AfterMove, P1AfterP0, LastCapAfterP0),
+	handleMenuChoice(MenuChoice2, Round, OtherId, Deck, TableAfterP0, P0AfterMove, P1AfterP0, LastCapAfterP0),
 	doPlayerMove(P1AfterP0, P0AfterMove, TableAfterP0, LastCapAfterP0, P1AfterMove, P0AfterP1, TableAfterP1, LastCapAfterP1),
-	playRound(FirstId, Deck, TableAfterP1, P0AfterP1, P1AfterMove, LastCapAfterP1, LastCapEnd, EndScores).
+	playRound(Round, FirstId, Deck, TableAfterP1, P0AfterP1, P1AfterMove, LastCapAfterP1, LastCapEnd, EndScores).
 
 
-playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) :-
+playRound(Round, FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) :-
     getHand(P0Info, P0Hand),
 	length(P0Hand, P0HandLength),
     P0HandLength > 0,
@@ -105,28 +105,28 @@ playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) 
 
 	printFullTable(P0Info, Table, P1Info, Deck),
 	getActionMenuChoice(P0Info, MenuChoice),
-	handleMenuChoice(MenuChoice, FirstId, Deck, Table, P0Info, P1Info, LastCap),
+	handleMenuChoice(MenuChoice, Round, FirstId, Deck, Table, P0Info, P1Info, LastCap),
 	doPlayerMove(P0Info, P1Info, Table, LastCap, P0AfterMove, P1AfterP0, TableAfterP0, LastCapAfterP0),
 	printFullTable(P0AfterMove, TableAfterP0, P1AfterP0, Deck),
-	playRound(FirstId, Deck, TableAfterP0, P0AfterMove, P1AfterP0, LastCapAfterP0, LastCapEnd, EndScores).
+	playRound(Round, FirstId, Deck, TableAfterP0, P0AfterMove, P1AfterP0, LastCapAfterP0, LastCapEnd, EndScores).
 
 
 
-playRound(FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) :-
+playRound(Round, FirstId, Deck, Table, P0Info, P1Info, LastCap, LastCapEnd, EndScores) :-
 	getHand(P0Info, P0Hand),
 	length(P0Hand, 0),
     getHand(P1Info, P1Hand),
 	length(P1Hand, P1HandLength),
     P1HandLength > 0,
 
-	playRound(FirstId, Deck, Table, P1Info, P0Info, LastCap, LastCapEnd, EndScores).
+	playRound(Round, FirstId, Deck, Table, P1Info, P0Info, LastCap, LastCapEnd, EndScores).
 
 
 
 findOtherId(0,1).
 findOtherId(1,0).
 
-scoreRound(Table, HumanStart, CompStart, LastCap, EndScores) :-
+scoreRound(Round, Table, HumanStart, CompStart, LastCap, EndScores) :-
 	isHuman(HumanStart),
 	addCardsToLastCap(Table, HumanStart, CompStart, LastCap, Human, Comp),
 	getPile(Human, HumanPile),
@@ -156,21 +156,27 @@ scoreRound(Table, HumanStart, CompStart, LastCap, EndScores) :-
 
 	HumanRoundScore is HumanSizeScore+HumanSpadeScore+HumanDXScore+HumanS2Score + HumanAceScore,
 	CompRoundScore is CompSizeScore+CompSpadeScore+CompDXScore+CompS2Score+CompAceScore,
-	writeln("Round Scores:"),
+	write("Round Scores for Round"),
+    write(Round),
+    writeln(": "),
+    write("Human: "),
 	writeln(HumanRoundScore),
+    write("Computer: "),
 	writeln(CompRoundScore),
 	nl,
 	writeln("Tour Scores"),
 	HumanTourScore is HumanStartScore+HumanRoundScore,
 	CompTourScore is CompStartScore+CompRoundScore,
+    write("Human: "),
 	writeln(HumanTourScore),
+    write("Computer: "),
 	writeln(CompTourScore),
 	mergeLists([HumanTourScore], [CompTourScore], EndScores).
 
 
 
-scoreRound(Table, Human, Comp, LastCap, EndScores) :-
-	scoreRound(Table, Comp, Human, LastCap, EndScores).	
+scoreRound(Round, Table, Human, Comp, LastCap, EndScores) :-
+	scoreRound(Round, Table, Comp, Human, LastCap, EndScores).	
 
 
 scoreBySize(Points, HumanSize, CompSize, Points, 0) :-

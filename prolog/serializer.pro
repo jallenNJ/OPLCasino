@@ -30,10 +30,12 @@ parseSaveToRound(RawData, LastCapFromRound, RoundScores) :-
 
 	nth0(7, RawData, Table),
 
-	nth0(8, RawData, LastCapAtom),
 
-	nth0(9, RawData, CompReserved),
-	nth0(10, RawData, HumanReserved),
+	nth0(8, RawData, CompReserved),
+	nth0(9, RawData, HumanReserved),
+
+	nth0(10, RawData, LastCapAtom),
+
 
 	nth0(11, RawData, Deck),
 	nth0(12, RawData, StartingPlayerAtom),
@@ -106,7 +108,7 @@ denumerateId(0, human).
 denumerateId(_, computer).
 
 
-formatSaveData(0, CompScore, CompHand, CompPile, HumanScore, HumanHand, HumanPile, Table, LastCapAtom, CompReserved, HumanReserved,  Deck, FirstIdAtom, Formatted) :-
+formatSaveData(0, CompScore, CompHand, CompPile, HumanScore, HumanHand, HumanPile, Table,  CompReserved, HumanReserved, LastCapAtom, Deck, FirstIdAtom, Formatted) :-
 	mergeLists([0], [CompScore], Merge1),
 	mergeLists(Merge1, [CompHand], Merge2),
 	mergeLists(Merge2, [CompPile], Merge3),
@@ -114,9 +116,9 @@ formatSaveData(0, CompScore, CompHand, CompPile, HumanScore, HumanHand, HumanPil
 	mergeLists(Merge4, [HumanHand], Merge5),
 	mergeLists(Merge5, [HumanPile], Merge6),
 	mergeLists(Merge6, [Table], Merge7),
-	mergeLists(Merge7, [LastCapAtom], Merge8),
-	mergeLists(Merge8, [CompReserved], Merge9),
-	mergeLists(Merge9, [HumanReserved], Merge10),
+	mergeLists(Merge7, [CompReserved], Merge8),
+	mergeLists(Merge8, [HumanReserved], Merge9),
+	mergeLists(Merge9, [LastCapAtom], Merge10),
 	mergeLists(Merge10, [Deck] , Merge11),
 	mergeLists(Merge11, [FirstIdAtom], Formatted).
 
